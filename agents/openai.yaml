@@ -1,0 +1,4 @@
+interface:
+  display_name: "Caber Interstitial Decision Mesh"
+  short_description: "Training-free Jev routing with checked reasoning gates"
+  default_prompt: "Use $caber-interstitial-decision-mesh to plan or run a bounded checked workflow and report its full inference overhead."
