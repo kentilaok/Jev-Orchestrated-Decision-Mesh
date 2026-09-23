@@ -7,4 +7,4 @@
 - [RouteLLM](https://arxiv.org/abs/2406.18665) studies learned model routing from preference data. CIDM's current runtime uses existing models and fixed policies without training a router.
 - [Attention Is All You Need](https://arxiv.org/abs/1706.03762) introduces the Transformer. CIDM takes selective use of relevant context as conceptual inspiration; its five-stage software graph is not an implementation of Transformer attention or a trainable neural network.
 
-The operational contribution being explored here is Jev interposed at bounded action boundaries and again after every high-effort checker result, with deterministic eligibility before committing context. Whether this combination improves quality at a given total token or cost budget remains an empirical question.
+The operational contribution explored here is Jev interposed before bounded work and after every completed unit output, with optional high-effort review returning to Jev and deterministic eligibility before committing context. Whether this combination improves quality at a given total token or cost budget remains an empirical question.

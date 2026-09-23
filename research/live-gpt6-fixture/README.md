@@ -1,6 +1,8 @@
-# GPT-6 checked-gate integration and matched single-call fixture
+# Earlier mandatory Sol-high policy: GPT-6 fixture and baseline
 
 **23 September 2026 · Synthetic records · Kenneth Vic A. Caber**
+
+This appendix preserves the **previous** five-unit policy, in which every unit required a Sol-high check. The current CIDM policy returns every worker output to Jev and lets Jev request Sol High only when needed. The recorded request/response files below remain unchanged so the earlier outcome can be independently rechecked.
 
 The task was to report defects per 1,000 **production** items, exclude a trial row, and cite `[records]`. The input had production segments A and B totaling 20 defects in 400 items, plus one excluded trial segment. The exact reference is **50 defects per 1,000 production items**. Both completed runs returned 50 and passed their declared source/scope checks.
 

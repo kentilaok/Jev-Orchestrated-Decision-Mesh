@@ -41,6 +41,10 @@ class RunConfig:
     jev_model_aliases: tuple = ("typesafe/jev-1.13-20260917",)
     max_usd: float = 1.50
     max_calls: int = 40
+    max_jev_calls: int = 30
+    max_jev_tokens: int = 50000
+    max_worker_calls: int = 12
+    max_checker_calls: int = 10
     max_output_tokens: int = 2000
     timeout: float = 45
     worker_luna_input_usd_per_million: float = 0.10
@@ -86,6 +90,11 @@ class RunConfig:
                      and value == value.strip() and not any(ord(c) < 32 for c in value), "invalid_" + name)
         _require(_number(self.max_usd, positive=True), "invalid_max_usd")
         _require(type(self.max_calls) is int and 1 <= self.max_calls <= 1000, "invalid_max_calls")
+        for name in ("max_jev_calls","max_worker_calls","max_checker_calls"):
+            value=getattr(self,name)
+            _require(type(value) is int and 0 <= value <= 1000,"invalid_"+name)
+        _require(type(self.max_jev_tokens) is int and 1 <= self.max_jev_tokens <= 10000000,
+                 "invalid_max_jev_tokens")
         _require(type(self.max_output_tokens) is int and 1 <= self.max_output_tokens <= 32768,
                  "invalid_max_output_tokens")
         _require(_number(self.timeout, positive=True) and self.timeout <= 120, "invalid_timeout")

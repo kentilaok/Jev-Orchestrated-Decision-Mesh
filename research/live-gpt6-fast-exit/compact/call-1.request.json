@@ -1,0 +1,43 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "source_id": "records",
+    "source_hash": "20bd8062e022aebf93c45b7c5a1459c0c787f2f42467ca39ee6f0b68b94d0673",
+    "rows": 3,
+    "kinds": [
+      "production",
+      "trial"
+    ],
+    "include": "production",
+    "scale": 1000,
+    "exact_checks": true,
+    "budget_usd": 1.5
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose the cheapest safe route. Use exact code when checks settle the task, one worker for bounded work, and five_unit for real dependencies. Stop for missing evidence. Return only a typed choice.",
+      "criteria": {
+        "deterministic": {
+          "description": "Exact code and source checks; no worker."
+        },
+        "direct_luna_low": {
+          "description": "One Luna-low worker and hard checks; no follow-up."
+        },
+        "direct_sol_high": {
+          "description": "One Sol-high worker and hard checks; no follow-up."
+        },
+        "five_unit": {
+          "description": "Five Jev-governed units; optional Sol-high review."
+        },
+        "retrieve_evidence": {
+          "description": "Need missing original evidence."
+        },
+        "stop": {
+          "description": "No safe route."
+        }
+      }
+    }
+  }
+}

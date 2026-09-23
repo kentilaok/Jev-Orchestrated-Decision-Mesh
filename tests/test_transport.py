@@ -85,6 +85,9 @@ class ConfigTests(unittest.TestCase):
              "worker_effort": "high"},
             {"checker_effort": "medium"}, {"worker_effort": "unsupported"},
             {"max_calls": True}, {"max_calls": 0}, {"max_usd": float("nan")},
+            {"max_jev_calls": -1}, {"max_jev_calls": 1001},
+            {"max_jev_tokens": 0}, {"max_jev_tokens": True},
+            {"max_worker_calls": 1001}, {"max_checker_calls": -1},
             {"max_usd": float("inf")}, {"max_usd": 10 ** 1000},
             {"timeout": 0}, {"max_output_tokens": 0}, {"provider_route": "https://example.invalid"},
             {"api_key": "placeholder"}, {"base_url": "https://example.invalid"},
@@ -391,6 +394,52 @@ class TransportTests(unittest.TestCase):
                 gateway.high_check({"unit": {"id": "input"}})
         self.assertEqual(request.call_count, 1)
         self.assertEqual([event["role"] for event in gateway.calls], ["worker"])
+
+    def test_jev_call_budget_blocks_another_decision_before_dispatch(self):
+        gateway=self.gateway(RunConfig(max_jev_calls=1))
+        opts={"compute":"Compute","stop":"Stop"}
+        with patch.object(gateway,"_request",return_value=decision_response()) as request:
+            gateway.network_judge("authorize_unit",opts,{"unit":"input"})
+            with self.assertRaisesRegex(MeshError,"role_call_budget_exhausted"):
+                gateway.network_judge("authorize_unit",opts,{"unit":"input"})
+        self.assertEqual(request.call_count,1)
+
+    def test_jev_token_budget_blocks_using_an_over_budget_decision(self):
+        gateway=self.gateway(RunConfig(max_jev_tokens=15))
+        with patch.object(gateway,"_request",return_value=decision_response()) as request:
+            with self.assertRaisesRegex(MeshError,"provider_call_failed"):
+                gateway.network_judge("authorize_unit",{"compute":"Compute","stop":"Stop"},
+                                      {"unit":"input"})
+        self.assertEqual(request.call_count,1)
+        self.assertEqual(gateway.calls[0]['error']['code'],'jev_token_budget_exceeded')
+        self.assertEqual(gateway.calls[0]['usage']['total_tokens'],16)
+        self.assertTrue(gateway.blocked)
+
+    def test_worker_and_checker_role_caps_are_independent(self):
+        gateway=self.gateway(RunConfig(max_worker_calls=1,max_checker_calls=0))
+        with patch.object(gateway,"_request",return_value=chat_response()) as request:
+            gateway.ask("worker","Task",{"value":1})
+            with self.assertRaisesRegex(MeshError,"role_call_budget_exhausted"):
+                gateway.ask("worker","Task",{"value":2})
+            with self.assertRaisesRegex(MeshError,"role_call_budget_exhausted"):
+                gateway.high_check({"unit":{"id":"input"}})
+        self.assertEqual(request.call_count,1)
+
+    def test_cidm_worker_cannot_consume_the_followup_jev_slot(self):
+        gateway = self.gateway(RunConfig(max_calls=1))
+        route=next(r for r in gateway.config.worker_routes() if r['id']=='luna_low')
+        with patch.object(gateway, "_request") as request:
+            with self.assertRaisesRegex(MeshError,"call_or_cost_budget_exhausted"):
+                gateway.ask("worker","Bounded unit",{"value":1},worker_route=route,followup_required=True)
+        request.assert_not_called()
+        self.assertEqual(gateway.calls,[])
+
+    def test_direct_baseline_worker_needs_no_jev_followup_slot(self):
+        gateway = self.gateway(RunConfig(max_calls=1))
+        with patch.object(gateway, "_request", return_value=chat_response()) as request:
+            gateway.ask("worker","Direct baseline",{"value":1})
+        self.assertEqual(request.call_count,1)
+        self.assertEqual(gateway.calls[0]["followup_jev_required"],False)
 
     def test_checker_requires_cost_headroom_for_maximum_jev_request(self):
         default = RunConfig()

@@ -1,0 +1,136 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "records",
+        "title": "Original records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Original records normalized without changing values.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "records": [
+            {
+              "segment": "A",
+              "kind": "production",
+              "items": 240,
+              "defects": 12
+            },
+            {
+              "segment": "B",
+              "kind": "production",
+              "items": 160,
+              "defects": 8
+            },
+            {
+              "segment": "T",
+              "kind": "trial",
+              "items": 100,
+              "defects": 30
+            }
+          ],
+          "include_kind": "production",
+          "scale": 1000
+        },
+        "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Include production segments A and B; exclude trial segment T. Calculate defects per 1,000 items.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "denominator": "items",
+          "numerator": "defects",
+          "scale": 1000,
+          "segments": [
+            "A",
+            "B"
+          ]
+        },
+        "artifact_hash": "ae441a6cf821dc8145b6988e1b2e17f0bd178ed083dd34f71ccc50cb77ce5836",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "records",
+        "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+        "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Calculate the result using the checked interpretation and exact arithmetic."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "ae441a6cf821dc8145b6988e1b2e17f0bd178ed083dd34f71ccc50cb77ce5836"
+      }
+    ],
+    "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+    "repair_feedback": null
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "ae441a6cf821dc8145b6988e1b2e17f0bd178ed083dd34f71ccc50cb77ce5836"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

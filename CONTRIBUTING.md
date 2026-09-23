@@ -8,8 +8,8 @@ Before proposing a change:
 
 1. Run `python -m unittest discover -s tests -v` without API credentials.
 2. Add a behavioral regression for a concrete bug or an adapter contract change.
-3. Preserve the Sol-high result → Jev option decision → eligible commit sequence.
-4. Keep secrets, raw user prompts, private data, and live logs out of commits. Runtime traces belong in ignored run directories.
+3. Preserve the worker result → Jev option decision → eligible commit sequence. When Jev requests Sol High, its result also returns to Jev before commit.
+4. Keep secrets, private user prompts, and private live logs out of commits. Only fictional or expressly publishable evidence may enter a curated, scanned research appendix; task runtime traces otherwise belong in ignored run directories.
 5. State whether evidence is simulated, live integration, or a controlled comparison. A successful trace alone does not establish accuracy or token savings.
 
 Efficiency studies should compare complete trajectories at comparable answer quality and release coverage. Count Jev, producers, checkers, retries, rejected work, and retrieval. Report unknown usage as unknown, and preserve unfavorable results.

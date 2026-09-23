@@ -1,0 +1,165 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "records",
+        "title": "Original records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Original records normalized without changing values.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "records": [
+            {
+              "segment": "A",
+              "kind": "production",
+              "items": 240,
+              "defects": 12
+            },
+            {
+              "segment": "B",
+              "kind": "production",
+              "items": 160,
+              "defects": 8
+            },
+            {
+              "segment": "T",
+              "kind": "trial",
+              "items": 100,
+              "defects": 30
+            }
+          ],
+          "include_kind": "production",
+          "scale": 1000
+        },
+        "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "records",
+        "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+        "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify the included records and the calculation requested by the user."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+      }
+    ],
+    "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+    "selected_worker": {
+      "id": "sol_low",
+      "model": "openai/gpt-6-sol",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "denominator": "items",
+        "numerator": "defects",
+        "scale": 1000,
+        "segments": [
+          "A",
+          "B"
+        ]
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null,
+      "source_ids": [
+        "records"
+      ],
+      "text": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items."
+    },
+    "hard_checks": {
+      "source_present": true,
+      "correct_scope_and_formula": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "stop": {
+          "description": "Stop without accepting this candidate."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

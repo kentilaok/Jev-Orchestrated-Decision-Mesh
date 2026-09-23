@@ -1,0 +1,45 @@
+{
+  "id": "gen-1790147161-RCkmpdKZauhiSDdSq08S",
+  "object": "chat.completion",
+  "created": 1790147161,
+  "model": "openai/gpt-6-sol",
+  "provider": "Azure",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "completed",
+      "message": {
+        "role": "assistant",
+        "content": "{\"data\":{\"consistent\":true,\"result\":50,\"unresolved\":[]},\"five_scores\":[5,5,5,5,5],\"self_probability\":0.99,\"source_ids\":[\"records\"],\"text\":\"Production segments A and B contain 20 defects in 400 items; 20 \u00f7 400 \u00d7 1,000 = 50 defects per 1,000 items. Trial segment T is excluded.\"}",
+        "refusal": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 495,
+    "completion_tokens": 95,
+    "total_tokens": 590,
+    "cost": 0.00194,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.00194,
+      "upstream_inference_prompt_cost": 0.00099,
+      "upstream_inference_completions_cost": 0.00095
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

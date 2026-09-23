@@ -45,14 +45,14 @@ The [historical reproducibility appendix](../research/historical-pilot/README.md
 
 ## Current training-free path
 
-The checked five-unit design requires Jev authorization, a separate Sol-high check, and a subsequent Jev option decision for every unit. In a [single GPT-6 synthetic fixture](../research/live-gpt6-fixture/README.md), the checked run completed five units using **36,663 tokens and $0.012201078** across 23 calls; a correct one-call Sol-high baseline used **431 tokens and $0.001726**. The checked run cost **7.07×** more and used **85.06×** as many tokens on that easy task. This is one matched fixture, not an estimate for websites or other workloads. The historical GPT-5.6 pilot above is a different architecture.
+The revised five-unit design requires Jev before a unit and after **every completed unit output**. Jev can forward after executable checks or request Sol High for extra review. In the [hardened GPT-6 synthetic fixture](../research/live-gpt6-optional-final/README.md), five units completed with **zero checker calls, 25,510 tokens, and $0.006413654** across 13 calls. A [first conditional run](../research/live-gpt6-optional-fixture/README.md) also skipped checkers and cost $0.00312019 with different worker choices. The [earlier mandatory-check fixture](../research/live-gpt6-fixture/README.md) used **36,663 tokens and $0.012201078** across 23 calls. A correct one-call Sol-high baseline used **431 tokens and $0.001726**. The hardened path cost **47.43% less than the old policy on this fixture**, while still costing **3.72×** the one-call baseline. Different prompts and worker routes prevent causal attribution of the entire difference to checker policy. None of these small runs estimates performance on broad projects. The historical GPT-5.6 pilot above is a separate architecture.
 
 An earlier trained numeric-router experiment was **discarded** following the design correction. Its checkpoint, learned advisor, and synthetic classification accuracy are not part of the published path or evidence of current network performance. Neural-network concepts are architectural inspiration only.
 
 Before claiming a better or cheaper solver:
 
 1. Freeze task strata, sources, acceptance criteria, model IDs/efforts, budgets, and the analysis plan before evaluation.
-2. Compare against a capable single-model baseline and a matched graph without mandatory high-effort checkers.
+2. Compare against a capable single-model baseline, the historical mandatory-review policy, and the current conditional-review graph under frozen prompts and acceptance criteria.
 3. Count every worker, checker, Jev call, repair, refusal, failure, and relevant tool operation. Report missing counters explicitly.
 4. Report correctness, evidence support, release coverage, tokens, cost, and latency separately; retain unsuccessful runs.
 5. Use paired held-out tasks and uncertainty intervals. Do not tune on evaluation outcomes or infer success from model self-scores.

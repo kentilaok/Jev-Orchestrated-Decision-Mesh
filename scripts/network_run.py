@@ -1,4 +1,4 @@
-"""Bounded five-gate reference pipeline, with Sol-high -> Jev after every gate."""
+"""Bounded five-gate CIDM pipeline; Jev chooses whether Sol-high review is needed."""
 import argparse
 import json
 import re
@@ -9,6 +9,7 @@ from transport import Gateway
 from config import RunConfig
 from atomic_mesh import AtomicMesh, require, packed, fingerprint
 from checked_network import CheckedNetwork, UNITS
+from metrics import summarize_calls
 
 DEMO={'goal':'Report production defects per 1,000 items, excluding trial records, with source support.',
       'records':[{'segment':'A','kind':'production','items':240,'defects':12},
@@ -69,7 +70,7 @@ class DemoPipeline:
         require(worker_route is not None,'missing_jev_worker_route')
         return self.gateway.ask('worker',instructions,{'unit':unit.__dict__,'goal':self.task['goal'],'original_records':self.task,
             'accepted_parents':[p['artifact'] for p in parents[-2:]],'repair_feedback':feedback},schema,
-            worker_route=worker_route)
+            worker_route=worker_route,followup_required=True)
 
     def validate(self,unit,candidate,parents):
         d=candidate['data']; checks={'source_present':candidate['source_ids']==['records']}
@@ -81,12 +82,24 @@ class DemoPipeline:
         else:
             match=re.fullmatch(r'defects per (\d{1,3}(?:,\d{3})+|\d+) (?:production )?items',str(d.get('unit','')).strip().lower())
             checks['final_answer_matches_calculation']=set(d)=={'answer','unit'} and d['answer']==float(self.expected) and bool(match) and int(match.group(1).replace(',',''))==self.task['scale']
+            answer_literals=[str(float(self.expected))]
+            if self.expected.denominator==1: answer_literals.append(str(self.expected.numerator))
+            text=candidate['text']
+            checks['answer_text_matches_value']=any(re.search(r'(?<![\d.])'+re.escape(number)+r'(?![\d.])',text) for number in answer_literals)
+            checks['answer_text_names_rate']=bool(re.search(r'\bdefects?\b',text,re.I)) and bool(re.search(r'\bproduction\b',text,re.I))
+            checks['answer_text_names_scale']=bool(re.search(r'(?<!\d)'+re.escape(str(self.task['scale']))+r'(?!\d)|(?<!\d)'+re.escape(f'{self.task["scale"]:,}')+r'(?!\d)',text))
+            checks['answer_text_cites_original']='[records]' in text
+            checks['answer_text_excludes_trial']=(not any(r['kind']=='trial' for r in self.task['records'])
+                                                  or bool(re.search(r'\btrial\b',text,re.I))
+                                                  and bool(re.search(r'\bexclud(?:e|ed|ing)?\b|\bomitt?(?:ed|ing)?\b',text,re.I)))
         return checks
 
 
 def fake_judge(phase,options,state):
     mapping={'authorize_checker':'check','after_sol_high':'forward'}
-    choice=('compute' if 'compute' in options else 'luna_low') if phase=='authorize_unit' else mapping[phase]
+    if phase=='authorize_unit': choice='compute' if 'compute' in options else next(k for k in options if k!='stop')
+    elif phase=='after_worker': choice='forward' if 'forward' in options else 'repair'
+    else: choice=mapping[phase]
     return {'choice':choice,'live':False,'model':'simulation'}
 
 
@@ -96,8 +109,31 @@ def fake_check(state):
             'reason':'Offline fixture only.','missing_evidence':[]}
 
 
+def execute_network(task,configuration,folder,gateway=None,*,simulation=False):
+    folder=Path(folder)
+    require(folder.is_dir(),'run_directory_required')
+    pipeline=DemoPipeline(task,gateway)
+    sources={'records':{'title':'Original records','text':packed(task)}}
+    def journal(event):
+        with (folder/'journal.jsonl').open('a',encoding='utf-8') as stream: stream.write(packed(event)+'\n')
+    network=CheckedNetwork(task['goal'],sources,gateway.network_judge if gateway else fake_judge,pipeline.produce,
+        gateway.high_check if gateway else fake_check,pipeline.validate,policy=configuration.to_dict(),
+        checker_identity={'model':configuration.checker_model,'effort':configuration.checker_effort},
+        worker_routes=configuration.worker_routes(),simulation=simulation,journal=journal)
+    result=network.run(); result['calls']=gateway.calls if gateway else []
+    result['reported_cost']=gateway.spent if gateway else 0
+    result['configuration']=configuration.to_dict()
+    result['training_performed']=False
+    result['scope']='Training-free Jev orchestration. Neural-network and Transformer concepts are routing inspirations only.'
+    escalations=sum(e['kind'] in ('post_worker_decision','post_checker_decision') and
+                    e.get('choice')=='escalate' for e in result['events'])
+    result['metrics']=summarize_calls(result['calls'],quality_pass=result['status']=='complete',
+                                      early_exit_selected=False,escalations=escalations)
+    return result
+
+
 def main():
-    p=argparse.ArgumentParser(description="Training-free CIDM checked-gate demonstration")
+    p=argparse.ArgumentParser(description="Training-free CIDM with optional Sol-high review")
     mode=p.add_mutually_exclusive_group(required=True)
     mode.add_argument('--offline',action='store_true'); mode.add_argument('--live',action='store_true')
     p.add_argument('--out',type=Path,required=True); p.add_argument('--task',type=Path)
@@ -108,19 +144,7 @@ def main():
     a.out.mkdir(parents=True)
     task=json.loads(a.task.read_text(encoding='utf-8-sig')) if a.task else DEMO
     gateway=Gateway(a.out,configuration) if a.live else None
-    pipeline=DemoPipeline(task,gateway)
-    sources={'records':{'title':'Original records','text':packed(task)}}
-    def journal(event):
-        with (a.out/'journal.jsonl').open('a',encoding='utf-8') as stream: stream.write(packed(event)+'\n')
-    network=CheckedNetwork(task['goal'],sources,gateway.network_judge if gateway else fake_judge,pipeline.produce,
-        gateway.high_check if gateway else fake_check,pipeline.validate,policy=configuration.to_dict(),
-        checker_identity={'model':configuration.checker_model,'effort':configuration.checker_effort},
-        worker_routes=configuration.worker_routes(),simulation=a.offline,journal=journal)
-    result=network.run(); result['calls']=gateway.calls if gateway else []
-    result['reported_cost']=gateway.spent if gateway else 0
-    result['configuration']=configuration.to_dict()
-    result['training_performed']=False
-    result['scope']='Training-free Jev orchestration. Neural-network and Transformer concepts are routing inspirations only.'
+    result=execute_network(task,configuration,a.out,gateway,simulation=a.offline)
     (a.out/'result.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     print(packed({'status':result['status'],'answer':result['answer'],'committed_units':len(result['committed']),
         'checker_returns':len(result['checks']),'reported_cost':result['reported_cost'],'training_performed':False}))

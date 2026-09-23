@@ -142,8 +142,10 @@ class Gateway:
             message = choices[0].get("message")
             require(isinstance(message, dict) and isinstance(message.get("content"), str), "missing_response_content")
 
-    def call(self, role, payload):
+    def call(self, role, payload, *, followup_required=False):
         require(role in ("worker", "checker", "jev"), "invalid_role")
+        require(type(followup_required) is bool and (role != "jev" or not followup_required),
+                "invalid_followup_requirement")
         require(self.config.policy_hash == self._policy_hash, "configuration_changed_during_run")
         if role == "worker":
             require(self.config.worker_route_allowed(payload.get("model"),
@@ -163,12 +165,21 @@ class Gateway:
             require(payload.get("max_completion_tokens") == self.config.max_output_tokens, "request_output_cap_mismatch")
         data = packed(payload).encode()
         require(len(data) <= MAX_REQUEST_BYTES, "request_byte_limit")
+        role_calls=sum(event["role"]==role for event in self.calls)
+        role_limit={"jev":self.config.max_jev_calls,"worker":self.config.max_worker_calls,
+                    "checker":self.config.max_checker_calls}[role]
+        require(role_calls < role_limit,"role_call_budget_exhausted")
+        if role=="jev":
+            known_jev_tokens=sum(event["usage"]["total_tokens"] or 0 for event in self.calls
+                                 if event["role"]=="jev")
+            require(known_jev_tokens < self.config.max_jev_tokens,"jev_token_budget_exhausted")
         reserve = self.config.reserve_usd(role, len(data), payload["model"] if role == "worker" else None)
-        # A completed checker must return to Jev before any forward decision.
-        # Admit both calls together, reserving the largest permitted Jev request.
+        # CIDM worker and checker outputs return to Jev before any forward decision.
+        # Direct baseline worker calls can omit the follow-up requirement.
         # Keep this call's own ceiling separate from that following reservation.
-        followup_reserve = self.config.reserve_usd("jev", MAX_REQUEST_BYTES) if role == "checker" else 0.0
-        admission_calls = 2 if role == "checker" else 1
+        needs_followup = role == "checker" or followup_required
+        followup_reserve = self.config.reserve_usd("jev", MAX_REQUEST_BYTES) if needs_followup else 0.0
+        admission_calls = 2 if needs_followup else 1
         require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls
                 and self.spent + reserve + followup_reserve <= self.config.max_usd, "call_or_cost_budget_exhausted")
         name = "call-" + str(len(self.calls) + 1)
@@ -176,6 +187,7 @@ class Gateway:
                  "returned_model": None, "provider": None, "request_hash": fingerprint(payload),
                  "policy_hash": self._policy_hash, "reserved_usd": reserve,
                  "followup_jev_reserved_usd": followup_reserve, "admission_reserved_calls": admission_calls,
+                 "followup_jev_required": needs_followup,
                  "reasoning_effort": payload.get("reasoning", {}).get("effort"),
                  "usage": {"input_tokens": None, "output_tokens": None, "total_tokens": None,
                            "total_tokens_source": None, "cached_input_tokens": None, "reasoning_tokens": None, "cost": None},
@@ -200,6 +212,9 @@ class Gateway:
             require(all(raw_usage.get(k) is None or _counter(raw_usage[k]) is not None for k in names), "invalid_token_usage")
             require(usage["input_tokens"] is not None and usage["output_tokens"] is not None, "missing_token_usage")
             require(usage["total_tokens"] == usage["input_tokens"] + usage["output_tokens"], "inconsistent_token_usage")
+            if role=="jev":
+                require(known_jev_tokens + usage["total_tokens"] <= self.config.max_jev_tokens,
+                        "jev_token_budget_exceeded")
             require(usage["cached_input_tokens"] is None or usage["cached_input_tokens"] <= usage["input_tokens"], "invalid_cached_usage")
             require(usage["reasoning_tokens"] is None or usage["reasoning_tokens"] <= usage["output_tokens"], "invalid_reasoning_usage")
             require(usage["cost"] is not None, "missing_cost")
@@ -234,7 +249,7 @@ class Gateway:
         require(event["status"] == "ok", "provider_call_failed")
         return response, event
 
-    def ask(self, role, instructions, state, schema=None, worker_route=None):
+    def ask(self, role, instructions, state, schema=None, worker_route=None, followup_required=False):
         require(role in ("worker", "checker"), "invalid_generative_role")
         require(role == "worker" or worker_route is None, "checker_cannot_use_worker_route")
         if role == "checker" and schema is None:
@@ -254,7 +269,7 @@ class Gateway:
                    "provider": provider,
                    "response_format": {"type": "json_schema", "json_schema": {"name": "gate_result", "strict": True, "schema": schema}}
                    if schema is not None else {"type": "json_object"}}
-        response, event = self.call(role, payload)
+        response, event = self.call(role, payload, followup_required=followup_required)
         content = response["choices"][0]["message"]["content"]
         try:
             return jev.decode_json(content)
@@ -266,7 +281,9 @@ class Gateway:
 
     def network_judge(self, phase, options, state):
         instructions = {
+            "fast_exit": "Choose the cheapest safe route. Use exact code when checks settle the task, one worker for bounded work, and five_unit for real dependencies. Stop for missing evidence. Return only a typed choice.",
             "authorize_unit": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+            "after_worker": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
             "authorize_checker": "Judge only this local unit; intermediate units need not answer the entire user task. If all hard checks pass and original evidence is available, choose check for the mandatory separate Sol-high review. If a hard check fails and repair is offered, choose repair to produce a new candidate without spending a checker call, unless the defect needs checker diagnosis. Choose stop only for a real evidence, safety, or capacity blocker. Checking alone cannot authorize forwarding.",
             "after_sol_high": "Choose the next option explicitly after this checker return. Forward only when the current unit passes every hard check and has a valid passing checker report. Otherwise repair a concrete defect, retrieve_evidence for absent evidence, verify_again for unresolved disagreement, or stop. Intermediate units need not finish the whole task. Self-reported confidence cannot override these conditions.",
         }

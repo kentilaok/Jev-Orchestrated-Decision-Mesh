@@ -9,13 +9,14 @@
     "risk": "A wrong rate would be detectable by code; no external action is requested."
   },
   "questions": {
-    "route": {
+    "next": {
       "type": "choice",
-      "instructions": "Choose the least resource-intensive route that can satisfy the stated task and validation requirement. Deterministic is appropriate when executable checks can settle the answer. A direct worker may be enough for a bounded text task. Use the five-unit checked network when evidence complexity or the required review policy justifies its repeated Jev and Sol-high calls. Do not use model confidence alone as proof.",
+      "instructions": "For a CIDM-qualified broader project, choose the least resource-intensive route that can satisfy this subtask and its validation requirement. Deterministic work is appropriate when executable checks can settle the answer. A direct worker may be enough for a bounded text subtask. Use the five-unit network when evidence complexity or coordination justifies repeated Jev decisions; Sol-high review within that network is optional. Do not use model confidence alone as proof.",
       "criteria": {
         "deterministic": "Compute from original evidence with exact code checks; no generative worker or Sol-high checker. Keep source references.",
-        "direct_worker": "Use one GPT-6 Luna or Sol worker with an explicit task-specific validator and no claim of five-unit checking.",
-        "checked_five_unit": "Run the full five-unit graph with Jev authorization and a Sol-high check after each unit.",
+        "direct_luna_low": "Use one GPT-6 Luna-low worker with a task-specific validator and no Jev follow-up.",
+        "direct_sol_high": "Use one GPT-6 Sol-high worker with a task-specific validator and no Jev follow-up.",
+        "five_unit": "Run the five-unit graph with Jev before and after each unit; Jev may request Sol-high review for specific units.",
         "retrieve_evidence": "Stop to obtain missing original evidence before selecting a computation route.",
         "stop": "Stop because no offered route can meet the constraints safely."
       }

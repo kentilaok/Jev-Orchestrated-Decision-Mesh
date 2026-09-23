@@ -1,0 +1,28 @@
+{
+  "model": "typesafe/jev-1.13-20260917",
+  "answers": {
+    "next": {
+      "type": "choice",
+      "choice": "sol_low",
+      "probabilities": {
+        "sol_medium": 0.06,
+        "luna_medium": 0.06,
+        "sol_high": 0.01,
+        "luna_low": 0.34,
+        "sol_low": 0.51,
+        "luna_high": 0,
+        "stop": 0.02,
+        "sol_xhigh": 0,
+        "luna_xhigh": 0
+      },
+      "confidence": 0.44
+    }
+  },
+  "usage": {
+    "input_tokens": 3641,
+    "output_tokens": 97,
+    "cost": 0.000152922
+  },
+  "id": "gen-dec-1790148053-nOQCPPrJr3abWPmADMpD",
+  "provider": "TypeSafe"
+}

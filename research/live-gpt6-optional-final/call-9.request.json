@@ -1,0 +1,100 @@
+{
+  "model": "openai/gpt-6-sol",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Execute only the specified unit. Return exactly JSON text (<=1200 chars), data (object), source_ids ([\"records\"]), five_scores (five integers1-5 for correctness, evidence, completeness, constraints, usefulness), self_probability (uncalibrated0-1 or null). Do not expose hidden reasoning; give the bounded result. data must have exactly consistent (boolean), unresolved (array of strings), result (numeric checked result)."
+    },
+    {
+      "role": "user",
+      "content": "{\"accepted_parents\":[{\"data\":{\"denominator\":\"items\",\"numerator\":\"defects\",\"scale\":1000,\"segments\":[\"A\",\"B\"]},\"five_scores\":[5,5,5,5,5],\"self_probability\":null,\"source_ids\":[\"records\"],\"text\":\"Include production segments A and B; exclude trial segment T. Use defects per 1,000 items.\"},{\"data\":{\"denominator\":400,\"exact_fraction\":\"50\",\"numerator\":20,\"result\":50.0,\"scale\":1000},\"five_scores\":[5,5,5,5,5],\"self_probability\":null,\"source_ids\":[\"records\"],\"text\":\"Computed with exact rational arithmetic; numerator 20, denominator 400.\"}],\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"original_records\":{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000},\"repair_feedback\":null,\"unit\":{\"id\":\"hidden3\",\"name\":\"Reconcile\",\"objective\":\"Check whether the calculation, interpretation, and original evidence agree.\"}}"
+    }
+  ],
+  "reasoning": {
+    "effort": "low",
+    "exclude": true
+  },
+  "max_completion_tokens": 2000,
+  "provider": {
+    "only": [
+      "azure"
+    ],
+    "allow_fallbacks": false,
+    "require_parameters": true,
+    "ignore": [
+      "azure/us",
+      "azure/eu"
+    ]
+  },
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "gate_result",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "consistent": {
+                "type": "boolean"
+              },
+              "unresolved": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "result": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "consistent",
+              "unresolved",
+              "result"
+            ],
+            "additionalProperties": false
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "records"
+              ]
+            }
+          },
+          "five_scores": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "minItems": 5,
+            "maxItems": 5
+          },
+          "self_probability": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "text",
+          "data",
+          "source_ids",
+          "five_scores",
+          "self_probability"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

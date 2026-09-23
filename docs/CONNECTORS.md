@@ -1,6 +1,6 @@
 # Models, configuration, and connectors
 
-CIDM calls existing models at inference time. The Python runner implements the OpenRouter API route. The installed skill also documents a Codex-native route that uses host-provided subagents under the current Codex sign-in and calls Jev separately. See [execution routes](EXECUTION-ROUTES.md). A ChatGPT login does not supply credentials or credits to the OpenRouter runner.
+CIDM calls existing models at inference time. The Python runner implements the OpenRouter API route. `adaptive_run.py` adds one compact Jev fast gate before either exact code, one worker, or the five-unit graph. The installed skill also documents a Codex-native route that uses host-provided subagents under the current Codex sign-in and calls Jev separately. See [execution routes](EXECUTION-ROUTES.md). A ChatGPT login does not supply credentials or credits to the OpenRouter runner.
 
 ## Current interfaces
 
@@ -20,28 +20,30 @@ Jev chooses among finite options and supplies decision metadata. It does not wri
 | Fields | Purpose |
 |---|---|
 | `worker_model`, `worker_effort` | Default direct-call worker model/effort; checked gates use Jev-selected routes |
-| `checker_model`, `checker_effort` | Fixed GPT-6 Sol high checker |
+| `checker_model`, `checker_effort` | GPT-6 Sol high when Jev requests extra review |
 | `astra_explicitly_authorized` | Off by default; only enable after specific user authorization, with Astra price headroom |
 | `jev_model` | Versioned TypeSafe Jev model ID |
 | `provider_route`, `provider_name` | OpenRouter route slug and expected returned provider name |
 | `jev_provider_name` | Expected Jev provider name when the response supplies one |
 | `*_model_aliases` | Explicit accepted version aliases; no arbitrary fallback |
-| `max_usd`, `max_calls`, `max_output_tokens`, `timeout` | Budget, number of attempts, worker/checker output cap, per-call timeout |
+| `max_usd`, `max_calls`, `max_output_tokens`, `timeout` | Overall API budget, calls, worker/checker output cap, per-call timeout |
+| `max_jev_calls`, `max_jev_tokens` | Jev call count and reported-token ceiling; a response that crosses the latter can be billed before it is rejected |
+| `max_worker_calls`, `max_checker_calls` | Separate role call caps; zero checker calls is a valid conditional-review policy |
 | `worker_luna_*_usd_per_million` | Luna worker reservation ceilings, initially $0.10 input / $0.50 output per million |
 | `worker_*_usd_per_million` | Sol worker reservation ceilings, initially $2 input / $10 output per million |
 | `worker_astra_*_usd_per_million` | Astra worker ceilings, initially $10 input / $50 output per million; usable only with explicit authorization |
 | `checker_*_usd_per_million`, `jev_*_usd_per_million` | Separate checker and Jev reservation assumptions |
 
-The checked worker catalog offers eight routes: GPT-6 Luna and Sol, each at low, medium, high, and xhigh. Jev chooses one before each generative unit; the exact choice is bound to the one-use dispatch permit and recorded with the accepted artifact. GPT-6 Sol xhigh is available for demanding general planning. The checker is always GPT-6 Sol high. GPT-5.6 and Terra are rejected. Astra low appears only with specific user authorization and `astra_explicitly_authorized: true`. The API runner reserves according to the chosen model's price ceiling, so a Luna selection no longer consumes Sol-sized budget headroom. Model IDs and route availability depend on the provider and account.
+The worker catalog offers eight routes: GPT-6 Luna and Sol, each at low, medium, high, and xhigh. Jev chooses one before each generative unit; the exact choice is bound to the one-use dispatch permit and recorded with the accepted artifact. Jev reviews the result and may forward it after executable checks, request a separate GPT-6 Sol-high check, repair, escalate, retrieve evidence, or stop. The fast gate uses a smaller menu: exact code, direct Luna low, direct Sol high, five units, evidence, or stop. GPT-6 Sol xhigh remains available inside the five-unit graph for demanding general planning. GPT-5.6 and Terra are rejected. Astra low appears only with specific user authorization and `astra_explicitly_authorized: true`. The API runner reserves according to the chosen worker model's price ceiling. Model IDs and route availability depend on the provider and account.
 
 The model IDs and effort levels are documented by [OpenAI's model catalog](https://developers.openai.com/api/docs/models). OpenRouter lists the [GPT-6 Sol](https://openrouter.ai/openai/gpt-6-sol) and [GPT-6 Luna](https://openrouter.ai/openai/gpt-6-luna) slugs used by this adapter. Check account access and the current provider route before a live run.
 
-The key is read only from `OPENROUTER_API_KEY`. It is not a config value. Requests go to the adapter's fixed OpenRouter endpoints. Worker/checker requests prohibit provider fallback. Unexpected response identities fail closed. Usage fields absent from a response stay unknown, rather than being counted as zero.
+The key is read only from `OPENROUTER_API_KEY`. It is not a config value. Requests go to the adapter's fixed OpenRouter endpoints. Worker/checker requests prohibit provider fallback. Unexpected response identities fail closed. Usage fields absent from a response stay unknown, rather than being counted as zero. `adaptive_run.py` uses one Jev `fast_exit` choice and can finish after exact code or one model call; `network_run.py` executes the five-unit path directly. These scripts accept a bounded structured-record task, not arbitrary project briefs.
 
-Reservations use request bytes as a conservative input allowance and configured price ceilings. The worker reservation uses the exact Jev-selected model. No cached-input discount is assumed before the response; actual cached usage is recorded afterward. Before a checker starts, admission reserves two call slots and enough budget for both the checker and a maximum-size following Jev request. Reservations are local admission checks, not a guarantee of an upstream invoice. An actual charge above the reservation is recorded and blocks further calls. Cached-input and reasoning counters are subsets of input/output totals and are not added twice. Jev's output allowance is a budget reservation, not an API output cap. There are no automatic network retries. Service failure, unknown billing, or an invalid state can still halt before a Jev decision completes; no unchecked transition is released.
+Reservations use request bytes as a conservative input allowance and configured price ceilings. The worker reservation uses the exact Jev-selected model. No cached-input discount is assumed before the response; actual cached usage is recorded afterward. A CIDM worker reserves capacity for its following Jev decision. Before an optional checker starts, admission reserves a second call slot and enough budget for the checker plus its following Jev decision. A direct single-model baseline does not reserve an unnecessary Jev call. Reservations are local admission checks, not a guarantee of an upstream invoice. An actual charge above the reservation is recorded and blocks further calls. Cached-input and reasoning counters are subsets of input/output totals and are not added twice. Jev's output allowance is a budget reservation, not an API output cap. There are no automatic network retries. Service failure, unknown billing, or an invalid state can still halt before a Jev decision completes; it never authorizes forwarding.
 
 ## Extending an application
 
-Replace the demonstration producer and validator with bounded task-specific implementations. Preserve the original evidence, explicit source IDs, five-unit order, and post-checker Jev return path. Add executable acceptance checks wherever possible. Retrieve new evidence through an explicit adapter rather than inventing a retrieved result. Keep summarization traceable to its original sources.
+Replace the demonstration producer and validator with bounded task-specific implementations. Preserve the original evidence, explicit source IDs, five-unit order when selected, the post-worker Jev decision, and the return to Jev after every optional checker call. Add executable acceptance checks wherever possible. Retrieve new evidence through an explicit adapter rather than inventing a retrieved result. Keep summarization traceable to its original sources.
 
 Changing to a direct provider API or host-managed connector requires a new adapter and tests for identity, schema, usage, failure handling, and dispatch control. Do not claim that a connector is supported merely because a model is available in an interactive app.

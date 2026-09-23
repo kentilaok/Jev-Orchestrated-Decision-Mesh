@@ -1,0 +1,3837 @@
+{
+  "status": "complete",
+  "answer": "Production defect rate: 50 defects per 1,000 items, excluding trial records. [records]",
+  "protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+  "simulation": false,
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Original records normalized without changing values.",
+        "data": {
+          "records": [
+            {
+              "segment": "A",
+              "kind": "production",
+              "items": 240,
+              "defects": 12
+            },
+            {
+              "segment": "B",
+              "kind": "production",
+              "items": 160,
+              "defects": 8
+            },
+            {
+              "segment": "T",
+              "kind": "trial",
+              "items": 100,
+              "defects": 30
+            }
+          ],
+          "include_kind": "production",
+          "scale": 1000
+        },
+        "source_ids": [
+          "records"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+    },
+    {
+      "id": "hidden1",
+      "artifact": {
+        "data": {
+          "denominator": "items",
+          "numerator": "defects",
+          "scale": 1000,
+          "segments": [
+            "A",
+            "B"
+          ]
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "records"
+        ],
+        "text": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items."
+      },
+      "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+      "parent_artifacts": [
+        {
+          "id": "input",
+          "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+        }
+      ],
+      "worker_route": {
+        "id": "sol_low",
+        "model": "openai/gpt-6-sol",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e12",
+      "decision_phase": "after_worker",
+      "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+    },
+    {
+      "id": "hidden2",
+      "artifact": {
+        "text": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+        "data": {
+          "numerator": 20,
+          "denominator": 400,
+          "scale": 1000,
+          "result": 50.0,
+          "exact_fraction": "50"
+        },
+        "source_ids": [
+          "records"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+      "parent_artifacts": [
+        {
+          "id": "hidden1",
+          "hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc"
+        }
+      ],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e20",
+      "decision_phase": "after_worker",
+      "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+    },
+    {
+      "id": "hidden3",
+      "artifact": {
+        "data": {
+          "consistent": true,
+          "result": 50,
+          "unresolved": []
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "records"
+        ],
+        "text": "Production segments A and B total 20 defects across 400 items; trial segment T is excluded. The checked rate is 50 defects per 1,000 items."
+      },
+      "artifact_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+      "parent_artifacts": [
+        {
+          "id": "hidden2",
+          "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+        }
+      ],
+      "worker_route": {
+        "id": "sol_low",
+        "model": "openai/gpt-6-sol",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e28",
+      "decision_phase": "after_worker",
+      "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+    },
+    {
+      "id": "output",
+      "artifact": {
+        "data": {
+          "answer": 50,
+          "unit": "defects per 1000 items"
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "records"
+        ],
+        "text": "Production defect rate: 50 defects per 1,000 items, excluding trial records. [records]"
+      },
+      "artifact_hash": "4cdfa46a1a512cc12092d747154f07b0272281591b4810244e6741edf3607ec9",
+      "parent_artifacts": [
+        {
+          "id": "hidden3",
+          "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+        }
+      ],
+      "worker_route": {
+        "id": "sol_low",
+        "model": "openai/gpt-6-sol",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e36",
+      "decision_phase": "after_worker",
+      "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+    }
+  ],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "9212c481f8683decbfe16095f50a8122c2ca4499737009614e46238784716a21",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Normalize the original data without changing source values or scope."
+        },
+        "parents": [],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "stop": 0.02,
+          "compute": 0.98
+        },
+        "confidence": 0.96,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 998,
+          "output_tokens": 31,
+          "total_tokens": 1029,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 4.1916e-05
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "worker_route": null
+      },
+      "action_hash": "c69b496695d9306bb84552850d7a380dee2a0fd278262c2b387efb6cccdc4336",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Original records normalized without changing values.",
+        "data": {
+          "records": [
+            {
+              "segment": "A",
+              "kind": "production",
+              "items": 240,
+              "defects": 12
+            },
+            {
+              "segment": "B",
+              "kind": "production",
+              "items": 160,
+              "defects": 8
+            },
+            {
+              "segment": "T",
+              "kind": "trial",
+              "items": 100,
+              "defects": 30
+            }
+          ],
+          "include_kind": "production",
+          "scale": 1000
+        },
+        "source_ids": [
+          "records"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "stop": {
+          "description": "Stop without accepting this candidate."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "9212c481f8683decbfe16095f50a8122c2ca4499737009614e46238784716a21",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Normalize the original data without changing source values or scope."
+        },
+        "parents": [],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "candidate": {
+          "text": "Original records normalized without changing values.",
+          "data": {
+            "records": [
+              {
+                "segment": "A",
+                "kind": "production",
+                "items": 240,
+                "defects": 12
+              },
+              {
+                "segment": "B",
+                "kind": "production",
+                "items": 160,
+                "defects": 8
+              },
+              {
+                "segment": "T",
+                "kind": "trial",
+                "items": 100,
+                "defects": 30
+              }
+            ],
+            "include_kind": "production",
+            "scale": 1000
+          },
+          "source_ids": [
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "source_present": true,
+          "exact_original_values": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "forward": 0.87,
+          "check_sol_high": 0.02,
+          "repair": 0.07,
+          "retrieve_evidence": 0,
+          "stop": 0.04
+        },
+        "confidence": 0.84,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 1564,
+          "output_tokens": 57,
+          "total_tokens": 1621,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 6.5688e-05
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "post_worker_decision",
+      "version": 0,
+      "simulation": false,
+      "unit_id": "input",
+      "choice": "forward",
+      "gate_id": "e4",
+      "candidate_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+      "hard_checks": {
+        "source_present": true,
+        "exact_original_values": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e6",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "input",
+        "candidate_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+        "check_hash": null,
+        "successor": "hidden1",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "action_hash": "2abc42508155d1429f456de13880a641ec1faf65363fab7fd3a7c70b2297eaac",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e7",
+      "kind": "checked_commit",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "input",
+      "packet": {
+        "id": "input",
+        "artifact": {
+          "text": "Original records normalized without changing values.",
+          "data": {
+            "records": [
+              {
+                "segment": "A",
+                "kind": "production",
+                "items": 240,
+                "defects": 12
+              },
+              {
+                "segment": "B",
+                "kind": "production",
+                "items": 160,
+                "defects": 8
+              },
+              {
+                "segment": "T",
+                "kind": "trial",
+                "items": 100,
+                "defects": 30
+              }
+            ],
+            "include_kind": "production",
+            "scale": 1000
+          },
+          "source_ids": [
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "gate_id": "e4"
+    },
+    {
+      "id": "e8",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "input",
+      "value": {
+        "id": "input",
+        "artifact": {
+          "text": "Original records normalized without changing values.",
+          "data": {
+            "records": [
+              {
+                "segment": "A",
+                "kind": "production",
+                "items": 240,
+                "defects": 12
+              },
+              {
+                "segment": "B",
+                "kind": "production",
+                "items": 160,
+                "defects": 8
+              },
+              {
+                "segment": "T",
+                "kind": "trial",
+                "items": 100,
+                "defects": 30
+              }
+            ],
+            "include_kind": "production",
+            "scale": 1000
+          },
+          "source_ids": [
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      }
+    },
+    {
+      "id": "e9",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "luna_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_low",
+              "model": "openai/gpt-6-luna",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at low effort."
+        },
+        "luna_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_medium",
+              "model": "openai/gpt-6-luna",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at medium effort."
+        },
+        "luna_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_high",
+              "model": "openai/gpt-6-luna",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at high effort."
+        },
+        "luna_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_xhigh",
+              "model": "openai/gpt-6-luna",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at xhigh effort."
+        },
+        "sol_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_low",
+              "model": "openai/gpt-6-sol",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at low effort."
+        },
+        "sol_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_medium",
+              "model": "openai/gpt-6-sol",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at medium effort."
+        },
+        "sol_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_high",
+              "model": "openai/gpt-6-sol",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at high effort."
+        },
+        "sol_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_xhigh",
+              "model": "openai/gpt-6-sol",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at xhigh effort."
+        }
+      },
+      "state_hash": "08516a6f0dc85b9a55c6f13b04e014fa7d5fa340a2df49ea7ea8c8ca57037451",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Original records normalized without changing values.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "records": [
+                {
+                  "segment": "A",
+                  "kind": "production",
+                  "items": 240,
+                  "defects": 12
+                },
+                {
+                  "segment": "B",
+                  "kind": "production",
+                  "items": 160,
+                  "defects": 8
+                },
+                {
+                  "segment": "T",
+                  "kind": "trial",
+                  "items": 100,
+                  "defects": 30
+                }
+              ],
+              "include_kind": "production",
+              "scale": 1000
+            },
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify the included records and the calculation requested by the user."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "sol_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "sol_low": 0.5,
+          "luna_medium": 0.02,
+          "luna_low": 0.45,
+          "sol_xhigh": 0,
+          "sol_high": 0,
+          "luna_high": 0,
+          "stop": 0.01,
+          "luna_xhigh": 0,
+          "sol_medium": 0.02
+        },
+        "confidence": 0.44,
+        "api_event": "call-3",
+        "usage": {
+          "input_tokens": 3282,
+          "output_tokens": 97,
+          "total_tokens": 3379,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000137844
+        }
+      }
+    },
+    {
+      "id": "e10",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden1",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "input",
+            "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        }
+      },
+      "action_hash": "9b900b5a6636bc7ce5eb41c933f3e53d58e9c523b0999fe1aacae0d86b142585",
+      "gate_id": "e9"
+    },
+    {
+      "id": "e11",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden1",
+      "value": {
+        "data": {
+          "denominator": "items",
+          "numerator": "defects",
+          "scale": 1000,
+          "segments": [
+            "A",
+            "B"
+          ]
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "records"
+        ],
+        "text": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items."
+      }
+    },
+    {
+      "id": "e12",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "stop": {
+          "description": "Stop without accepting this candidate."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "08516a6f0dc85b9a55c6f13b04e014fa7d5fa340a2df49ea7ea8c8ca57037451",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Original records normalized without changing values.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "records": [
+                {
+                  "segment": "A",
+                  "kind": "production",
+                  "items": 240,
+                  "defects": 12
+                },
+                {
+                  "segment": "B",
+                  "kind": "production",
+                  "items": 160,
+                  "defects": 8
+                },
+                {
+                  "segment": "T",
+                  "kind": "trial",
+                  "items": 100,
+                  "defects": 30
+                }
+              ],
+              "include_kind": "production",
+              "scale": 1000
+            },
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify the included records and the calculation requested by the user."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "selected_worker": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "candidate": {
+          "data": {
+            "denominator": "items",
+            "numerator": "defects",
+            "scale": 1000,
+            "segments": [
+              "A",
+              "B"
+            ]
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items."
+        },
+        "hard_checks": {
+          "source_present": true,
+          "correct_scope_and_formula": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "escalate": 0.09,
+          "stop": 0.05,
+          "check_sol_high": 0.03,
+          "forward": 0.75,
+          "retrieve_evidence": 0.01,
+          "repair": 0.07
+        },
+        "confidence": 0.71,
+        "api_event": "call-5",
+        "usage": {
+          "input_tokens": 1901,
+          "output_tokens": 66,
+          "total_tokens": 1967,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 7.9842e-05
+        }
+      }
+    },
+    {
+      "id": "e13",
+      "kind": "post_worker_decision",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "choice": "forward",
+      "gate_id": "e12",
+      "candidate_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+      "hard_checks": {
+        "source_present": true,
+        "correct_scope_and_formula": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e14",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden1",
+        "candidate_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+        "check_hash": null,
+        "successor": "hidden2",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "action_hash": "b58e8ed75ac1d2ccbe5fd03d3679b1614d58a71823623e367e574e7f63993cdb",
+      "gate_id": "e12"
+    },
+    {
+      "id": "e15",
+      "kind": "checked_commit",
+      "version": 2,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "packet": {
+        "id": "hidden1",
+        "artifact": {
+          "data": {
+            "denominator": "items",
+            "numerator": "defects",
+            "scale": 1000,
+            "segments": [
+              "A",
+              "B"
+            ]
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items."
+        },
+        "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+        "parent_artifacts": [
+          {
+            "id": "input",
+            "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+          }
+        ],
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e12",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "gate_id": "e12"
+    },
+    {
+      "id": "e16",
+      "kind": "provisional_return",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden1",
+      "value": {
+        "id": "hidden1",
+        "artifact": {
+          "data": {
+            "denominator": "items",
+            "numerator": "defects",
+            "scale": 1000,
+            "segments": [
+              "A",
+              "B"
+            ]
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items."
+        },
+        "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+        "parent_artifacts": [
+          {
+            "id": "input",
+            "hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+          }
+        ],
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e12",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      }
+    },
+    {
+      "id": "e17",
+      "kind": "jev_decision",
+      "version": 2,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "613762e805fb976b69ab377c95a0d5223511166b088b5bbd87bc861c716e373b",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 2,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Original records normalized without changing values.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "records": [
+                {
+                  "segment": "A",
+                  "kind": "production",
+                  "items": 240,
+                  "defects": 12
+                },
+                {
+                  "segment": "B",
+                  "kind": "production",
+                  "items": 160,
+                  "defects": 8
+                },
+                {
+                  "segment": "T",
+                  "kind": "trial",
+                  "items": 100,
+                  "defects": 30
+                }
+              ],
+              "include_kind": "production",
+              "scale": 1000
+            },
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "denominator": "items",
+              "numerator": "defects",
+              "scale": 1000,
+              "segments": [
+                "A",
+                "B"
+              ]
+            },
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden2",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden2",
+          "name": "Compute",
+          "objective": "Calculate the result using the checked interpretation and exact arithmetic."
+        },
+        "parents": [
+          {
+            "id": "hidden1",
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "stop": 0,
+          "compute": 1
+        },
+        "confidence": 1,
+        "api_event": "call-6",
+        "usage": {
+          "input_tokens": 1580,
+          "output_tokens": 31,
+          "total_tokens": 1611,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 6.636e-05
+        }
+      }
+    },
+    {
+      "id": "e18",
+      "kind": "dispatch",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden2",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden1",
+            "hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "worker_route": null
+      },
+      "action_hash": "d36273e5330d2baa3faa4ce4b0e9a21ce3df83d5378b6e14735c39671e5c213a",
+      "gate_id": "e17"
+    },
+    {
+      "id": "e19",
+      "kind": "provisional_return",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden2",
+      "value": {
+        "text": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+        "data": {
+          "numerator": 20,
+          "denominator": 400,
+          "scale": 1000,
+          "result": 50.0,
+          "exact_fraction": "50"
+        },
+        "source_ids": [
+          "records"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e20",
+      "kind": "jev_decision",
+      "version": 2,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "stop": {
+          "description": "Stop without accepting this candidate."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "613762e805fb976b69ab377c95a0d5223511166b088b5bbd87bc861c716e373b",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 2,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Original records normalized without changing values.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "records": [
+                {
+                  "segment": "A",
+                  "kind": "production",
+                  "items": 240,
+                  "defects": 12
+                },
+                {
+                  "segment": "B",
+                  "kind": "production",
+                  "items": 160,
+                  "defects": 8
+                },
+                {
+                  "segment": "T",
+                  "kind": "trial",
+                  "items": 100,
+                  "defects": 30
+                }
+              ],
+              "include_kind": "production",
+              "scale": 1000
+            },
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "denominator": "items",
+              "numerator": "defects",
+              "scale": 1000,
+              "segments": [
+                "A",
+                "B"
+              ]
+            },
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden2",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden2",
+          "name": "Compute",
+          "objective": "Calculate the result using the checked interpretation and exact arithmetic."
+        },
+        "parents": [
+          {
+            "id": "hidden1",
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "candidate": {
+          "text": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+          "data": {
+            "numerator": 20,
+            "denominator": 400,
+            "scale": 1000,
+            "result": 50.0,
+            "exact_fraction": "50"
+          },
+          "source_ids": [
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "source_present": true,
+          "exact_arithmetic": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "stop": 0.02,
+          "forward": 0.92,
+          "repair": 0.05,
+          "retrieve_evidence": 0,
+          "check_sol_high": 0.01
+        },
+        "confidence": 0.89,
+        "api_event": "call-7",
+        "usage": {
+          "input_tokens": 2005,
+          "output_tokens": 57,
+          "total_tokens": 2062,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 8.421e-05
+        }
+      }
+    },
+    {
+      "id": "e21",
+      "kind": "post_worker_decision",
+      "version": 2,
+      "simulation": false,
+      "unit_id": "hidden2",
+      "choice": "forward",
+      "gate_id": "e20",
+      "candidate_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+      "hard_checks": {
+        "source_present": true,
+        "exact_arithmetic": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e22",
+      "kind": "dispatch",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden2",
+        "candidate_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+        "check_hash": null,
+        "successor": "hidden3",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "action_hash": "065348a1c3006386aa97aed52dc353e26bdca3711365f8c3516279f24f0ecfad",
+      "gate_id": "e20"
+    },
+    {
+      "id": "e23",
+      "kind": "checked_commit",
+      "version": 3,
+      "simulation": false,
+      "unit_id": "hidden2",
+      "packet": {
+        "id": "hidden2",
+        "artifact": {
+          "text": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+          "data": {
+            "numerator": 20,
+            "denominator": 400,
+            "scale": 1000,
+            "result": 50.0,
+            "exact_fraction": "50"
+          },
+          "source_ids": [
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+        "parent_artifacts": [
+          {
+            "id": "hidden1",
+            "hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc"
+          }
+        ],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e20",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "gate_id": "e20"
+    },
+    {
+      "id": "e24",
+      "kind": "provisional_return",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden2",
+      "value": {
+        "id": "hidden2",
+        "artifact": {
+          "text": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+          "data": {
+            "numerator": 20,
+            "denominator": 400,
+            "scale": 1000,
+            "result": 50.0,
+            "exact_fraction": "50"
+          },
+          "source_ids": [
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+        "parent_artifacts": [
+          {
+            "id": "hidden1",
+            "hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc"
+          }
+        ],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e20",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      }
+    },
+    {
+      "id": "e25",
+      "kind": "jev_decision",
+      "version": 3,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "luna_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_low",
+              "model": "openai/gpt-6-luna",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at low effort."
+        },
+        "luna_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_medium",
+              "model": "openai/gpt-6-luna",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at medium effort."
+        },
+        "luna_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_high",
+              "model": "openai/gpt-6-luna",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at high effort."
+        },
+        "luna_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_xhigh",
+              "model": "openai/gpt-6-luna",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at xhigh effort."
+        },
+        "sol_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_low",
+              "model": "openai/gpt-6-sol",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at low effort."
+        },
+        "sol_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_medium",
+              "model": "openai/gpt-6-sol",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at medium effort."
+        },
+        "sol_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_high",
+              "model": "openai/gpt-6-sol",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at high effort."
+        },
+        "sol_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_xhigh",
+              "model": "openai/gpt-6-sol",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at xhigh effort."
+        }
+      },
+      "state_hash": "1b4118103bac90a472f5a6067155e7f438622d739a0531bbecb9f197bb14f9d2",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 3,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Original records normalized without changing values.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "records": [
+                {
+                  "segment": "A",
+                  "kind": "production",
+                  "items": 240,
+                  "defects": 12
+                },
+                {
+                  "segment": "B",
+                  "kind": "production",
+                  "items": 160,
+                  "defects": 8
+                },
+                {
+                  "segment": "T",
+                  "kind": "trial",
+                  "items": 100,
+                  "defects": 30
+                }
+              ],
+              "include_kind": "production",
+              "scale": 1000
+            },
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "denominator": "items",
+              "numerator": "defects",
+              "scale": 1000,
+              "segments": [
+                "A",
+                "B"
+              ]
+            },
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "numerator": 20,
+              "denominator": 400,
+              "scale": 1000,
+              "result": 50.0,
+              "exact_fraction": "50"
+            },
+            "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden3",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden3",
+          "name": "Reconcile",
+          "objective": "Check whether the calculation, interpretation, and original evidence agree."
+        },
+        "parents": [
+          {
+            "id": "hidden2",
+            "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "sol_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "sol_medium": 0.06,
+          "luna_medium": 0.06,
+          "sol_high": 0.01,
+          "luna_low": 0.34,
+          "sol_low": 0.51,
+          "luna_high": 0,
+          "stop": 0.02,
+          "sol_xhigh": 0,
+          "luna_xhigh": 0
+        },
+        "confidence": 0.44,
+        "api_event": "call-8",
+        "usage": {
+          "input_tokens": 3641,
+          "output_tokens": 97,
+          "total_tokens": 3738,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000152922
+        }
+      }
+    },
+    {
+      "id": "e26",
+      "kind": "dispatch",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden3",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden2",
+            "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        }
+      },
+      "action_hash": "752757a95469f1fdbfb522854401883f3311887fe362d0c73be7a0e3658bb8bb",
+      "gate_id": "e25"
+    },
+    {
+      "id": "e27",
+      "kind": "provisional_return",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden3",
+      "value": {
+        "data": {
+          "consistent": true,
+          "result": 50,
+          "unresolved": []
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "records"
+        ],
+        "text": "Production segments A and B total 20 defects across 400 items; trial segment T is excluded. The checked rate is 50 defects per 1,000 items."
+      }
+    },
+    {
+      "id": "e28",
+      "kind": "jev_decision",
+      "version": 3,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "stop": {
+          "description": "Stop without accepting this candidate."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden3",
+            "candidate_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+            "check_hash": null,
+            "successor": "output",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "1b4118103bac90a472f5a6067155e7f438622d739a0531bbecb9f197bb14f9d2",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 3,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Original records normalized without changing values.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "records": [
+                {
+                  "segment": "A",
+                  "kind": "production",
+                  "items": 240,
+                  "defects": 12
+                },
+                {
+                  "segment": "B",
+                  "kind": "production",
+                  "items": 160,
+                  "defects": 8
+                },
+                {
+                  "segment": "T",
+                  "kind": "trial",
+                  "items": 100,
+                  "defects": 30
+                }
+              ],
+              "include_kind": "production",
+              "scale": 1000
+            },
+            "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "denominator": "items",
+              "numerator": "defects",
+              "scale": 1000,
+              "segments": [
+                "A",
+                "B"
+              ]
+            },
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "numerator": 20,
+              "denominator": 400,
+              "scale": 1000,
+              "result": 50.0,
+              "exact_fraction": "50"
+            },
+            "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden3",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden3",
+          "name": "Reconcile",
+          "objective": "Check whether the calculation, interpretation, and original evidence agree."
+        },
+        "parents": [
+          {
+            "id": "hidden2",
+            "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "selected_worker": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "candidate": {
+          "data": {
+            "consistent": true,
+            "result": 50,
+            "unresolved": []
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Production segments A and B total 20 defects across 400 items; trial segment T is excluded. The checked rate is 50 defects per 1,000 items."
+        },
+        "hard_checks": {
+          "source_present": true,
+          "consistent_with_calculation": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "repair": 0.02,
+          "stop": 0.01,
+          "check_sol_high": 0.03,
+          "forward": 0.93,
+          "escalate": 0.01,
+          "retrieve_evidence": 0
+        },
+        "confidence": 0.92,
+        "api_event": "call-10",
+        "usage": {
+          "input_tokens": 2272,
+          "output_tokens": 66,
+          "total_tokens": 2338,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 9.5424e-05
+        }
+      }
+    },
+    {
+      "id": "e29",
+      "kind": "post_worker_decision",
+      "version": 3,
+      "simulation": false,
+      "unit_id": "hidden3",
+      "choice": "forward",
+      "gate_id": "e28",
+      "candidate_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+      "hard_checks": {
+        "source_present": true,
+        "consistent_with_calculation": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e30",
+      "kind": "dispatch",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden3",
+        "candidate_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+        "check_hash": null,
+        "successor": "output",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "action_hash": "7eccb58d17071f9d96665459ad8200fdad6211020980abd310b0eae41a17bb6f",
+      "gate_id": "e28"
+    },
+    {
+      "id": "e31",
+      "kind": "checked_commit",
+      "version": 4,
+      "simulation": false,
+      "unit_id": "hidden3",
+      "packet": {
+        "id": "hidden3",
+        "artifact": {
+          "data": {
+            "consistent": true,
+            "result": 50,
+            "unresolved": []
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Production segments A and B total 20 defects across 400 items; trial segment T is excluded. The checked rate is 50 defects per 1,000 items."
+        },
+        "artifact_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+        "parent_artifacts": [
+          {
+            "id": "hidden2",
+            "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+          }
+        ],
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e28",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "gate_id": "e28"
+    },
+    {
+      "id": "e32",
+      "kind": "provisional_return",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden3",
+      "value": {
+        "id": "hidden3",
+        "artifact": {
+          "data": {
+            "consistent": true,
+            "result": 50,
+            "unresolved": []
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Production segments A and B total 20 defects across 400 items; trial segment T is excluded. The checked rate is 50 defects per 1,000 items."
+        },
+        "artifact_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+        "parent_artifacts": [
+          {
+            "id": "hidden2",
+            "hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+          }
+        ],
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e28",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      }
+    },
+    {
+      "id": "e33",
+      "kind": "jev_decision",
+      "version": 4,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "luna_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_low",
+              "model": "openai/gpt-6-luna",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at low effort."
+        },
+        "luna_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_medium",
+              "model": "openai/gpt-6-luna",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at medium effort."
+        },
+        "luna_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_high",
+              "model": "openai/gpt-6-luna",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at high effort."
+        },
+        "luna_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "luna_xhigh",
+              "model": "openai/gpt-6-luna",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at xhigh effort."
+        },
+        "sol_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_low",
+              "model": "openai/gpt-6-sol",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at low effort."
+        },
+        "sol_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_medium",
+              "model": "openai/gpt-6-sol",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at medium effort."
+        },
+        "sol_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_high",
+              "model": "openai/gpt-6-sol",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at high effort."
+        },
+        "sol_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+              }
+            ],
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+            "worker_route": {
+              "id": "sol_xhigh",
+              "model": "openai/gpt-6-sol",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at xhigh effort."
+        }
+      },
+      "state_hash": "60f307d3cee8b5c250adf5a330e2b11e82f5fa26b364d879614fa0d01544384f",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 4,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "denominator": "items",
+              "numerator": "defects",
+              "scale": 1000,
+              "segments": [
+                "A",
+                "B"
+              ]
+            },
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "numerator": 20,
+              "denominator": 400,
+              "scale": 1000,
+              "result": 50.0,
+              "exact_fraction": "50"
+            },
+            "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden3",
+            "operation": "validated_unit",
+            "summary": "Production segments A and B total 20 defects across 400 items; trial segment T is excluded. The checked rate is 50 defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "consistent": true,
+              "result": 50,
+              "unresolved": []
+            },
+            "artifact_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [
+          "input"
+        ],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "output",
+          "released": false
+        },
+        "unit": {
+          "id": "output",
+          "name": "Output",
+          "objective": "Produce the final answer supported by the checked predecessors and sources."
+        },
+        "parents": [
+          {
+            "id": "hidden3",
+            "artifact_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "sol_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "sol_medium": 0.01,
+          "sol_low": 0.5700000000000001,
+          "luna_low": 0.4,
+          "luna_xhigh": 0,
+          "luna_high": 0,
+          "sol_xhigh": 0,
+          "luna_medium": 0.01,
+          "stop": 0,
+          "sol_high": 0
+        },
+        "confidence": 0.51,
+        "api_event": "call-11",
+        "usage": {
+          "input_tokens": 3598,
+          "output_tokens": 97,
+          "total_tokens": 3695,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000151116
+        }
+      }
+    },
+    {
+      "id": "e34",
+      "kind": "dispatch",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "output",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden3",
+            "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        }
+      },
+      "action_hash": "3529e0d5fb4c9765e7971eda6aa1c19ad75caa62fa362de86a24dead217129cc",
+      "gate_id": "e33"
+    },
+    {
+      "id": "e35",
+      "kind": "provisional_return",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "output",
+      "value": {
+        "data": {
+          "answer": 50,
+          "unit": "defects per 1000 items"
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "records"
+        ],
+        "text": "Production defect rate: 50 defects per 1,000 items, excluding trial records. [records]"
+      }
+    },
+    {
+      "id": "e36",
+      "kind": "jev_decision",
+      "version": 4,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "stop": {
+          "description": "Stop without accepting this candidate."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "output",
+            "candidate_hash": "4cdfa46a1a512cc12092d747154f07b0272281591b4810244e6741edf3607ec9",
+            "check_hash": null,
+            "successor": "user",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "output",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "4cdfa46a1a512cc12092d747154f07b0272281591b4810244e6741edf3607ec9",
+            "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "60f307d3cee8b5c250adf5a330e2b11e82f5fa26b364d879614fa0d01544384f",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 4,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "Include production segments A and B; exclude trial segment T. Use defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "denominator": "items",
+              "numerator": "defects",
+              "scale": 1000,
+              "segments": [
+                "A",
+                "B"
+              ]
+            },
+            "artifact_hash": "dbec3eb8f3239fdc4e7812f64d68d0cdca8936a6c6fa2d1394aa69aea79550fc",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "numerator": 20,
+              "denominator": 400,
+              "scale": 1000,
+              "result": 50.0,
+              "exact_fraction": "50"
+            },
+            "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden3",
+            "operation": "validated_unit",
+            "summary": "Production segments A and B total 20 defects across 400 items; trial segment T is excluded. The checked rate is 50 defects per 1,000 items.",
+            "source_ids": [
+              "records"
+            ],
+            "data": {
+              "consistent": true,
+              "result": 50,
+              "unresolved": []
+            },
+            "artifact_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [
+          "input"
+        ],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "output",
+          "released": false
+        },
+        "unit": {
+          "id": "output",
+          "name": "Output",
+          "objective": "Produce the final answer supported by the checked predecessors and sources."
+        },
+        "parents": [
+          {
+            "id": "hidden3",
+            "artifact_hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+          }
+        ],
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d",
+        "selected_worker": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "candidate": {
+          "data": {
+            "answer": 50,
+            "unit": "defects per 1000 items"
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Production defect rate: 50 defects per 1,000 items, excluding trial records. [records]"
+        },
+        "hard_checks": {
+          "source_present": true,
+          "final_answer_matches_calculation": true,
+          "answer_text_matches_value": true,
+          "answer_text_names_rate": true,
+          "answer_text_names_scale": true,
+          "answer_text_cites_original": true,
+          "answer_text_excludes_trial": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "stop": 0.02,
+          "check_sol_high": 0.02,
+          "forward": 0.91,
+          "repair": 0.05,
+          "escalate": 0,
+          "retrieve_evidence": 0
+        },
+        "confidence": 0.89,
+        "api_event": "call-13",
+        "usage": {
+          "input_tokens": 2246,
+          "output_tokens": 66,
+          "total_tokens": 2312,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 9.4332e-05
+        }
+      }
+    },
+    {
+      "id": "e37",
+      "kind": "post_worker_decision",
+      "version": 4,
+      "simulation": false,
+      "unit_id": "output",
+      "choice": "forward",
+      "gate_id": "e36",
+      "candidate_hash": "4cdfa46a1a512cc12092d747154f07b0272281591b4810244e6741edf3607ec9",
+      "hard_checks": {
+        "source_present": true,
+        "final_answer_matches_calculation": true,
+        "answer_text_matches_value": true,
+        "answer_text_names_rate": true,
+        "answer_text_names_scale": true,
+        "answer_text_cites_original": true,
+        "answer_text_excludes_trial": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e38",
+      "kind": "dispatch",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "output",
+        "candidate_hash": "4cdfa46a1a512cc12092d747154f07b0272281591b4810244e6741edf3607ec9",
+        "check_hash": null,
+        "successor": "user",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "action_hash": "a653d89b7d6fe57333438515d0fedb8f1f8f0a6c1b1d6caf1bae9b0152cd85e8",
+      "gate_id": "e36"
+    },
+    {
+      "id": "e39",
+      "kind": "checked_commit",
+      "version": 5,
+      "simulation": false,
+      "unit_id": "output",
+      "packet": {
+        "id": "output",
+        "artifact": {
+          "data": {
+            "answer": 50,
+            "unit": "defects per 1000 items"
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Production defect rate: 50 defects per 1,000 items, excluding trial records. [records]"
+        },
+        "artifact_hash": "4cdfa46a1a512cc12092d747154f07b0272281591b4810244e6741edf3607ec9",
+        "parent_artifacts": [
+          {
+            "id": "hidden3",
+            "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+          }
+        ],
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e36",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      },
+      "gate_id": "e36"
+    },
+    {
+      "id": "e40",
+      "kind": "provisional_return",
+      "version": 5,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "output",
+      "value": {
+        "id": "output",
+        "artifact": {
+          "data": {
+            "answer": 50,
+            "unit": "defects per 1000 items"
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "records"
+          ],
+          "text": "Production defect rate: 50 defects per 1,000 items, excluding trial records. [records]"
+        },
+        "artifact_hash": "4cdfa46a1a512cc12092d747154f07b0272281591b4810244e6741edf3607ec9",
+        "parent_artifacts": [
+          {
+            "id": "hidden3",
+            "hash": "02e087897867afe14b908a28b349aac59abb8a98e22974b8a7407fb641a90d8e"
+          }
+        ],
+        "worker_route": {
+          "id": "sol_low",
+          "model": "openai/gpt-6-sol",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e36",
+        "decision_phase": "after_worker",
+        "policy_version": "7117f5ee33d25730bd170ffab6fd2e11fe981c7f1d834560203c990f4a42d61d"
+      }
+    }
+  ],
+  "calls": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "7307abe502be46cff174822290f433168bae276b33e3c9e67a7ca2319095c772",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.00020165,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 998,
+        "output_tokens": 31,
+        "total_tokens": 1029,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 4.1916e-05
+      },
+      "usage_raw": {
+        "input_tokens": 998,
+        "output_tokens": 31,
+        "cost": 4.1916e-05
+      },
+      "latency_ms": 719.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "befac69afbbc723873625154700c8e561d385c0ff8e482c7552f5714cdd4d377",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.00026570000000000006,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1564,
+        "output_tokens": 57,
+        "total_tokens": 1621,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 6.5688e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1564,
+        "output_tokens": 57,
+        "cost": 6.5688e-05
+      },
+      "latency_ms": 500.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "de665a00d45a27bc3e45d0c3fc67e5fe03da61bda58a543a462e1973d469d881",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.00039395,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3282,
+        "output_tokens": 97,
+        "total_tokens": 3379,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000137844
+      },
+      "usage_raw": {
+        "input_tokens": 3282,
+        "output_tokens": 97,
+        "cost": 0.000137844
+      },
+      "latency_ms": 390.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-4",
+      "role": "worker",
+      "status": "ok",
+      "requested_model": "openai/gpt-6-sol",
+      "returned_model": "openai/gpt-6-sol",
+      "provider": "Azure",
+      "request_hash": "c676ac311e460b4d2965d69ae36ed9c6542456d72c43c883c77bd054d4a8d6fa",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.0258,
+      "followup_jev_reserved_usd": 0.0013,
+      "admission_reserved_calls": 2,
+      "followup_jev_required": true,
+      "reasoning_effort": "low",
+      "usage": {
+        "input_tokens": 527,
+        "output_tokens": 82,
+        "total_tokens": 609,
+        "total_tokens_source": "reported",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "cost": 0.001874
+      },
+      "usage_raw": {
+        "prompt_tokens": 527,
+        "completion_tokens": 82,
+        "total_tokens": 609,
+        "cost": 0.001874,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001874,
+          "upstream_inference_prompt_cost": 0.001054,
+          "upstream_inference_completions_cost": 0.00082
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_ms": 3687.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      }
+    },
+    {
+      "id": "call-5",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "548e317825a1505a000cf9d29dbe6e0feaaa9e9c0d46ee80e13b6d2bbdfbfa37",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.00029985,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1901,
+        "output_tokens": 66,
+        "total_tokens": 1967,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 7.9842e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1901,
+        "output_tokens": 66,
+        "cost": 7.9842e-05
+      },
+      "latency_ms": 438.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-6",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "81b85be0c004089a27c0b2a121e6cde9de4281c2c8da72538bda49ad55b98f6d",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.00025505,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1580,
+        "output_tokens": 31,
+        "total_tokens": 1611,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 6.636e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1580,
+        "output_tokens": 31,
+        "cost": 6.636e-05
+      },
+      "latency_ms": 375.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-7",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "32e0e3bac92148e335ba4ca8b50a95955aecdadb6401ea27f3dda816f2e148f2",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.000308,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2005,
+        "output_tokens": 57,
+        "total_tokens": 2062,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 8.421e-05
+      },
+      "usage_raw": {
+        "input_tokens": 2005,
+        "output_tokens": 57,
+        "cost": 8.421e-05
+      },
+      "latency_ms": 421.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-8",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "721cc2a7e7ef20c5970c66b56cd7292ca1fc3dd88fa0b22f4e9871c5d1a8990b",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.00043205,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3641,
+        "output_tokens": 97,
+        "total_tokens": 3738,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000152922
+      },
+      "usage_raw": {
+        "input_tokens": 3641,
+        "output_tokens": 97,
+        "cost": 0.000152922
+      },
+      "latency_ms": 359.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-9",
+      "role": "worker",
+      "status": "ok",
+      "requested_model": "openai/gpt-6-sol",
+      "returned_model": "openai/gpt-6-sol",
+      "provider": "Azure",
+      "request_hash": "1606a7e5f0506862aad2825c77704748fe732d1a50049de717e30ff0fdd0c0ad",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.025396,
+      "followup_jev_reserved_usd": 0.0013,
+      "admission_reserved_calls": 2,
+      "followup_jev_required": true,
+      "reasoning_effort": "low",
+      "usage": {
+        "input_tokens": 493,
+        "output_tokens": 85,
+        "total_tokens": 578,
+        "total_tokens_source": "reported",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "cost": 0.001836
+      },
+      "usage_raw": {
+        "prompt_tokens": 493,
+        "completion_tokens": 85,
+        "total_tokens": 578,
+        "cost": 0.001836,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001836,
+          "upstream_inference_prompt_cost": 0.000986,
+          "upstream_inference_completions_cost": 0.00085
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_ms": 2469.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      }
+    },
+    {
+      "id": "call-10",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "6b05bdb6be0abb7288726f252353b6de428cabecc7936e04480f1f1eb28dad47",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.00033805,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2272,
+        "output_tokens": 66,
+        "total_tokens": 2338,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 9.5424e-05
+      },
+      "usage_raw": {
+        "input_tokens": 2272,
+        "output_tokens": 66,
+        "cost": 9.5424e-05
+      },
+      "latency_ms": 454.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-11",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "9d95030aebf5e71e764d603e40128dcfc892bcaa8979548c5b6ed2816fe19b29",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.0004275,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3598,
+        "output_tokens": 97,
+        "total_tokens": 3695,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000151116
+      },
+      "usage_raw": {
+        "input_tokens": 3598,
+        "output_tokens": 97,
+        "cost": 0.000151116
+      },
+      "latency_ms": 468.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": [
+        {
+          "code": "probability_sum_rounding",
+          "question_id": "next",
+          "returned_sum": 0.99,
+          "absolute_difference": 0.01,
+          "allowed_difference": 0.02,
+          "assumption": "independent_2_decimal_rounding"
+        }
+      ]
+    },
+    {
+      "id": "call-12",
+      "role": "worker",
+      "status": "ok",
+      "requested_model": "openai/gpt-6-sol",
+      "returned_model": "openai/gpt-6-sol",
+      "provider": "Azure",
+      "request_hash": "2e7292e5ecb3ef646be8e0e5de32d447293b0d813b6ce6c1916b3712359216c9",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.02538,
+      "followup_jev_reserved_usd": 0.0013,
+      "admission_reserved_calls": 2,
+      "followup_jev_required": true,
+      "reasoning_effort": "low",
+      "usage": {
+        "input_tokens": 497,
+        "output_tokens": 74,
+        "total_tokens": 571,
+        "total_tokens_source": "reported",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "cost": 0.001734
+      },
+      "usage_raw": {
+        "prompt_tokens": 497,
+        "completion_tokens": 74,
+        "total_tokens": 571,
+        "cost": 0.001734,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001734,
+          "upstream_inference_prompt_cost": 0.000994,
+          "upstream_inference_completions_cost": 0.00074
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_ms": 2812.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      }
+    },
+    {
+      "id": "call-13",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "998bab247a180e6783075442f4ddb082625790e556ef3a8159a398191f3080ed",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.0003393,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2246,
+        "output_tokens": 66,
+        "total_tokens": 2312,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 9.4332e-05
+      },
+      "usage_raw": {
+        "input_tokens": 2246,
+        "output_tokens": 66,
+        "cost": 9.4332e-05
+      },
+      "latency_ms": 407.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    }
+  ],
+  "reported_cost": 0.006413654,
+  "configuration": {
+    "worker_model": "openai/gpt-6-sol",
+    "worker_effort": "medium",
+    "checker_model": "openai/gpt-6-sol",
+    "checker_effort": "high",
+    "astra_explicitly_authorized": false,
+    "jev_model": "typesafe/jev-1.13",
+    "provider_route": "azure",
+    "provider_name": "Azure",
+    "jev_provider_name": "TypeSafe",
+    "worker_model_aliases": [],
+    "checker_model_aliases": [],
+    "jev_model_aliases": [
+      "typesafe/jev-1.13-20260917"
+    ],
+    "max_usd": 1.5,
+    "max_calls": 40,
+    "max_output_tokens": 2000,
+    "timeout": 45,
+    "worker_luna_input_usd_per_million": 0.1,
+    "worker_luna_output_usd_per_million": 0.5,
+    "worker_input_usd_per_million": 2.0,
+    "worker_output_usd_per_million": 10.0,
+    "worker_astra_input_usd_per_million": 10.0,
+    "worker_astra_output_usd_per_million": 50.0,
+    "checker_input_usd_per_million": 2.0,
+    "checker_output_usd_per_million": 10.0,
+    "jev_input_usd_per_million": 0.05,
+    "jev_output_usd_per_million": 0.05
+  },
+  "training_performed": false,
+  "scope": "Training-free Jev orchestration. Neural-network and Transformer concepts are routing inspirations only."
+}

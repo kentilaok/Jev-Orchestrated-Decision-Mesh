@@ -1,0 +1,176 @@
+{
+  "status": "complete",
+  "mode": "adaptive_fast_gate",
+  "simulation": false,
+  "task_hash": "20bd8062e022aebf93c45b7c5a1459c0c787f2f42467ca39ee6f0b68b94d0673",
+  "configuration": {
+    "worker_model": "openai/gpt-6-sol",
+    "worker_effort": "medium",
+    "checker_model": "openai/gpt-6-sol",
+    "checker_effort": "high",
+    "astra_explicitly_authorized": false,
+    "jev_model": "typesafe/jev-1.13",
+    "provider_route": "azure",
+    "provider_name": "Azure",
+    "jev_provider_name": "TypeSafe",
+    "worker_model_aliases": [],
+    "checker_model_aliases": [],
+    "jev_model_aliases": [
+      "typesafe/jev-1.13-20260917"
+    ],
+    "max_usd": 1.5,
+    "max_calls": 40,
+    "max_jev_calls": 30,
+    "max_jev_tokens": 50000,
+    "max_worker_calls": 12,
+    "max_checker_calls": 10,
+    "max_output_tokens": 2000,
+    "timeout": 45,
+    "worker_luna_input_usd_per_million": 0.1,
+    "worker_luna_output_usd_per_million": 0.5,
+    "worker_input_usd_per_million": 2.0,
+    "worker_output_usd_per_million": 10.0,
+    "worker_astra_input_usd_per_million": 10.0,
+    "worker_astra_output_usd_per_million": 50.0,
+    "checker_input_usd_per_million": 2.0,
+    "checker_output_usd_per_million": 10.0,
+    "jev_input_usd_per_million": 0.05,
+    "jev_output_usd_per_million": 0.05
+  },
+  "fast_gate": {
+    "choice": "deterministic",
+    "model": "typesafe/jev-1.13-20260917",
+    "live": true,
+    "probabilities": {
+      "retrieve_evidence": 0.29,
+      "direct_luna_low": 0.12,
+      "five_unit": 0.09,
+      "stop": 0.06,
+      "deterministic": 0.43,
+      "direct_sol_high": 0.01
+    },
+    "confidence": 0.32,
+    "api_event": "call-1",
+    "usage": {
+      "input_tokens": 642,
+      "output_tokens": 74,
+      "total_tokens": 716,
+      "total_tokens_source": "derived_input_plus_output",
+      "cached_input_tokens": null,
+      "reasoning_tokens": null,
+      "cost": 2.6964e-05
+    }
+  },
+  "selected_route": "deterministic",
+  "answer": "50.0 defects per 1000 production items; trial records excluded. [records]",
+  "quality_checks": {
+    "response_contract": true,
+    "answer_matches_exact_reference": true,
+    "included_segments_match_scope": true,
+    "excluded_segments_match_scope": true,
+    "unit_matches_task": true,
+    "source_ids_match_evidence": true,
+    "answer_cites_records": true,
+    "trial_exclusion_explained": true
+  },
+  "calls": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "66f395e5b3cde1f728836407507fb0e23bfbccd988c9e8c8ab52f01ff7eef11e",
+      "policy_hash": "0c91081ea1905d7a322f834bd7fc6a3887151b19a984d8937d5a5b46a079ab5f",
+      "reserved_usd": 0.00015294999999999998,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 642,
+        "output_tokens": 74,
+        "total_tokens": 716,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 2.6964e-05
+      },
+      "usage_raw": {
+        "input_tokens": 642,
+        "output_tokens": 74,
+        "cost": 2.6964e-05
+      },
+      "latency_ms": 656.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    }
+  ],
+  "reported_cost": 2.6964e-05,
+  "training_performed": false,
+  "candidate": {
+    "text": "50.0 defects per 1000 production items; trial records excluded. [records]",
+    "answer": 50.0,
+    "unit": "defects per 1000 production items",
+    "included_segments": [
+      "A",
+      "B"
+    ],
+    "excluded_segments": [
+      "T"
+    ],
+    "source_ids": [
+      "records"
+    ]
+  },
+  "metrics": {
+    "roles": {
+      "jev": {
+        "calls": 1,
+        "tokens": 716,
+        "cost_usd": 2.6964e-05,
+        "unknown_token_calls": 0,
+        "unknown_cost_calls": 0
+      },
+      "worker": {
+        "calls": 0,
+        "tokens": 0,
+        "cost_usd": 0,
+        "unknown_token_calls": 0,
+        "unknown_cost_calls": 0
+      },
+      "checker": {
+        "calls": 0,
+        "tokens": 0,
+        "cost_usd": 0,
+        "unknown_token_calls": 0,
+        "unknown_cost_calls": 0
+      }
+    },
+    "total_calls": 1,
+    "total_tokens": 716,
+    "total_cost_usd": 2.6964e-05,
+    "orchestration_ratio": null,
+    "worker_calls": 0,
+    "jev_passes": 1,
+    "checker_calls": 0,
+    "escalations": 0,
+    "avoidable_escalations": null,
+    "avoidable_worker_calls": null,
+    "early_exit_selected": true,
+    "early_exit_possible": null,
+    "comparison": {
+      "baseline_cost_usd": 0.001726,
+      "cost_multiplier": 0.015622247972190034,
+      "quality_baseline": true,
+      "quality_cidm": true,
+      "quality_gain_binary": 0,
+      "cost_per_quality_gain_usd": null
+    },
+    "accounting_note": "Cached input and reasoning output are subsets of input/output totals; unknown counters are not zero."
+  }
+}

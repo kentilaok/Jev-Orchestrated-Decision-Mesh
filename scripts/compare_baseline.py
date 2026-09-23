@@ -15,6 +15,7 @@ from atomic_mesh import MeshError, fingerprint, require
 from config import RunConfig
 from network_run import DEMO, DemoPipeline
 from transport import Gateway
+from metrics import summarize_calls
 
 
 BASELINE_ROUTE = {"id": "sol_high", "model": "openai/gpt-6-sol", "effort": "high"}
@@ -148,6 +149,8 @@ def run_baseline(task, config, folder, *, live):
         "reported_cost": gateway.spent if gateway else None,
         "training_performed": False,
     }
+    result['metrics']=summarize_calls(result['calls'],quality_pass=status=='complete',
+                                      early_exit_selected=False)
     (folder / "result.json").write_text(json.dumps(result, indent=2, allow_nan=False), encoding="utf-8")
     return result
 

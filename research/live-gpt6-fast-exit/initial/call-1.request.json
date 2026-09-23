@@ -1,0 +1,54 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "source_id": "records",
+    "source_hash": "20bd8062e022aebf93c45b7c5a1459c0c787f2f42467ca39ee6f0b68b94d0673",
+    "record_count": 3,
+    "record_kinds": [
+      "production",
+      "trial"
+    ],
+    "required_scope": "production",
+    "scale": 1000,
+    "available_checks": [
+      "exact rational arithmetic",
+      "row scope",
+      "source citation",
+      "trial exclusion"
+    ],
+    "budget": {
+      "max_usd": 1.5,
+      "max_calls": 40,
+      "max_jev_calls": 30,
+      "max_jev_tokens": 50000
+    },
+    "question": "Choose the least costly eligible route for this bounded subtask of a CIDM-qualified project."
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose one bounded route for a subtask inside a CIDM-qualified broader project. Use deterministic for exact operations with executable checks. Use direct_luna_low or direct_sol_high for a single bounded model call when a five-unit graph would be wasteful. Use five_unit only for meaningful decomposition and evidence dependencies. Stop for missing evidence or constraints. This is one typed decision; do not generate a prose plan or request more routing calls.",
+      "criteria": {
+        "deterministic": {
+          "description": "Use exact code and source checks; no generative worker."
+        },
+        "direct_luna_low": {
+          "description": "Use exactly one GPT-6 Luna low worker and task-specific hard checks; no Jev follow-up."
+        },
+        "direct_sol_high": {
+          "description": "Use exactly one GPT-6 Sol high worker and task-specific hard checks; no Jev follow-up."
+        },
+        "five_unit": {
+          "description": "Use the five-unit Jev network with post-worker decisions and optional Sol-high review."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for missing original evidence before doing work."
+        },
+        "stop": {
+          "description": "Stop because no route can meet the stated constraints."
+        }
+      }
+    }
+  }
+}

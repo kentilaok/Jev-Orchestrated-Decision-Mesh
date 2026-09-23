@@ -3,9 +3,10 @@
 ## Verified implementation
 
 - Training-free Jev orchestration and a five-unit checked pipeline.
+- A compact Jev fast gate for bounded subtasks inside eligible broad projects: exact code, one worker, five units, evidence, or stop.
 - Jev-selected GPT-6 Luna/Sol routes at low through xhigh, with a separate GPT-6 Sol high checker. Astra low requires specific authorization.
-- One-use approvals, source/artifact identities, immutable run policy, and a post-checker Jev decision.
-- A structured-record reference task, offline tests, and usage/journal auditing.
+- One-use approvals, source/artifact identities, immutable run policy, and Jev decisions after every unit output and every requested checker return.
+- A structured-record reference task, role/token budgets, per-run orchestration metrics, offline tests, and usage/journal auditing.
 
 ## Next practical work
 
