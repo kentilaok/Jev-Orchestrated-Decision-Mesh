@@ -17,9 +17,9 @@ The same three-row synthetic production-record task was run once through the for
 
 On this fixture, the hardened conditional run used **30.42% fewer tokens and cost 47.43% less** than the older mandatory policy, but it still used **59.19×** as many tokens and cost **3.72×** as much as one Sol-high call. The older graph's five checker calls alone cost $0.010548. The hardened run had 10 Jev calls, three Sol-low workers, and no checker. The [first conditional run](../research/live-gpt6-optional-fixture/README.md) also used zero checkers but chose two Luna-low workers and one Sol-low worker, costing $0.00312019. These runs differ in prompts and worker choices, so cost changes are **observed**, not isolated causal effects of checker policy. The [hardened trace](../research/live-gpt6-optional-final/README.md), [former mandatory trace](../research/live-gpt6-fixture/README.md), and [validation record](VALIDATION.md) preserve the evidence. A fresh replicate can differ.
 
-**Routing consequence:** Simple questions and isolated exact-arithmetic tasks should not invoke CIDM. Within a broad CIDM project, Jev may send a small subtask to deterministic code or one worker instead of giving it five gates. The dedicated five-unit skill retains its topology while letting Jev choose whether any unit needs Sol-high review. A topology decision has its own Jev cost; none of these three runs measured that extra admission gate.
+**Routing consequence:** Simple standalone questions and isolated exact-arithmetic tasks should not invoke CIDM. For an invoked CIDM workflow, the revised policy classifies each new input with the carried project context. Broad, multi-step, or uncertain work defaults to five units; Jev may choose deterministic code or a small worker *within a unit* but does not replace the graph with one direct call. A short, self-contained request uses one Luna-low worker and task-specific validation. The dedicated five-unit skill retains its topology while letting Jev choose whether any unit needs Sol-high review. None of these three runs measured the revised entry policy.
 
-The [recorded fast-exit fixture](../research/live-gpt6-fast-exit/README.md) now measures that admission gate on the same small task. The compact Jev choice used **716 tokens and $0.000026964**, selected exact code, and ended with a validated answer. A first wording used 889 Jev tokens and $0.00003423 for the same route. The compact run used **1.66×** the provider tokens of the one-call Sol-high baseline and **1.56%** of its API dollar charge because exact code replaced the model worker. This is a demonstration of the gate's mechanics, not an estimate for broad projects or an argument to invoke CIDM for standalone easy questions.
+The [recorded fast-exit fixture](../research/live-gpt6-fast-exit/README.md) measured the **previous** Jev admission gate on the same small task. The compact Jev choice used **716 tokens and $0.000026964**, selected exact code, and ended with a validated answer. A first wording used 889 Jev tokens and $0.00003423 for the same route. The compact run used **1.66×** the provider tokens of the one-call Sol-high baseline and **1.56%** of its API dollar charge because exact code replaced the model worker. It does not validate the revised Luna-low short branch, host classification, or broad-project efficiency.
 
 ## Three accounting units
 
@@ -33,13 +33,13 @@ For an API call with uncached input tokens `I`, cached input tokens `H`, and out
 
 Use actual provider-reported charges for results. The formula is a forecast: provider routing, regional processing, caching, tool charges, and billing rules may change it. The default local reservation makes **no assumed cache discount**. [OpenAI API pricing](https://developers.openai.com/api/docs/pricing) lists the current base rates. [Codex pricing](https://learn.chatgpt.com/docs/pricing) lists separate plan and credit terms.
 
-For a CIDM run with `n` completed or attempted units, total cost is
+For a five-unit CIDM run with `n` completed or attempted units, total cost is
 
-`C_CIDM = C_Jev-topology + Σ_i (C_Jev-before,i + C_worker,i + C_Jev-after-worker,i + q_i × (C_Sol-high,i + C_Jev-after-check,i)) + C_repairs + C_failed-attempts + C_other-tools`, where `q_i = 1` only when Jev requests a checker for unit `i`.
+`C_CIDM = C_classification + C_Jev-entry + Σ_i (C_Jev-before,i + C_worker,i + C_Jev-after-worker,i + q_i × (C_Sol-high,i + C_Jev-after-check,i)) + C_repairs + C_failed-attempts + C_other-tools`, where `q_i = 1` only when Jev requests a checker for unit `i`. `C_classification` is the observable host/controller cost when available; a missing measure remains unknown.
 
-Set `C_Jev-topology = 0` when comparing executions of the five-unit runner alone; its project-level topology choice is a separate skill-guided step.
+Set `C_Jev-entry = 0` when comparing executions of the five-unit runner alone; project-level classification and the broader branch's Jev entry choice are separate steps.
 
-For a fast-exit direct branch, `C_CIDM = C_Jev-fast-gate + C_direct-operation + C_other-tools`. The implemented branch makes no automatic post-worker Jev or checker call. A deterministic branch has `C_direct-operation = 0` in provider charges; local code execution and development still have resource costs outside the API ledger.
+For the revised short branch, `C_CIDM = C_classification + C_Luna-low + C_other-tools`. There is no Jev or checker call on that branch. The old Jev/exact-code fast exit was measured under a previous policy; its cost should not be attributed to this branch. Local validation and development still have resource costs outside the API ledger.
 
 Deterministic operations have no generative worker charge. Jev remains required before and after each executed unit in CIDM. A Sol-high reviewer adds its own call and following Jev decision only when selected. Count actual call outcomes rather than assuming all `q_i` are zero or one.
 

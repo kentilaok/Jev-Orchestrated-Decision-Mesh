@@ -8,28 +8,29 @@
 
 Jev is a model from [TypeSafe AI](https://typesafe.ai/blog/introducing-system-one-models-and-jev); CIDM is an independent orchestration design built around its typed decisions.
 
-CIDM routes data and bounded reasoning tasks through existing models. **Jev is the orchestrator:** it chooses the next operation and receives every completed CIDM unit output. It can finish, repair, escalate, retrieve evidence, or request a separate high-effort check when warranted. Any completed check returns to Jev.
+CIDM routes data and bounded reasoning tasks through existing models. **Within the five-unit network, Jev is the orchestrator:** it chooses the next operation and receives every completed unit output. It can finish, repair, escalate, retrieve evidence, or request a separate high-effort check when warranted. Any completed check returns to Jev. The one-worker short path ends after Luna-low output passes task-specific validation; it does not claim Jev review.
 
-CIDM is intended for broader projects that need multiple stages, evidence, delegation, or review. Simple yes/no questions and routine one-step tasks do not invoke the skill. For a qualifying project, Jev is the first routing decision and reviews every completed CIDM unit. The Sol-high checker is available when Jev needs extra review; it is no longer required before every commit.
+CIDM is intended for broader projects that need multiple stages, evidence, delegation, or review. Simple standalone yes/no questions and routine one-step tasks do not invoke the skill. When invoked, the host first classifies **each new input with its carried project context**. Broad, multi-step, or uncertain work enters the five-unit Jev network by default. Only a self-contained request that needs one bounded response uses a single **GPT-6 Luna low** worker and then finishes after task-specific validation. A brief follow-up to an active project is classified with that project's context. Sol-high review inside the five-unit graph is optional.
 
 The former mandatory-check path used **36,663 tokens and $0.012201078** on a three-row GPT-6 fixture. After removing the checker prerequisite and strengthening final-text validation, a five-unit run completed with **zero Sol-high calls, 25,510 tokens, and $0.006413654**. An earlier conditional run with different Jev worker choices cost $0.00312019. A one-call Sol-high baseline used **431 tokens and $0.001726**. All final values and source checks passed. These individual runs on an intentionally small demonstration do not estimate project-level efficiency. See [the current recorded run](research/live-gpt6-optional-final/README.md), [the first conditional run](research/live-gpt6-optional-fixture/README.md), [the earlier mandatory run](research/live-gpt6-fixture/README.md), and [benchmark boundaries](docs/BENCHMARKS.md).
 
-On that demonstration, the [compact Jev fast exit](research/live-gpt6-fast-exit/README.md) chose exact code in **one Jev call, 716 tokens, and $0.000026964**, with no worker or checker call. An earlier wording took 889 tokens for the same choice. This illustrates the mechanism on an easy fixture; standalone easy tasks bypass CIDM altogether.
+Under the earlier routing policy, the [compact Jev fast exit](research/live-gpt6-fast-exit/README.md) chose exact code in **one Jev call, 716 tokens, and $0.000026964**, with no worker or checker call. An earlier wording took 889 tokens for the same choice. These traces document a previous policy on an easy fixture. They do not measure the new Luna-low short path or project-level routing.
 
 This project borrows the ideas of layered processing, connected units, and selective attention to relevant information. It performs **no training, fine-tuning, backpropagation, or learned-weight updates**. Neural networks and Transformers are architectural inspiration for data flow; this repository does not build or train a new neural model. Existing provider models perform inference in Codex or through APIs.
 
 ## How it works
 
-For a qualifying CIDM project, Jev first makes a compact fast-exit choice: exact code, one bounded Luna-low or Sol-high worker, the five-unit network, evidence retrieval, or stop. `scripts/adaptive_run.py` implements this choice for the structured-record fixture. Its direct branches end after the checked code or one validated worker response. `scripts/network_run.py` runs the five-unit branch directly. The [typed request](examples/topology.request.json) shows the decision format.
+For each new CIDM input, classify the request **together with accepted project context** before dispatch. This classification is a host/controller assertion, not a Jev decision or a trained classifier. If the combined work needs multiple stages, or its scope is uncertain, the default is five units. Jev then chooses bounded operations and reviews every completed unit result. Only a short, self-contained request takes one Luna-low worker pass, validation, and finish. A later input goes through classification again. The Python `scripts/adaptive_run.py` is a bounded structured-record example, not a classifier for arbitrary Codex messages. In interactive Codex, this is a skill-guided procedure rather than an installed transition broker. `scripts/network_run.py` runs the five-unit branch directly.
 
 ```mermaid
 flowchart LR
-    A[Eligible project subtask] --> J{Jev fast gate}
-    J -->|Exact code| D[Validate and finish]
-    J -->|One worker| W[Luna low or Sol high]
+    A[New input plus carried context] --> C{Host classifies scope}
+    C -->|Short and self-contained| W[One GPT-6 Luna low worker]
     W --> V[Validate and finish]
-    J -->|Five units| F[Input → Interpret → Compute → Reconcile → Output]
-    J -->|Missing evidence or stop| S[Halt]
+    C -->|Broad, multi-step, or uncertain| F[Five Jev-governed units]
+    F --> U[Validated project result]
+    V --> N[Next user input is classified again]
+    U --> N
 ```
 
 ```mermaid
@@ -62,7 +63,7 @@ flowchart TD
     J2 -->|Stop| X
 ```
 
-**A worker result always returns to Jev before CIDM forwards it.** Sol High is optional; when called, its result also returns to Jev. A failed hard check, invalid requested checker report, changed candidate, or missing predecessor prevents forwarding even if a model recommends it.
+**Within the five-unit network, a worker result always returns to Jev before the broker forwards it.** Sol High is optional; when called, its result also returns to Jev. The short Luna-low branch uses its own hard validator and finishes without a Jev pass. A failed hard check, invalid requested checker report, changed candidate, or missing predecessor prevents forwarding even if a model recommends it.
 
 The controller records the exact operation, inputs, source versions, candidate hash, optional checker hash, and approval IDs. Approvals are single-use. Unreviewed work stays out of accepted context. This controls exposed operations in the broker; it cannot intercept private thinking inside an inference call.
 
@@ -73,25 +74,26 @@ Read the [architecture](docs/ARCHITECTURE.md) for the data-flow explanation, [ex
 | Role | Default |
 |---|---|
 | Orchestration | TypeSafe Jev |
-| Reasoning worker | Jev selects GPT-6 Luna or Sol at low, medium, high, or xhigh effort |
+| Reasoning worker in the five-unit graph | Jev selects GPT-6 Luna or Sol at low, medium, high, or xhigh effort |
+| Short self-contained route | One GPT-6 Luna-low worker, then task-specific validation |
 | Optional independent review context | OpenAI GPT-6 Sol, high effort |
 | General planning option | GPT-6 Sol, xhigh effort |
 | Astra | Only when specifically authorized and enabled; low effort only |
 | API runner transport | OpenRouter, with an explicit provider route |
 | Codex-native route | Codex subagents use the active ChatGPT sign-in; Jev still needs separate API access |
 
-The worker catalog is limited to **OpenAI GPT-6 Luna and Sol** by default. Jev chooses a worker route for each generative unit. Deterministic units do not spend worker tokens. If requested, the checker uses Sol high. Jev is a separate TypeSafe service. The Python runner uses OpenRouter APIs for model calls and defaults to an explicit Azure route, which worked under the validation account's zero-retention policy. When this skill runs within a Codex session signed in with ChatGPT, model-specific Codex subagents can use plan usage for Luna/Sol work, while Jev remains a separate API call. The Codex-native path is a skill-guided workflow; the Python runner does not execute that path. [OpenAI Docs authentication](https://learn.chatgpt.com/docs/auth) distinguishes plan access from API-key billing.
+The worker catalog is limited to **OpenAI GPT-6 Luna and Sol** by default. Jev chooses a worker route for each generative five-unit operation. Deterministic units do not spend worker tokens. If requested, the checker uses Sol high. Jev is a separate TypeSafe service. The Python runner uses OpenRouter APIs for model calls and defaults to an explicit Azure route, which worked under the validation account's zero-retention policy. When this skill runs within a Codex session signed in with ChatGPT, model-specific Codex subagents can use plan usage for Luna/Sol work, while Jev remains a separate API call. The Codex-native path is a skill-guided workflow; the Python runner does not execute that path. [OpenAI Docs authentication](https://learn.chatgpt.com/docs/auth) distinguishes plan access from API-key billing.
 
 ## Quick start
 
 Python **3.10+** is required. The reference implementation uses the standard library only.
 
 ```bash
-git clone https://github.com/kentilaok/caber-interstitial-decision-mesh.git
-cd caber-interstitial-decision-mesh
+git clone https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh.git
+cd Jev-Orchestrated-Decision-Mesh
 python scripts/network_run.py --offline --task examples/production-records.json --out runs/offline-001
 python scripts/audit_network.py runs/offline-001/result.json
-python scripts/adaptive_run.py --offline --task examples/production-records.json --out runs/fast-offline-001
+python scripts/adaptive_run.py --offline --task examples/production-records.json --out runs/broad-offline-001
 python scripts/compare_baseline.py --offline --task examples/production-records.json --out runs/baseline-offline-001
 ```
 
@@ -100,10 +102,10 @@ Offline mode is an explicitly labeled deterministic simulation. The included fix
 For a live run, set `OPENROUTER_API_KEY` securely in your environment, then use:
 
 ```bash
-python scripts/adaptive_run.py --live --config examples/config.openrouter.json --task examples/production-records.json --out runs/fast-live-001
+python scripts/adaptive_run.py --live --config examples/config.openrouter.json --task examples/production-records.json --out runs/broad-live-001
 ```
 
-This command consumes OpenRouter API credits for Jev, workers, and checkers. Inspect the config's models, limits, and reserve prices first. Each output directory must be new so prior traces are preserved. Provider availability and account policies can prevent a run; there is no silent model fallback.
+With no `--classification` file, this command conservatively takes the broad five-unit route. The [execution guide](docs/EXECUTION-ROUTES.md#scope-classification-before-an-api-run) shows how the host can supply a task-and-context-bound assertion for the short Luna-low fixture. The command consumes OpenRouter API credits for calls it actually makes. Inspect the config's models, limits, and reserve prices first. Each output directory must be new so prior traces are preserved. Provider availability and account policies can prevent a run; there is no silent model fallback.
 
 ## Use as a Codex skill
 
@@ -126,7 +128,7 @@ Tests run offline without credentials. They cover gate ordering, immutable polic
 ## Current scope
 
 - Five sequential checked units and a reusable gate contract.
-- A bounded Jev fast gate for eligible project subtasks, plus a separate five-unit runner.
+- A bounded structured-record example for the entry choice, plus a separate five-unit runner; arbitrary Codex project-message classification remains a skill-guided host decision.
 - Bounded repair and rechecking; explicit stops for missing evidence.
 - Jev-selected GPT-6 Luna/Sol worker route, Jev after every unit output, and conditional Sol-high review.
 - Separate decision and reasoning connector interfaces; OpenRouter is the bundled implementation.

@@ -2,20 +2,27 @@
   "model": "typesafe/jev-1.13",
   "state": {
     "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
-    "source_ids": ["records"],
-    "source_shape": "Three rows with integer items and defects; production and trial kinds are explicit.",
-    "constraints": ["Exclude trial rows", "Cite the original records", "Use exact arithmetic"],
-    "available_validation": ["Executable scope check", "Exact rational arithmetic"],
-    "risk": "A wrong rate would be detectable by code; no external action is requested."
+    "source_id": "records",
+    "source_hash": "20bd8062e022aebf93c45b7c5a1459c0c787f2f42467ca39ee6f0b68b94d0673",
+    "rows": 3,
+    "kinds": ["production", "trial"],
+    "include": "production",
+    "scale": 1000,
+    "exact_checks": true,
+    "budget_usd": 1.5,
+    "input_classification": {
+      "source": "conservative_default",
+      "snapshot_hash": "02c534495cb4406d8d966b6b071633dfe45fc8bc066d3f3a6c515c47aa5c6dd3",
+      "flags": null,
+      "scope": "broad_or_uncertain"
+    },
+    "context_summary": ""
   },
   "questions": {
     "next": {
       "type": "choice",
-      "instructions": "For a CIDM-qualified broader project, choose the least resource-intensive route that can satisfy this subtask and its validation requirement. Deterministic work is appropriate when executable checks can settle the answer. A direct worker may be enough for a bounded text subtask. Use the five-unit network when evidence complexity or coordination justifies repeated Jev decisions; Sol-high review within that network is optional. Do not use model confidence alone as proof.",
+      "instructions": "The host classified this fresh input and carried context as broad, multi-step, context-dependent, or uncertain. The five_unit network is the default route. Choose retrieve_evidence only when required original evidence is missing, or stop only when no offered route can meet the constraints. Do not choose a direct worker shortcut. Return only a typed choice.",
       "criteria": {
-        "deterministic": "Compute from original evidence with exact code checks; no generative worker or Sol-high checker. Keep source references.",
-        "direct_luna_low": "Use one GPT-6 Luna-low worker with a task-specific validator and no Jev follow-up.",
-        "direct_sol_high": "Use one GPT-6 Sol-high worker with a task-specific validator and no Jev follow-up.",
         "five_unit": "Run the five-unit graph with Jev before and after each unit; Jev may request Sol-high review for specific units.",
         "retrieve_evidence": "Stop to obtain missing original evidence before selecting a computation route.",
         "stop": "Stop because no offered route can meet the constraints safely."

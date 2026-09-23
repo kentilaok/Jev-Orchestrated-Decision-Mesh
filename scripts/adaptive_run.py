@@ -1,4 +1,9 @@
-"""CIDM fast gate for bounded project subtasks; simple standalone questions skip this skill."""
+"""Context-bound routing for the production-record CIDM fixture.
+
+The host classifies the current input and carried context. This runner does not
+infer general project complexity from prose. Unknown scope defaults to the full
+five-unit graph; an explicitly short, independent input uses one Luna-low call.
+"""
 import argparse
 import copy
 import json
@@ -13,58 +18,69 @@ from network_run import DEMO, DemoPipeline, execute_network
 from transport import Gateway
 
 
-FAST_OPTIONS={
-    'deterministic':{'description':'Exact code and source checks; no worker.'},
-    'direct_luna_low':{'description':'One Luna-low worker and hard checks; no follow-up.'},
-    'direct_sol_high':{'description':'One Sol-high worker and hard checks; no follow-up.'},
+PROJECT_OPTIONS={
     'five_unit':{'description':'Five Jev-governed units; optional Sol-high review.'},
     'retrieve_evidence':{'description':'Need missing original evidence.'},
     'stop':{'description':'No safe route.'},
 }
+CLASSIFICATION_FLAGS=('multiple_steps','broad_project','ambiguous','depends_on_context')
 
 
-def fast_state(task,config):
+def input_snapshot_hash(task,context_summary=''):
+    """Bind a host classification to one input and its carried context."""
+    require(type(context_summary) is str and len(context_summary)<=2000,'invalid_context_summary')
+    return fingerprint({'task':task,'context_summary':context_summary})
+
+
+def classify_input(task,context_summary='',classification=None):
+    """Validate host signals. An absent or positive signal takes the broad route."""
+    snapshot=input_snapshot_hash(task,context_summary)
+    if classification is None:
+        return {'source':'conservative_default','snapshot_hash':snapshot,
+                'flags':None,'scope':'broad_or_uncertain'}
+    require(type(classification) is dict
+            and set(classification)=={'snapshot_hash',*CLASSIFICATION_FLAGS},
+            'invalid_input_classification')
+    require(classification['snapshot_hash']==snapshot,'stale_input_classification')
+    require(all(type(classification[name]) is bool for name in CLASSIFICATION_FLAGS),
+            'invalid_input_classification')
+    flags={name:classification[name] for name in CLASSIFICATION_FLAGS}
+    return {'source':'explicit_host','snapshot_hash':snapshot,'flags':flags,
+            'scope':'broad_or_uncertain' if any(flags.values()) else 'short_self_contained'}
+
+
+def project_state(task,config,routing,context_summary):
     return {'goal':task['goal'],'source_id':'records','source_hash':fingerprint(task),
             'rows':len(task['records']),'kinds':sorted({row['kind'] for row in task['records']}),
             'include':task['include_kind'],'scale':task['scale'],
-            'exact_checks':True,'budget_usd':config.max_usd}
+            'exact_checks':True,'budget_usd':config.max_usd,
+            'input_classification':routing,'context_summary':context_summary}
 
 
-def run_adaptive(task,config,folder,*,live,baseline=None,offline_route='deterministic'):
+def run_adaptive(task,config,folder,*,live,baseline=None,context_summary='',
+                 classification=None,offline_route='five_unit'):
+    """Route one fixture input. Reclassify on every invocation, including follow-ups."""
     require(isinstance(config,RunConfig),'validated_run_config_required')
     pipeline=DemoPipeline(task)
+    routing=classify_input(task,context_summary,classification)
+    require(offline_route in PROJECT_OPTIONS,'invalid_offline_route')
     folder=Path(folder)
     require(not folder.exists(),'output_directory_must_be_new')
     folder.mkdir(parents=True,exist_ok=False)
     gateway=Gateway(folder,config) if live else None
-    result={'status':'failed','mode':'adaptive_fast_gate','simulation':not live,
-            'task_hash':fingerprint(task),'configuration':config.to_dict(),
-            'fast_gate':None,'selected_route':None,'answer':None,
+    result={'status':'failed','mode':'context_classified_route','simulation':not live,
+            'task_hash':fingerprint(task),'context_hash':fingerprint(context_summary),
+            'input_classification':routing,'configuration':config.to_dict(),
+            'route_gate':None,'selected_route':None,'answer':None,
             'quality_checks':None,'calls':[],'reported_cost':None if not live else 0.0,
             'training_performed':False}
     try:
-        if live:
-            decision=gateway.network_judge('fast_exit',FAST_OPTIONS,fast_state(task,config))
-            selected=decision['choice']
-        else:
-            require(offline_route in FAST_OPTIONS,'invalid_offline_route')
-            selected=offline_route
-            decision={'choice':selected,'model':'offline_simulation','live':False}
-        result['fast_gate']=decision
-        result['selected_route']=selected
-        if selected=='five_unit':
-            network_result=execute_network(task,config,folder,gateway,simulation=not live)
-            result.update(network_result)
-            result['mode']='adaptive_fast_gate'
-            result['fast_gate']=decision
-            result['selected_route']=selected
-            result['task_hash']=fingerprint(task)
-        elif selected in ('deterministic','direct_luna_low','direct_sol_high'):
-            if selected=='deterministic' or not live:
+        if routing['scope']=='short_self_contained':
+            result['selected_route']='direct_luna_low'
+            if not live:
                 candidate=simulated_candidate(task,pipeline)
             else:
-                route_id='luna_low' if selected=='direct_luna_low' else 'sol_high'
-                route=next(r for r in config.worker_routes() if r['id']==route_id)
+                route=next(r for r in config.worker_routes() if r['id']=='luna_low')
                 schema=copy.deepcopy(BASELINE_SCHEMA)
                 unit=f"defects per {task['scale']} production items"
                 schema['properties']['unit']['enum']=[unit]
@@ -76,7 +92,26 @@ def run_adaptive(task,config,folder,*,live,baseline=None,offline_route='determin
             result['answer']=candidate['text'] if result['status']=='complete' else None
             result['candidate']=candidate
         else:
-            result['status']='needs_evidence' if selected=='retrieve_evidence' else 'stopped_by_jev'
+            if live:
+                decision=gateway.network_judge('project_route',PROJECT_OPTIONS,
+                                               project_state(task,config,routing,context_summary))
+                selected=decision['choice']
+            else:
+                selected=offline_route
+                decision={'choice':selected,'model':'offline_simulation','live':False}
+            result['route_gate']=decision
+            result['selected_route']=selected
+            if selected=='five_unit':
+                network_result=execute_network(task,config,folder,gateway,simulation=not live)
+                result.update(network_result)
+                result['mode']='context_classified_route'
+                result['route_gate']=decision
+                result['selected_route']=selected
+                result['task_hash']=fingerprint(task)
+                result['context_hash']=fingerprint(context_summary)
+                result['input_classification']=routing
+            else:
+                result['status']='needs_evidence' if selected=='retrieve_evidence' else 'stopped_by_jev'
     except MeshError as error:
         result['status']='failed'
         result['error_code']=str(error) if str(error) in {
@@ -87,7 +122,7 @@ def run_adaptive(task,config,folder,*,live,baseline=None,offline_route='determin
         result['reported_cost']=gateway.spent
     result['metrics']=summarize_calls(result['calls'],baseline=baseline if live else None,
                                      quality_pass=result['status']=='complete',
-                                     early_exit_selected=result['selected_route'] in ('deterministic','direct_luna_low','direct_sol_high'),
+                                     early_exit_selected=result['selected_route']=='direct_luna_low',
                                      escalations=sum(e['kind'] in ('post_worker_decision','post_checker_decision')
                                                      and e.get('choice')=='escalate' for e in result.get('events',[])))
     (folder/'result.json').write_text(json.dumps(result,indent=2,allow_nan=False),encoding='utf-8')
@@ -102,14 +137,21 @@ def main():
     parser.add_argument('--task',type=Path)
     parser.add_argument('--config',type=Path)
     parser.add_argument('--baseline-result',type=Path)
-    parser.add_argument('--offline-route',choices=tuple(FAST_OPTIONS),default='deterministic')
+    parser.add_argument('--context-summary',default='')
+    parser.add_argument('--classification',type=Path,
+                        help='JSON host signals bound to input_snapshot_hash(task, context_summary)')
+    parser.add_argument('--offline-route',choices=tuple(PROJECT_OPTIONS),default='five_unit')
     args=parser.parse_args()
-    require(args.offline or args.offline_route=='deterministic','offline_route_requires_offline_mode')
+    require(args.offline or args.offline_route=='five_unit','offline_route_requires_offline_mode')
     config=RunConfig.from_dict(json.loads(args.config.read_text(encoding='utf-8-sig')) if args.config else {})
     task=json.loads(args.task.read_text(encoding='utf-8-sig')) if args.task else DEMO
+    classification=(json.loads(args.classification.read_text(encoding='utf-8-sig'))
+                    if args.classification else None)
     baseline=json.loads(args.baseline_result.read_text(encoding='utf-8-sig')) if args.baseline_result else None
     require(baseline is None or baseline.get('task_hash')==fingerprint(task),'baseline_task_mismatch')
-    result=run_adaptive(task,config,args.out,live=args.live,baseline=baseline,offline_route=args.offline_route)
+    result=run_adaptive(task,config,args.out,live=args.live,baseline=baseline,
+                        context_summary=args.context_summary,classification=classification,
+                        offline_route=args.offline_route)
     print(json.dumps({'status':result['status'],'route':result['selected_route'],
                       'answer':result['answer'],'metrics':result['metrics']},allow_nan=False))
     return 0 if result['status']=='complete' else 2
