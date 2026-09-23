@@ -26,6 +26,8 @@ This project borrows the ideas of layered processing, connected units, and selec
 
 For each new CIDM input, classify the request **together with accepted project context** before dispatch. This classification is a host/controller assertion, not a Jev decision or a trained classifier. If the combined work needs multiple stages, or its scope is uncertain, the default is five units. Jev then chooses bounded operations and reviews every completed unit result. Only a short, self-contained request takes one Luna-low worker pass, validation, and finish. A later input goes through classification again. The Python `scripts/adaptive_run.py` is a bounded structured-record example. The standalone `scripts/native_transition_broker.py` controls the Codex CLI subprocesses it launches for bounded project text. In an ordinary interactive Codex task, the skill remains a guided procedure; the broker does not intercept that primary agent. `scripts/network_run.py` runs the five-unit API branch directly.
 
+For projects behind an already-connected MCP server, the interactive skill first gathers a **bounded read-only evidence packet**. Jev can then route from actual hierarchy, script, or runtime findings. A later `retrieve_evidence` choice triggers another read-only query and a fresh Jev decision instead of automatically ending the task. This host procedure does not turn the standalone Python runners into MCP clients; see [MCP evidence acquisition](docs/MCP-EVIDENCE.md).
+
 ```mermaid
 flowchart LR
     A[New input plus carried context] --> C{Host classifies scope}

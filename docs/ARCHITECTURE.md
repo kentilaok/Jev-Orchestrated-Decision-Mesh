@@ -50,7 +50,7 @@ The broker omits `forward` when hard checks fail and omits it after a requested 
 
 - `forward` requires passing executable checks, the matching Jev decision, and expected predecessors. If Jev requested Sol High, it also requires that exact review to be valid and passing.
 - `repair` creates a new candidate requiring a new worker-output Jev decision; `escalate` restricts the next worker selection to a higher resource route. Neither action automatically accepts the current candidate.
-- `retrieve_evidence` cannot invent missing sources. The bounded reference runner stops for additional evidence; an application may supply an explicit retrieval adapter.
+- `retrieve_evidence` cannot invent missing sources. In an interactive task with connected read-only MCP tools, it triggers a bounded inspection and a fresh Jev gate over the new evidence. The standalone reference runners still return `needs_evidence` until the host supplies additional sources or an explicit retrieval adapter. A missing but inspectable hierarchy or script is not, by itself, a reason to offer terminal `stop`.
 - `verify_again` is offered only after a requested Sol-high check and requests one more isolated check within the retry budget. It does not erase earlier reports.
 - `stop` leaves the candidate uncommitted. Malformed checker returns still reach Jev as invalid envelopes and cannot be forwarded.
 

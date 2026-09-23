@@ -1,4 +1,4 @@
 interface:
   display_name: "Jev-Orchestrated Decision Mesh"
-  short_description: "Five Jev gates for broad projects; Luna low for short tasks"
-  default_prompt: "Use $caber-interstitial-decision-mesh: classify this input with its project context, default to five Jev-governed units for multi-step work, and use one Luna-low pass only if it is self-contained."
+  short_description: "Five-unit Jev routing with live evidence preflight"
+  default_prompt: "Use $caber-interstitial-decision-mesh for this project; inspect connected sources read-only before Jev routes broad work, and use Luna low only for a self-contained short request."
