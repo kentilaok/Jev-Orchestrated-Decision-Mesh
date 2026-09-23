@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from atomic_mesh import MeshError, fingerprint
@@ -90,6 +91,35 @@ class FakeJev:
                                         'cost': 0.000001}}
 
 
+class FusedJev:
+    def __init__(self, *, check_unit=None, stop_unit=None, invalid_phase=None):
+        self.calls = []
+        self.check_unit = check_unit
+        self.stop_unit = stop_unit
+        self.invalid_phase = invalid_phase
+
+    def __call__(self, phase, options, state):
+        self.calls.append((phase, copy.deepcopy(options), copy.deepcopy(state)))
+        if phase == self.invalid_phase:
+            choice = 'unlisted_decision'
+        elif phase == 'authorize_first_unit':
+            choice = 'compute'
+        elif phase in ('after_worker_fused', 'after_sol_high_fused'):
+            unit_id = state['unit']['id']
+            if unit_id == self.stop_unit:
+                choice = 'stop'
+            elif (phase == 'after_worker_fused' and unit_id == self.check_unit
+                  and 'check_sol_high' in options):
+                choice = 'check_sol_high'
+            else:
+                choice = next(key for key in options if key.startswith('forward_'))
+        else:
+            raise AssertionError(phase)
+        return {'choice': choice, 'model': 'typesafe/jev-1.13-20260917',
+                'live': True, 'usage': {'input_tokens': 25, 'output_tokens': 5,
+                                        'cost': 0.000001}}
+
+
 class StubCodexCli(CodexCliAdapter):
     """Exercise the real adapter parser without launching a process."""
     def _execute(self, argv, workspace, prompt_path, stdout_path, stderr_path):
@@ -129,15 +159,23 @@ class InvalidJev:
         return FakeJev()(phase, options, state)
 
 
+class UnmeteredJev:
+    def __call__(self, phase, options, state):
+        decision = FakeJev()(phase, options, state)
+        decision['usage']['cost'] = None
+        return decision
+
+
 class NativeTransitionBrokerTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.folder = Path(temporary.name)
 
-    def broker(self, adapter=None, judge=None, name='run'):
+    def broker(self, adapter=None, judge=None, name='run', *, gate_policy='legacy', config=None):
         return NativeTransitionBroker(adapter or FakeCodex(), judge or FakeJev(),
-                                      RunConfig(), self.folder / name)
+                                      config or RunConfig(), self.folder / name,
+                                      gate_policy=gate_policy)
 
     def short_spec(self):
         spec = copy.deepcopy(SPEC)
@@ -164,6 +202,19 @@ class NativeTransitionBrokerTests(unittest.TestCase):
         self.assertIsNone(result['primary_agent_tokens'])
         self.assertIsNone(result['codex_cost_usd'])
         self.assertEqual(result['answer'], 'Supported project result.')
+        self.assertEqual(jev.calls[0][2]['remaining_budget']['jev_tokens_remaining'], 50000)
+        self.assertEqual(jev.calls[1][2]['remaining_budget']['jev_tokens_remaining'], 49970)
+
+    def test_jev_budget_is_derived_from_receipts_and_exhaustion_makes_no_fake_call(self):
+        jev = FakeJev()
+        broker = NativeTransitionBroker(FakeCodex(), jev,
+                                        RunConfig(max_jev_calls=1), self.folder / 'budget')
+        result = broker.run(SPEC)
+        self.assertEqual(result['status'], 'failed')
+        self.assertIsNone(result['answer'])
+        self.assertEqual(len([call for call in result['calls'] if call['role'] == 'jev']), 1)
+        self.assertEqual(len(jev.calls), 1)
+        self.assertEqual(broker.jev_budget()['jev_tokens_remaining'], 49970)
 
     def test_full_broker_uses_real_cli_parser_contract_without_paid_calls(self):
         result = self.broker(StubCodexCli(), FakeJev(), 'cli-stub').run(SPEC)
@@ -259,6 +310,12 @@ class NativeTransitionBrokerTests(unittest.TestCase):
         self.assertEqual(result['calls'][0]['status'], 'failed')
         self.assertEqual([c for c in result['calls'] if c['role'] == 'worker'], [])
 
+    def test_unmetered_jev_decision_cannot_authorize_work(self):
+        result = self.broker(FakeCodex(), UnmeteredJev()).run(SPEC)
+        self.assertEqual(result['status'], 'jev_call_failed')
+        self.assertIsNone(result['answer'])
+        self.assertEqual([c for c in result['calls'] if c['role'] == 'worker'], [])
+
     def test_post_worker_jev_failure_withholds_candidate(self):
         result = self.broker(FakeCodex(), InvalidJev('after_worker')).run(SPEC)
         self.assertEqual(result['status'], 'failed')
@@ -290,6 +347,100 @@ class NativeTransitionBrokerTests(unittest.TestCase):
         finding = broker.audit_native_calls(result)
         self.assertFalse(finding['valid'])
         self.assertIn('native_return_without_jev_worker', finding['issues'])
+
+    def test_fused_broad_route_uses_six_jev_calls_and_reconciles_deferred_workers(self):
+        codex, jev = FakeCodex(), FusedJev()
+        broker = self.broker(codex, jev, gate_policy='fused')
+        result = broker.run(SPEC)
+        self.assertEqual((result['status'], result['gate_policy']), ('complete', 'fused'))
+        self.assertEqual(result['protocol_version'], 'cidm-fused-review-v1')
+        self.assertEqual([p['id'] for p in result['committed']],
+                         ['input', 'hidden1', 'hidden2', 'hidden3', 'output'])
+        self.assertTrue(result['audit']['valid'])
+        self.assertTrue(result['native_audit']['valid'])
+        self.assertEqual(result['audit']['jev_decisions'], 6)
+        self.assertEqual(result['native_audit']['worker_calls'], 4)
+        self.assertEqual([p for p, _, _ in jev.calls],
+                         ['authorize_first_unit'] + ['after_worker_fused'] * 5)
+        self.assertNotIn('project_route', [p for p, _, _ in jev.calls])
+        self.assertEqual(result['audit']['deferred_dispatched'], 4)
+
+    def test_fused_optional_checker_returns_to_jev_and_audits(self):
+        codex, jev = FakeCodex(), FusedJev(check_unit='hidden1')
+        result = self.broker(codex, jev, gate_policy='fused').run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        self.assertTrue(result['audit']['valid'])
+        self.assertTrue(result['native_audit']['valid'])
+        self.assertEqual(result['audit']['jev_decisions'], 7)
+        self.assertEqual(result['audit']['post_checker_decisions'], 1)
+        self.assertEqual(result['native_audit']['checker_calls'], 1)
+        self.assertEqual([p for p, _, _ in jev.calls].count('after_sol_high_fused'), 1)
+
+    def test_fused_early_stop_does_not_release_candidate(self):
+        codex, jev = FakeCodex(), FusedJev(stop_unit='hidden1')
+        result = self.broker(codex, jev, gate_policy='fused').run(SPEC)
+        self.assertEqual(result['status'], 'stopped_by_jev')
+        self.assertIsNone(result['answer'])
+        self.assertEqual([p['id'] for p in result['committed']], ['input'])
+        self.assertEqual(len(codex.calls), 1)
+        self.assertEqual(len(jev.calls), 3)
+
+    def test_fused_invalid_jev_and_worker_failure_withhold_answer(self):
+        for label, codex, jev in (
+            ('invalid_jev', FakeCodex(), FusedJev(invalid_phase='after_worker_fused')),
+            ('worker_failure', FakeCodex(fail=True), FusedJev()),
+        ):
+            with self.subTest(label=label):
+                result = self.broker(codex, jev, label, gate_policy='fused').run(SPEC)
+                self.assertEqual(result['status'], 'failed')
+                self.assertIsNone(result['answer'])
+
+    def test_fused_reserves_post_result_jev_slot_before_codex_dispatch(self):
+        codex, jev = FakeCodex(), FusedJev()
+        broker = self.broker(codex, jev, gate_policy='fused',
+                             config=RunConfig(max_jev_calls=2))
+        result = broker.run(SPEC)
+        self.assertEqual(result['status'], 'failed')
+        self.assertIsNone(result['answer'])
+        self.assertEqual([p for p, _, _ in jev.calls],
+                         ['authorize_first_unit', 'after_worker_fused'])
+        self.assertEqual(codex.calls, [])
+
+    def test_fused_native_audit_rejects_missing_post_worker_jev(self):
+        broker = self.broker(FakeCodex(), FusedJev(), gate_policy='fused')
+        result = broker.run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        index = next(i for i, call in enumerate(broker.calls) if call['role'] == 'worker')
+        broker.calls[index + 1]['phase'] = 'authorize_first_unit'
+        finding = broker.audit_native_calls(result)
+        self.assertFalse(finding['valid'])
+        self.assertIn('native_return_without_jev_worker', finding['issues'])
+
+    def test_fused_native_audit_binds_codex_artifact_to_return_event(self):
+        broker = self.broker(FakeCodex(), FusedJev(), gate_policy='fused')
+        result = broker.run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        worker = next(call for call in broker.calls if call['role'] == 'worker')
+        worker['artifact_hash'] = fingerprint({'different': 'artifact'})
+        finding = broker.audit_native_calls(result)
+        self.assertFalse(finding['valid'])
+        self.assertIn('native_call_event_binding_mismatch', finding['issues'])
+
+    def test_fused_audit_exception_fails_closed_before_writing_result(self):
+        with patch('audit_fused_network.audit', side_effect=RuntimeError('audit unavailable')):
+            result = self.broker(FakeCodex(), FusedJev(), gate_policy='fused').run(SPEC)
+        saved = json.loads((self.folder / 'run' / 'result.json').read_text(encoding='utf-8'))
+        self.assertEqual((result['status'], saved['status']), ('audit_failed', 'audit_failed'))
+        self.assertIsNone(result['answer'])
+        self.assertIsNone(saved['answer'])
+
+    def test_fused_short_path_stays_one_luna_call(self):
+        codex, jev = FakeCodex(), FusedJev()
+        result = self.broker(codex, jev, gate_policy='fused').run(self.short_spec())
+        self.assertEqual((result['status'], result['route']), ('complete', 'short_self_contained'))
+        self.assertEqual([(model, effort) for model, effort, _ in codex.calls],
+                         [('gpt-6-luna', 'low')])
+        self.assertEqual(jev.calls, [])
 
 
 if __name__ == '__main__':

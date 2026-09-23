@@ -12,6 +12,10 @@ CIDM routes data and bounded reasoning tasks through existing models. **Within t
 
 CIDM is intended for broader projects that need multiple stages, evidence, delegation, or review. Simple standalone yes/no questions and routine one-step tasks do not invoke the skill. When invoked, the host first classifies **each new input with its carried project context**. Broad, multi-step, or uncertain work enters the five-unit Jev network by default. Only a self-contained request that needs one bounded response uses a single **GPT-6 Luna low** worker and then finishes after task-specific validation. A brief follow-up to an active project is classified with that project's context. Sol-high review inside the five-unit graph is optional.
 
+The [fused transition protocol](docs/GATE-FUSION.md) keeps five units but lets one Jev decision review the current result and authorize the next exact route. A clean path has six decisions instead of the separate before/after protocol's ten. This is a structural call count; token, cost, latency, and quality effects have not been measured in matched live runs. An approved early stop leaves the remaining units unexecuted.
+
+The standalone Codex CLI broker exposes this protocol with `--gate-policy fused`; its default remains the existing separate-gate protocol while the fused path is evaluated. Both protocols use the same short Luna-low route for an explicitly self-contained input.
+
 The former mandatory-check path used **36,663 tokens and $0.012201078** on a three-row GPT-6 fixture. After removing the checker prerequisite and strengthening final-text validation, a five-unit run completed with **zero Sol-high calls, 25,510 tokens, and $0.006413654**. An earlier conditional run with different Jev worker choices cost $0.00312019. A one-call Sol-high baseline used **431 tokens and $0.001726**. All final values and source checks passed. These individual runs on an intentionally small demonstration do not estimate project-level efficiency. See [the current recorded run](research/live-gpt6-optional-final/README.md), [the first conditional run](research/live-gpt6-optional-fixture/README.md), [the earlier mandatory run](research/live-gpt6-fixture/README.md), and [benchmark boundaries](docs/BENCHMARKS.md).
 
 Under the earlier routing policy, the [compact Jev fast exit](research/live-gpt6-fast-exit/README.md) chose exact code in **one Jev call, 716 tokens, and $0.000026964**, with no worker or checker call. An earlier wording took 889 tokens for the same choice. These traces document a previous policy on an easy fixture. They do not measure the new Luna-low short path or project-level routing.
@@ -118,6 +122,12 @@ The request defaults to five units. A **live** run requires a Codex CLI sign-in 
 
 ```bash
 python scripts/native_transition_broker.py --live --task examples/native-project.request.json --out runs/native-project-001
+```
+
+To study the revised decision density, use `--gate-policy fused` and a different fresh output directory. It keeps five units and an explicit Jev decision after each completed result; it has no measured live efficiency result yet.
+
+```bash
+python scripts/native_transition_broker.py --live --gate-policy fused --task examples/native-project.request.json --out runs/native-fused-001
 ```
 
 The broker limits the goal, carried context, and source excerpts; its generic checks validate structure and reference integrity, not whether a project answer is correct. It records Codex usage when the CLI reports it, but leaves Codex plan dollar cost and ordinary primary-agent tokens unknown. No live project-level savings have been measured for this route.

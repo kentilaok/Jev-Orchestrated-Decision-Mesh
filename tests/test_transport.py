@@ -253,6 +253,27 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(request.call_args.args[1]["model"], "typesafe/jev-1.13")
         self.assertGreater(gateway.calls[0]["reserved_usd"], 0)
 
+    def test_fused_jev_phases_have_live_typed_transport(self):
+        gateway = self.gateway()
+        cases = [
+            ('authorize_first_unit', {'compute': 'Exact input', 'stop': 'Stop'}, 'compute'),
+            ('after_worker_fused', {'forward_finish': 'Release', 'stop': 'Stop'}, 'forward_finish'),
+            ('after_sol_high_fused', {'forward_finish': 'Release', 'stop': 'Stop'}, 'forward_finish'),
+        ]
+        responses = []
+        for _, options, choice in cases:
+            response = decision_response()
+            response['answers']['next']['choice'] = choice
+            response['answers']['next']['probabilities'] = {
+                name: float(name == choice) for name in options}
+            responses.append(response)
+        with patch.object(gateway, '_request', side_effect=responses) as request:
+            for phase, options, choice in cases:
+                self.assertEqual(gateway.network_judge(phase, options, {'unit': 'input'})['choice'], choice)
+        self.assertEqual(request.call_count, 3)
+        self.assertEqual([call.args[1]['questions']['next']['criteria'] for call in request.call_args_list],
+                         [options for _, options, _ in cases])
+
     def test_no_parameter_activation_phase(self):
         gateway = self.gateway()
         with patch.object(gateway, "_request") as request, self.assertRaises(MeshError):

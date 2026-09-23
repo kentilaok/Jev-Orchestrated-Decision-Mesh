@@ -13,6 +13,7 @@ from adaptive_run import CLASSIFICATION_FLAGS, PROJECT_OPTIONS, input_snapshot_h
 from atomic_mesh import MeshError, fingerprint, packed, require
 from checked_network import CheckedNetwork, Unit, blind
 from config import RunConfig
+from fused_checked_network import FusedCheckedNetwork
 from transport import CHECK_SCHEMA, Gateway
 
 
@@ -107,22 +108,59 @@ def artifact_schema(source_ids):
 
 
 class NativeTransitionBroker:
-    def __init__(self, adapter, judge, config, folder, *, simulation=False):
+    def __init__(self, adapter, judge, config, folder, *, simulation=False,
+                 gate_policy='legacy'):
         require(isinstance(config, RunConfig), 'validated_run_config_required')
+        require(gate_policy in ('legacy', 'fused'), 'invalid_native_gate_policy')
         self.adapter, self.judge, self.config = adapter, judge, config
         self.folder, self.simulation = Path(folder), simulation
+        self.gate_policy = gate_policy
         self.calls = []
         self.worker_count = 0
         self.checker_count = 0
 
+    def jev_budget(self):
+        """Derive remaining Jev capacity from accepted call receipts, never prompt text."""
+        receipts = [call for call in self.calls if call['role'] == 'jev']
+        spent_tokens = 0
+        spent_usd = 0.0
+        for call in receipts:
+            usage = call.get('usage')
+            require(type(usage) is dict
+                    and type(usage.get('input_tokens')) is int and usage['input_tokens'] >= 0
+                    and type(usage.get('output_tokens')) is int and usage['output_tokens'] >= 0
+                    and type(usage.get('cost')) in (int, float)
+                    and math.isfinite(usage['cost']) and usage['cost'] >= 0,
+                    'jev_usage_unknown_budget')
+            spent_tokens += usage['input_tokens'] + usage['output_tokens']
+            spent_usd += usage['cost']
+        return {'jev_calls_remaining': self.config.max_jev_calls - len(receipts),
+                'jev_tokens_remaining': self.config.max_jev_tokens - spent_tokens,
+                'jev_api_usd_remaining': self.config.max_usd - spent_usd,
+                'basis': 'reported_input_plus_output_and_cost_receipts'}
+
     def _judge(self, phase, options, state):
+        budget = self.jev_budget()
+        require(budget['jev_calls_remaining'] > 0
+                and budget['jev_tokens_remaining'] > 0
+                and budget['jev_api_usd_remaining'] > 0,
+                'jev_budget_exhausted')
+        bounded_state = copy.deepcopy(state)
+        bounded_state['remaining_budget'] = budget
         try:
-            decision = self.judge(phase, options, state)
+            decision = self.judge(phase, options, bounded_state)
             require(type(decision) is dict and decision.get('choice') in options,
                     'invalid_jev_choice')
             require(self.simulation or (decision.get('live') is True
                                         and 'jev-' in decision.get('model', '')),
                     'real_jev_required')
+            usage = decision.get('usage')
+            require(type(usage) is dict
+                    and type(usage.get('input_tokens')) is int and usage['input_tokens'] >= 0
+                    and type(usage.get('output_tokens')) is int and usage['output_tokens'] >= 0
+                    and type(usage.get('cost')) in (int, float)
+                    and math.isfinite(usage['cost']) and usage['cost'] >= 0,
+                    'jev_usage_unknown_budget')
         except Exception as error:
             self.calls.append({'role': 'jev', 'phase': phase, 'status': 'failed',
                                'usage': None, 'error_type': type(error).__name__})
@@ -134,6 +172,14 @@ class NativeTransitionBroker:
         return decision
 
     def _codex(self, role, model, effort, prompt, schema):
+        # A completed worker/checker always needs capacity for its return to Jev.
+        if role == 'checker' or (role == 'worker' and self.calls and
+                                 any(call['role'] == 'jev' for call in self.calls)):
+            budget = self.jev_budget()
+            require(budget['jev_calls_remaining'] > 0
+                    and budget['jev_tokens_remaining'] > 0
+                    and budget['jev_api_usd_remaining'] > 0,
+                    'post_codex_jev_capacity_exhausted')
         if role == 'worker':
             require(self.worker_count < self.config.max_worker_calls,
                     'native_worker_call_budget_exhausted')
@@ -177,25 +223,70 @@ class NativeTransitionBroker:
         issues = []
         events = network_result.get('events', [])
         calls = self.calls
-        if not calls or calls[0].get('role') != 'jev' or calls[0].get('phase') != 'project_route':
+        fused = network_result.get('protocol_version') == 'cidm-fused-review-v1'
+        entry_phase = 'authorize_first_unit' if fused else 'project_route'
+        if not calls or calls[0].get('role') != 'jev' or calls[0].get('phase') != entry_phase:
             issues.append('missing_entry_jev')
         if any(call.get('status') != 'ok' for call in calls):
             issues.append('failed_call_in_complete_run')
         for index, call in enumerate(calls):
             if call.get('role') not in ('worker', 'checker'):
                 continue
-            required_phase = 'after_worker' if call['role'] == 'worker' else 'after_sol_high'
+            required_phase = (('after_worker_fused' if call['role'] == 'worker'
+                               else 'after_sol_high_fused') if fused else
+                              ('after_worker' if call['role'] == 'worker' else 'after_sol_high'))
             following = calls[index + 1] if index + 1 < len(calls) else None
             if not following or following.get('role') != 'jev' or following.get('phase') != required_phase:
                 issues.append('native_return_without_jev_' + call['role'])
-        decisions = sum(event['kind'] == 'jev_decision' for event in events)
-        requested_workers = sum(event['kind'] == 'dispatch'
-                                and event.get('worker_id') == 'producer'
-                                and event['action'].get('worker_route') is not None
-                                for event in events)
+        decision_events = [event for event in events if event['kind'] == 'jev_decision']
+        jev_calls = [call for call in calls if call['role'] == 'jev']
+        network_jev_calls = jev_calls if fused else jev_calls[1:]
+        for call, event in zip(network_jev_calls, decision_events):
+            if (call.get('phase') != event.get('phase')
+                    or call.get('choice') != event.get('decision', {}).get('choice')):
+                issues.append('jev_call_event_binding_mismatch')
+        if not fused and jev_calls and (jev_calls[0].get('choice') !=
+                                       network_result.get('entry_decision', {}).get('choice')):
+            issues.append('entry_jev_choice_mismatch')
+        decisions = len(decision_events)
+        requested_workers = sum(
+            (event['kind'] == 'dispatch' and event.get('worker_id') == 'producer'
+             or fused and event['kind'] == 'deferred_dispatch')
+            and event.get('action', {}).get('worker_route') is not None
+            for event in events)
         requested_checkers = sum(event['kind'] == 'dispatch'
                                  and event.get('worker_id') == 'checker' for event in events)
-        if sum(call['role'] == 'jev' for call in calls) != decisions + 1:
+        dispatches = []
+        for event in events:
+            kind = event['kind']
+            action = event.get('action', {})
+            if ((kind == 'dispatch' and event.get('worker_id') == 'producer')
+                    or fused and kind == 'deferred_dispatch'):
+                route = action.get('worker_route')
+                if route is not None:
+                    dispatches.append(('worker', action.get('unit_id'),
+                                       route.get('model', '').removeprefix('openai/'),
+                                       route.get('effort')))
+            elif kind == 'dispatch' and event.get('worker_id') == 'checker':
+                dispatches.append(('checker', action.get('unit_id'),
+                                   self.config.checker_model.removeprefix('openai/'),
+                                   self.config.checker_effort))
+        returns = [event for event in events if event['kind'] == 'provisional_return'
+                   and (event.get('worker_id') == 'checker'
+                        or event.get('worker_id') == 'producer'
+                        and event.get('unit_id') != 'input')]
+        codex_calls = [call for call in calls if call['role'] in ('worker', 'checker')]
+        if len(dispatches) != len(codex_calls) or len(returns) != len(codex_calls):
+            issues.append('native_call_event_count_mismatch')
+        for call, dispatch, returned in zip(codex_calls, dispatches, returns):
+            role, unit_id, model, effort = dispatch
+            if (call['role'] != role or call.get('requested_model') != model
+                    or call.get('requested_effort') != effort
+                    or returned.get('worker_id') != ('producer' if role == 'worker' else 'checker')
+                    or returned.get('unit_id') != unit_id
+                    or call.get('artifact_hash') != fingerprint(returned.get('value'))):
+                issues.append('native_call_event_binding_mismatch')
+        if sum(call['role'] == 'jev' for call in calls) != decisions + (0 if fused else 1):
             issues.append('jev_call_event_mismatch')
         if sum(call['role'] == 'worker' for call in calls) != requested_workers:
             issues.append('worker_call_event_mismatch')
@@ -254,7 +345,8 @@ class NativeTransitionBroker:
         goal = normalized['goal']
         context = normalized['context']
         route = normalized['classification']['scope']
-        result = {'status': 'failed', 'route': route, 'answer': None,
+        result = {'status': 'failed', 'route': route, 'gate_policy': self.gate_policy,
+                  'answer': None,
                   'task_hash': normalized['snapshot_hash'],
                   'classification': normalized['classification'],
                   'source_hashes': self._source_hashes(sources, sources),
@@ -283,14 +375,17 @@ class NativeTransitionBroker:
                 journal({'kind': 'short_result', 'candidate_hash': fingerprint(candidate),
                          'hard_checks': checks, 'released': result['status'] == 'complete'})
             else:
-                options = copy.deepcopy(PROJECT_OPTIONS)
-                decision = self._judge('project_route', options,
-                                       {'goal': goal, 'context_hash': fingerprint(context),
-                                        'source_hashes': result['source_hashes'],
-                                        'classification': normalized['classification'],
-                                        'required_topology': [unit.id for unit in PROJECT_UNITS]})
-                result['entry_decision'] = decision
-                if decision['choice'] != 'five_unit':
+                entry_allowed = True
+                if self.gate_policy == 'legacy':
+                    options = copy.deepcopy(PROJECT_OPTIONS)
+                    decision = self._judge('project_route', options,
+                                           {'goal': goal, 'context_hash': fingerprint(context),
+                                            'source_hashes': result['source_hashes'],
+                                            'classification': normalized['classification'],
+                                            'required_topology': [unit.id for unit in PROJECT_UNITS]})
+                    result['entry_decision'] = decision
+                    entry_allowed = decision['choice'] == 'five_unit'
+                if not entry_allowed:
                     result['status'] = ('needs_evidence' if decision['choice'] == 'retrieve_evidence'
                                         else 'stopped_by_jev')
                 else:
@@ -324,7 +419,9 @@ class NativeTransitionBroker:
                                                    'Judge the local unit, not entire project completion.'})
                         return self._codex('checker', self.config.checker_model,
                                            self.config.checker_effort, prompt, CHECK_SCHEMA)
-                    network = CheckedNetwork(goal, sources, self._judge, produce, check, validate,
+                    network_class = (FusedCheckedNetwork if self.gate_policy == 'fused'
+                                     else CheckedNetwork)
+                    network = network_class(goal, sources, self._judge, produce, check, validate,
                                              policy=self.config.to_dict(),
                                              checker_identity={'model': self.config.checker_model,
                                                                'effort': self.config.checker_effort},
@@ -335,17 +432,30 @@ class NativeTransitionBroker:
                     result.update(network_result)
                     result['route'] = route
                     if result['status'] == 'complete':
-                        from audit_network import audit
-                        audit_result = audit(result)
-                        native_audit = self.audit_native_calls(result)
-                        result['audit'] = audit_result
-                        result['native_audit'] = native_audit
-                        if not audit_result['valid'] or not native_audit['valid']:
+                        try:
+                            if self.gate_policy == 'fused':
+                                from audit_fused_network import audit
+                            else:
+                                from audit_network import audit
+                            audit_result = audit(result)
+                            native_audit = self.audit_native_calls(result)
+                            result['audit'] = audit_result
+                            result['native_audit'] = native_audit
+                            if not audit_result['valid'] or not native_audit['valid']:
+                                result['status'], result['answer'] = 'audit_failed', None
+                        except Exception as error:
                             result['status'], result['answer'] = 'audit_failed', None
+                            result['audit_error_type'] = type(error).__name__
         except MeshError as error:
             result['status'] = str(error)
             result['answer'] = None
+        except Exception as error:
+            result['status'] = 'native_runtime_failure'
+            result['answer'] = None
+            result['error_type'] = type(error).__name__
         finally:
+            if result['status'] != 'complete':
+                result['answer'] = None
             result['calls'] = copy.deepcopy(self.calls)
             result['primary_agent_tokens'] = None
             result['jev_api_cost_usd'] = (sum(call['usage']['cost'] for call in self.calls
@@ -365,6 +475,8 @@ def main():
                         help='JSON goal, accepted context, sources, and fresh classification')
     parser.add_argument('--out', type=Path)
     parser.add_argument('--config', type=Path)
+    parser.add_argument('--gate-policy', choices=('legacy', 'fused'), default='legacy',
+                        help='Use the optional fused Jev gate protocol for broad requests')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
@@ -376,6 +488,7 @@ def main():
     normalized = validate_spec(spec)
     if args.validate_only:
         print(packed({'route': normalized['classification']['scope'],
+                      'gate_policy': args.gate_policy,
                       'snapshot_hash': normalized['snapshot_hash'],
                       'source_ids': list(normalized['sources']),
                       'model_calls': 0}))
@@ -392,7 +505,7 @@ def main():
         return gateway.network_judge(phase, options, state)
     broker = NativeTransitionBroker(
         CodexCliAdapter(astra_explicitly_authorized=config.astra_explicitly_authorized),
-        judge, config, args.out)
+        judge, config, args.out, gate_policy=args.gate_policy)
     result = broker.run(spec)
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []
     result['jev_provider_events'] = provider_events

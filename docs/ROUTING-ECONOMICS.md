@@ -27,11 +27,38 @@ The [recorded fast-exit fixture](../research/live-gpt6-fast-exit/README.md) meas
 2. **API dollars:** Sum the provider-reported charge for every attempted call. Keep missing charges as unknown. OpenRouter Jev and OpenRouter workers share an API bill; Codex signed in with ChatGPT does not.
 3. **Codex plan usage:** Record model, effort, turn and subagent usage, remaining plan allowance, and any added ChatGPT credits. These are not API dollars. An API pricing table cannot by itself predict depletion of a subscription allowance.
 
-For an API call with uncached input tokens `I`, cached input tokens `H`, and output tokens `O`, the illustrative model charge is
+## Published API list prices
 
-`C = (I − H) × p_in / 1,000,000 + H × p_cached / 1,000,000 + O × p_out / 1,000,000`.
+The following are **USD per million tokens**, checked on **2026-09-23**. GPT-6 rows use [OpenAI's Standard, short-context API prices](https://developers.openai.com/api/docs/pricing); Jev uses its [OpenRouter model price](https://openrouter.ai/typesafe/jev-1.13/api). They are list prices, not measured CIDM costs. Jev is TypeSafe's separate decision API, not a GPT-6 worker. Confirm the actual provider and live price before a run.
 
-Use actual provider-reported charges for results. The formula is a forecast: provider routing, regional processing, caching, tool charges, and billing rules may change it. The default local reservation makes **no assumed cache discount**. [OpenAI API pricing](https://developers.openai.com/api/docs/pricing) lists the current base rates. [Codex pricing](https://learn.chatgpt.com/docs/pricing) lists separate plan and credit terms.
+| Model and permitted CIDM role | Uncached input | Cache read | Cache write | Output |
+|---|---:|---:|---:|---:|
+| Jev 1.13; typed decisions | $0.042 | Not listed | Not listed | $0.00 |
+| GPT-6 Luna; short branch or unit worker, low–xhigh effort | $0.10 | $0.01 | $0.125 | $0.50 |
+| GPT-6 Sol; unit worker or conditional checker, low–xhigh effort | $2.00 | $0.20 | $2.50 | $10.00 |
+| GPT-6 Astra; low effort **only after specific authorization** | $10.00 | $1.00 | $12.50 | $50.00 |
+
+The long-context, regional, processing-mode, provider-routing, and tool charges can differ. CIDM has no Terra or Opus worker route. Under the same uncached input/output token footprint, Sol's listed GPT-6 token rates are 20× Luna's and Astra's are 5× Sol's; that ratio does **not** mean equal calls, effort, task success, or end-to-end costs.
+
+When GPT-6 workers run through **Codex signed in with ChatGPT**, [Codex's Standard credit rates](https://learn.chatgpt.com/docs/pricing) are a separate ledger, in **credits per million tokens**:
+
+| Model | Input | Cached input | Output |
+|---|---:|---:|---:|
+| GPT-6 Luna | 2.5 | 0.25 | 12.5 |
+| GPT-6 Sol | 50 | 5 | 250 |
+| GPT-6 Astra, if specifically authorized | 250 | 25 | 1,250 |
+
+The cited Codex table lists input, cached input, and output credit rates; it does not list a separate cache-write credit rate. Included plan usage is consumed first; these rates alone cannot predict how much of a subscription's allowance a task uses. Purchased credits, when available, are separate from API-dollar charges. Jev has no Codex credit row because this design calls it through an external API.
+
+When purchased credits apply, an illustrative Codex model charge is `K = ((I − H) × k_in + H × k_cached + O × k_out) / 1,000,000`, using that model's credit rates above. This does not estimate included-plan allowance consumption.
+
+Effort is a setting within a model, not a separate per-token price row. Higher effort can generate more [reasoning tokens billed as output](https://developers.openai.com/api/docs/guides/reasoning), so the amount charged can rise even at the same model rate. For a concrete rate illustration, 10,000 uncached input tokens and 1,000 output tokens would cost $0.0015 on Luna, $0.0300 on Sol, or $0.1500 on Astra before tools or other surcharges. A Jev decision over 10,000 input tokens would have a $0.00042 listed model charge; its typed output is not a comparable 1,000-token worker answer.
+
+For an API call with total input `I`, cache-read input `H`, cache-write input `W` (when separately billed), and output `O`, the illustrative model charge is
+
+`C = (I − H − W) × p_in / 1,000,000 + H × p_cache_read / 1,000,000 + W × p_cache_write / 1,000,000 + O × p_out / 1,000,000`.
+
+The four token categories must be disjoint and nonnegative. [OpenAI's cache guide](https://developers.openai.com/api/docs/guides/prompt-caching) explains the separate read and write rates. If cache-write tokens or the provider's billing mode are unknown, this equation cannot determine the exact bill; keep the estimate labeled partial. Use actual provider-reported charges for results. The default local reservation assumes no cache-read discount; this does not cover a possible cache-write premium. A Codex task signed in with ChatGPT may consume included allowance or purchased credits; its GPT-6 API-list-price equivalent is **not** its measured Codex charge. The Jev API call remains an external API expense.
 
 For a five-unit CIDM run with `n` completed or attempted units, total cost is
 

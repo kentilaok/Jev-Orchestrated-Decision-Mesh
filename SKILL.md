@@ -27,6 +27,8 @@ Use `scripts/network_run.py --live` only for the explicitly selected **OpenRoute
 
 Use five sequential units: **input → interpret → compute → reconcile → output**. For each unit:
 
+Use the [fused transition contract](docs/GATE-FUSION.md) when the selected controller supports its audited deferred permits: the Jev decision after one result may also authorize the next exact unit route. This retains all five logical units and Jev after every completed result while avoiding a separate Jev call that only repeats the next unit's authorization. A failed hard check has no forward option; a Jev stop can end a broad run before output without claiming completion. Keep the separate before/after protocol for existing saved traces and controllers that do not enforce fused permits. Gate-count reductions are a design hypothesis until matched live runs measure total tokens, cost, latency, and accepted quality.
+
 1. Give Jev the objective, relevant original evidence, accepted context, and predefined operations. For generative units, offer **GPT-6 Luna** and **GPT-6 Sol** at `low`, `medium`, `high`, and `xhigh`. Jev selects one exact model and effort or stops. Use deterministic code for units that do not need a generative worker.
 2. Dispatch exactly the approved model, effort, and operation using a single-use permit. Workers return a compact artifact: text, structured data, source IDs, five scores from 1–5, and an optional uncalibrated self-probability.
 3. Validate the artifact and run available deterministic checks. Return **every completed worker or deterministic result to Jev**. Jev chooses `forward`, `repair`, `escalate`, `check_sol_high`, `retrieve_evidence`, or `stop` from eligible options. A valid candidate may forward without Sol High; failed hard checks never can.
@@ -42,10 +44,12 @@ Jev selects typed options; it does not generate prose summaries. Code or a reaso
 
 - Bind approvals to the precise operation, source versions, accepted context, candidate hash, optional checker hash, and frozen configuration. Reused permits, changed inputs, or missing predecessors must block dispatch or forwarding.
 - Jev controls observable operations between inference calls. It cannot intercept a model's hidden internal thinking or individual generated tokens. More granular control requires smaller bounded calls, with measured overhead.
+- Label an operation **deterministic** only when trusted code applies a fixed algorithm to frozen inputs without a model choosing, interpreting, designing, writing, repairing, or judging that operation's substance. Running tests or exact code is deterministic execution; a primary agent deciding what code to write or how to repair it is generative work. Route that work through a recorded worker when possible, or record primary-agent model usage as unknown. Never count an unmetered primary agent as a zero-token worker.
 - The default route catalog contains only GPT-6 Luna and GPT-6 Sol at `low` through `xhigh`; GPT-5.6 and Terra are excluded. Sol `xhigh` is available for difficult general planning. Prefer the least costly option likely to meet the local quality bar, but treat Jev's choice as a hypothesis until measured.
 - When Jev requests extra review, use **GPT-6 Sol high** and return its result to Jev. Sol High is not a prerequisite for every unit. Astra is absent unless the user specifically authorizes it and the run configuration sets `astra_explicitly_authorized: true` with sufficient cost reservations; that adds **Astra low** as an option. Do not silently select it. Model/provider changes must be explicit and recorded. A separate checker context does not guarantee statistically independent errors.
 - Keep credentials in the environment. Preserve attempt logs, unknown usage, and failure status. Host callbacks are trusted code; this controller is not a sandbox.
 - Set budgets for Jev calls and reported tokens, worker calls, checker calls, and total API dollars. The intended short path has one Luna-low worker call and no Jev or checker call. A token ceiling can reject an over-budget Jev decision after usage is reported; it cannot undo charges already incurred. Report [orchestration metrics](docs/ORCHESTRATION-BUDGETS.md) and keep unknown counters unknown.
+- Derive every Jev remaining-budget field from the append-only provider receipts before the next gate. Use reported `total_tokens` if trustworthy; otherwise sum input and output once. Cached input and reasoning output are subsets, not extra tokens. If a claimed remaining balance disagrees with receipts or usage is missing, mark it unknown and block dependent dispatch until reconciled. Reserve at least the mandatory post-result Jev call before launching a worker or checker.
 - Do not initiate paid inference merely to explain or edit the architecture. An explicit bounded live-run request authorizes that run without another confirmation ritual.
 
 ## Reference commands
@@ -61,6 +65,7 @@ python <skill>/scripts/adaptive_run.py --live --config <skill>/examples/config.o
 python <skill>/scripts/network_run.py --live --config <skill>/examples/config.openrouter.json --task <skill>/examples/production-records.json --out <new-run-dir>
 python <skill>/scripts/native_transition_broker.py --validate-only --task <skill>/examples/native-project.request.json
 python <skill>/scripts/native_transition_broker.py --live --task <skill>/examples/native-project.request.json --out <new-run-dir>
+python <skill>/scripts/native_transition_broker.py --live --gate-policy fused --task <skill>/examples/native-project.request.json --out <new-run-dir>
 python -m unittest discover -s <skill>/tests -v
 ```
 
