@@ -34,9 +34,12 @@ class PlaceholderWorker:
 
 class CheckedNetwork:
     def __init__(self, goal, sources, judge, producer, checker, validator, *,
-                 policy=None, checker_identity=None, worker_routes=None, simulation=False, journal=None, units=UNITS):
+                 policy=None, checker_identity=None, worker_routes=None, simulation=False, journal=None, units=UNITS,
+                 deterministic_units=None):
         require(len(units)==5 and [u.id for u in units]==[u.id for u in UNITS], 'expected_five_sequential_units')
         self.units=units; self.producer=producer; self.checker=checker; self.validator=validator
+        self.deterministic_units=frozenset(('input','hidden2') if deterministic_units is None else deterministic_units)
+        require(self.deterministic_units <= {u.id for u in units}, 'unknown_deterministic_unit')
         self.policy=copy.deepcopy(policy or {"version":"training-free-v1"})
         self.policy['review_policy']='jev_conditional_sol_high_v3'
         astra_allowed=self.policy.get('astra_explicitly_authorized') is True
@@ -140,7 +143,7 @@ class CheckedNetwork:
                          'policy_version':self.policy_version}
             state=self.state(unit); state['repair_feedback']=feedback
             options={'stop':{'description':'Stop without computing or forwarding.'}}
-            if unit.id in ('input','hidden2'):
+            if unit.id in self.deterministic_units:
                 options['compute']={'worker_id':'producer','action':{**base_action,'worker_route':None},
                                     'description':'Use deterministic code for this unit; no generative worker call.'}
             else:

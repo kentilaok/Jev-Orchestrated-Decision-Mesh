@@ -20,7 +20,7 @@ This project borrows the ideas of layered processing, connected units, and selec
 
 ## How it works
 
-For each new CIDM input, classify the request **together with accepted project context** before dispatch. This classification is a host/controller assertion, not a Jev decision or a trained classifier. If the combined work needs multiple stages, or its scope is uncertain, the default is five units. Jev then chooses bounded operations and reviews every completed unit result. Only a short, self-contained request takes one Luna-low worker pass, validation, and finish. A later input goes through classification again. The Python `scripts/adaptive_run.py` is a bounded structured-record example, not a classifier for arbitrary Codex messages. In interactive Codex, this is a skill-guided procedure rather than an installed transition broker. `scripts/network_run.py` runs the five-unit branch directly.
+For each new CIDM input, classify the request **together with accepted project context** before dispatch. This classification is a host/controller assertion, not a Jev decision or a trained classifier. If the combined work needs multiple stages, or its scope is uncertain, the default is five units. Jev then chooses bounded operations and reviews every completed unit result. Only a short, self-contained request takes one Luna-low worker pass, validation, and finish. A later input goes through classification again. The Python `scripts/adaptive_run.py` is a bounded structured-record example. The standalone `scripts/native_transition_broker.py` controls the Codex CLI subprocesses it launches for bounded project text. In an ordinary interactive Codex task, the skill remains a guided procedure; the broker does not intercept that primary agent. `scripts/network_run.py` runs the five-unit API branch directly.
 
 ```mermaid
 flowchart LR
@@ -65,7 +65,7 @@ flowchart TD
 
 **Within the five-unit network, a worker result always returns to Jev before the broker forwards it.** Sol High is optional; when called, its result also returns to Jev. The short Luna-low branch uses its own hard validator and finishes without a Jev pass. A failed hard check, invalid requested checker report, changed candidate, or missing predecessor prevents forwarding even if a model recommends it.
 
-The controller records the exact operation, inputs, source versions, candidate hash, optional checker hash, and approval IDs. Approvals are single-use. Unreviewed work stays out of accepted context. This controls exposed operations in the broker; it cannot intercept private thinking inside an inference call.
+The controller records the exact operation, inputs, source versions, candidate hash, optional checker hash, and approval IDs. Approvals are single-use. Unreviewed work stays out of accepted context. The Codex CLI broker applies these checks to its own child calls and accepted artifacts. It cannot intercept an independent interactive agent or private thinking inside an inference call.
 
 Read the [architecture](docs/ARCHITECTURE.md) for the data-flow explanation, [execution routes](docs/EXECUTION-ROUTES.md) for billing and authentication, and [connectors](docs/CONNECTORS.md) for extension boundaries.
 
@@ -80,9 +80,10 @@ Read the [architecture](docs/ARCHITECTURE.md) for the data-flow explanation, [ex
 | General planning option | GPT-6 Sol, xhigh effort |
 | Astra | Only when specifically authorized and enabled; low effort only |
 | API runner transport | OpenRouter, with an explicit provider route |
-| Codex-native route | Codex subagents use the active ChatGPT sign-in; Jev still needs separate API access |
+| Controlled Codex CLI route | A standalone broker launches bounded read-only `codex exec` children; Jev still needs separate API access |
+| Interactive Codex route | Model-specific subagents follow the skill instructions; no automatic broker controls the primary agent |
 
-The worker catalog is limited to **OpenAI GPT-6 Luna and Sol** by default. Jev chooses a worker route for each generative five-unit operation. Deterministic units do not spend worker tokens. If requested, the checker uses Sol high. Jev is a separate TypeSafe service. The Python runner uses OpenRouter APIs for model calls and defaults to an explicit Azure route, which worked under the validation account's zero-retention policy. When this skill runs within a Codex session signed in with ChatGPT, model-specific Codex subagents can use plan usage for Luna/Sol work, while Jev remains a separate API call. The Codex-native path is a skill-guided workflow; the Python runner does not execute that path. [OpenAI Docs authentication](https://learn.chatgpt.com/docs/auth) distinguishes plan access from API-key billing.
+The worker catalog is limited to **OpenAI GPT-6 Luna and Sol** by default. Jev chooses a worker route for each generative five-unit operation. Deterministic units do not spend worker tokens. If requested, the checker uses Sol high. Jev is a separate TypeSafe service. The OpenRouter runner uses API credits for all model calls and defaults to an explicit Azure route, which worked under the validation account's zero-retention policy. Codex CLI and model-specific Codex subagents use the active Codex sign-in for Luna/Sol work, while Jev remains a separate API call. The standalone CLI broker and the interactive skill workflow have different control boundaries. The broker records the requested model and effort; an actual served model identity is unknown when Codex does not expose it. [OpenAI Docs authentication](https://learn.chatgpt.com/docs/auth) distinguishes plan access from API-key billing.
 
 ## Quick start
 
@@ -105,7 +106,21 @@ For a live run, set `OPENROUTER_API_KEY` securely in your environment, then use:
 python scripts/adaptive_run.py --live --config examples/config.openrouter.json --task examples/production-records.json --out runs/broad-live-001
 ```
 
-With no `--classification` file, this command conservatively takes the broad five-unit route. The [execution guide](docs/EXECUTION-ROUTES.md#scope-classification-before-an-api-run) shows how the host can supply a task-and-context-bound assertion for the short Luna-low fixture. The command consumes OpenRouter API credits for calls it actually makes. Inspect the config's models, limits, and reserve prices first. Each output directory must be new so prior traces are preserved. Provider availability and account policies can prevent a run; there is no silent model fallback.
+With no `--classification` file, this command conservatively takes the broad five-unit route. The [execution guide](docs/EXECUTION-ROUTES.md#scope-classification-before-the-bounded-api-fixture) shows how the host can supply a task-and-context-bound assertion for the short Luna-low fixture. The command consumes OpenRouter API credits for calls it actually makes. Inspect the config's models, limits, and reserve prices first. Each output directory must be new so prior traces are preserved. Provider availability and account policies can prevent a run; there is no silent model fallback.
+
+For a controlled Codex CLI project slice, the [native broker](docs/EXECUTION-ROUTES.md#codex-cli-transition-broker) launches its own read-only Codex children and returns every completed five-unit result to Jev. First check the bundled [request](examples/native-project.request.json) without model calls:
+
+```bash
+python scripts/native_transition_broker.py --validate-only --task examples/native-project.request.json
+```
+
+The request defaults to five units. A **live** run requires a Codex CLI sign-in and `OPENROUTER_API_KEY`, and consumes the corresponding plan usage or API credits:
+
+```bash
+python scripts/native_transition_broker.py --live --task examples/native-project.request.json --out runs/native-project-001
+```
+
+The broker limits the goal, carried context, and source excerpts; its generic checks validate structure and reference integrity, not whether a project answer is correct. It records Codex usage when the CLI reports it, but leaves Codex plan dollar cost and ordinary primary-agent tokens unknown. No live project-level savings have been measured for this route.
 
 ## Use as a Codex skill
 
@@ -128,7 +143,7 @@ Tests run offline without credentials. They cover gate ordering, immutable polic
 ## Current scope
 
 - Five sequential checked units and a reusable gate contract.
-- A bounded structured-record example for the entry choice, plus a separate five-unit runner; arbitrary Codex project-message classification remains a skill-guided host decision.
+- A bounded structured-record API example, plus a standalone Codex CLI transition broker for limited project text and source excerpts. Classification remains a caller assertion whose semantic correctness the broker cannot prove.
 - Bounded repair and rechecking; explicit stops for missing evidence.
 - Jev-selected GPT-6 Luna/Sol worker route, Jev after every unit output, and conditional Sol-high review.
 - Separate decision and reasoning connector interfaces; OpenRouter is the bundled implementation.

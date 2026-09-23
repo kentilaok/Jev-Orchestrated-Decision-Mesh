@@ -6,15 +6,16 @@ CIDM separates **who chooses the next action** from **who generates or checks an
 
 | Route | Luna/Sol worker and optional Sol-high checker | Jev decisions | Usage boundary | Implemented here |
 |---|---|---|---|---|
-| Codex with ChatGPT sign-in | Codex-hosted model-specific subagents or Codex SDK/CLI threads | Explicit TypeSafe/OpenRouter Jev call | Codex consumes plan usage or ChatGPT credits; Jev consumes separate API credits | Skill-guided orchestration; no automatic native broker in the Python reference runner |
+| Standalone Codex CLI transition broker | Read-only `codex exec` subprocesses launched by the broker | Explicit TypeSafe/OpenRouter Jev call | Codex uses its configured sign-in; Jev consumes separate API credits | `scripts/native_transition_broker.py` governs only the subprocess transitions it launches |
+| Interactive Codex task | Codex-hosted model-specific subagents | Explicit TypeSafe/OpenRouter Jev call | Codex uses its configured sign-in; Jev consumes separate API credits | Skill-guided orchestration; the primary interactive agent is not intercepted |
 | OpenRouter API | OpenRouter model calls | OpenRouter Jev endpoint | All model calls consume OpenRouter API credits | `scripts/network_run.py --live` |
 | Offline simulation | Deterministic fixture functions | Fake typed choices | No provider usage | `scripts/network_run.py --offline` |
 
 The recommended interactive route, when model-specific subagents are available in a ChatGPT-signed-in Codex session, is **Codex-native Luna/Sol plus separately authenticated Jev**. This uses the user's included Codex allowance until its limits apply. It does not convert a ChatGPT subscription into an OpenAI Platform or OpenRouter API allowance. `network_run.py --live` always uses OpenRouter for Jev **and** workers/checkers; it is not a subscription-backed run. If Codex was signed in with an API key, its calls follow API pricing rather than included plan usage. See [OpenAI Docs authentication](https://learn.chatgpt.com/docs/auth) and [Codex pricing](https://learn.chatgpt.com/docs/pricing).
 
-The Codex-native route is an agent workflow described by this skill, not an automatically enforced adapter in `network_run.py`. Its model identity, token totals, and approval evidence must be logged by the host; the Python run audit covers only its own runner. If that evidence is unavailable, report the gap instead of claiming a machine-verified run. For a repeatable standalone application, use the OpenRouter runner or implement and validate a separate native adapter.
+The standalone Codex CLI broker controls its own child calls and records the usage events that Codex emits. It cannot govern an already-running interactive primary agent, inspect private reasoning, or prove the actual served model unless the event stream reports it. Requested model and effort are recorded separately from observed identity. In an interactive task, the skill remains a procedure and ledger contract; report any missing model, token, or approval evidence instead of claiming a machine-verified run. The separate OpenRouter runner uses a different billing and execution path.
 
-## Scope classification before an API run
+## Scope classification before the bounded API fixture
 
 The host/controller classifies the current input together with accepted project context before running `scripts/adaptive_run.py`. Record the classification and bind it to the exact task and context. The classification is an assertion by the host, not a Jev or learned model judgment; the bounded runner checks its binding, not its semantic truth. A broad, multi-step, uncertain, or unclassified task enters the five-unit branch by default. Jev's entry choice on that branch is limited to `five_unit`, `retrieve_evidence`, or `stop`; it cannot replace the graph with a single worker or exact code. A request explicitly classified as short and self-contained runs **one GPT-6 Luna-low worker**, validates its result, and finishes without Jev or Sol-high calls. The next user input requires a fresh classification that includes any continuing project context.
 
@@ -44,7 +45,29 @@ Path("short-classification.json").write_text(json.dumps(classification), encodin
 
 Run that short fixture with `python scripts/adaptive_run.py --offline --task examples/production-records.json --classification short-classification.json --out <fresh-dir>`. Omit `--classification` to exercise the conservative five-unit default. In live mode, add `--live --config examples/config.openrouter.json` in place of `--offline`; it consumes API credits. The JSON is a host assertion, so a false claim can still misroute work despite a valid hash. A new input or changed context requires a new classification file.
 
-## Codex-native procedure
+## Codex CLI transition broker
+
+`scripts/native_transition_broker.py` is the standalone controlled route for bounded project text. Its caller supplies the current goal, accepted carried context, and source map. The current input contract limits the goal and context to 1,200 characters each and accepts at most six source excerpts of at most 1,200 characters each; it is not a repository-wide autonomous agent. A missing or uncertain classification enters the full five-unit network. A short route requires an explicit classification bound to that exact input and context; any multi-step, broad, ambiguous, context-dependent, active-project, or unresolved-stage signal forces five units. The binding guards against stale assertions but cannot prove that the caller judged the project's scope correctly. Each new input needs a fresh classification against the carried context.
+
+In the broad route, the broker runs five sequential project units. For a generative unit it authorizes one bounded `codex exec --json --output-schema` child in read-only mode, validates the returned structure, sources, and predecessor links, then returns the result to Jev. Jev chooses an eligible next transition. An optional Sol-high check also runs in a separate child and returns to Jev. Forwarding requires both deterministic eligibility and the matching Jev decision; the broker does not infer approval from a passing worker or checker. Final release also requires a valid unit journal, matching native call order, and no unresolved issue left by an accepted unit. The short route makes one Luna-low child call, validates it, and finishes without Jev review.
+
+The broker's control boundary is the calls it launches and the artifacts it accepts. An ordinary interactive Codex primary agent can still read files, plan, or act outside this controller. A child inference may itself reason internally; the broker sees its returned events and artifact, not individual thoughts or tokens as they are generated. The ledger records requested model and effort, Jev decisions, artifact/source hashes, and Codex usage when reported. It leaves `codex_cost_usd` and `primary_agent_tokens` unknown; Codex plan dollar cost is not inferred from token usage. Treat unreported usage or served identity as unknown. Offline tests exercise the control protocol; they are not evidence of live subscription billing, model quality, or project-level token savings.
+
+The included [project request](../examples/native-project.request.json) has `classification: null` and an active project with unresolved stages, so it takes the five-unit route. Validate its shape and route first; this makes zero model calls:
+
+```bash
+python scripts/native_transition_broker.py --validate-only --task examples/native-project.request.json
+```
+
+A live run requires a working Codex CLI sign-in and `OPENROUTER_API_KEY` for Jev. It consumes Codex plan usage or the account's configured API billing, plus separately billed Jev calls:
+
+```bash
+python scripts/native_transition_broker.py --live --task examples/native-project.request.json --out runs/native-project-001
+```
+
+Use a new output directory for each run. The script writes `result.json` and `journal.jsonl`. It requests an exact model and effort for each Codex child, uses an isolated read-only workspace with no Git repository requirement, and rejects a returned trace containing tool actions. That rejection occurs **after** the child runs; the read-only sandbox can still permit file reads, so this is not pre-execution tool isolation. The adapter excludes the Jev and other configured API keys from the child environment. The source and context limits make this a controlled project slice, not a means to read an entire repository. To test a short route, create a fresh request with no active project or unresolved stages and an explicit `classification` containing the current snapshot hash, a rationale, and all four scope flags set to `false`; a stale hash is rejected. The classification remains a human or host judgment. Do not label structural and source checks as proof of semantic quality.
+
+## Interactive Codex procedure
 
 1. Invoke CIDM for a broader project with meaningful stages, evidence, or review needs, or when explicitly requested. Answer simple standalone yes/no questions and routine one-step tasks directly, without this skill. For every new input to an invoked CIDM workflow, classify the input with accepted project context and record the rationale and context version. If broad, multi-step, or uncertain, use the five-unit network; Jev may retrieve missing evidence or stop, but does not shorten the topology. If short and self-contained, make one GPT-6 Luna-low call, apply task-specific hard checks, and finish. Confirm the active Codex sign-in and model availability before dispatch. Use a dedicated workspace for the ledger. Do not export ChatGPT session tokens or use them as an API key.
 2. For the five-unit route, record the user's objective, constraints, source IDs and hashes, completed units, available routes, budget mode, and outstanding questions. Send a bounded state plus typed route options to Jev with `scripts/jev_decide.py`. The key is read from `OPENROUTER_API_KEY`; record Jev usage and provider identity.
