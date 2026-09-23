@@ -1,0 +1,56 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "original_request": "Return each component state for release V3C5E, using exactly enabled or disabled. Return answers with exactly these fields: renderer, indexer, notifier, archiver. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+    "answer_fields": [
+      "renderer",
+      "indexer",
+      "notifier",
+      "archiver"
+    ],
+    "documents": [
+      {
+        "id": "D871D",
+        "text": "Final component record for release V3C5E: the archiver component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      },
+      {
+        "id": "D5A3C",
+        "text": "Final component record for release V3C5E: the indexer component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      },
+      {
+        "id": "D9F50",
+        "text": "Final component record for release V3C5E: the notifier component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      },
+      {
+        "id": "D851E",
+        "text": "Final component record for release V3C5E: the renderer component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      }
+    ]
+  },
+  "questions": {
+    "operation": {
+      "type": "choice",
+      "instructions": "Choose a suitable way to send sources to the fixed Sol worker for this task.",
+      "criteria": {
+        "select_context": "Some documents do not contribute; use the independently evaluated relevance results to select sources.",
+        "use_all": "All documents may be needed, or reliable source selection is uncertain."
+      }
+    },
+    "keep_D871D": {
+      "type": "noul",
+      "instructions": "Is document D871D potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D5A3C": {
+      "type": "noul",
+      "instructions": "Is document D5A3C potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D9F50": {
+      "type": "noul",
+      "instructions": "Is document D9F50 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D851E": {
+      "type": "noul",
+      "instructions": "Is document D851E potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    }
+  }
+}

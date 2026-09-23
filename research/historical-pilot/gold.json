@@ -1,0 +1,1088 @@
+{
+  "seed": 1729,
+  "tasks": {
+    "DEV-01": {
+      "answers": {
+        "interval_minutes": 15,
+        "mode": "batch"
+      },
+      "evidence": {
+        "interval_minutes": {
+          "allowed": [
+            "DF283"
+          ],
+          "groups": [
+            [
+              "DF283"
+            ]
+          ]
+        },
+        "mode": {
+          "allowed": [
+            "DF283"
+          ],
+          "groups": [
+            [
+              "DF283"
+            ]
+          ]
+        }
+      },
+      "features": [],
+      "id": "DEV-01",
+      "split": "development",
+      "status": "complete",
+      "stratum": "short_direct"
+    },
+    "DEV-02": {
+      "answers": {
+        "expiry_days": null,
+        "quota_gb": 75,
+        "storage_class": "warm"
+      },
+      "evidence": {
+        "expiry_days": {
+          "allowed": [
+            "DEE35"
+          ],
+          "groups": [
+            [
+              "DEE35"
+            ]
+          ]
+        },
+        "quota_gb": {
+          "allowed": [
+            "D1EE4",
+            "D3EB9"
+          ],
+          "groups": [
+            [
+              "D1EE4"
+            ],
+            [
+              "D3EB9"
+            ]
+          ]
+        },
+        "storage_class": {
+          "allowed": [
+            "D1EE4",
+            "D3EB9"
+          ],
+          "groups": [
+            [
+              "D1EE4"
+            ],
+            [
+              "D3EB9"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "reference_join",
+        "explicit_absence"
+      ],
+      "id": "DEV-02",
+      "split": "development",
+      "status": "partial",
+      "stratum": "cross_document"
+    },
+    "E-C01": {
+      "answers": {
+        "allocation_mode": "surge",
+        "cap_applied": "yes",
+        "effective_workers": 12,
+        "execution_slots": 36
+      },
+      "evidence": {
+        "allocation_mode": {
+          "allowed": [
+            "D262F",
+            "D9D51"
+          ],
+          "groups": [
+            [
+              "D262F"
+            ],
+            [
+              "D9D51"
+            ]
+          ]
+        },
+        "cap_applied": {
+          "allowed": [
+            "D262F",
+            "D36D2",
+            "D9D51",
+            "DB72E"
+          ],
+          "groups": [
+            [
+              "D262F"
+            ],
+            [
+              "DB72E"
+            ],
+            [
+              "D36D2"
+            ],
+            [
+              "D9D51"
+            ]
+          ]
+        },
+        "effective_workers": {
+          "allowed": [
+            "D262F",
+            "D36D2",
+            "D9D51",
+            "DB72E"
+          ],
+          "groups": [
+            [
+              "D262F"
+            ],
+            [
+              "DB72E"
+            ],
+            [
+              "D36D2"
+            ],
+            [
+              "D9D51"
+            ]
+          ]
+        },
+        "execution_slots": {
+          "allowed": [
+            "D262F",
+            "D36D2",
+            "D9D51",
+            "D9FC8",
+            "DB72E"
+          ],
+          "groups": [
+            [
+              "D262F"
+            ],
+            [
+              "DB72E"
+            ],
+            [
+              "D36D2"
+            ],
+            [
+              "D9D51"
+            ],
+            [
+              "D9FC8"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "reference_join",
+        "unit_conversion",
+        "exception",
+        "cap_caveat"
+      ],
+      "id": "E-C01",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "cross_document"
+    },
+    "E-C02": {
+      "answers": {
+        "alert": "warn",
+        "defects": 20,
+        "included_items": 400,
+        "rate_per_1000": 50
+      },
+      "evidence": {
+        "alert": {
+          "allowed": [
+            "D2051",
+            "D2B80",
+            "D428B",
+            "D4F31",
+            "DE5C0"
+          ],
+          "groups": [
+            [
+              "D428B"
+            ],
+            [
+              "D2B80"
+            ],
+            [
+              "D2051"
+            ],
+            [
+              "DE5C0"
+            ]
+          ]
+        },
+        "defects": {
+          "allowed": [
+            "D2051",
+            "D2B80",
+            "D428B",
+            "D4F31",
+            "DE5C0"
+          ],
+          "groups": [
+            [
+              "D428B"
+            ],
+            [
+              "D2B80"
+            ],
+            [
+              "D2051"
+            ],
+            [
+              "DE5C0"
+            ]
+          ]
+        },
+        "included_items": {
+          "allowed": [
+            "D2051",
+            "D2B80",
+            "D428B",
+            "D4F31",
+            "DE5C0"
+          ],
+          "groups": [
+            [
+              "D428B"
+            ],
+            [
+              "D2B80"
+            ],
+            [
+              "D2051"
+            ],
+            [
+              "DE5C0"
+            ]
+          ]
+        },
+        "rate_per_1000": {
+          "allowed": [
+            "D2051",
+            "D2B80",
+            "D428B",
+            "D4F31",
+            "DE5C0"
+          ],
+          "groups": [
+            [
+              "D428B"
+            ],
+            [
+              "D2B80"
+            ],
+            [
+              "D2051"
+            ],
+            [
+              "DE5C0"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "reference_join",
+        "excluded_segment",
+        "rate_denominator"
+      ],
+      "id": "E-C02",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "cross_document"
+    },
+    "E-C03": {
+      "answers": {
+        "action": "hold",
+        "conflict": "unresolved",
+        "endpoint": null,
+        "retention_days": 14
+      },
+      "evidence": {
+        "action": {
+          "allowed": [
+            "D70CF",
+            "D8A54",
+            "DB002"
+          ],
+          "groups": [
+            [
+              "DB002"
+            ],
+            [
+              "D8A54"
+            ],
+            [
+              "D70CF"
+            ]
+          ]
+        },
+        "conflict": {
+          "allowed": [
+            "D70CF",
+            "D8A54",
+            "DB002"
+          ],
+          "groups": [
+            [
+              "DB002"
+            ],
+            [
+              "D8A54"
+            ],
+            [
+              "D70CF"
+            ]
+          ]
+        },
+        "endpoint": {
+          "allowed": [
+            "D70CF",
+            "D8A54",
+            "DB002"
+          ],
+          "groups": [
+            [
+              "DB002"
+            ],
+            [
+              "D8A54"
+            ],
+            [
+              "D70CF"
+            ]
+          ]
+        },
+        "retention_days": {
+          "allowed": [
+            "D4D7C",
+            "DB002"
+          ],
+          "groups": [
+            [
+              "D4D7C"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "contradiction",
+        "null_required",
+        "equal_authority"
+      ],
+      "id": "E-C03",
+      "split": "evaluation",
+      "status": "partial",
+      "stratum": "cross_document"
+    },
+    "E-C04": {
+      "answers": {
+        "full_total_credits": null,
+        "known_subtotal_credits": 345,
+        "missing_sku": "S84F8",
+        "priced_lines": 5,
+        "quote_state": "incomplete",
+        "total_units": 108
+      },
+      "evidence": {
+        "full_total_credits": {
+          "allowed": [
+            "D2AB2",
+            "D5FCE",
+            "D712E",
+            "D7C88",
+            "D88D6",
+            "D9105",
+            "DB356",
+            "DFF01"
+          ],
+          "groups": [
+            [
+              "DFF01"
+            ],
+            [
+              "D712E"
+            ],
+            [
+              "D5FCE"
+            ]
+          ]
+        },
+        "known_subtotal_credits": {
+          "allowed": [
+            "D2AB2",
+            "D5FCE",
+            "D712E",
+            "D7BDD",
+            "D7C88",
+            "D8002",
+            "D88D6",
+            "D9105",
+            "DA16A",
+            "DA5E9",
+            "DB356",
+            "DBD1B",
+            "DD2AB",
+            "DE726",
+            "DFA10",
+            "DFF01"
+          ],
+          "groups": [
+            [
+              "DFF01"
+            ],
+            [
+              "DE726"
+            ],
+            [
+              "DA16A"
+            ],
+            [
+              "D712E"
+            ],
+            [
+              "DFA10"
+            ],
+            [
+              "DA5E9"
+            ],
+            [
+              "D8002"
+            ],
+            [
+              "DBD1B"
+            ],
+            [
+              "D7BDD"
+            ],
+            [
+              "D2AB2"
+            ],
+            [
+              "D9105"
+            ],
+            [
+              "D88D6"
+            ],
+            [
+              "DB356"
+            ],
+            [
+              "D7C88"
+            ],
+            [
+              "D5FCE"
+            ]
+          ]
+        },
+        "missing_sku": {
+          "allowed": [
+            "D2AB2",
+            "D5FCE",
+            "D712E",
+            "D7C88",
+            "D88D6",
+            "D9105",
+            "DB356",
+            "DFF01"
+          ],
+          "groups": [
+            [
+              "DFF01"
+            ],
+            [
+              "D712E"
+            ],
+            [
+              "D2AB2"
+            ],
+            [
+              "D9105"
+            ],
+            [
+              "D88D6"
+            ],
+            [
+              "DB356"
+            ],
+            [
+              "D7C88"
+            ],
+            [
+              "D5FCE"
+            ]
+          ]
+        },
+        "priced_lines": {
+          "allowed": [
+            "D2AB2",
+            "D5FCE",
+            "D712E",
+            "D7C88",
+            "D88D6",
+            "D9105",
+            "DB356",
+            "DFF01"
+          ],
+          "groups": [
+            [
+              "DFF01"
+            ],
+            [
+              "D712E"
+            ],
+            [
+              "D2AB2"
+            ],
+            [
+              "D9105"
+            ],
+            [
+              "D88D6"
+            ],
+            [
+              "DB356"
+            ],
+            [
+              "D7C88"
+            ],
+            [
+              "D5FCE"
+            ]
+          ]
+        },
+        "quote_state": {
+          "allowed": [
+            "D2AB2",
+            "D5FCE",
+            "D712E",
+            "D7C88",
+            "D88D6",
+            "D9105",
+            "DB356",
+            "DFF01"
+          ],
+          "groups": [
+            [
+              "DFF01"
+            ],
+            [
+              "D712E"
+            ],
+            [
+              "D5FCE"
+            ]
+          ]
+        },
+        "total_units": {
+          "allowed": [
+            "D712E",
+            "D7BDD",
+            "D8002",
+            "DA5E9",
+            "DBD1B",
+            "DD2AB",
+            "DFA10",
+            "DFF01"
+          ],
+          "groups": [
+            [
+              "DFF01"
+            ],
+            [
+              "D712E"
+            ],
+            [
+              "DFA10"
+            ],
+            [
+              "DA5E9"
+            ],
+            [
+              "D8002"
+            ],
+            [
+              "DBD1B"
+            ],
+            [
+              "D7BDD"
+            ],
+            [
+              "DD2AB"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "all_sources_needed",
+        "reference_join",
+        "unit_conversion",
+        "explicit_absence",
+        "null_required"
+      ],
+      "id": "E-C04",
+      "split": "evaluation",
+      "status": "partial",
+      "stratum": "cross_document"
+    },
+    "E-N01": {
+      "answers": {
+        "codec": "avif",
+        "max_width_px": 1440,
+        "retry_limit": 3,
+        "strip_metadata": "yes"
+      },
+      "evidence": {
+        "codec": {
+          "allowed": [
+            "D34A3"
+          ],
+          "groups": [
+            [
+              "D34A3"
+            ]
+          ]
+        },
+        "max_width_px": {
+          "allowed": [
+            "D34A3"
+          ],
+          "groups": [
+            [
+              "D34A3"
+            ]
+          ]
+        },
+        "retry_limit": {
+          "allowed": [
+            "D34A3"
+          ],
+          "groups": [
+            [
+              "D34A3"
+            ]
+          ]
+        },
+        "strip_metadata": {
+          "allowed": [
+            "D34A3"
+          ],
+          "groups": [
+            [
+              "D34A3"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "selective_retrieval"
+      ],
+      "id": "E-N01",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "noisy_retrieval"
+    },
+    "E-N02": {
+      "answers": {
+        "failed": 28,
+        "queue": "cobalt",
+        "received": 420,
+        "successful": 392
+      },
+      "evidence": {
+        "failed": {
+          "allowed": [
+            "D103E"
+          ],
+          "groups": [
+            [
+              "D103E"
+            ]
+          ]
+        },
+        "queue": {
+          "allowed": [
+            "D103E"
+          ],
+          "groups": [
+            [
+              "D103E"
+            ]
+          ]
+        },
+        "received": {
+          "allowed": [
+            "D103E"
+          ],
+          "groups": [
+            [
+              "D103E"
+            ]
+          ]
+        },
+        "successful": {
+          "allowed": [
+            "D103E"
+          ],
+          "groups": [
+            [
+              "D103E"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "selective_retrieval"
+      ],
+      "id": "E-N02",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "noisy_retrieval"
+    },
+    "E-N03": {
+      "answers": {
+        "queue": "amber",
+        "selected_revision": 3,
+        "timeout_seconds": 45
+      },
+      "evidence": {
+        "queue": {
+          "allowed": [
+            "D268C",
+            "D7146",
+            "D92A8",
+            "DD215"
+          ],
+          "groups": [
+            [
+              "D92A8"
+            ],
+            [
+              "D268C"
+            ]
+          ]
+        },
+        "selected_revision": {
+          "allowed": [
+            "D268C",
+            "D7146",
+            "D92A8",
+            "DD215"
+          ],
+          "groups": [
+            [
+              "D92A8"
+            ]
+          ]
+        },
+        "timeout_seconds": {
+          "allowed": [
+            "D268C",
+            "D7146",
+            "D92A8",
+            "DD215"
+          ],
+          "groups": [
+            [
+              "D92A8"
+            ],
+            [
+              "D268C"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "release_precedence",
+        "draft_caveat"
+      ],
+      "id": "E-N03",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "noisy_retrieval"
+    },
+    "E-N04": {
+      "answers": {
+        "carton_limit_kg": 18,
+        "inserts_per_box": 6,
+        "label_mode": "monochrome",
+        "seal_code": "R2"
+      },
+      "evidence": {
+        "carton_limit_kg": {
+          "allowed": [
+            "D19E7"
+          ],
+          "groups": [
+            [
+              "D19E7"
+            ]
+          ]
+        },
+        "inserts_per_box": {
+          "allowed": [
+            "D19E7"
+          ],
+          "groups": [
+            [
+              "D19E7"
+            ]
+          ]
+        },
+        "label_mode": {
+          "allowed": [
+            "D19E7"
+          ],
+          "groups": [
+            [
+              "D19E7"
+            ]
+          ]
+        },
+        "seal_code": {
+          "allowed": [
+            "D19E7"
+          ],
+          "groups": [
+            [
+              "D19E7"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "selective_retrieval"
+      ],
+      "id": "E-N04",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "noisy_retrieval"
+    },
+    "E-S01": {
+      "answers": {
+        "alpha": "preserve",
+        "format": "webp",
+        "max_width_px": 1600
+      },
+      "evidence": {
+        "alpha": {
+          "allowed": [
+            "DA65F"
+          ],
+          "groups": [
+            [
+              "DA65F"
+            ]
+          ]
+        },
+        "format": {
+          "allowed": [
+            "DA65F"
+          ],
+          "groups": [
+            [
+              "DA65F"
+            ]
+          ]
+        },
+        "max_width_px": {
+          "allowed": [
+            "DA65F"
+          ],
+          "groups": [
+            [
+              "DA65F"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "direct_lookup"
+      ],
+      "id": "E-S01",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "short_direct"
+    },
+    "E-S02": {
+      "answers": {
+        "rejected_crates": 8,
+        "released_crates": 88,
+        "unit": "crate"
+      },
+      "evidence": {
+        "rejected_crates": {
+          "allowed": [
+            "D1199",
+            "D4B7B"
+          ],
+          "groups": [
+            [
+              "D4B7B"
+            ]
+          ]
+        },
+        "released_crates": {
+          "allowed": [
+            "D1199",
+            "D4B7B"
+          ],
+          "groups": [
+            [
+              "D4B7B"
+            ]
+          ]
+        },
+        "unit": {
+          "allowed": [
+            "D1199",
+            "D4B7B"
+          ],
+          "groups": [
+            [
+              "D4B7B"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "direct_lookup"
+      ],
+      "id": "E-S02",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "short_direct"
+    },
+    "E-S03": {
+      "answers": {
+        "approver": "desk",
+        "mode": "bulk",
+        "window_hours": 6
+      },
+      "evidence": {
+        "approver": {
+          "allowed": [
+            "D2C9E",
+            "DF980"
+          ],
+          "groups": [
+            [
+              "D2C9E"
+            ],
+            [
+              "DF980"
+            ]
+          ]
+        },
+        "mode": {
+          "allowed": [
+            "D2C9E",
+            "DF980"
+          ],
+          "groups": [
+            [
+              "D2C9E"
+            ],
+            [
+              "DF980"
+            ]
+          ]
+        },
+        "window_hours": {
+          "allowed": [
+            "D2C9E",
+            "DF980"
+          ],
+          "groups": [
+            [
+              "D2C9E"
+            ],
+            [
+              "DF980"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "inclusive_boundary",
+        "all_sources_needed"
+      ],
+      "id": "E-S03",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "short_direct"
+    },
+    "E-S04": {
+      "answers": {
+        "archiver": "disabled",
+        "indexer": "disabled",
+        "notifier": "enabled",
+        "renderer": "enabled"
+      },
+      "evidence": {
+        "archiver": {
+          "allowed": [
+            "D871D"
+          ],
+          "groups": [
+            [
+              "D871D"
+            ]
+          ]
+        },
+        "indexer": {
+          "allowed": [
+            "D5A3C"
+          ],
+          "groups": [
+            [
+              "D5A3C"
+            ]
+          ]
+        },
+        "notifier": {
+          "allowed": [
+            "D9F50"
+          ],
+          "groups": [
+            [
+              "D9F50"
+            ]
+          ]
+        },
+        "renderer": {
+          "allowed": [
+            "D851E"
+          ],
+          "groups": [
+            [
+              "D851E"
+            ]
+          ]
+        }
+      },
+      "features": [
+        "direct_lookup",
+        "all_sources_needed"
+      ],
+      "id": "E-S04",
+      "split": "evaluation",
+      "status": "complete",
+      "stratum": "short_direct"
+    }
+  },
+  "version": "cidm-synthetic-pilot-1.0"
+}

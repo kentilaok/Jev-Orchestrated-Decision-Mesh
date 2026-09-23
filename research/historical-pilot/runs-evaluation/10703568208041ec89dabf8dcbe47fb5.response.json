@@ -1,0 +1,29 @@
+{
+  "model": "typesafe/jev-1.13-20260917",
+  "answers": {
+    "keep_D79DA": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "keep_DA65F": {
+      "type": "noul",
+      "noul": 0.97
+    },
+    "operation": {
+      "type": "choice",
+      "choice": "select_context",
+      "probabilities": {
+        "select_context": 0.88,
+        "use_all": 0.12
+      },
+      "confidence": 0.75
+    }
+  },
+  "usage": {
+    "input_tokens": 681,
+    "output_tokens": 75,
+    "cost": 2.8602e-05
+  },
+  "id": "gen-dec-1790101772-zDznSRsecr3iC8KiZ1mI",
+  "provider": "TypeSafe"
+}

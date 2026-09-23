@@ -1,0 +1,85 @@
+{
+  "model": "openai/gpt-6-sol",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Answer the task using only the supplied original records. Include only rows whose kind equals include_kind in the totals; trial rows are excluded. Compute total defects divided by total items for the included rows, then multiply by scale. Return one concise final answer in text with the literal citation [records] and state that trial rows were excluded. Return exactly the requested JSON fields: text, numeric answer, unit, included_segments, excluded_segments, and source_ids ([\"records\"]). Preserve segment order. Do not provide hidden reasoning or add unsupported sources. The unit field must be exactly: defects per 1000 production items."
+    },
+    {
+      "role": "user",
+      "content": "{\"source_id\":\"records\",\"task\":{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}}"
+    }
+  ],
+  "reasoning": {
+    "effort": "high",
+    "exclude": true
+  },
+  "max_completion_tokens": 2000,
+  "provider": {
+    "only": [
+      "azure"
+    ],
+    "allow_fallbacks": false,
+    "require_parameters": true,
+    "ignore": [
+      "azure/us",
+      "azure/eu"
+    ]
+  },
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "gate_result",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "defects per 1000 production items"
+            ]
+          },
+          "included_segments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excluded_segments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "records"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 1
+          }
+        },
+        "required": [
+          "text",
+          "answer",
+          "unit",
+          "included_segments",
+          "excluded_segments",
+          "source_ids"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

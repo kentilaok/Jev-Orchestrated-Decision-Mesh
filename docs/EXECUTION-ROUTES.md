@@ -1,0 +1,35 @@
+# CIDM execution routes
+
+CIDM separates **who chooses the next action** from **who generates or checks an artifact**. Jev is TypeSafe's decision model. GPT-6 Luna and Sol are OpenAI generative workers. A Luna pass is not a Jev pass.
+
+## Choose the transport before a run
+
+| Route | Luna/Sol worker and Sol-high checker | Jev decisions | Usage boundary | Implemented here |
+|---|---|---|---|---|
+| Codex with ChatGPT sign-in | Codex-hosted model-specific subagents or Codex SDK/CLI threads | Explicit TypeSafe/OpenRouter Jev call | Codex consumes plan usage or ChatGPT credits; Jev consumes separate API credits | Skill-guided orchestration; no automatic native broker in the Python reference runner |
+| OpenRouter API | OpenRouter model calls | OpenRouter Jev endpoint | All model calls consume OpenRouter API credits | `scripts/network_run.py --live` |
+| Offline simulation | Deterministic fixture functions | Fake typed choices | No provider usage | `scripts/network_run.py --offline` |
+
+The recommended interactive route, when model-specific subagents are available in a ChatGPT-signed-in Codex session, is **Codex-native Luna/Sol plus separately authenticated Jev**. This uses the user's included Codex allowance until its limits apply. It does not convert a ChatGPT subscription into an OpenAI Platform or OpenRouter API allowance. `network_run.py --live` always uses OpenRouter for Jev **and** workers/checkers; it is not a subscription-backed run. If Codex was signed in with an API key, its calls follow API pricing rather than included plan usage. See [OpenAI Docs authentication](https://learn.chatgpt.com/docs/auth) and [Codex pricing](https://learn.chatgpt.com/docs/pricing).
+
+The Codex-native route is an agent workflow described by this skill, not an automatically enforced adapter in `network_run.py`. Its model identity, token totals, and approval evidence must be logged by the host; the Python run audit covers only its own runner. If that evidence is unavailable, report the gap instead of claiming a machine-verified run. For a repeatable standalone application, use the OpenRouter runner or implement and validate a separate native adapter.
+
+## Codex-native procedure
+
+1. Confirm the active Codex sign-in and model availability. Use a dedicated task workspace for the ledger. Do not export ChatGPT session tokens or use them as an API key. For a general CIDM request, first send Jev the typed [topology choice](../examples/topology.request.json); run the checked path only when selected or explicitly required by the user.
+2. Record the user's objective, constraints, source IDs and hashes, completed units, available routes, budget mode, and outstanding questions. Send a bounded state plus typed route options to Jev with `scripts/jev_decide.py`. The key is read from `OPENROUTER_API_KEY`; record Jev usage and provider identity.
+3. Execute only the option Jev selected. For a generative unit, request a host-native subagent with the exact `gpt-6-luna` or `gpt-6-sol` model and `low`/`medium`/`high`/`xhigh` effort. Reserve Sol `xhigh` for planning that warrants it. When model overrides or subagents are unavailable, stop or deliberately choose the separately billed API route before dispatch. Do not silently substitute models. Deterministic units use code.
+4. Give the worker original source references and only the relevant accepted predecessor artifacts. Require a compact typed artifact, five 1–5 self-scores, and a source map. Keep full original evidence retrievable. Treat self-scores and model probability as unverified observations.
+5. Apply task-specific deterministic checks. Jev authorizes a distinct `gpt-6-sol` **high** checker on the exact candidate and evidence. Hide the worker's self-scores, probability, previous checker opinions, and Jev's preferred answer from the checker.
+6. Send every completed checker result, including a bounded invalid-result envelope, back to Jev for `forward`, `repair`, `retrieve_evidence`, `verify_again`, or `stop`. Commit only if hard checks pass, the matching checker report passes, and Jev chooses `forward`. Keep permits single-use and repairs bounded. If a provider call fails or usage is unknown, stop without forwarding.
+7. Record the chosen model/effort, source and artifact hashes, checker receipt, Jev decision, attempted calls, and usage. Do not expose private model reasoning or claim that Jev intervened within one inference call.
+
+For programmatic plan-backed Codex calls, official options include the [Codex SDK](https://learn.chatgpt.com/docs/codex-sdk), [non-interactive `codex exec`](https://learn.chatgpt.com/docs/non-interactive-mode), and [App Server](https://learn.chatgpt.com/docs/app-server). These run the Codex agent harness under its configured sign-in; they do not provide raw Responses API calls under a subscription. `codex exec --json` emits `turn.completed.usage` with input, cached input, output, and reasoning output counters. Count all child threads and verify whether any host aggregate already includes them before summing. Cached input is part of input, and reasoning output is part of output; neither is added twice.
+
+For example, a trusted local runner can invoke a selected worker as `codex exec -m gpt-6-luna -c model_reasoning_effort=low -s read-only --output-schema <artifact-schema.json> --json -`, passing only that unit's instructions and evidence through stdin. The runner must validate the final artifact, record the JSONL usage and actual model information available from the host, and require a fresh Jev decision before the next dispatch. [Codex configuration](https://learn.chatgpt.com/docs/config-file/config-reference) documents `model_reasoning_effort`; the [non-interactive guide](https://learn.chatgpt.com/docs/non-interactive-mode) documents JSONL usage and structured output. This command is an integration pattern; the included `network_run.py` does not execute it.
+
+## Capacity and failure rule
+
+The checked five-unit reference requires a Sol-high review after each unit. Jev may route the generative worker to Luna, but it cannot remove that checker in this mode. If there is insufficient capacity for the checker **and its following Jev decision**, stop before starting the checker. The API runner reserves both. Native Codex usage limits are plan-managed, so the skill can request a bounded run and inspect available usage, but it cannot guarantee the host will admit the next turn.
+
+When Jev is unavailable, stop the CIDM flow. A Luna classifier may help summarize state, but it does not become Jev. Do not use a model-generated replacement decision while reporting the result as Jev-governed.

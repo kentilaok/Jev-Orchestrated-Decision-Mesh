@@ -1,0 +1,121 @@
+{
+  "model": "typesafe/jev-1.13-20260917",
+  "answers": {
+    "completeness": {
+      "type": "score",
+      "score": 2.94,
+      "legend": {
+        "0": "Material failure",
+        "1": "Major gaps",
+        "2": "Partially adequate",
+        "3": "Adequate with minor uncertainty",
+        "4": "Fully adequate"
+      },
+      "probabilities": {
+        "0": 0.13,
+        "1": 0.12,
+        "2": 0.05,
+        "3": 0.05,
+        "4": 0.65
+      },
+      "confidence": 0.12
+    },
+    "constraint_compliance": {
+      "type": "score",
+      "score": 2.48,
+      "legend": {
+        "0": "Material failure",
+        "1": "Major gaps",
+        "2": "Partially adequate",
+        "3": "Adequate with minor uncertainty",
+        "4": "Fully adequate"
+      },
+      "probabilities": {
+        "0": 0.19,
+        "1": 0.19,
+        "2": 0.07,
+        "3": 0.07,
+        "4": 0.48
+      },
+      "confidence": 0
+    },
+    "correctness": {
+      "type": "score",
+      "score": 3.03,
+      "legend": {
+        "0": "Material failure",
+        "1": "Major gaps",
+        "2": "Partially adequate",
+        "3": "Adequate with minor uncertainty",
+        "4": "Fully adequate"
+      },
+      "probabilities": {
+        "0": 0.11,
+        "1": 0.13,
+        "2": 0.06,
+        "3": 0.05,
+        "4": 0.65
+      },
+      "confidence": 0.19
+    },
+    "evidence_support": {
+      "type": "score",
+      "score": 2.79,
+      "legend": {
+        "0": "Material failure",
+        "1": "Major gaps",
+        "2": "Partially adequate",
+        "3": "Adequate with minor uncertainty",
+        "4": "Fully adequate"
+      },
+      "probabilities": {
+        "0": 0.07,
+        "1": 0.19,
+        "2": 0.12,
+        "3": 0.11,
+        "4": 0.51
+      },
+      "confidence": 0
+    },
+    "release": {
+      "type": "choice",
+      "choice": "accept",
+      "probabilities": {
+        "stop_unresolved": 0.01,
+        "revise": 0.33,
+        "accept": 0.66
+      },
+      "confidence": 0.49
+    },
+    "supported": {
+      "type": "noul",
+      "noul": 0.81
+    },
+    "usefulness": {
+      "type": "score",
+      "score": 3.01,
+      "legend": {
+        "0": "Material failure",
+        "1": "Major gaps",
+        "2": "Partially adequate",
+        "3": "Adequate with minor uncertainty",
+        "4": "Fully adequate"
+      },
+      "probabilities": {
+        "0": 0.09,
+        "1": 0.16,
+        "2": 0.05,
+        "3": 0.04,
+        "4": 0.66
+      },
+      "confidence": 0.17
+    }
+  },
+  "usage": {
+    "input_tokens": 1264,
+    "output_tokens": 138,
+    "cost": 5.3088e-05
+  },
+  "id": "gen-dec-1790101780-IafFbF9R6UlHGLZYsMr6",
+  "provider": "TypeSafe"
+}

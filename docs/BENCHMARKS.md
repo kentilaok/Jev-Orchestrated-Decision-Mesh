@@ -1,6 +1,6 @@
 # Benchmarks and evidence
 
-**Work in progress.** Main contributor: **Kenneth Vic A. Caber**.
+**Main contributor: Kenneth Vic A. Caber.**
 
 The historical CIDM pilot **did not save total tokens**. It reduced Sol usage and recorded a slightly lower API bill, but added substantial Jev overhead and withheld five answers. These results do not establish efficiency of the current training-free five-unit network.
 
@@ -41,11 +41,11 @@ All 52 evaluation calls supplied measured input, output, and cost. Reasoning tok
 
 The comparison covers API execution. One-time research, dataset and harness creation, and review were outside that boundary. Some earlier setup attempts lacked usage counters; unknowns were not treated as zero. The pilot therefore does not establish complete development-lifecycle savings.
 
-This document summarizes the historical report. The public repository does not include private request/response logs or claim that this summary alone reproduces the original experiment. A reproducible public benchmark needs a versioned dataset, grader, configuration, analysis code, and appropriately redacted usage evidence.
+The [historical reproducibility appendix](../research/historical-pilot/README.md) includes the synthetic task dataset and gold labels, frozen manifest, original harness and grader, an accounting amendment, saved call ledger, all 52 evaluation request/response pairs, regenerated analysis, checksums, and an offline verifier. The saved analysis reproduces byte-for-byte without API access. A new external model run can produce different answers and usage; the record is not an independently signed provider attestation.
 
 ## Current training-free path
 
-The present design requires Jev authorization, a separate Sol-high check, and a subsequent Jev option decision for every computational unit. These additional checks have a cost. The historical figures above are not measurements of that architecture, and successful integration is not a comparative benchmark.
+The checked five-unit design requires Jev authorization, a separate Sol-high check, and a subsequent Jev option decision for every unit. In a [single GPT-6 synthetic fixture](../research/live-gpt6-fixture/README.md), the checked run completed five units using **36,663 tokens and $0.012201078** across 23 calls; a correct one-call Sol-high baseline used **431 tokens and $0.001726**. The checked run cost **7.07×** more and used **85.06×** as many tokens on that easy task. This is one matched fixture, not an estimate for websites or other workloads. The historical GPT-5.6 pilot above is a different architecture.
 
 An earlier trained numeric-router experiment was **discarded** following the design correction. Its checkpoint, learned advisor, and synthetic classification accuracy are not part of the published path or evidence of current network performance. Neural-network concepts are architectural inspiration only.
 

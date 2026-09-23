@@ -1,0 +1,37 @@
+{
+  "model": "typesafe/jev-1.13-20260917",
+  "answers": {
+    "keep_D5A3C": {
+      "type": "noul",
+      "noul": 0.96
+    },
+    "keep_D851E": {
+      "type": "noul",
+      "noul": 0.95
+    },
+    "keep_D871D": {
+      "type": "noul",
+      "noul": 0.96
+    },
+    "keep_D9F50": {
+      "type": "noul",
+      "noul": 0.96
+    },
+    "operation": {
+      "type": "choice",
+      "choice": "use_all",
+      "probabilities": {
+        "use_all": 0.93,
+        "select_context": 0.07
+      },
+      "confidence": 0.85
+    }
+  },
+  "usage": {
+    "input_tokens": 869,
+    "output_tokens": 118,
+    "cost": 3.6498e-05
+  },
+  "id": "gen-dec-1790101788-xYSF86Tku7CQq6ocZNmo",
+  "provider": "TypeSafe"
+}

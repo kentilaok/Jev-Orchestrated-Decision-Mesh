@@ -1,0 +1,4 @@
+{"action":"delegate","arm":"B","gate":"ff4f26ab653c466bad7de9a212ebd640","omitted_source_ids":["D792A"],"selected_source_ids":["DF283"],"task_id":"DEV-01"}
+{"accepted":true,"action":"finish","arm":"B","attempt":0,"gate":"0048fd7c6ede44b1a8c892246ce5b708","task_id":"DEV-01"}
+{"action":"delegate","arm":"B","gate":"d2f1dcc2676b4b78ae8c5b4c3171ab93","omitted_source_ids":["D8FEE","DAB05","DE5B0","D4916","DE439","D5945","DC7B6","D6AD0","DAF38","DE98A","D1E6E","D84FF","D6CF3"],"selected_source_ids":["D3EB9","DEE35","D1EE4"],"task_id":"DEV-02"}
+{"accepted":true,"action":"finish","arm":"B","attempt":0,"gate":"cdc7ba380ab04c578e0b30b11222f0ed","task_id":"DEV-02"}

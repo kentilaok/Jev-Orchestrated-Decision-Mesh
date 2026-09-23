@@ -1,0 +1,69 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "records",
+        "title": "Original records"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "records",
+        "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+        "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Normalize the original data without changing source values or scope."
+    },
+    "parents": [],
+    "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+    "repair_feedback": null
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "call-15",
+  "role": "worker",
+  "status": "ok",
+  "requested_model": "openai/gpt-6-luna",
+  "returned_model": "openai/gpt-6-luna",
+  "provider": "Azure",
+  "request_hash": "df3ef3c6bc1462a4611a874751ead1bad33ca1d2fc95db13db90ae2f6c767876",
+  "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+  "reserved_usd": 0.0012705,
+  "followup_jev_reserved_usd": 0.0,
+  "admission_reserved_calls": 1,
+  "reasoning_effort": "low",
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 162,
+    "total_tokens": 657,
+    "total_tokens_source": "reported",
+    "cached_input_tokens": 0,
+    "reasoning_tokens": 75,
+    "cost": 0.0001305
+  },
+  "usage_raw": {
+    "prompt_tokens": 495,
+    "completion_tokens": 162,
+    "total_tokens": 657,
+    "cost": 0.0001305,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0001305,
+      "upstream_inference_prompt_cost": 4.95e-05,
+      "upstream_inference_completions_cost": 8.1e-05
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 75,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "latency_ms": 3922.0,
+  "usage_semantics": {
+    "cached_input_tokens": "subset_of_input_tokens",
+    "reasoning_tokens": "subset_of_output_tokens"
+  }
+}

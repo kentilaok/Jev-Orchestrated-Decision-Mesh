@@ -1,9 +1,9 @@
-# Work in progress
+# Implemented scope and extension boundaries
 
-## Current public foundation
+## Verified implementation
 
 - Training-free Jev orchestration and a five-unit checked pipeline.
-- Existing OpenAI-family reasoning models, with an explicit high-effort checker.
+- Jev-selected GPT-6 Luna/Sol routes at low through xhigh, with a separate GPT-6 Sol high checker. Astra low requires specific authorization.
 - One-use approvals, source/artifact identities, immutable run policy, and a post-checker Jev decision.
 - A structured-record reference task, offline tests, and usage/journal auditing.
 
@@ -13,7 +13,7 @@
 2. Implement source-span retrieval and focused evidence packets for large corpora, preserving recall of omitted material.
 3. Separate verified facts, missing evidence, and uncertainty so correct answers are not withheld by arbitrary score floors.
 4. Add direct provider/API or connector implementations behind the same contracts, with explicit capability tests.
-5. Evaluate OpenAI model/effort routes on representative tasks using measured results, without training a model.
+5. Evaluate whether Jev's model/effort choices meet quality targets at lower total tokens and cost, without training a model.
 6. Run a new paired efficiency study on multi-step projects, counting every gate and reviewer.
 7. Add resumable runs and concurrency only after approval/commit invariants remain valid under parallel execution.
 

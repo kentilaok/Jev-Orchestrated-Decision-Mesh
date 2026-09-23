@@ -1,0 +1,189 @@
+{
+  "model": "openai/gpt-5.6-sol",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Answer the requested fields using only the supplied source documents. Respect scope, exceptions, dependencies, units, and conflicting or missing evidence. Return null for an answer that cannot be established; do not guess. Cite supporting document IDs for each field. Follow the exact requested answer encoding. Use partial status if any requested value is unavailable or unresolved; otherwise complete. Before finalizing, check your answers against the evidence. Return only the requested JSON object. Also return a cidm object with five integer self_scores rated 1 to 5 (correctness,evidence_support,completeness,constraint_compliance,usefulness), self_estimated_success_probability (uncalibrated number 0 to 1 or null), missing_evidence array, and next_action chosen from finish, retrieve, revise. Keep missing_evidence to at most three short entries. Keep the packet concise. These self-assessments are not proof and must not replace checking sources."
+    },
+    {
+      "role": "user",
+      "content": "{\"answer_fields\":[\"mode\",\"window_hours\",\"approver\"],\"documents\":[{\"id\":\"DF980\",\"text\":\"Order P74AE contains exactly 20 items. It is governed by the released dispatch rule. There are no exceptions or priority flags on this order.\"},{\"id\":\"D2C9E\",\"text\":\"Released dispatch rule: orders with at least 20 items use bulk mode, a 6 hour collection window, and desk approval. Orders below 20 items use parcel mode, a 2 hour window, and automatic approval. Equality is included in the bulk condition.\"}],\"query\":\"Apply the dispatch rule to order P74AE. Return mode as bulk or parcel, window_hours as hours, and approver as desk or automatic. Return answers with exactly these fields: mode, window_hours, approver. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.\"}"
+    }
+  ],
+  "reasoning": {
+    "effort": "medium",
+    "exclude": true
+  },
+  "max_completion_tokens": 4000,
+  "seed": 1729,
+  "provider": {
+    "only": [
+      "azure"
+    ],
+    "ignore": [
+      "azure/us",
+      "azure/eu"
+    ],
+    "allow_fallbacks": false,
+    "require_parameters": true
+  },
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "task_answer",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "window_hours": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "approver": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "mode",
+              "window_hours",
+              "approver"
+            ],
+            "additionalProperties": false
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "window_hours": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "approver": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "mode",
+              "window_hours",
+              "approver"
+            ],
+            "additionalProperties": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial"
+            ]
+          },
+          "cidm": {
+            "type": "object",
+            "properties": {
+              "self_scores": {
+                "type": "object",
+                "properties": {
+                  "correctness": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "evidence_support": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "completeness": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "constraint_compliance": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "usefulness": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  }
+                },
+                "required": [
+                  "correctness",
+                  "evidence_support",
+                  "completeness",
+                  "constraint_compliance",
+                  "usefulness"
+                ],
+                "additionalProperties": false
+              },
+              "self_estimated_success_probability": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              "missing_evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "next_action": {
+                "type": "string",
+                "enum": [
+                  "finish",
+                  "retrieve",
+                  "revise"
+                ]
+              }
+            },
+            "required": [
+              "self_scores",
+              "self_estimated_success_probability",
+              "missing_evidence",
+              "next_action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "answers",
+          "evidence",
+          "status",
+          "cidm"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

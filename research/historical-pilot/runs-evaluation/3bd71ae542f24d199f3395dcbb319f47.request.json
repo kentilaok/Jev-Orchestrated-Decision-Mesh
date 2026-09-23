@@ -1,0 +1,137 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "original_request": "Return each component state for release V3C5E, using exactly enabled or disabled. Return answers with exactly these fields: renderer, indexer, notifier, archiver. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+    "answer_fields": [
+      "renderer",
+      "indexer",
+      "notifier",
+      "archiver"
+    ],
+    "documents": [
+      {
+        "id": "D871D",
+        "text": "Final component record for release V3C5E: the archiver component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      },
+      {
+        "id": "D5A3C",
+        "text": "Final component record for release V3C5E: the indexer component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      },
+      {
+        "id": "D9F50",
+        "text": "Final component record for release V3C5E: the notifier component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      },
+      {
+        "id": "D851E",
+        "text": "Final component record for release V3C5E: the renderer component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+      }
+    ],
+    "actual_worker_packet": {
+      "answers": {
+        "archiver": "disabled",
+        "indexer": "disabled",
+        "notifier": "enabled",
+        "renderer": "enabled"
+      },
+      "cidm": {
+        "missing_evidence": [],
+        "next_action": "finish",
+        "self_estimated_success_probability": 1.0,
+        "self_scores": {
+          "completeness": 5,
+          "constraint_compliance": 5,
+          "correctness": 5,
+          "evidence_support": 5,
+          "usefulness": 5
+        }
+      },
+      "evidence": {
+        "archiver": [
+          "D871D"
+        ],
+        "indexer": [
+          "D5A3C"
+        ],
+        "notifier": [
+          "D9F50"
+        ],
+        "renderer": [
+          "D851E"
+        ]
+      },
+      "status": "complete"
+    },
+    "structure_ok": true,
+    "final_attempt": false
+  },
+  "questions": {
+    "correctness": {
+      "type": "score",
+      "instructions": "Judge whether stated answers correctly follow from the original documents, including arithmetic, exceptions and units.",
+      "criteria": [
+        "Material failure",
+        "Major gaps",
+        "Partially adequate",
+        "Adequate with minor uncertainty",
+        "Fully adequate"
+      ]
+    },
+    "evidence_support": {
+      "type": "score",
+      "instructions": "Judge whether supplied citations adequately support each answer. Null is appropriate when the requested value is absent or contradictory.",
+      "criteria": [
+        "Material failure",
+        "Major gaps",
+        "Partially adequate",
+        "Adequate with minor uncertainty",
+        "Fully adequate"
+      ]
+    },
+    "completeness": {
+      "type": "score",
+      "instructions": "Judge whether every field is addressed appropriately; justified null for unavailable information counts as appropriate coverage.",
+      "criteria": [
+        "Material failure",
+        "Major gaps",
+        "Partially adequate",
+        "Adequate with minor uncertainty",
+        "Fully adequate"
+      ]
+    },
+    "constraint_compliance": {
+      "type": "score",
+      "instructions": "Judge compliance with the query encoding, source scope, and no guessing.",
+      "criteria": [
+        "Material failure",
+        "Major gaps",
+        "Partially adequate",
+        "Adequate with minor uncertainty",
+        "Fully adequate"
+      ]
+    },
+    "usefulness": {
+      "type": "score",
+      "instructions": "Judge whether the answers are usable for the query, including explicit justified unknowns.",
+      "criteria": [
+        "Material failure",
+        "Major gaps",
+        "Partially adequate",
+        "Adequate with minor uncertainty",
+        "Fully adequate"
+      ]
+    },
+    "supported": {
+      "type": "noul",
+      "instructions": "Are the substantive answers supported by the source documents, with unknown or conflicting values appropriately represented as null?"
+    },
+    "release": {
+      "type": "choice",
+      "instructions": "Choose whether the actual candidate is adequate to return. Evaluate it from the state, not from other question outputs. Justified unknowns may be accepted.",
+      "criteria": {
+        "accept": "The candidate appropriately answers all fields, including justified unknowns, with supporting citations.",
+        "revise": "The candidate needs correction or omitted source recovery.",
+        "stop_unresolved": "The candidate cannot be accepted within the available evidence and budget."
+      }
+    }
+  }
+}

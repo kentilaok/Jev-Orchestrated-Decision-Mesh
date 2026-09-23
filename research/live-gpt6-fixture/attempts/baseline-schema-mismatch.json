@@ -1,0 +1,129 @@
+{
+  "status": "quality_failed",
+  "mode": "live",
+  "simulation": false,
+  "method": "single_gpt_6_sol_high_call",
+  "task_hash": "20bd8062e022aebf93c45b7c5a1459c0c787f2f42467ca39ee6f0b68b94d0673",
+  "model": "openai/gpt-6-sol",
+  "effort": "high",
+  "configuration": {
+    "worker_model": "openai/gpt-6-sol",
+    "worker_effort": "medium",
+    "checker_model": "openai/gpt-6-sol",
+    "checker_effort": "high",
+    "astra_explicitly_authorized": false,
+    "jev_model": "typesafe/jev-1.13",
+    "provider_route": "azure",
+    "provider_name": "Azure",
+    "jev_provider_name": "TypeSafe",
+    "worker_model_aliases": [],
+    "checker_model_aliases": [],
+    "jev_model_aliases": [
+      "typesafe/jev-1.13-20260917"
+    ],
+    "max_usd": 1.5,
+    "max_calls": 40,
+    "max_output_tokens": 2000,
+    "timeout": 45,
+    "worker_luna_input_usd_per_million": 0.1,
+    "worker_luna_output_usd_per_million": 0.5,
+    "worker_input_usd_per_million": 2.0,
+    "worker_output_usd_per_million": 10.0,
+    "worker_astra_input_usd_per_million": 10.0,
+    "worker_astra_output_usd_per_million": 50.0,
+    "checker_input_usd_per_million": 2.0,
+    "checker_output_usd_per_million": 10.0,
+    "jev_input_usd_per_million": 0.05,
+    "jev_output_usd_per_million": 0.05
+  },
+  "candidate": {
+    "answer": 50,
+    "excluded_segments": [
+      "T"
+    ],
+    "included_segments": [
+      "A",
+      "B"
+    ],
+    "source_ids": [
+      "records"
+    ],
+    "text": "Production defects: 50 per 1,000 items. Trial rows were excluded. [records]",
+    "unit": "defects per 1,000 items"
+  },
+  "answer": 50,
+  "reference_answer": 50.0,
+  "quality_checks": {
+    "response_contract": true,
+    "answer_matches_exact_reference": true,
+    "included_segments_match_scope": true,
+    "excluded_segments_match_scope": true,
+    "unit_matches_task": false,
+    "source_ids_match_evidence": true,
+    "answer_cites_records": true,
+    "trial_exclusion_explained": true
+  },
+  "error_code": null,
+  "calls": [
+    {
+      "id": "call-1",
+      "role": "worker",
+      "status": "ok",
+      "requested_model": "openai/gpt-6-sol",
+      "returned_model": "openai/gpt-6-sol",
+      "provider": "Azure",
+      "request_hash": "7808f730f82cc234d513f2e7fdd53b2e1025424b192b59329fc0ae2e919afc20",
+      "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+      "reserved_usd": 0.023674,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "reasoning_effort": "high",
+      "usage": {
+        "input_tokens": 296,
+        "output_tokens": 158,
+        "total_tokens": 454,
+        "total_tokens_source": "reported",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 89,
+        "cost": 0.002172
+      },
+      "usage_raw": {
+        "prompt_tokens": 296,
+        "completion_tokens": 158,
+        "total_tokens": 454,
+        "cost": 0.002172,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.002172,
+          "upstream_inference_prompt_cost": 0.000592,
+          "upstream_inference_completions_cost": 0.00158
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 89,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_ms": 3953.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      }
+    }
+  ],
+  "usage": {
+    "input_tokens": 296,
+    "output_tokens": 158,
+    "total_tokens": 454,
+    "cost": 0.002172,
+    "usage_complete": true
+  },
+  "reported_cost": 0.002172,
+  "training_performed": false
+}

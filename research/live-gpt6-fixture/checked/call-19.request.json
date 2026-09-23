@@ -1,0 +1,286 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "records",
+        "title": "Original records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "checked_unit",
+        "summary": "Include production segments A and B; exclude trial segment T. Calculate defects per 1,000 items.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "denominator": "items",
+          "numerator": "defects",
+          "scale": 1000,
+          "segments": [
+            "A",
+            "B"
+          ]
+        },
+        "artifact_hash": "ae441a6cf821dc8145b6988e1b2e17f0bd178ed083dd34f71ccc50cb77ce5836"
+      },
+      {
+        "id": "hidden2",
+        "operation": "checked_unit",
+        "summary": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "numerator": 20,
+          "denominator": 400,
+          "scale": 1000,
+          "result": 50.0,
+          "exact_fraction": "50"
+        },
+        "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+      },
+      {
+        "id": "hidden3",
+        "operation": "checked_unit",
+        "summary": "Production segments A and B contain 20 defects across 400 items; excluding trial segment T, the rate is 50 defects per 1,000 items.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "consistent": true,
+          "result": 50,
+          "unresolved": []
+        },
+        "artifact_hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "records",
+        "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+        "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Produce the final answer supported by the checked predecessors and sources."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+      }
+    ],
+    "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+    "repair_feedback": null
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "luna_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "luna_low",
+              "model": "openai/gpt-6-luna",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at low effort."
+        },
+        "luna_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "luna_medium",
+              "model": "openai/gpt-6-luna",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at medium effort."
+        },
+        "luna_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "luna_high",
+              "model": "openai/gpt-6-luna",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at high effort."
+        },
+        "luna_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "luna_xhigh",
+              "model": "openai/gpt-6-luna",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-luna at xhigh effort."
+        },
+        "sol_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "sol_low",
+              "model": "openai/gpt-6-sol",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at low effort."
+        },
+        "sol_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "sol_medium",
+              "model": "openai/gpt-6-sol",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at medium effort."
+        },
+        "sol_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "sol_high",
+              "model": "openai/gpt-6-sol",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at high effort."
+        },
+        "sol_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2"
+              }
+            ],
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+            "worker_route": {
+              "id": "sol_xhigh",
+              "model": "openai/gpt-6-sol",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with openai/gpt-6-sol at xhigh effort."
+        }
+      }
+    }
+  }
+}

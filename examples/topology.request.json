@@ -1,0 +1,24 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "source_ids": ["records"],
+    "source_shape": "Three rows with integer items and defects; production and trial kinds are explicit.",
+    "constraints": ["Exclude trial rows", "Cite the original records", "Use exact arithmetic"],
+    "available_validation": ["Executable scope check", "Exact rational arithmetic"],
+    "risk": "A wrong rate would be detectable by code; no external action is requested."
+  },
+  "questions": {
+    "route": {
+      "type": "choice",
+      "instructions": "Choose the least resource-intensive route that can satisfy the stated task and validation requirement. Deterministic is appropriate when executable checks can settle the answer. A direct worker may be enough for a bounded text task. Use the five-unit checked network when evidence complexity or the required review policy justifies its repeated Jev and Sol-high calls. Do not use model confidence alone as proof.",
+      "criteria": {
+        "deterministic": "Compute from original evidence with exact code checks; no generative worker or Sol-high checker. Keep source references.",
+        "direct_worker": "Use one GPT-6 Luna or Sol worker with an explicit task-specific validator and no claim of five-unit checking.",
+        "checked_five_unit": "Run the full five-unit graph with Jev authorization and a Sol-high check after each unit.",
+        "retrieve_evidence": "Stop to obtain missing original evidence before selecting a computation route.",
+        "stop": "Stop because no offered route can meet the constraints safely."
+      }
+    }
+  }
+}

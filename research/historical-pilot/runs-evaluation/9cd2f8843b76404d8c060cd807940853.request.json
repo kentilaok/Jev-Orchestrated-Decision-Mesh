@@ -1,0 +1,161 @@
+{
+  "model": "openai/gpt-5.6-sol",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Answer the requested fields using only the supplied source documents. Respect scope, exceptions, dependencies, units, and conflicting or missing evidence. Return null for an answer that cannot be established; do not guess. Cite supporting document IDs for each field. Follow the exact requested answer encoding. Use partial status if any requested value is unavailable or unresolved; otherwise complete. Before finalizing, check your answers against the evidence. Return only the requested JSON object."
+    },
+    {
+      "role": "user",
+      "content": "{\"answer_fields\":[\"known_subtotal_credits\",\"full_total_credits\",\"missing_sku\",\"priced_lines\",\"total_units\",\"quote_state\"],\"documents\":[{\"id\":\"D8002\",\"text\":\"Quantity record for quotation QDBE8, SKU S43B4: requested quantity is 16 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment.\"},{\"id\":\"DFF01\",\"text\":\"Complete line manifest for quotation QDBE8: the required SKU identifiers are SCDDA, S3156, S43B4, S1C16, SCCC8, S84F8. Each appears once. Every required quantity entry and current price entry is included in this packet. No unlisted SKU belongs in the quotation. The quantity records describe individual units; use the packaging dictionary to convert them before applying current pack prices. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here.\"},{\"id\":\"D2AB2\",\"text\":\"Current price register for quotation QDBE8, SKU SCDDA: the price is 11 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment.\"},{\"id\":\"D9105\",\"text\":\"Current price register for quotation QDBE8, SKU S3156: the price is 13 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here.\"},{\"id\":\"DB356\",\"text\":\"Current price register for quotation QDBE8, SKU S1C16: the price is 19 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary.\"},{\"id\":\"DFA10\",\"text\":\"Quantity record for quotation QDBE8, SKU SCDDA: requested quantity is 8 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units.\"},{\"id\":\"D712E\",\"text\":\"Completion rule for quotation QDBE8: known_subtotal_credits includes only manifest lines with a current numeric price, followed by the fixed allowance. full_total_credits must be null if any required manifest line lacks a current price. In that situation quote_state is incomplete and missing_sku is that line's exact SKU identifier. Count only numerically priced lines in priced_lines. For total_units, include all manifest quantities, including any line with a missing price. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment.\"},{\"id\":\"DE726\",\"text\":\"Packaging dictionary for quotation QDBE8: every listed SKU has exactly 4 individual units per pack. All requested quantities are whole multiples of a pack. For each priced line, divide its individual-unit quantity by 4 and multiply the resulting pack count by its current credits-per-pack price. Do not treat an individual unit as an entire pack. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units.\"},{\"id\":\"DBD1B\",\"text\":\"Quantity record for quotation QDBE8, SKU S1C16: requested quantity is 20 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here.\"},{\"id\":\"DA5E9\",\"text\":\"Quantity record for quotation QDBE8, SKU S3156: requested quantity is 12 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary.\"},{\"id\":\"D7BDD\",\"text\":\"Quantity record for quotation QDBE8, SKU SCCC8: requested quantity is 24 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units.\"},{\"id\":\"D7C88\",\"text\":\"Current price register for quotation QDBE8, SKU SCCC8: the price is 23 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment.\"},{\"id\":\"D5FCE\",\"text\":\"Current price register for quotation QDBE8, SKU S84F8: the pack price is unavailable. The register contains no current numeric price for this SKU, and no fallback price is authorized. This is an explicit missing entry, not a zero-price offer. All current pricing records are included in this packet. The final quantity entry remains valid even though this price is missing. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here.\"},{\"id\":\"DA16A\",\"text\":\"Adjustment rule for quotation QDBE8: subtract one fixed allowance of 17 credits from the sum of all currently priced line costs. Apply this allowance once to the known subtotal even when another required line lacks a price. The allowance does not supply a price for a missing line and does not make an incomplete full quotation complete. No other monetary adjustments apply. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary.\"},{\"id\":\"DD2AB\",\"text\":\"Quantity record for quotation QDBE8, SKU S84F8: requested quantity is 28 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary.\"},{\"id\":\"D88D6\",\"text\":\"Current price register for quotation QDBE8, SKU S43B4: the price is 17 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units.\"}],\"query\":\"Assemble quotation QDBE8. Return known_subtotal_credits after the allowance, full_total_credits or null, missing_sku as the exact missing-price SKU code, priced_lines as a count, total_units in individual units, and quote_state as complete or incomplete. Return answers with exactly these fields: known_subtotal_credits, full_total_credits, missing_sku, priced_lines, total_units, quote_state. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.\"}"
+    }
+  ],
+  "reasoning": {
+    "effort": "medium",
+    "exclude": true
+  },
+  "max_completion_tokens": 4000,
+  "seed": 1729,
+  "provider": {
+    "only": [
+      "azure"
+    ],
+    "ignore": [
+      "azure/us",
+      "azure/eu"
+    ],
+    "allow_fallbacks": false,
+    "require_parameters": true
+  },
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "task_answer",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "object",
+            "properties": {
+              "known_subtotal_credits": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "full_total_credits": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "missing_sku": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "priced_lines": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "total_units": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "quote_state": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "known_subtotal_credits",
+              "full_total_credits",
+              "missing_sku",
+              "priced_lines",
+              "total_units",
+              "quote_state"
+            ],
+            "additionalProperties": false
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "known_subtotal_credits": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "full_total_credits": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "missing_sku": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "priced_lines": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "total_units": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "quote_state": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "known_subtotal_credits",
+              "full_total_credits",
+              "missing_sku",
+              "priced_lines",
+              "total_units",
+              "quote_state"
+            ],
+            "additionalProperties": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial"
+            ]
+          }
+        },
+        "required": [
+          "answers",
+          "evidence",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "gen-1790101819-nuLFad7kqXxAN5v4ZX1G",
+  "object": "chat.completion",
+  "created": 1790101819,
+  "model": "openai/gpt-5.6-sol",
+  "provider": "Azure",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "completed",
+      "message": {
+        "role": "assistant",
+        "content": "{\"answers\":{\"carton_limit_kg\":18,\"inserts_per_box\":6,\"label_mode\":\"monochrome\",\"seal_code\":\"R2\"},\"cidm\":{\"missing_evidence\":[],\"next_action\":\"finish\",\"self_estimated_success_probability\":1.0,\"self_scores\":{\"completeness\":5,\"constraint_compliance\":5,\"correctness\":5,\"evidence_support\":5,\"usefulness\":5}},\"evidence\":{\"carton_limit_kg\":[\"D19E7\"],\"inserts_per_box\":[\"D19E7\"],\"label_mode\":[\"D19E7\"],\"seal_code\":[\"D19E7\"]},\"status\":\"complete\"}",
+        "refusal": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 778,
+    "completion_tokens": 143,
+    "total_tokens": 921,
+    "cost": 0.00818,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.00818,
+      "upstream_inference_prompt_cost": 0.00389,
+      "upstream_inference_completions_cost": 0.00429
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "original_request": "Apply the dispatch rule to order P74AE. Return mode as bulk or parcel, window_hours as hours, and approver as desk or automatic. Return answers with exactly these fields: mode, window_hours, approver. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+    "answer_fields": [
+      "mode",
+      "window_hours",
+      "approver"
+    ],
+    "documents": [
+      {
+        "id": "DF980",
+        "text": "Order P74AE contains exactly 20 items. It is governed by the released dispatch rule. There are no exceptions or priority flags on this order."
+      },
+      {
+        "id": "D2C9E",
+        "text": "Released dispatch rule: orders with at least 20 items use bulk mode, a 6 hour collection window, and desk approval. Orders below 20 items use parcel mode, a 2 hour window, and automatic approval. Equality is included in the bulk condition."
+      }
+    ]
+  },
+  "questions": {
+    "operation": {
+      "type": "choice",
+      "instructions": "Choose a suitable way to send sources to the fixed Sol worker for this task.",
+      "criteria": {
+        "select_context": "Some documents do not contribute; use the independently evaluated relevance results to select sources.",
+        "use_all": "All documents may be needed, or reliable source selection is uncertain."
+      }
+    },
+    "keep_DF980": {
+      "type": "noul",
+      "instructions": "Is document DF980 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D2C9E": {
+      "type": "noul",
+      "instructions": "Is document D2C9E potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    }
+  }
+}

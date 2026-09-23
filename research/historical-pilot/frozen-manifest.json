@@ -1,0 +1,86 @@
+{
+  "name": "CIDM vs fixed Sol pilot",
+  "attribution": "Kenneth A. Caber",
+  "version": "pilot-1",
+  "created_utc": "2026-09-22T18:29:25Z",
+  "sol_model": "openai/gpt-5.6-sol",
+  "sol_effort": "medium",
+  "jev_model": "typesafe/jev-1.13",
+  "provider": "OpenRouter with Azure standard endpoint only (account ZDR compliant)",
+  "seed": 1729,
+  "source_hashes": {
+    "tasks.json": "d9001859be613146facc1b761688e4c27fe4c134afa137faad6abd2ef3ef221d",
+    "gold.json": "0e2e2bce75dc82b0c6c260e526fb0dd147185197c4c3e743b90e26a056bb1005",
+    "run_benchmark.py": "56b6c96dc06ea74b67af224809b197023d14f440191ccb3383b2a777466d7cce",
+    "jev_decide.py": "83d34ecc55b4360be2acf596d1337b6d607e0b94c3f5d6d84486228afc531f59",
+    "grader.py": "b295f47eb95a7badfbb93c986278cc9494d48f794c930f5fe8c60925615c084a",
+    "analyze.py": "c5bd09684ebc8e0151f8a57b29e1a43f56b06ba96ef4d1a1d5e78d6a8c8711ce",
+    "provider-preflight.json": "59204c7b2e925fd5f6498242529f36abefbac2bdc7e1b69d3fac6f7fad40687c"
+  },
+  "prompt_hashes": {
+    "baseline_system": "1c8e9277dac3521c26a9a38b2e3a73ea3ca636b868acff0e496c2dc9f7f1b5fb",
+    "cidm_system": "b96722e58c0bd088b39bb759ef6c3b86c0ee569e2bde7d1e80cdffd87c93137d"
+  },
+  "evaluation_task_ids": [
+    "E-S01",
+    "E-S02",
+    "E-S03",
+    "E-S04",
+    "E-N01",
+    "E-N02",
+    "E-N03",
+    "E-N04",
+    "E-C01",
+    "E-C02",
+    "E-C03",
+    "E-C04"
+  ],
+  "replicates": 1,
+  "arms": {
+    "A": "Sol full source corpus, one answer plus structural repair if needed",
+    "B": "Jev intake/relevance -> same Sol -> Jev five-score review; at most one corrective Sol call"
+  },
+  "scope": "Bounded selection/review CIDM prototype; not full recursive multi-model application",
+  "caps": {
+    "global_usd": 3.0,
+    "per_arm_usd": 0.4,
+    "per_arm_tokens": 100000,
+    "sol_calls_per_arm": 2,
+    "jev_calls_per_B": 3,
+    "max_output_per_Sol": 4000,
+    "network_timeout_seconds": 60
+  },
+  "policy": {
+    "retain_probability": 0.25,
+    "accept_support_probability": 0.85,
+    "minimum_review_score_raw_0_to_4": 3,
+    "calibration": "Uncalibrated fixed engineering thresholds; no learned routing claims"
+  },
+  "quality": {
+    "primary": "all fields, required evidence and status pass deterministic independent gold grader",
+    "noninferiority_margin": 0.05,
+    "sample_size_rationale": "12-task feasibility pilot, not powered to establish 5pp noninferiority",
+    "gold_hidden_from_controller": true
+  },
+  "analysis": {
+    "primary": "B versus A total provider-accounted tokens, quality reported separately",
+    "bootstrap": "10000 stratified paired task resamples, seed1729",
+    "secondary": "cost, latency, worker-only tokens, rejection and raw candidate quality"
+  },
+  "execution_order": "alternate A/B first by task index; serial, no cross-arm memory",
+  "cache_policy": "no explicit response cache; fresh calls, counterbalanced order; report provider cache counters; common provider cache behavior cannot be disabled",
+  "tools": "No external tools or embeddings; original documents supplied as immutable text. Python selects/assembles exact source units and checks public schema.",
+  "accounting": "Reasoning subset of output, cached subset of input. All Jev, workers, repairs, failures counted. Unknown is null. Development separate, execution subtotal plus dev lifecycle subtotal.",
+  "setup_accounting": {
+    "two_direct_OpenAI_route_rejections": "Account ZDR policy excluded endpoint. No inference response or usage returned; counters unknown, preserved separately.",
+    "Azure_compatibility_probe": {
+      "input_tokens": 368,
+      "output_tokens": 40,
+      "total_tokens": 408,
+      "cost_usd": 0.00304
+    },
+    "unknown_setup_budget_reserve_usd": 0.32,
+    "total_committed_setup_usd": 0.32304
+  },
+  "setup_overhead": "Research, dataset/code creation, review and this host conversation are unmetered one-time preparation, outside measured API execution; no end-to-end development lifecycle savings claim."
+}

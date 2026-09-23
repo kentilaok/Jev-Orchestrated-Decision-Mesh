@@ -1,8 +1,10 @@
 # Architecture
 
-**Work in progress.** Main contributor and architecture proposer: **Kenneth Vic A. Caber**.
+**Main contributor and architecture proposer: Kenneth Vic A. Caber.**
 
 Caber Interstitial Decision Mesh (CIDM) is training-free orchestration around existing model APIs and deterministic tools. The five-unit reference network uses Jev decisions, bounded computations, and a separate Sol-high checker. It does not train a model, load learned routing checkpoints, or modify the internal weights of external models.
+
+For a general CIDM request, Jev first chooses a [topology](../examples/topology.request.json): deterministic code, one bounded worker, the full checked five-unit network, evidence retrieval, or stop. That decision is skill-guided; `scripts/network_run.py` implements the checked branch. The one-pair [GPT-6 measurement](ROUTING-ECONOMICS.md#measured-gpt-6-fixture-comparison) motivates this split: five mandatory checker calls were wasteful on a small exact-arithmetic task. The checked network remains the required route when the user specifically invokes the five-unit checked architecture.
 
 ## Five sequential units
 
@@ -57,7 +59,7 @@ The checker receives the unit objective, original evidence, candidate, relevant 
 
 ## Models and adapters
 
-The default generative worker is **OpenAI-family Sol at medium effort**; the separate checker is **OpenAI-family Sol at high effort**. **Jev is a separate TypeSafe service** for typed decisions. Jev does not generate plans, summaries, or arbitrary answers. Exact provider model IDs and supported settings must be verified and recorded; silent substitution is prohibited.
+Jev selects a generative worker from **GPT-6 Luna or GPT-6 Sol**, each at `low`, `medium`, `high`, or `xhigh` effort. Simple normalization and exact arithmetic use deterministic code. The separate checker remains **GPT-6 Sol high**. GPT-6 Sol `xhigh` is available for demanding general planning. **Jev is a separate TypeSafe service** for typed decisions. Jev does not generate plans, summaries, or arbitrary answers. Astra is absent by default; explicit user authorization plus a configuration flag permits Astra low only. Exact provider model IDs and supported settings must be verified and recorded; silent substitution is prohibited.
 
 Producer, checker, Jev-decision, and deterministic-validator callbacks separate application logic from API transport. Source retrieval remains an application extension. Additional APIs or connectors require explicit adapters and validation. Availability of an interface does not mean every provider or connector is already supported.
 

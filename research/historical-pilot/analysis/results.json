@@ -1,0 +1,3934 @@
+{
+  "version": "1.1-measurement-correction",
+  "design": {
+    "analysis_amendment": "amendment.md: failed, rejected and partial terminal outcomes retain all measured consumption; usage completeness is independent of task success",
+    "evaluation_tasks_expected": 12,
+    "development_tasks_expected": 2,
+    "replicates_per_task": 1,
+    "strata_expected": 3,
+    "evaluation_tasks_per_stratum_expected": 4,
+    "arm_A": "Fixed Sol medium baseline with full source context",
+    "arm_B": "Bounded CIDM source-selection and review prototype with the same Sol medium worker; every Jev and worker call included",
+    "cidm_scope": "Jev selects source context and reviews candidates, with bounded retry; not a full adaptive recursive multi-model graph",
+    "gate_calibration": "Declared heuristics and uncalibrated self-assessments; no thresholds fitted to the evaluation results",
+    "quality_endpoint": "Independent task pass on candidate actually released to the user; withheld or missing candidates score zero",
+    "token_definition": "Provider total when supplied, otherwise input plus output; reasoning is a subset of output and cached input a subset of input",
+    "cost_definition": "Explicit recorded billing cost only; no inferred prices or assumption that null costs are zero",
+    "bootstrap_seed": 1729,
+    "bootstrap_replicates": 10000,
+    "controller": "Deterministic Python; no hidden host-model generation during the measured pilot",
+    "excluded_creation_overhead": "Dataset, harness, analysis and prompt creation overhead is unmetered and separate from recorded runtime",
+    "claims_scope": "Bounded offline-analyzed pilot; no full-lifecycle efficiency, population superiority, or quality-equivalence claim"
+  },
+  "phases": {
+    "development": {
+      "task_count": 2,
+      "strata": {
+        "short_direct": 1,
+        "cross_document": 1
+      },
+      "issues": [],
+      "quality_issues": [],
+      "schedule_and_linkage_complete": true,
+      "full_token_result_admissible": true,
+      "full_cost_result_admissible": true,
+      "arms": {
+        "A": {
+          "quality": {
+            "scheduled_runs": 2,
+            "recorded_runs": 2,
+            "complete_runs": 1,
+            "partial_runs": 1,
+            "failed_runs": 0,
+            "missing_runs": 0,
+            "released_runs": 2,
+            "served_task_passes": 2,
+            "served_task_pass_rate": 1.0,
+            "served_pass_rate_ci95": [
+              0.15811388300841894,
+              1.0
+            ],
+            "served_mean_answer_accuracy": 1.0,
+            "served_mean_evidence_accuracy": 1.0,
+            "raw_candidates": 2,
+            "raw_candidate_task_passes": 2,
+            "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+            "withheld_candidates": 0,
+            "withheld_correct_candidates": 0,
+            "elapsed_seconds_known_sum": 7.640000000000001
+          },
+          "accounting": {
+            "event_count": 2,
+            "statuses": {
+              "ok": 2
+            },
+            "input_tokens": {
+              "known_sum": 3570,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 180,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 3750,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 66,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cost": {
+              "known_sum": 0.027245000000000002,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 2,
+            "derived_total_events": 0,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 7640.0
+          }
+        },
+        "B": {
+          "quality": {
+            "scheduled_runs": 2,
+            "recorded_runs": 2,
+            "complete_runs": 1,
+            "partial_runs": 1,
+            "failed_runs": 0,
+            "missing_runs": 0,
+            "released_runs": 2,
+            "served_task_passes": 2,
+            "served_task_pass_rate": 1.0,
+            "served_pass_rate_ci95": [
+              0.15811388300841894,
+              1.0
+            ],
+            "served_mean_answer_accuracy": 1.0,
+            "served_mean_evidence_accuracy": 1.0,
+            "raw_candidates": 2,
+            "raw_candidate_task_passes": 2,
+            "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+            "withheld_candidates": 0,
+            "withheld_correct_candidates": 0,
+            "elapsed_seconds_known_sum": 8.766
+          },
+          "accounting": {
+            "event_count": 6,
+            "statuses": {
+              "ok": 6
+            },
+            "input_tokens": {
+              "known_sum": 11911,
+              "known_events": 6,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 941,
+              "known_events": 6,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 12852,
+              "known_events": 6,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 0,
+              "known_events": 2,
+              "unknown_events": 4,
+              "complete": false
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 2,
+              "unknown_events": 4,
+              "complete": false
+            },
+            "cost": {
+              "known_sum": 0.015110456,
+              "known_events": 6,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 2,
+            "derived_total_events": 4,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 8703.0
+          }
+        }
+      },
+      "by_model": [
+        {
+          "model_requested": "openai/gpt-5.6-sol",
+          "model_returned": "openai/gpt-5.6-sol",
+          "arm": "A",
+          "role": "worker",
+          "accounting": {
+            "event_count": 2,
+            "statuses": {
+              "ok": 2
+            },
+            "input_tokens": {
+              "known_sum": 3570,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 180,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 3750,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 66,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cost": {
+              "known_sum": 0.027245000000000002,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 2,
+            "derived_total_events": 0,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 7640.0
+          }
+        },
+        {
+          "model_requested": "openai/gpt-5.6-sol",
+          "model_returned": "openai/gpt-5.6-sol",
+          "arm": "B",
+          "role": "worker",
+          "accounting": {
+            "event_count": 2,
+            "statuses": {
+              "ok": 2
+            },
+            "input_tokens": {
+              "known_sum": 1543,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 232,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 1775,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 0,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cost": {
+              "known_sum": 0.014675,
+              "known_events": 2,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 2,
+            "derived_total_events": 0,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 7078.0
+          }
+        },
+        {
+          "model_requested": "typesafe/jev-1.13",
+          "model_returned": "typesafe/jev-1.13-20260917",
+          "arm": "B",
+          "role": "jev",
+          "accounting": {
+            "event_count": 4,
+            "statuses": {
+              "ok": 4
+            },
+            "input_tokens": {
+              "known_sum": 10368,
+              "known_events": 4,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 709,
+              "known_events": 4,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 11077,
+              "known_events": 4,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 0,
+              "known_events": 0,
+              "unknown_events": 4,
+              "complete": false
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 0,
+              "unknown_events": 4,
+              "complete": false
+            },
+            "cost": {
+              "known_sum": 0.000435456,
+              "known_events": 4,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 0,
+            "derived_total_events": 4,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 1625.0
+          }
+        }
+      ],
+      "per_stratum": {
+        "cross_document": {
+          "A": {
+            "quality": {
+              "scheduled_runs": 1,
+              "recorded_runs": 1,
+              "complete_runs": 0,
+              "partial_runs": 1,
+              "failed_runs": 0,
+              "missing_runs": 0,
+              "released_runs": 1,
+              "served_task_passes": 1,
+              "served_task_pass_rate": 1.0,
+              "served_pass_rate_ci95": [
+                0.024999999999999967,
+                1.0
+              ],
+              "served_mean_answer_accuracy": 1.0,
+              "served_mean_evidence_accuracy": 1.0,
+              "raw_candidates": 1,
+              "raw_candidate_task_passes": 1,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 0,
+              "withheld_correct_candidates": 0,
+              "elapsed_seconds_known_sum": 2.937
+            },
+            "accounting": {
+              "event_count": 1,
+              "statuses": {
+                "ok": 1
+              },
+              "input_tokens": {
+                "known_sum": 3199,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 139,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 3338,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 66,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cost": {
+                "known_sum": 0.02416,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 1,
+              "derived_total_events": 0,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 2937.0
+            }
+          },
+          "B": {
+            "quality": {
+              "scheduled_runs": 1,
+              "recorded_runs": 1,
+              "complete_runs": 0,
+              "partial_runs": 1,
+              "failed_runs": 0,
+              "missing_runs": 0,
+              "released_runs": 1,
+              "served_task_passes": 1,
+              "served_task_pass_rate": 1.0,
+              "served_pass_rate_ci95": [
+                0.024999999999999967,
+                1.0
+              ],
+              "served_mean_answer_accuracy": 1.0,
+              "served_mean_evidence_accuracy": 1.0,
+              "raw_candidates": 1,
+              "raw_candidate_task_passes": 1,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 0,
+              "withheld_correct_candidates": 0,
+              "elapsed_seconds_known_sum": 5.657
+            },
+            "accounting": {
+              "event_count": 3,
+              "statuses": {
+                "ok": 3
+              },
+              "input_tokens": {
+                "known_sum": 9573,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 631,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 10204,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 0,
+                "known_events": 1,
+                "unknown_events": 2,
+                "complete": false
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 1,
+                "unknown_events": 2,
+                "complete": false
+              },
+              "cost": {
+                "known_sum": 0.00943015,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 1,
+              "derived_total_events": 2,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 5609.0
+            }
+          },
+          "token_savings": {
+            "A_sum": 3338,
+            "B_sum": 10204,
+            "savings_rate": -2.0569203115638106,
+            "ci95": [
+              -2.0569203115638106,
+              -2.0569203115638106
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 1,
+            "strata": {
+              "cross_document": 1
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "cost_savings": {
+            "A_sum": 0.02416,
+            "B_sum": 0.00943015,
+            "savings_rate": 0.6096792218543047,
+            "ci95": [
+              0.6096792218543047,
+              0.6096792218543047
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 1,
+            "strata": {
+              "cross_document": 1
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "paired_quality": {
+            "paired_tasks": 1,
+            "A_pass_B_fail": 0,
+            "A_fail_B_pass": 0,
+            "both_pass": 1,
+            "both_fail": 0,
+            "difference_B_minus_A": 0.0,
+            "ci95": [
+              -0.9875,
+              0.9875
+            ],
+            "ci_method": "Conservative projection of Bonferroni-adjusted exact binomial intervals for the two paired discordance probabilities",
+            "population_inference": "Descriptive uncertainty for this fixed small pilot; no population superiority or quality-equivalence proof."
+          }
+        },
+        "short_direct": {
+          "A": {
+            "quality": {
+              "scheduled_runs": 1,
+              "recorded_runs": 1,
+              "complete_runs": 1,
+              "partial_runs": 0,
+              "failed_runs": 0,
+              "missing_runs": 0,
+              "released_runs": 1,
+              "served_task_passes": 1,
+              "served_task_pass_rate": 1.0,
+              "served_pass_rate_ci95": [
+                0.024999999999999967,
+                1.0
+              ],
+              "served_mean_answer_accuracy": 1.0,
+              "served_mean_evidence_accuracy": 1.0,
+              "raw_candidates": 1,
+              "raw_candidate_task_passes": 1,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 0,
+              "withheld_correct_candidates": 0,
+              "elapsed_seconds_known_sum": 4.703
+            },
+            "accounting": {
+              "event_count": 1,
+              "statuses": {
+                "ok": 1
+              },
+              "input_tokens": {
+                "known_sum": 371,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 41,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 412,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 0,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cost": {
+                "known_sum": 0.003085,
+                "known_events": 1,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 1,
+              "derived_total_events": 0,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 4703.0
+            }
+          },
+          "B": {
+            "quality": {
+              "scheduled_runs": 1,
+              "recorded_runs": 1,
+              "complete_runs": 1,
+              "partial_runs": 0,
+              "failed_runs": 0,
+              "missing_runs": 0,
+              "released_runs": 1,
+              "served_task_passes": 1,
+              "served_task_pass_rate": 1.0,
+              "served_pass_rate_ci95": [
+                0.024999999999999967,
+                1.0
+              ],
+              "served_mean_answer_accuracy": 1.0,
+              "served_mean_evidence_accuracy": 1.0,
+              "raw_candidates": 1,
+              "raw_candidate_task_passes": 1,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 0,
+              "withheld_correct_candidates": 0,
+              "elapsed_seconds_known_sum": 3.109
+            },
+            "accounting": {
+              "event_count": 3,
+              "statuses": {
+                "ok": 3
+              },
+              "input_tokens": {
+                "known_sum": 2338,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 310,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 2648,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 0,
+                "known_events": 1,
+                "unknown_events": 2,
+                "complete": false
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 1,
+                "unknown_events": 2,
+                "complete": false
+              },
+              "cost": {
+                "known_sum": 0.0056803059999999995,
+                "known_events": 3,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 1,
+              "derived_total_events": 2,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 3094.0
+            }
+          },
+          "token_savings": {
+            "A_sum": 412,
+            "B_sum": 2648,
+            "savings_rate": -5.427184466019417,
+            "ci95": [
+              -5.427184466019417,
+              -5.427184466019417
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 1,
+            "strata": {
+              "short_direct": 1
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "cost_savings": {
+            "A_sum": 0.003085,
+            "B_sum": 0.0056803059999999995,
+            "savings_rate": -0.8412661264181522,
+            "ci95": [
+              -0.8412661264181522,
+              -0.8412661264181522
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 1,
+            "strata": {
+              "short_direct": 1
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "paired_quality": {
+            "paired_tasks": 1,
+            "A_pass_B_fail": 0,
+            "A_fail_B_pass": 0,
+            "both_pass": 1,
+            "both_fail": 0,
+            "difference_B_minus_A": 0.0,
+            "ci95": [
+              -0.9875,
+              0.9875
+            ],
+            "ci_method": "Conservative projection of Bonferroni-adjusted exact binomial intervals for the two paired discordance probabilities",
+            "population_inference": "Descriptive uncertainty for this fixed small pilot; no population superiority or quality-equivalence proof."
+          }
+        }
+      },
+      "paired_served_quality": {
+        "paired_tasks": 2,
+        "A_pass_B_fail": 0,
+        "A_fail_B_pass": 0,
+        "both_pass": 2,
+        "both_fail": 0,
+        "difference_B_minus_A": 0.0,
+        "ci95": [
+          -0.8881966011250104,
+          0.8881966011250104
+        ],
+        "ci_method": "Conservative projection of Bonferroni-adjusted exact binomial intervals for the two paired discordance probabilities",
+        "population_inference": "Descriptive uncertainty for this fixed small pilot; no population superiority or quality-equivalence proof."
+      },
+      "token_savings": {
+        "A_sum": 3750,
+        "B_sum": 12852,
+        "savings_rate": -2.4272,
+        "ci95": [
+          -2.4272,
+          -2.4272
+        ],
+        "seed": 1729,
+        "requested_draws": 10000,
+        "valid_draws": 10000,
+        "task_clusters": 2,
+        "strata": {
+          "cross_document": 1,
+          "short_direct": 1
+        },
+        "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+        "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+      },
+      "cost_savings": {
+        "A_sum": 0.027245000000000002,
+        "B_sum": 0.015110456,
+        "savings_rate": 0.44538608919067724,
+        "ci95": [
+          0.44538608919067724,
+          0.44538608919067724
+        ],
+        "seed": 1729,
+        "requested_draws": 10000,
+        "valid_draws": 10000,
+        "task_clusters": 2,
+        "strata": {
+          "cross_document": 1,
+          "short_direct": 1
+        },
+        "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+        "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+      },
+      "failed_attempts": 0,
+      "billing_note": "Raw billed cost can change with caching, model prices and billing terms even at equal total tokens. Missing billing prevents a full cost result."
+    },
+    "evaluation": {
+      "task_count": 12,
+      "strata": {
+        "short_direct": 4,
+        "noisy_retrieval": 4,
+        "cross_document": 4
+      },
+      "issues": [],
+      "quality_issues": [],
+      "schedule_and_linkage_complete": true,
+      "full_token_result_admissible": true,
+      "full_cost_result_admissible": true,
+      "arms": {
+        "A": {
+          "quality": {
+            "scheduled_runs": 12,
+            "recorded_runs": 12,
+            "complete_runs": 10,
+            "partial_runs": 2,
+            "failed_runs": 0,
+            "missing_runs": 0,
+            "released_runs": 12,
+            "served_task_passes": 9,
+            "served_task_pass_rate": 0.75,
+            "served_pass_rate_ci95": [
+              0.4281415381218109,
+              0.9451393554720073
+            ],
+            "served_mean_answer_accuracy": 1.0,
+            "served_mean_evidence_accuracy": 0.8819444444444445,
+            "raw_candidates": 12,
+            "raw_candidate_task_passes": 9,
+            "raw_candidate_task_pass_rate_all_scheduled": 0.75,
+            "withheld_candidates": 0,
+            "withheld_correct_candidates": 0,
+            "elapsed_seconds_known_sum": 42.248
+          },
+          "accounting": {
+            "event_count": 12,
+            "statuses": {
+              "ok": 12
+            },
+            "input_tokens": {
+              "known_sum": 33290,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 1652,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 34942,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 504,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cost": {
+              "known_sum": 0.25523625,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 12,
+            "derived_total_events": 0,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 42217.0
+          }
+        },
+        "B": {
+          "quality": {
+            "scheduled_runs": 12,
+            "recorded_runs": 12,
+            "complete_runs": 7,
+            "partial_runs": 0,
+            "failed_runs": 5,
+            "missing_runs": 0,
+            "released_runs": 7,
+            "served_task_passes": 7,
+            "served_task_pass_rate": 0.5833333333333334,
+            "served_pass_rate_ci95": [
+              0.2766696856821059,
+              0.8483477701915698
+            ],
+            "served_mean_answer_accuracy": 0.5833333333333334,
+            "served_mean_evidence_accuracy": 0.5833333333333334,
+            "raw_candidates": 12,
+            "raw_candidate_task_passes": 11,
+            "raw_candidate_task_pass_rate_all_scheduled": 0.9166666666666666,
+            "withheld_candidates": 5,
+            "withheld_correct_candidates": 4,
+            "elapsed_seconds_known_sum": 68.923
+          },
+          "accounting": {
+            "event_count": 40,
+            "statuses": {
+              "ok": 40
+            },
+            "input_tokens": {
+              "known_sum": 122426,
+              "known_events": 40,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 8962,
+              "known_events": 40,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 131388,
+              "known_events": 40,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 881,
+              "known_events": 14,
+              "unknown_events": 26,
+              "complete": false
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 14,
+              "unknown_events": 26,
+              "complete": false
+            },
+            "cost": {
+              "known_sum": 0.230692994,
+              "known_events": 40,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 14,
+            "derived_total_events": 26,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 68689.0
+          }
+        }
+      },
+      "by_model": [
+        {
+          "model_requested": "openai/gpt-5.6-sol",
+          "model_returned": "openai/gpt-5.6-sol",
+          "arm": "A",
+          "role": "worker",
+          "accounting": {
+            "event_count": 12,
+            "statuses": {
+              "ok": 12
+            },
+            "input_tokens": {
+              "known_sum": 33290,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 1652,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 34942,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 504,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cost": {
+              "known_sum": 0.25523625,
+              "known_events": 12,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 12,
+            "derived_total_events": 0,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 42217.0
+          }
+        },
+        {
+          "model_requested": "openai/gpt-5.6-sol",
+          "model_returned": "openai/gpt-5.6-sol",
+          "arm": "B",
+          "role": "worker",
+          "accounting": {
+            "event_count": 14,
+            "statuses": {
+              "ok": 14
+            },
+            "input_tokens": {
+              "known_sum": 21819,
+              "known_events": 14,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 3211,
+              "known_events": 14,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 25030,
+              "known_events": 14,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 881,
+              "known_events": 14,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 14,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "cost": {
+              "known_sum": 0.2264675,
+              "known_events": 14,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 14,
+            "derived_total_events": 0,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 57515.0
+          }
+        },
+        {
+          "model_requested": "typesafe/jev-1.13",
+          "model_returned": "typesafe/jev-1.13-20260917",
+          "arm": "B",
+          "role": "jev",
+          "accounting": {
+            "event_count": 26,
+            "statuses": {
+              "ok": 26
+            },
+            "input_tokens": {
+              "known_sum": 100607,
+              "known_events": 26,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "output_tokens": {
+              "known_sum": 5751,
+              "known_events": 26,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "total_tokens": {
+              "known_sum": 106358,
+              "known_events": 26,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reasoning_tokens": {
+              "known_sum": 0,
+              "known_events": 0,
+              "unknown_events": 26,
+              "complete": false
+            },
+            "cached_input_tokens": {
+              "known_sum": 0,
+              "known_events": 0,
+              "unknown_events": 26,
+              "complete": false
+            },
+            "cost": {
+              "known_sum": 0.004225494,
+              "known_events": 26,
+              "unknown_events": 0,
+              "complete": true
+            },
+            "reported_total_events": 0,
+            "derived_total_events": 26,
+            "usage_diagnostics": [],
+            "latency_ms_known_sum": 11174.0
+          }
+        }
+      ],
+      "per_stratum": {
+        "cross_document": {
+          "A": {
+            "quality": {
+              "scheduled_runs": 4,
+              "recorded_runs": 4,
+              "complete_runs": 2,
+              "partial_runs": 2,
+              "failed_runs": 0,
+              "missing_runs": 0,
+              "released_runs": 4,
+              "served_task_passes": 1,
+              "served_task_pass_rate": 0.25,
+              "served_pass_rate_ci95": [
+                0.006309463209709876,
+                0.8058795503167566
+              ],
+              "served_mean_answer_accuracy": 1.0,
+              "served_mean_evidence_accuracy": 0.6458333333333334,
+              "raw_candidates": 4,
+              "raw_candidate_task_passes": 1,
+              "raw_candidate_task_pass_rate_all_scheduled": 0.25,
+              "withheld_candidates": 0,
+              "withheld_correct_candidates": 0,
+              "elapsed_seconds_known_sum": 16.53
+            },
+            "accounting": {
+              "event_count": 4,
+              "statuses": {
+                "ok": 4
+              },
+              "input_tokens": {
+                "known_sum": 15217,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 890,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 16107,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 310,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cost": {
+                "known_sum": 0.12179125,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 4,
+              "derived_total_events": 0,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 16530.0
+            }
+          },
+          "B": {
+            "quality": {
+              "scheduled_runs": 4,
+              "recorded_runs": 4,
+              "complete_runs": 1,
+              "partial_runs": 0,
+              "failed_runs": 3,
+              "missing_runs": 0,
+              "released_runs": 1,
+              "served_task_passes": 1,
+              "served_task_pass_rate": 0.25,
+              "served_pass_rate_ci95": [
+                0.006309463209709876,
+                0.8058795503167566
+              ],
+              "served_mean_answer_accuracy": 0.25,
+              "served_mean_evidence_accuracy": 0.25,
+              "raw_candidates": 4,
+              "raw_candidate_task_passes": 3,
+              "raw_candidate_task_pass_rate_all_scheduled": 0.75,
+              "withheld_candidates": 3,
+              "withheld_correct_candidates": 2,
+              "elapsed_seconds_known_sum": 34.407000000000004
+            },
+            "accounting": {
+              "event_count": 16,
+              "statuses": {
+                "ok": 16
+              },
+              "input_tokens": {
+                "known_sum": 65690,
+                "known_events": 16,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 4595,
+                "known_events": 16,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 70285,
+                "known_events": 16,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 743,
+                "known_events": 6,
+                "unknown_events": 10,
+                "complete": false
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 6,
+                "unknown_events": 10,
+                "complete": false
+              },
+              "cost": {
+                "known_sum": 0.16218104,
+                "known_events": 16,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 6,
+              "derived_total_events": 10,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 34312.0
+            }
+          },
+          "token_savings": {
+            "A_sum": 16107,
+            "B_sum": 70285,
+            "savings_rate": -3.3636307195629227,
+            "ci95": [
+              -4.734114351203361,
+              -2.0597286164283983
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 4,
+            "strata": {
+              "cross_document": 4
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "cost_savings": {
+            "A_sum": 0.12179125,
+            "B_sum": 0.16218104,
+            "savings_rate": -0.33163129535167757,
+            "ci95": [
+              -1.0848740274058906,
+              0.4886492485152548
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 4,
+            "strata": {
+              "cross_document": 4
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "paired_quality": {
+            "paired_tasks": 4,
+            "A_pass_B_fail": 0,
+            "A_fail_B_pass": 0,
+            "both_pass": 1,
+            "both_fail": 3,
+            "difference_B_minus_A": 0.0,
+            "ci95": [
+              -0.665629847511789,
+              0.665629847511789
+            ],
+            "ci_method": "Conservative projection of Bonferroni-adjusted exact binomial intervals for the two paired discordance probabilities",
+            "population_inference": "Descriptive uncertainty for this fixed small pilot; no population superiority or quality-equivalence proof."
+          }
+        },
+        "noisy_retrieval": {
+          "A": {
+            "quality": {
+              "scheduled_runs": 4,
+              "recorded_runs": 4,
+              "complete_runs": 4,
+              "partial_runs": 0,
+              "failed_runs": 0,
+              "missing_runs": 0,
+              "released_runs": 4,
+              "served_task_passes": 4,
+              "served_task_pass_rate": 1.0,
+              "served_pass_rate_ci95": [
+                0.3976353643835252,
+                1.0
+              ],
+              "served_mean_answer_accuracy": 1.0,
+              "served_mean_evidence_accuracy": 1.0,
+              "raw_candidates": 4,
+              "raw_candidate_task_passes": 4,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 0,
+              "withheld_correct_candidates": 0,
+              "elapsed_seconds_known_sum": 11.109
+            },
+            "accounting": {
+              "event_count": 4,
+              "statuses": {
+                "ok": 4
+              },
+              "input_tokens": {
+                "known_sum": 16188,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 294,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 16482,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 0,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cost": {
+                "known_sum": 0.10998,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 4,
+              "derived_total_events": 0,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 11093.0
+            }
+          },
+          "B": {
+            "quality": {
+              "scheduled_runs": 4,
+              "recorded_runs": 4,
+              "complete_runs": 3,
+              "partial_runs": 0,
+              "failed_runs": 1,
+              "missing_runs": 0,
+              "released_runs": 3,
+              "served_task_passes": 3,
+              "served_task_pass_rate": 0.75,
+              "served_pass_rate_ci95": [
+                0.19412044968324332,
+                0.9936905367902902
+              ],
+              "served_mean_answer_accuracy": 0.75,
+              "served_mean_evidence_accuracy": 0.75,
+              "raw_candidates": 4,
+              "raw_candidate_task_passes": 4,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 1,
+              "withheld_correct_candidates": 1,
+              "elapsed_seconds_known_sum": 19.469
+            },
+            "accounting": {
+              "event_count": 12,
+              "statuses": {
+                "ok": 12
+              },
+              "input_tokens": {
+                "known_sum": 46018,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 2840,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 48858,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 0,
+                "known_events": 4,
+                "unknown_events": 8,
+                "complete": false
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 4,
+                "unknown_events": 8,
+                "complete": false
+              },
+              "cost": {
+                "known_sum": 0.0358694,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 4,
+              "derived_total_events": 8,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 19407.0
+            }
+          },
+          "token_savings": {
+            "A_sum": 16482,
+            "B_sum": 48858,
+            "savings_rate": -1.9643247178740446,
+            "ci95": [
+              -2.0349204383629496,
+              -1.9280287167215078
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 4,
+            "strata": {
+              "noisy_retrieval": 4
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "cost_savings": {
+            "A_sum": 0.10998,
+            "B_sum": 0.0358694,
+            "savings_rate": 0.6738552464084379,
+            "ci95": [
+              0.6074024478008221,
+              0.7115788177228373
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 4,
+            "strata": {
+              "noisy_retrieval": 4
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "paired_quality": {
+            "paired_tasks": 4,
+            "A_pass_B_fail": 1,
+            "A_fail_B_pass": 0,
+            "both_pass": 3,
+            "both_fail": 0,
+            "difference_B_minus_A": -0.25,
+            "ci95": [
+              -0.8477699852319123,
+              0.6624900913361627
+            ],
+            "ci_method": "Conservative projection of Bonferroni-adjusted exact binomial intervals for the two paired discordance probabilities",
+            "population_inference": "Descriptive uncertainty for this fixed small pilot; no population superiority or quality-equivalence proof."
+          }
+        },
+        "short_direct": {
+          "A": {
+            "quality": {
+              "scheduled_runs": 4,
+              "recorded_runs": 4,
+              "complete_runs": 4,
+              "partial_runs": 0,
+              "failed_runs": 0,
+              "missing_runs": 0,
+              "released_runs": 4,
+              "served_task_passes": 4,
+              "served_task_pass_rate": 1.0,
+              "served_pass_rate_ci95": [
+                0.3976353643835252,
+                1.0
+              ],
+              "served_mean_answer_accuracy": 1.0,
+              "served_mean_evidence_accuracy": 1.0,
+              "raw_candidates": 4,
+              "raw_candidate_task_passes": 4,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 0,
+              "withheld_correct_candidates": 0,
+              "elapsed_seconds_known_sum": 14.609
+            },
+            "accounting": {
+              "event_count": 4,
+              "statuses": {
+                "ok": 4
+              },
+              "input_tokens": {
+                "known_sum": 1885,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 468,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 2353,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 194,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "cost": {
+                "known_sum": 0.023465,
+                "known_events": 4,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 4,
+              "derived_total_events": 0,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 14594.0
+            }
+          },
+          "B": {
+            "quality": {
+              "scheduled_runs": 4,
+              "recorded_runs": 4,
+              "complete_runs": 3,
+              "partial_runs": 0,
+              "failed_runs": 1,
+              "missing_runs": 0,
+              "released_runs": 3,
+              "served_task_passes": 3,
+              "served_task_pass_rate": 0.75,
+              "served_pass_rate_ci95": [
+                0.19412044968324332,
+                0.9936905367902902
+              ],
+              "served_mean_answer_accuracy": 0.75,
+              "served_mean_evidence_accuracy": 0.75,
+              "raw_candidates": 4,
+              "raw_candidate_task_passes": 4,
+              "raw_candidate_task_pass_rate_all_scheduled": 1.0,
+              "withheld_candidates": 1,
+              "withheld_correct_candidates": 1,
+              "elapsed_seconds_known_sum": 15.047
+            },
+            "accounting": {
+              "event_count": 12,
+              "statuses": {
+                "ok": 12
+              },
+              "input_tokens": {
+                "known_sum": 10718,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "output_tokens": {
+                "known_sum": 1527,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "total_tokens": {
+                "known_sum": 12245,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reasoning_tokens": {
+                "known_sum": 138,
+                "known_events": 4,
+                "unknown_events": 8,
+                "complete": false
+              },
+              "cached_input_tokens": {
+                "known_sum": 0,
+                "known_events": 4,
+                "unknown_events": 8,
+                "complete": false
+              },
+              "cost": {
+                "known_sum": 0.032642554,
+                "known_events": 12,
+                "unknown_events": 0,
+                "complete": true
+              },
+              "reported_total_events": 4,
+              "derived_total_events": 8,
+              "usage_diagnostics": [],
+              "latency_ms_known_sum": 14970.0
+            }
+          },
+          "token_savings": {
+            "A_sum": 2353,
+            "B_sum": 12245,
+            "savings_rate": -4.203994900127497,
+            "ci95": [
+              -4.6223970384081445,
+              -3.6324218750000004
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 4,
+            "strata": {
+              "short_direct": 4
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "cost_savings": {
+            "A_sum": 0.023465,
+            "B_sum": 0.032642554,
+            "savings_rate": -0.39111672704027267,
+            "ci95": [
+              -0.6315466515323493,
+              -0.15581170876671635
+            ],
+            "seed": 1729,
+            "requested_draws": 10000,
+            "valid_draws": 10000,
+            "task_clusters": 4,
+            "strata": {
+              "short_direct": 4
+            },
+            "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+            "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+          },
+          "paired_quality": {
+            "paired_tasks": 4,
+            "A_pass_B_fail": 1,
+            "A_fail_B_pass": 0,
+            "both_pass": 3,
+            "both_fail": 0,
+            "difference_B_minus_A": -0.25,
+            "ci95": [
+              -0.8477699852319123,
+              0.6624900913361627
+            ],
+            "ci_method": "Conservative projection of Bonferroni-adjusted exact binomial intervals for the two paired discordance probabilities",
+            "population_inference": "Descriptive uncertainty for this fixed small pilot; no population superiority or quality-equivalence proof."
+          }
+        }
+      },
+      "paired_served_quality": {
+        "paired_tasks": 12,
+        "A_pass_B_fail": 2,
+        "A_fail_B_pass": 0,
+        "both_pass": 7,
+        "both_fail": 3,
+        "difference_B_minus_A": -0.16666666666666666,
+        "ci95": [
+          -0.5250810947605413,
+          0.29148039903976125
+        ],
+        "ci_method": "Conservative projection of Bonferroni-adjusted exact binomial intervals for the two paired discordance probabilities",
+        "population_inference": "Descriptive uncertainty for this fixed small pilot; no population superiority or quality-equivalence proof."
+      },
+      "token_savings": {
+        "A_sum": 34942,
+        "B_sum": 131388,
+        "savings_rate": -2.7601740026329344,
+        "ci95": [
+          -3.388258807951306,
+          -2.1548948981577674
+        ],
+        "seed": 1729,
+        "requested_draws": 10000,
+        "valid_draws": 10000,
+        "task_clusters": 12,
+        "strata": {
+          "cross_document": 4,
+          "noisy_retrieval": 4,
+          "short_direct": 4
+        },
+        "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+        "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+      },
+      "cost_savings": {
+        "A_sum": 0.25523625,
+        "B_sum": 0.230692994,
+        "savings_rate": 0.0961589742836293,
+        "ci95": [
+          -0.2930400236819258,
+          0.4914370936354043
+        ],
+        "seed": 1729,
+        "requested_draws": 10000,
+        "valid_draws": 10000,
+        "task_clusters": 12,
+        "strata": {
+          "cross_document": 4,
+          "noisy_retrieval": 4,
+          "short_direct": 4
+        },
+        "method": "Paired task-cluster percentile bootstrap, stratified by task stratum",
+        "scope": "Empirical fixed-pilot estimate. A narrow or degenerate CI does not guarantee generalization."
+      },
+      "failed_attempts": 0,
+      "billing_note": "Raw billed cost can change with caching, model prices and billing terms even at equal total tokens. Missing billing prevents a full cost result."
+    }
+  },
+  "per_task_grades": [
+    {
+      "task_id": "DEV-01",
+      "phase": "development",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 2,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "interval_minutes": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 2,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "interval_minutes": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "DEV-01",
+      "phase": "development",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 2,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "interval_minutes": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 2,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "interval_minutes": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "DEV-02",
+      "phase": "development",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "expiry_days": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "quota_gb": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "storage_class": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "expiry_days": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "quota_gb": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "storage_class": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "DEV-02",
+      "phase": "development",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "expiry_days": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "quota_gb": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "storage_class": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "expiry_days": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "quota_gb": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "storage_class": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S01",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "alpha": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "format": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "alpha": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "format": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S01",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "alpha": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "format": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "alpha": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "format": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S02",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "rejected_crates": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "released_crates": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "unit": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "rejected_crates": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "released_crates": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "unit": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S02",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": false,
+        "field_count": 3,
+        "answer_accuracy": 0.0,
+        "evidence_accuracy": 0.0,
+        "joint_field_accuracy": 0.0,
+        "status_correct": false,
+        "task_pass": false,
+        "fields": {
+          "rejected_crates": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "released_crates": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "unit": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          }
+        },
+        "errors": [
+          "invalid_response: response must be a JSON object",
+          "answers must be an object",
+          "evidence must be an object",
+          "answer fields do not exactly match required fields",
+          "evidence fields do not exactly match required fields",
+          "status must be complete or partial",
+          "rejected_crates: evidence must be a list of source ID strings",
+          "released_crates: evidence must be a list of source ID strings",
+          "unit: evidence must be a list of source ID strings"
+        ]
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "rejected_crates": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "released_crates": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "unit": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S03",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "approver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "window_hours": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "approver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "window_hours": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S03",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "approver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "window_hours": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "approver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "window_hours": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S04",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "archiver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "indexer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "notifier": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "renderer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "archiver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "indexer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "notifier": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "renderer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-S04",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "archiver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "indexer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "notifier": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "renderer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "archiver": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "indexer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "notifier": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "renderer": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N01",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "codec": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "retry_limit": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "strip_metadata": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "codec": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "retry_limit": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "strip_metadata": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N01",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "codec": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "retry_limit": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "strip_metadata": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "codec": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "max_width_px": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "retry_limit": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "strip_metadata": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N02",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "failed": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "queue": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "received": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "successful": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "failed": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "queue": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "received": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "successful": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N02",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": false,
+        "field_count": 4,
+        "answer_accuracy": 0.0,
+        "evidence_accuracy": 0.0,
+        "joint_field_accuracy": 0.0,
+        "status_correct": false,
+        "task_pass": false,
+        "fields": {
+          "failed": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "queue": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "received": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "successful": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          }
+        },
+        "errors": [
+          "invalid_response: response must be a JSON object",
+          "answers must be an object",
+          "evidence must be an object",
+          "answer fields do not exactly match required fields",
+          "evidence fields do not exactly match required fields",
+          "status must be complete or partial",
+          "failed: evidence must be a list of source ID strings",
+          "queue: evidence must be a list of source ID strings",
+          "received: evidence must be a list of source ID strings",
+          "successful: evidence must be a list of source ID strings"
+        ]
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "failed": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "queue": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "received": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "successful": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N03",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "queue": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "selected_revision": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "timeout_seconds": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "queue": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "selected_revision": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "timeout_seconds": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N03",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "queue": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "selected_revision": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "timeout_seconds": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 3,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "queue": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "selected_revision": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "timeout_seconds": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N04",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "carton_limit_kg": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "inserts_per_box": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "label_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "seal_code": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "carton_limit_kg": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "inserts_per_box": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "label_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "seal_code": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-N04",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "carton_limit_kg": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "inserts_per_box": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "label_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "seal_code": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "carton_limit_kg": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "inserts_per_box": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "label_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "seal_code": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C01",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "allocation_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "cap_applied": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "effective_workers": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "execution_slots": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "allocation_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "cap_applied": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "effective_workers": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "execution_slots": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C01",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "allocation_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "cap_applied": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "effective_workers": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "execution_slots": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "allocation_mode": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "cap_applied": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "effective_workers": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "execution_slots": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C02",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 0.5,
+        "joint_field_accuracy": 0.5,
+        "status_correct": true,
+        "task_pass": false,
+        "fields": {
+          "alert": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "defects": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "included_items": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "rate_per_1000": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 0.5,
+        "joint_field_accuracy": 0.5,
+        "status_correct": true,
+        "task_pass": false,
+        "fields": {
+          "alert": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "defects": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "included_items": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "rate_per_1000": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C02",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": false,
+        "field_count": 4,
+        "answer_accuracy": 0.0,
+        "evidence_accuracy": 0.0,
+        "joint_field_accuracy": 0.0,
+        "status_correct": false,
+        "task_pass": false,
+        "fields": {
+          "alert": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "defects": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "included_items": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "rate_per_1000": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          }
+        },
+        "errors": [
+          "invalid_response: response must be a JSON object",
+          "answers must be an object",
+          "evidence must be an object",
+          "answer fields do not exactly match required fields",
+          "evidence fields do not exactly match required fields",
+          "status must be complete or partial",
+          "alert: evidence must be a list of source ID strings",
+          "defects: evidence must be a list of source ID strings",
+          "included_items: evidence must be a list of source ID strings",
+          "rate_per_1000: evidence must be a list of source ID strings"
+        ]
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "alert": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "defects": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "included_items": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "rate_per_1000": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C03",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 0.75,
+        "joint_field_accuracy": 0.75,
+        "status_correct": true,
+        "task_pass": false,
+        "fields": {
+          "action": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 2"
+            ]
+          },
+          "conflict": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "endpoint": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "retention_days": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 0.75,
+        "joint_field_accuracy": 0.75,
+        "status_correct": true,
+        "task_pass": false,
+        "fields": {
+          "action": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 2"
+            ]
+          },
+          "conflict": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "endpoint": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "retention_days": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C03",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": false,
+        "field_count": 4,
+        "answer_accuracy": 0.0,
+        "evidence_accuracy": 0.0,
+        "joint_field_accuracy": 0.0,
+        "status_correct": false,
+        "task_pass": false,
+        "fields": {
+          "action": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "conflict": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "endpoint": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "retention_days": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          }
+        },
+        "errors": [
+          "invalid_response: response must be a JSON object",
+          "answers must be an object",
+          "evidence must be an object",
+          "answer fields do not exactly match required fields",
+          "evidence fields do not exactly match required fields",
+          "status must be complete or partial",
+          "action: evidence must be a list of source ID strings",
+          "conflict: evidence must be a list of source ID strings",
+          "endpoint: evidence must be a list of source ID strings",
+          "retention_days: evidence must be a list of source ID strings"
+        ]
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 4,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 1.0,
+        "joint_field_accuracy": 1.0,
+        "status_correct": true,
+        "task_pass": true,
+        "fields": {
+          "action": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "conflict": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "endpoint": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "retention_days": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C04",
+      "phase": "evaluation",
+      "arm": "A",
+      "served_grade": {
+        "schema_valid": true,
+        "field_count": 6,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 0.3333333333333333,
+        "joint_field_accuracy": 0.3333333333333333,
+        "status_correct": true,
+        "task_pass": false,
+        "fields": {
+          "full_total_credits": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "known_subtotal_credits": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 2"
+            ]
+          },
+          "missing_sku": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 5"
+            ]
+          },
+          "priced_lines": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "quote_state": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "total_units": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 6,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 0.3333333333333333,
+        "joint_field_accuracy": 0.3333333333333333,
+        "status_correct": true,
+        "task_pass": false,
+        "fields": {
+          "full_total_credits": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "known_subtotal_credits": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 2"
+            ]
+          },
+          "missing_sku": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 5"
+            ]
+          },
+          "priced_lines": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "quote_state": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "total_units": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    },
+    {
+      "task_id": "E-C04",
+      "phase": "evaluation",
+      "arm": "B",
+      "served_grade": {
+        "schema_valid": false,
+        "field_count": 6,
+        "answer_accuracy": 0.0,
+        "evidence_accuracy": 0.0,
+        "joint_field_accuracy": 0.0,
+        "status_correct": false,
+        "task_pass": false,
+        "fields": {
+          "full_total_credits": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "known_subtotal_credits": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "missing_sku": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "priced_lines": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "quote_state": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          },
+          "total_units": {
+            "answer_correct": false,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing answer",
+              "missing or invalid evidence list"
+            ]
+          }
+        },
+        "errors": [
+          "invalid_response: response must be a JSON object",
+          "answers must be an object",
+          "evidence must be an object",
+          "answer fields do not exactly match required fields",
+          "evidence fields do not exactly match required fields",
+          "status must be complete or partial",
+          "full_total_credits: evidence must be a list of source ID strings",
+          "known_subtotal_credits: evidence must be a list of source ID strings",
+          "missing_sku: evidence must be a list of source ID strings",
+          "priced_lines: evidence must be a list of source ID strings",
+          "quote_state: evidence must be a list of source ID strings",
+          "total_units: evidence must be a list of source ID strings"
+        ]
+      },
+      "raw_candidate_grade": {
+        "schema_valid": true,
+        "field_count": 6,
+        "answer_accuracy": 1.0,
+        "evidence_accuracy": 0.5,
+        "joint_field_accuracy": 0.5,
+        "status_correct": true,
+        "task_pass": false,
+        "fields": {
+          "full_total_credits": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "known_subtotal_credits": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 3"
+            ]
+          },
+          "missing_sku": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 5"
+            ]
+          },
+          "priced_lines": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          },
+          "quote_state": {
+            "answer_correct": true,
+            "evidence_correct": false,
+            "joint_correct": false,
+            "errors": [
+              "missing required evidence groups: 1"
+            ]
+          },
+          "total_units": {
+            "answer_correct": true,
+            "evidence_correct": true,
+            "joint_correct": true,
+            "errors": []
+          }
+        },
+        "errors": []
+      }
+    }
+  ],
+  "all_record_inventory": {
+    "ledger_events": 60,
+    "runs": 28,
+    "unrecognized_phase_issues": {}
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "gen-1790144280-Cbcy6t9LAElXBBwbWj89",
+  "object": "chat.completion",
+  "created": 1790144280,
+  "model": "openai/gpt-6-luna",
+  "provider": "Azure",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "completed",
+      "message": {
+        "role": "assistant",
+        "content": "{\"data\":{\"denominator\":\"items\",\"numerator\":\"defects\",\"scale\":1000,\"segments\":[\"A\",\"B\"]},\"five_scores\":[5,5,5,5,5],\"self_probability\":0.99,\"source_ids\":[\"records\"],\"text\":\"Include production segments A and B; exclude trial segment T. Calculate defects per 1,000 items.\"}",
+        "refusal": null,
+        "reasoning_details": [
+          {
+            "type": "reasoning.encrypted",
+            "data": "gAAAAABqs28Z_1onHbV2au45ph-BFLPTrfMsT8q2U4iSN8FVdP8g5ApGNVFlkU7_GGBqM48QajpwC8IpSj9rDluzePM_UE9EctKaFiwUC9PPObLnhC7wHDw90i5FXV2GO0qwBWCLq1ossr8waRVFxhy9tOa4Wetx_VEOD2IxTXfe0NAKTgXi93K5LwTJo3Je4cFu-7wyXzpw_RYxeMFXx_XhCGhO89SJCS1mGnoWywenbbe8bBmgMcCgSScgztTNqcTKgdPERP4lkWpTpq8JvGEj3JOQSWZEmq-HZ3tmODAVytFd70vx03jUVSiaIUYPZI7-QyG66EGB38Qypi1I1aYI8CrEBqoycJ3801nXMONM-svzHI3oavnrCE4h6FdOhJ-DGoqEF00jXmlS-U1EryaMTeQhy6e0TKSBzUTQMmKAlso-RIs_yaUmDhgIrcrTJLagyQrXoUUzS7d1Y5YduEHKR50ghyLtSFjjWB45JIoLkHS7cuf8LOGbGzJ_8HcuHl_Jj0JL580Q10wORn15BNhfcjilZdS2CzikNFa8SBvd-rpl_ZQUkLm7Yvr49u4gN8V1i0qFi_bOQ4KbfAGAdhYeXjNZ4TtEhtExo-8jEgtw_gJ4h2Jm7HvYk9suKQz8agkl8wTN_q5r7npP1W23ACMl1DCsuU3Nxf4u4hEmd7q-_A0llQ20BLF9Ud4Y2yI0qfWaikLJ9mxyFdgp555-cFeHhcGEgAxHjhzbc2BWh4AZDmxSVsarzumt0vK2yXUu8xe53YEFWD-llKpJDd2H-4NV6-VPA06tBbrLj0KOawO1MrPK8Y6QS0iUVpzmzdMJKq-KkbFH2bPtst10es7ywSLPYGlvQ9sJ2p9_fqqwLyL5KehRXVeq9l4BkCvdMkHJ6C27YT3LjTPL7iBNRVuQOILnL3wQTpVSHemjdLdjHr2pOcrput-6PNSzA_Hkg-WdNiJQ0CqTlUqfk28EL_Lnl3_mky6gi01sKC58pTUjsNaICJHHlK-ks-KH9Tae-jkb8nNVHSdZEfdZeS3mGauci0tiR43IK3GxnVIbrraJEtfMHF1Q_sEFLOj8DzUYqkvgWCOUprm4ZKYgFzR-GU9aOVnxD5JHag0phtkb3YoLl8WKeUztqY75AwDYbFUC39yN-mqK-6H8rlVIXWqz3Yv6ohOHXwm8OQo-DH9hk7rgJHoPvcM9zVIEP7w0l4ufhkflMOTNsHJmh0Tvr-hecDlg5Bral1iGyQM_mvRbHxqimW2ItBr4kj9PV7RobDiTV1Hrv3s7a_yaW7rp7yveJJXbFg-KLacz4nxHoOFw0d75TKPZEFw4l1nqP6A_pZODGPj9FPN5ryXcVP4yJ8GVv_45fZR9E1pR51Bcq_2xPGcWvFUJ1nXhDcsKyvk=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC02LWx1bmEtMjAyNjA5MjJ8YXp1cmUifQ",
+            "format": "azure-openai-responses-v1",
+            "id": "rs_0f124aa96962fb91016ab36f197f5c81959d029df824c0974d",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 527,
+    "completion_tokens": 130,
+    "total_tokens": 657,
+    "cost": 0.0001177,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0001177,
+      "upstream_inference_prompt_cost": 5.27e-05,
+      "upstream_inference_completions_cost": 6.5e-05
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 44,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

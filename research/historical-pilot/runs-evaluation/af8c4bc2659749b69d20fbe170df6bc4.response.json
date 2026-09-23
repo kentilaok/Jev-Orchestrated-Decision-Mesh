@@ -1,0 +1,45 @@
+{
+  "id": "gen-1790101808-Nm66Gf1OUUOxmUWGu7bs",
+  "object": "chat.completion",
+  "created": 1790101808,
+  "model": "openai/gpt-5.6-sol",
+  "provider": "Azure",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "completed",
+      "message": {
+        "role": "assistant",
+        "content": "{\"answers\":{\"failed\":28,\"queue\":\"cobalt\",\"received\":420,\"successful\":392},\"evidence\":{\"failed\":[\"D103E\"],\"queue\":[\"D103E\"],\"received\":[\"D103E\"],\"successful\":[\"D103E\"]},\"status\":\"complete\"}",
+        "refusal": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4066,
+    "completion_tokens": 63,
+    "total_tokens": 4129,
+    "cost": 0.02729875,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 4063,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.02729875,
+      "upstream_inference_prompt_cost": 0.02540875,
+      "upstream_inference_completions_cost": 0.00189
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

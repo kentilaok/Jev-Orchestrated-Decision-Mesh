@@ -1,6 +1,6 @@
 # Contributing
 
-CIDM is a work in progress led by **Kenneth Vic A. Caber**.
+CIDM is led by **Kenneth Vic A. Caber**. Changes should preserve the documented execution contract and state their evidence level.
 
 Keep the core direction training-free. Changes should improve inference-time routing, evidence handling, executable checks, model/provider adapters, or measured efficiency. Do not add training pipelines or learned checkpoints to the current project.
 

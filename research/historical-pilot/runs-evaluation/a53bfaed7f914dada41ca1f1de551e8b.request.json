@@ -1,0 +1,39 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "original_request": "For final run R7F3C, return released_crates and rejected_crates as counts, and unit as the singular lowercase unit name. Return answers with exactly these fields: released_crates, rejected_crates, unit. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+    "answer_fields": [
+      "released_crates",
+      "rejected_crates",
+      "unit"
+    ],
+    "documents": [
+      {
+        "id": "D4B7B",
+        "text": "Closed packing report for run R7F3C: packed_crates = 96, rejected_crates = 8, and released_crates = 88. These are disjoint quality outcomes within the packed count. The reporting unit for every count is crate. The report is final."
+      },
+      {
+        "id": "D1199",
+        "text": "Handoff register for run R7F3C: the packing report is the final count authority. A preliminary dispatch note counted 90 planned releases before quality checking. That planned count was not a released count."
+      }
+    ]
+  },
+  "questions": {
+    "operation": {
+      "type": "choice",
+      "instructions": "Choose a suitable way to send sources to the fixed Sol worker for this task.",
+      "criteria": {
+        "select_context": "Some documents do not contribute; use the independently evaluated relevance results to select sources.",
+        "use_all": "All documents may be needed, or reliable source selection is uncertain."
+      }
+    },
+    "keep_D4B7B": {
+      "type": "noul",
+      "instructions": "Is document D4B7B potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D1199": {
+      "type": "noul",
+      "instructions": "Is document D1199 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    }
+  }
+}

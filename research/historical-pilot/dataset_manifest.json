@@ -1,0 +1,44 @@
+{
+  "development_count": 2,
+  "evaluation_count": 12,
+  "notice": "Synthetic pilot only; development cases are excluded from evaluation. Gold must never enter an evaluated model request. Hashes freeze this generated release.",
+  "request_sizes_ascii_bytes": {
+    "DEV-01": 1642,
+    "DEV-02": 15835,
+    "E-C01": 19874,
+    "E-C02": 19973,
+    "E-C03": 19918,
+    "E-C04": 15966,
+    "E-N01": 20139,
+    "E-N02": 20067,
+    "E-N03": 19741,
+    "E-N04": 20160,
+    "E-S01": 1803,
+    "E-S02": 1849,
+    "E-S03": 1781,
+    "E-S04": 2261
+  },
+  "seed": 1729,
+  "sha256": {
+    "gold.json": "0e2e2bce75dc82b0c6c260e526fb0dd147185197c4c3e743b90e26a056bb1005",
+    "tasks.json": "d9001859be613146facc1b761688e4c27fe4c134afa137faad6abd2ef3ef221d"
+  },
+  "source_counts": {
+    "DEV-01": 2,
+    "DEV-02": 16,
+    "E-C01": 20,
+    "E-C02": 20,
+    "E-C03": 20,
+    "E-C04": 16,
+    "E-N01": 20,
+    "E-N02": 20,
+    "E-N03": 20,
+    "E-N04": 20,
+    "E-S01": 2,
+    "E-S02": 2,
+    "E-S03": 2,
+    "E-S04": 4
+  },
+  "task_count": 14,
+  "version": "cidm-synthetic-pilot-1.0"
+}

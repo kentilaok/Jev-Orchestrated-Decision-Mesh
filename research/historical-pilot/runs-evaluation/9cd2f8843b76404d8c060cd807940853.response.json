@@ -1,0 +1,54 @@
+{
+  "id": "gen-1790101871-aLD2rG07QLEsFNhOXgTo",
+  "object": "chat.completion",
+  "created": 1790101871,
+  "model": "openai/gpt-5.6-sol",
+  "provider": "Azure",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "completed",
+      "message": {
+        "role": "assistant",
+        "content": "{\"answers\":{\"full_total_credits\":null,\"known_subtotal_credits\":345,\"missing_sku\":\"S84F8\",\"priced_lines\":5,\"quote_state\":\"incomplete\",\"total_units\":108},\"evidence\":{\"full_total_credits\":[\"D712E\",\"D5FCE\"],\"known_subtotal_credits\":[\"DFF01\",\"DE726\",\"DFA10\",\"D2AB2\",\"DA5E9\",\"D9105\",\"D8002\",\"D88D6\",\"DBD1B\",\"DB356\",\"D7BDD\",\"D7C88\",\"DA16A\"],\"missing_sku\":[\"DFF01\",\"D5FCE\",\"D712E\"],\"priced_lines\":[\"DFF01\",\"D2AB2\",\"D9105\",\"D88D6\",\"DB356\",\"D7C88\",\"D5FCE\",\"D712E\"],\"quote_state\":[\"D5FCE\",\"D712E\"],\"total_units\":[\"DFF01\",\"DFA10\",\"DA5E9\",\"D8002\",\"DBD1B\",\"D7BDD\",\"DD2AB\",\"D712E\"]},\"status\":\"partial\"}",
+        "refusal": null,
+        "reasoning_details": [
+          {
+            "type": "reasoning.encrypted",
+            "data": "gAAAAABqsslzct6mb4T26aOEzCYoRKg5tZdcbggUlu4_1qYeo47a80kqMVf9u93oQqK27I23XzubMWS4bhh1z4OymkotNogdDCaFoxpLD81QEwzfMo5hXxyVe2I4F9EiJ0N6prBY68zMkovjGnG6NIRyHINN_5mFHXBhUElokw8L_U4vmk8XpwbFiIgMHO6RK2pxPUv0W_YgyQ4nTHBwog2SvWq9c04tM3_zaI5875LvUYhqrGRocLvRo_-LqCe8VXjUsY2SUGsbmodj9uIzNa6YEFfqNpiT8X_IR75d-OrdNx1Jk4ZUqof4wphnr9_b3NrlzzV78WINvupu3UUY0b0cQpGmPQVaR58Jpqaya84mQi-yYMHL3ofDENZNM-3hUn1xQPMplM1HMmARrXbH95HnfUaX61grgGSTZ_HEgdGmXaR9cjKrSNG7YBCkrHXG26Z4wssuV1yFH1IDMX1PyIKu1I_ZVa3r93HZ8-fX_sFV8KUKIpqRcQjSvqSm7dvOc6GotFVfkQ9DuhYk86KhMuYSAS8MElpDyfVjabjGJGaTLBLAcyBjysMsq5DPzrswRjQf4wHc9o-6aXbXcTJQQhm7Q4-iINgdQE9GJdU98bXcJWTCbDluRWLfn1Nt2bfDxK9LKWvPfT4kYNbgfLgu4srDGCvskUN72bInRqmYxUB08Eq6GqckYP-6BjFt4tzFc9FrgzQrHA9JZYfhhT3sLn6jVWI14POQZ_w6sy3s4cgvHCrDmcOq2fNKVVTSTqrfdaeyNdHai4qqqzWSfuBRkflt42TWmmQHPLvp_4V45TpJzQ7f8JVwxvQgLBcZ2v_oPKQuxI6DvaZpvFnw2zJ4w3q5wZyLTyhoigRVHNpaTU5-8eERBtoRdlDZSqNYWUuUga1dhq4fe6vDIZPiMO18BLKkRSuP3tSeBOaTo5s1GNAyeHcwd3ErTz_7xmhfwoWmgX-ZtaCEl5aCeweRCdslfWhcZ8QFxjLUwtsjS91fQ9CxC8HNDxu2LIlCg9c0J-AmzqpPHR5aYI7aoBwQFsf8NO-K6Of4ClFPgT6sWPPfPbkVYNk14Hch86D3QWgsgbEOwfe0Na6gg_UJ53YVOy3nsOpMb5IM4GID_q4oMhHHWFJHKfgeLv7gTsPA_w7evJfx_p0HN7-485_9aKjIp9X8m4jrSubsX7fZzSqbL9mARlAO5TLPEhuvB4sPGo798YLE7YQORLCsoREBvNInRTiOraby074DzLFMcfIfciYkv_GzRFC4LT-PAq0MkQxEx6wmYfqG1E1VYzcfcwgTx9dDslgItq2Femw0w-K6niy3vFeS3RJVJriHh6ee3TBkhKx1oIguFYAQ0ARONqa1FkmlcaPJnhq7iH1W9Yu4FKQpH8NC5qVCW7RKdgA9j6e1B4LlmgxmXZc1YZRBuJQkhr7cpMHdtRshTdnRpXfFMKThH9QCLFwyCXYxnUuvinxB9lv79szYlw4bn7XvfPhj7VcTBfU6Rnf8mXy9izgNzzqfQewnrupNBmmVoaQwi6tkowMtozuyXymPdEg2pTDbUYK8K8Jxz0aQC5cibPh1GWxe-fCUjNy169_yMiaHmBCr3saWZUVI5KV28A3BSo0IkhbFMZf6gbv9gimKgUvzWV4ylfxoJqQlSlfWTXwXu5k38WQgtX14uiUk-_zhgIUbbkk8nmAnZSFG6LfEeF4dK08lh2xQGwBWF57rmYPoVAtoMeqmUvSo2BELFFd5XjGihgzIGZiDr5li0-Cp6Ea9kTwfBki-IxS-waB_yanyYmZNuYiwG3oJ4o_H_9jN6QNw2MnWGuFT54wBQ6o1D_YeiP3Cey5iBzGi6QP2WNFdbxr_ZV1_vOjJwZqe8VE6WKGtjdPL__hoHrk4zZs1tnX35h2jRkhyFbSU3FEltCigB4OYeSBH6_qE_YEd1aEP.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtc29sLTIwMjYwNzA5fGF6dXJlIn0",
+            "format": "azure-openai-responses-v1",
+            "id": "rs_0a5f7d3929c8d125016ab2c971196481978982f33d760ee31c",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3228,
+    "completion_tokens": 417,
+    "total_tokens": 3645,
+    "cost": 0.03268125,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3225,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.03268125,
+      "upstream_inference_prompt_cost": 0.02017125,
+      "upstream_inference_completions_cost": 0.01251
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 172,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

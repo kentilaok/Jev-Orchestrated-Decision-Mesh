@@ -1,0 +1,131 @@
+{
+  "model": "openai/gpt-5.6-sol",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Answer the requested fields using only the supplied source documents. Respect scope, exceptions, dependencies, units, and conflicting or missing evidence. Return null for an answer that cannot be established; do not guess. Cite supporting document IDs for each field. Follow the exact requested answer encoding. Use partial status if any requested value is unavailable or unresolved; otherwise complete. Before finalizing, check your answers against the evidence. Return only the requested JSON object."
+    },
+    {
+      "role": "user",
+      "content": "{\"answer_fields\":[\"renderer\",\"indexer\",\"notifier\",\"archiver\"],\"documents\":[{\"id\":\"D871D\",\"text\":\"Final component record for release V3C5E: the archiver component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release.\"},{\"id\":\"D5A3C\",\"text\":\"Final component record for release V3C5E: the indexer component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release.\"},{\"id\":\"D9F50\",\"text\":\"Final component record for release V3C5E: the notifier component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release.\"},{\"id\":\"D851E\",\"text\":\"Final component record for release V3C5E: the renderer component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release.\"}],\"query\":\"Return each component state for release V3C5E, using exactly enabled or disabled. Return answers with exactly these fields: renderer, indexer, notifier, archiver. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.\"}"
+    }
+  ],
+  "reasoning": {
+    "effort": "medium",
+    "exclude": true
+  },
+  "max_completion_tokens": 4000,
+  "seed": 1729,
+  "provider": {
+    "only": [
+      "azure"
+    ],
+    "ignore": [
+      "azure/us",
+      "azure/eu"
+    ],
+    "allow_fallbacks": false,
+    "require_parameters": true
+  },
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "task_answer",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "object",
+            "properties": {
+              "renderer": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "indexer": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "notifier": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "archiver": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "renderer",
+              "indexer",
+              "notifier",
+              "archiver"
+            ],
+            "additionalProperties": false
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "renderer": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "indexer": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "notifier": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "archiver": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "renderer",
+              "indexer",
+              "notifier",
+              "archiver"
+            ],
+            "additionalProperties": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial"
+            ]
+          }
+        },
+        "required": [
+          "answers",
+          "evidence",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from atomic_mesh import MeshError, packed
 from checked_network import CheckedNetwork, UNITS
+from config import RunConfig
 from network_run import DEMO, DemoPipeline, fake_judge, fake_check
 from audit_network import audit
 
@@ -95,10 +96,50 @@ class ControllerTests(unittest.TestCase):
                 self.assertNotIn(key,payload)
             self.assertIn('original_evidence',state)
 
+    def test_jev_selects_luna_or_sol_effort_for_each_generative_unit(self):
+        demo=DemoPipeline(DEMO); selected=[]
+        def producer(unit,parents,feedback,route):
+            selected.append((unit.id,route))
+            return demo.produce(unit,parents,feedback,route)
+        def judge(phase,options,state):
+            result=fake_judge(phase,options,state)
+            if phase=='authorize_unit' and 'sol_xhigh' in options:
+                result['choice']='sol_xhigh' if state['unit']['id']=='hidden1' else 'luna_low'
+            return result
+        result=build(judge,producer=producer).run()
+        self.assertEqual(result['status'],'complete')
+        self.assertEqual([route['id'] for _,route in selected if route],
+                         ['sol_xhigh','luna_low','luna_low'])
+        self.assertEqual([p['worker_route']['id'] for p in result['committed'] if p['worker_route']],
+                         ['sol_xhigh','luna_low','luna_low'])
+        self.assertTrue(audit(result)['valid'])
+
+    def test_astra_is_absent_without_explicit_authorization(self):
+        captured=[]
+        def judge(phase,options,state):
+            if phase=='authorize_unit': captured.append(set(options))
+            return fake_judge(phase,options,state)
+        self.assertEqual(build(judge).run()['status'],'complete')
+        self.assertTrue(all('astra_low' not in options for options in captured))
+
+    def test_astra_low_requires_explicit_authorization(self):
+        config=RunConfig(astra_explicitly_authorized=True)
+        demo=DemoPipeline(DEMO); captured=[]
+        def judge(phase,options,state):
+            result=fake_judge(phase,options,state)
+            if phase=='authorize_unit' and 'astra_low' in options:
+                result['choice']='astra_low'; captured.append(options['astra_low']['action']['worker_route'])
+            return result
+        network=CheckedNetwork(DEMO['goal'],{'records':{'text':packed(DEMO)}},judge,demo.produce,fake_check,
+                               demo.validate,policy=config.to_dict(),worker_routes=config.worker_routes(),simulation=True)
+        self.assertEqual(network.run()['status'],'complete')
+        self.assertEqual(len(captured),3)
+        self.assertTrue(all(r=={'id':'astra_low','model':'openai/gpt-6-astra','effort':'low'} for r in captured))
+
     def test_repair_creates_new_candidate_and_check(self):
         demo=DemoPipeline(DEMO); attempts={}
-        def producer(unit,parents,feedback):
-            candidate=demo.produce(unit,parents,feedback)
+        def producer(unit,parents,feedback,route):
+            candidate=demo.produce(unit,parents,feedback,route)
             attempts[unit.id]=attempts.get(unit.id,0)+1
             if unit.id=='hidden1' and attempts[unit.id]==1: candidate['data']['scale']=2000
             return candidate
@@ -111,6 +152,24 @@ class ControllerTests(unittest.TestCase):
         checks=[c for c in result['checks'] if c['unit_id']=='hidden1']
         self.assertEqual(len(checks),2)
         self.assertNotEqual(checks[0]['candidate_hash'],checks[1]['candidate_hash'])
+
+    def test_failed_precheck_can_repair_before_spending_checker_call(self):
+        demo=DemoPipeline(DEMO); attempts={}
+        def producer(unit,parents,feedback,route):
+            candidate=demo.produce(unit,parents,feedback,route)
+            attempts[unit.id]=attempts.get(unit.id,0)+1
+            if unit.id=='hidden1' and attempts[unit.id]==1: candidate['data']['scale']=2000
+            return candidate
+        def judge(phase,options,state):
+            result=fake_judge(phase,options,state)
+            if phase=='authorize_checker' and 'repair' in options: result['choice']='repair'
+            return result
+        result=build(judge,producer=producer).run()
+        self.assertEqual(result['status'],'complete')
+        self.assertEqual(attempts['hidden1'],2)
+        self.assertEqual(len([r for r in result['checks'] if r['unit_id']=='hidden1']),1)
+        self.assertEqual(len(result['checks']),5)
+        self.assertTrue(audit(result)['valid'])
 
     def test_numeric_unit_format_and_magnitude(self):
         pipeline=DemoPipeline(DEMO)

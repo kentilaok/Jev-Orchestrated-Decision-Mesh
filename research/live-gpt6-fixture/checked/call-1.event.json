@@ -1,0 +1,34 @@
+{
+  "id": "call-1",
+  "role": "jev",
+  "status": "ok",
+  "requested_model": "typesafe/jev-1.13",
+  "returned_model": "typesafe/jev-1.13-20260917",
+  "provider": "TypeSafe",
+  "request_hash": "a0434e91d2ce0d1aa06253af6e76d2836d2947ace6fa8e6ddec321052777a05c",
+  "policy_hash": "d12070d7999694f7828b8dc6d99a86f97d40de80344e58a3fe25c4b7cbada5fd",
+  "reserved_usd": 0.00020165,
+  "followup_jev_reserved_usd": 0.0,
+  "admission_reserved_calls": 1,
+  "reasoning_effort": null,
+  "usage": {
+    "input_tokens": 998,
+    "output_tokens": 31,
+    "total_tokens": 1029,
+    "total_tokens_source": "derived_input_plus_output",
+    "cached_input_tokens": null,
+    "reasoning_tokens": null,
+    "cost": 4.1916e-05
+  },
+  "usage_raw": {
+    "input_tokens": 998,
+    "output_tokens": 31,
+    "cost": 4.1916e-05
+  },
+  "latency_ms": 703.0,
+  "usage_semantics": {
+    "cached_input_tokens": "subset_of_input_tokens",
+    "reasoning_tokens": "subset_of_output_tokens"
+  },
+  "warnings": []
+}

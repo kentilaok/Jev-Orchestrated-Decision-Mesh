@@ -1,0 +1,39 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "original_request": "Read the current export profile for PEAA5. Return format in lowercase, max_width_px as pixels, and alpha as preserve or discard. Return answers with exactly these fields: format, max_width_px, alpha. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+    "answer_fields": [
+      "format",
+      "max_width_px",
+      "alpha"
+    ],
+    "documents": [
+      {
+        "id": "DA65F",
+        "text": "Released export profile for service PEAA5. Encode the image as WebP, set maximum width to 1600 pixels, and preserve alpha. The profile is current and has no per-job override. In summaries encode its format as webp and alpha handling as preserve."
+      },
+      {
+        "id": "D79DA",
+        "text": "Retired export profile for separate service P8AD8. This historical profile used JPEG, 1200 pixels, and discarded alpha. It does not govern the current service."
+      }
+    ]
+  },
+  "questions": {
+    "operation": {
+      "type": "choice",
+      "instructions": "Choose a suitable way to send sources to the fixed Sol worker for this task.",
+      "criteria": {
+        "select_context": "Some documents do not contribute; use the independently evaluated relevance results to select sources.",
+        "use_all": "All documents may be needed, or reliable source selection is uncertain."
+      }
+    },
+    "keep_DA65F": {
+      "type": "noul",
+      "instructions": "Is document DA65F potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D79DA": {
+      "type": "noul",
+      "instructions": "Is document D79DA potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    }
+  }
+}

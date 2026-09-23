@@ -1,0 +1,174 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "records",
+        "title": "Original records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "checked_unit",
+        "summary": "Original records normalized without changing values.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "records": [
+            {
+              "segment": "A",
+              "kind": "production",
+              "items": 240,
+              "defects": 12
+            },
+            {
+              "segment": "B",
+              "kind": "production",
+              "items": 160,
+              "defects": 8
+            },
+            {
+              "segment": "T",
+              "kind": "trial",
+              "items": 100,
+              "defects": 30
+            }
+          ],
+          "include_kind": "production",
+          "scale": 1000
+        },
+        "artifact_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038"
+      },
+      {
+        "id": "hidden1",
+        "operation": "checked_unit",
+        "summary": "Include production segments A and B; exclude trial segment T. Calculate defects per 1,000 items.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "denominator": "items",
+          "numerator": "defects",
+          "scale": 1000,
+          "segments": [
+            "A",
+            "B"
+          ]
+        },
+        "artifact_hash": "ae441a6cf821dc8145b6988e1b2e17f0bd178ed083dd34f71ccc50cb77ce5836"
+      },
+      {
+        "id": "hidden2",
+        "operation": "checked_unit",
+        "summary": "Computed with exact rational arithmetic; numerator 20, denominator 400.",
+        "source_ids": [
+          "records"
+        ],
+        "data": {
+          "numerator": 20,
+          "denominator": 400,
+          "scale": 1000,
+          "result": 50.0,
+          "exact_fraction": "50"
+        },
+        "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "records",
+        "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+        "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check whether the calculation, interpretation, and original evidence agree."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "3680a17db48cc759d8efba26ed820b080ce18b92c95a84fb7446d0676dd18bac"
+      }
+    ],
+    "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521",
+    "selected_worker": {
+      "id": "luna_low",
+      "model": "openai/gpt-6-luna",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "consistent": true,
+        "result": 50,
+        "unresolved": []
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.99,
+      "source_ids": [
+        "records"
+      ],
+      "text": "Production segments A and B contain 20 defects across 400 items; excluding trial segment T, the rate is 50 defects per 1,000 items."
+    },
+    "hard_checks": {
+      "source_present": true,
+      "consistent_with_calculation": true,
+      "artifact_schema_valid": true
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Judge only this local unit; intermediate units need not answer the entire user task. If all hard checks pass and original evidence is available, choose check for the mandatory separate Sol-high review. If a hard check fails and repair is offered, choose repair to produce a new candidate without spending a checker call, unless the defect needs checker diagnosis. Choose stop only for a real evidence, safety, or capacity blocker. Checking alone cannot authorize forwarding.",
+      "criteria": {
+        "check": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "b817f23c4c5ad72be18a3c869e783b48e0399e4fab6e5dd64b73f716d8d67af2",
+            "policy_version": "14ea82685bd1d8399b77747aa970c27402282c9d44a974df6382ad20653db521"
+          },
+          "description": "Run a separate Sol-high check on this exact candidate."
+        },
+        "stop": {
+          "description": "Stop; an unchecked candidate cannot advance."
+        }
+      }
+    }
+  }
+}

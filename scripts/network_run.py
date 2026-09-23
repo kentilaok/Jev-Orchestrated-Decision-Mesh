@@ -36,7 +36,7 @@ class DemoPipeline:
         require(sum(r['items'] for r in self.rows)>0,'empty_denominator')
         self.expected=Fraction(sum(r['defects'] for r in self.rows),sum(r['items'] for r in self.rows))*task['scale']
 
-    def produce(self,unit,parents,feedback):
+    def produce(self,unit,parents,feedback,worker_route=None):
         if unit.id=='input': return artifact('Original records normalized without changing values.',{'records':self.task['records'],'include_kind':self.task['include_kind'],'scale':self.task['scale']})
         if unit.id=='hidden2':
             plan=parents[-1]['artifact']['data']
@@ -66,8 +66,10 @@ class DemoPipeline:
             'five_scores':{'type':'array','items':{'type':'integer','minimum':1,'maximum':5},'minItems':5,'maxItems':5},
             'self_probability':{'type':['number','null']}},
             'required':['text','data','source_ids','five_scores','self_probability'],'additionalProperties':False}
+        require(worker_route is not None,'missing_jev_worker_route')
         return self.gateway.ask('worker',instructions,{'unit':unit.__dict__,'goal':self.task['goal'],'original_records':self.task,
-            'accepted_parents':[p['artifact'] for p in parents[-2:]],'repair_feedback':feedback},schema)
+            'accepted_parents':[p['artifact'] for p in parents[-2:]],'repair_feedback':feedback},schema,
+            worker_route=worker_route)
 
     def validate(self,unit,candidate,parents):
         d=candidate['data']; checks={'source_present':candidate['source_ids']==['records']}
@@ -83,8 +85,9 @@ class DemoPipeline:
 
 
 def fake_judge(phase,options,state):
-    mapping={'authorize_unit':'compute','authorize_checker':'check','after_sol_high':'forward'}
-    return {'choice':mapping[phase],'live':False,'model':'simulation'}
+    mapping={'authorize_checker':'check','after_sol_high':'forward'}
+    choice=('compute' if 'compute' in options else 'luna_low') if phase=='authorize_unit' else mapping[phase]
+    return {'choice':choice,'live':False,'model':'simulation'}
 
 
 def fake_check(state):
@@ -112,7 +115,7 @@ def main():
     network=CheckedNetwork(task['goal'],sources,gateway.network_judge if gateway else fake_judge,pipeline.produce,
         gateway.high_check if gateway else fake_check,pipeline.validate,policy=configuration.to_dict(),
         checker_identity={'model':configuration.checker_model,'effort':configuration.checker_effort},
-        simulation=a.offline,journal=journal)
+        worker_routes=configuration.worker_routes(),simulation=a.offline,journal=journal)
     result=network.run(); result['calls']=gateway.calls if gateway else []
     result['reported_cost']=gateway.spent if gateway else 0
     result['configuration']=configuration.to_dict()

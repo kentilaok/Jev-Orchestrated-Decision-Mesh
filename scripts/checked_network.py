@@ -2,6 +2,7 @@
 import copy
 from dataclasses import dataclass
 from atomic_mesh import AtomicMesh, MeshError, require, fingerprint, packed
+from config import RunConfig
 
 
 @dataclass(frozen=True)
@@ -33,16 +34,22 @@ class PlaceholderWorker:
 
 class CheckedNetwork:
     def __init__(self, goal, sources, judge, producer, checker, validator, *,
-                 policy=None, checker_identity=None, simulation=False, journal=None, units=UNITS):
+                 policy=None, checker_identity=None, worker_routes=None, simulation=False, journal=None, units=UNITS):
         require(len(units)==5 and [u.id for u in units]==[u.id for u in UNITS], 'expected_five_sequential_units')
         self.units=units; self.producer=producer; self.checker=checker; self.validator=validator
         self.policy=copy.deepcopy(policy or {"version":"training-free-v1"})
+        astra_allowed=self.policy.get('astra_explicitly_authorized') is True
+        expected_routes=RunConfig(astra_explicitly_authorized=astra_allowed).worker_routes()
+        self.worker_routes=copy.deepcopy(worker_routes if worker_routes is not None else expected_routes)
+        require(self.worker_routes==expected_routes, 'worker_route_catalog_mismatch')
+        self.policy['worker_routes']=self.worker_routes
         self.policy_version=fingerprint(self.policy)
         self.frozen_policy=self.policy_version
-        self.checker_identity=copy.deepcopy(checker_identity or {"model":"openai/gpt-5.6-sol","effort":"high"})
+        self.checker_identity=copy.deepcopy(checker_identity or {"model":"openai/gpt-6-sol","effort":"high"})
         self.mesh=AtomicMesh(goal,sources,{'producer':PlaceholderWorker(),'checker':PlaceholderWorker(),'policy':PlaceholderWorker()},
                              judge,simulation=simulation,max_state_bytes=16000,journal=journal)
         self.committed=[]; self.checks=[]; self.final=None
+        self.active_route=None
 
     def integrity(self):
         require(self.policy_version==self.frozen_policy and fingerprint(self.policy)==self.frozen_policy,'policy_changed_during_run')
@@ -56,6 +63,7 @@ class CheckedNetwork:
         state['completion']={'completed_units':[p['id'] for p in self.committed],
                              'required_order':[u.id for u in self.units],'active_unit':unit.id,'released':self.final is not None}
         state['policy_version']=self.policy_version
+        if self.active_route is not None: state['selected_worker']=copy.deepcopy(self.active_route)
         if candidate is not None: state['candidate']=candidate
         if checks is not None: state['hard_checks']=checks
         if checker_result is not None: state['sol_high_result']=checker_result
@@ -94,13 +102,25 @@ class CheckedNetwork:
         require(len(self.committed)==index and [p['id'] for p in self.committed]==[u.id for u in self.units[:index]],'unit_predecessor_missing')
         feedback=None
         for attempt in range(2):
+            self.active_route=None
             parents=[{'id':p['id'],'hash':p['artifact_hash']} for p in self.committed[-1:]]
-            action={'operation':'compute_unit','unit_id':unit.id,'attempt':attempt,'parents':parents,'policy_version':self.policy_version}
+            base_action={'operation':'compute_unit','unit_id':unit.id,'attempt':attempt,'parents':parents,
+                         'policy_version':self.policy_version}
             state=self.state(unit); state['repair_feedback']=feedback
-            options={'compute':{'worker_id':'producer','action':action,'description':'Execute only the current unit objective.'},'stop':{'description':'Stop without computing or forwarding.'}}
+            options={'stop':{'description':'Stop without computing or forwarding.'}}
+            if unit.id in ('input','hidden2'):
+                options['compute']={'worker_id':'producer','action':{**base_action,'worker_route':None},
+                                    'description':'Use deterministic code for this unit; no generative worker call.'}
+            else:
+                for route in self.worker_routes:
+                    options[route['id']]={'worker_id':'producer','action':{**base_action,'worker_route':route},
+                                          'description':'Run only this unit with '+route['model']+' at '+route['effort']+' effort.'}
             choice,gate=self.mesh.gate('authorize_unit',options,state)
-            if choice!='compute': return 'stopped_by_jev'
-            candidate=self.invoke('producer',action,gate,lambda:self.producer(unit,copy.deepcopy(self.committed),feedback))
+            if choice=='stop': return 'stopped_by_jev'
+            action=options[choice]['action']
+            self.active_route=copy.deepcopy(action['worker_route'])
+            candidate=self.invoke('producer',action,gate,lambda:self.producer(unit,copy.deepcopy(self.committed),feedback,
+                                                                              copy.deepcopy(self.active_route)))
             try:
                 self.validate_artifact(candidate)
                 checks=self.validator(unit,candidate,copy.deepcopy(self.committed))
@@ -114,7 +134,13 @@ class CheckedNetwork:
                               'candidate_hash':candidate_hash,'policy_version':self.policy_version}
                 options={'check':{'worker_id':'checker','action':check_action,'description':'Run a separate Sol-high check on this exact candidate.'},
                          'stop':{'description':'Stop; an unchecked candidate cannot advance.'}}
+                if not all(checks.values()):
+                    options['repair']={'description':'Deterministic checks already found a concrete defect. Repair this candidate with a new worker route before spending a Sol-high check.'}
                 choice,gate=self.mesh.gate('authorize_checker',options,self.state(unit,candidate,checks))
+                if choice=='repair':
+                    feedback={'verdict':'repair_required','failed_criteria':[k for k,v in checks.items() if not v],
+                              'reason':'Executable pre-check failed; create a new candidate.','missing_evidence':[]}
+                    break
                 if choice!='check': return 'stopped_before_checker'
                 review_input={'goal':self.mesh.goal,'unit':{'id':unit.id,'objective':unit.objective},
                               'original_evidence':copy.deepcopy(self.mesh.sources),
@@ -149,7 +175,8 @@ class CheckedNetwork:
                     require(fingerprint(candidate)==candidate_hash and fingerprint(check)==receipt['check_hash'],'candidate_or_checker_changed')
                     def commit():
                         packet={'id':unit.id,'artifact':copy.deepcopy(candidate),'artifact_hash':candidate_hash,'parent_artifacts':parents,
-                                'checker':copy.deepcopy(receipt),'decision_id':decision_id,'policy_version':self.policy_version}
+                                'worker_route':copy.deepcopy(self.active_route),'checker':copy.deepcopy(receipt),
+                                'decision_id':decision_id,'policy_version':self.policy_version}
                         self.committed.append(packet)
                         self.mesh.accepted.append({'id':unit.id,'operation':'checked_unit','summary':candidate['text'],'source_ids':candidate['source_ids'],
                                                    'data':copy.deepcopy(candidate['data']),'artifact_hash':candidate_hash})

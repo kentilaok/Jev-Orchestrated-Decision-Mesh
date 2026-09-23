@@ -1,0 +1,961 @@
+{
+  "output_contract": {
+    "rules": [
+      "Return one JSON object only. Use the exact categorical encodings requested in the query.",
+      "Return numbers as JSON numbers, never numeric strings. Return unavailable or unresolved answers as JSON null.",
+      "Cite the document IDs necessary to support each answer, including null answers. Do not cite unrelated documents.",
+      "Set status to partial if any requested answer is null; otherwise set it to complete.",
+      "Use only the supplied fictional documents. No external facts are needed or permitted."
+    ],
+    "shape": {
+      "answers": "object keyed by every answer_fields entry",
+      "evidence": "object mapping each answer field to a list of document IDs",
+      "status": "complete or partial"
+    }
+  },
+  "seed": 1729,
+  "tasks": [
+    {
+      "answer_fields": [
+        "mode",
+        "interval_minutes"
+      ],
+      "documents": [
+        {
+          "id": "DF283",
+          "text": "Released rehearsal configuration for service PB75B: delivery mode is batch. The interval is 15 minutes. This record is the complete current schedule for this service."
+        },
+        {
+          "id": "D792A",
+          "text": "The separate service P1B83 uses stream delivery with a 2 minute interval. Its schedule does not apply to other service identifiers."
+        }
+      ],
+      "id": "DEV-01",
+      "phase": "development",
+      "query": "For service PB75B, report mode as batch or stream, and interval_minutes in minutes. Return answers with exactly these fields: mode, interval_minutes. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "development",
+      "stratum": "short_direct"
+    },
+    {
+      "answer_fields": [
+        "storage_class",
+        "quota_gb",
+        "expiry_days"
+      ],
+      "documents": [
+        {
+          "id": "D8FEE",
+          "text": "Workspace note: separate service PCB15, execution R9C72. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D3EB9",
+          "text": "Released plan LBACF includes 35 GB of storage. Its storage class is warm. Plan capacity is expressed in GB and is added directly to account add-ons expressed in the same unit. The class applies to accounts using this exact plan identifier. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DAB05",
+          "text": "Workspace note: separate service PF37D, execution RC4E5. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DEE35",
+          "text": "Expiry register for service P3B6E: expiry_days is unrecorded. This register and the supplied account and plan entries are the complete current records for this service. No default expiry is defined. An unrecorded expiry must be returned as unavailable rather than estimated. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DE5B0",
+          "text": "Workspace note: separate service PA330, execution R1D6D. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D1EE4",
+          "text": "Current account register: service P3B6E uses plan LBACF. A storage add-on of 40 GB is active for this account. The account is a standard rehearsal workspace and has no other storage add-ons. Capacity is the plan allowance plus the active add-on. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D4916",
+          "text": "Workspace note: separate service P6A29, execution R9C79. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DE439",
+          "text": "Workspace note: separate service P4528, execution RFFB9. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D5945",
+          "text": "Workspace note: separate service PEFB3, execution REDFD. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DC7B6",
+          "text": "Workspace note: separate service PCD55, execution RBFEE. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D6AD0",
+          "text": "Workspace note: separate service P6ED1, execution R7568. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DAF38",
+          "text": "Workspace note: separate service PD2E9, execution R791C. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DE98A",
+          "text": "Workspace note: separate service PF73E, execution R37F1. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D1E6E",
+          "text": "Workspace note: separate service P76EB, execution RE1DF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D84FF",
+          "text": "Workspace note: separate service P1178, execution RAD03. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D6CF3",
+          "text": "Workspace note: separate service P5ACC, execution R9518. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        }
+      ],
+      "id": "DEV-02",
+      "phase": "development",
+      "query": "For service P3B6E, report storage_class using warm or cold, quota_gb as total GB, and expiry_days as the recorded expiry in days or null when unavailable. Return answers with exactly these fields: storage_class, quota_gb, expiry_days. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "development",
+      "stratum": "cross_document"
+    },
+    {
+      "answer_fields": [
+        "format",
+        "max_width_px",
+        "alpha"
+      ],
+      "documents": [
+        {
+          "id": "DA65F",
+          "text": "Released export profile for service PEAA5. Encode the image as WebP, set maximum width to 1600 pixels, and preserve alpha. The profile is current and has no per-job override. In summaries encode its format as webp and alpha handling as preserve."
+        },
+        {
+          "id": "D79DA",
+          "text": "Retired export profile for separate service P8AD8. This historical profile used JPEG, 1200 pixels, and discarded alpha. It does not govern the current service."
+        }
+      ],
+      "id": "E-S01",
+      "phase": "evaluation",
+      "query": "Read the current export profile for PEAA5. Return format in lowercase, max_width_px as pixels, and alpha as preserve or discard. Return answers with exactly these fields: format, max_width_px, alpha. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "short_direct"
+    },
+    {
+      "answer_fields": [
+        "released_crates",
+        "rejected_crates",
+        "unit"
+      ],
+      "documents": [
+        {
+          "id": "D4B7B",
+          "text": "Closed packing report for run R7F3C: packed_crates = 96, rejected_crates = 8, and released_crates = 88. These are disjoint quality outcomes within the packed count. The reporting unit for every count is crate. The report is final."
+        },
+        {
+          "id": "D1199",
+          "text": "Handoff register for run R7F3C: the packing report is the final count authority. A preliminary dispatch note counted 90 planned releases before quality checking. That planned count was not a released count."
+        }
+      ],
+      "id": "E-S02",
+      "phase": "evaluation",
+      "query": "For final run R7F3C, return released_crates and rejected_crates as counts, and unit as the singular lowercase unit name. Return answers with exactly these fields: released_crates, rejected_crates, unit. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "short_direct"
+    },
+    {
+      "answer_fields": [
+        "mode",
+        "window_hours",
+        "approver"
+      ],
+      "documents": [
+        {
+          "id": "DF980",
+          "text": "Order P74AE contains exactly 20 items. It is governed by the released dispatch rule. There are no exceptions or priority flags on this order."
+        },
+        {
+          "id": "D2C9E",
+          "text": "Released dispatch rule: orders with at least 20 items use bulk mode, a 6 hour collection window, and desk approval. Orders below 20 items use parcel mode, a 2 hour window, and automatic approval. Equality is included in the bulk condition."
+        }
+      ],
+      "id": "E-S03",
+      "phase": "evaluation",
+      "query": "Apply the dispatch rule to order P74AE. Return mode as bulk or parcel, window_hours as hours, and approver as desk or automatic. Return answers with exactly these fields: mode, window_hours, approver. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "short_direct"
+    },
+    {
+      "answer_fields": [
+        "renderer",
+        "indexer",
+        "notifier",
+        "archiver"
+      ],
+      "documents": [
+        {
+          "id": "D871D",
+          "text": "Final component record for release V3C5E: the archiver component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+        },
+        {
+          "id": "D5A3C",
+          "text": "Final component record for release V3C5E: the indexer component is disabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+        },
+        {
+          "id": "D9F50",
+          "text": "Final component record for release V3C5E: the notifier component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+        },
+        {
+          "id": "D851E",
+          "text": "Final component record for release V3C5E: the renderer component is enabled. This signed component record is authoritative for that component. Its state is independent of the other components in the release."
+        }
+      ],
+      "id": "E-S04",
+      "phase": "evaluation",
+      "query": "Return each component state for release V3C5E, using exactly enabled or disabled. Return answers with exactly these fields: renderer, indexer, notifier, archiver. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "short_direct"
+    },
+    {
+      "answer_fields": [
+        "codec",
+        "max_width_px",
+        "strip_metadata",
+        "retry_limit"
+      ],
+      "documents": [
+        {
+          "id": "DA1A2",
+          "text": "Media preset ledger: separate service PF83F, execution R57D9. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 4, and its maximum image width is 1536 pixels. The run received 434 items and released 378 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D8DD3",
+          "text": "Media preset ledger: separate service PB1D6, execution RFFB7. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DCA56",
+          "text": "Media preset ledger: separate service PE78E, execution R899D. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 3, and its maximum image width is 1504 pixels. The run received 421 items and released 367 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DBAA9",
+          "text": "Media preset ledger: separate service PC201, execution RE746. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D5238",
+          "text": "Media preset ledger: separate service P9DBD, execution RF3DF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D9404",
+          "text": "Media preset ledger: separate service PE94D, execution RE445. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DAA05",
+          "text": "Media preset ledger: separate service PCABD, execution R9BB3. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DCA1B",
+          "text": "Media preset ledger: separate service P3CDE, execution R81F0. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D7D42",
+          "text": "Media preset ledger: separate service P2E52, execution R534D. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 1, and its maximum image width is 1440 pixels. The run received 395 items and released 345 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D92A3",
+          "text": "Media preset ledger: separate service P9205, execution R879D. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D82C3",
+          "text": "Media preset ledger: separate service PFDBB, execution R8085. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D2F26",
+          "text": "Media preset ledger: separate service P47C1, execution R63E5. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D6EAC",
+          "text": "Media preset ledger: separate service P1C42, execution R58B9. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D83AD",
+          "text": "Media preset ledger: separate service P9F1F, execution R8719. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D2114",
+          "text": "Media preset ledger: separate service PC796, execution R2963. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 2, and its maximum image width is 1472 pixels. The run received 408 items and released 356 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D9424",
+          "text": "Media preset ledger: separate service P1EF0, execution RCB08. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D560D",
+          "text": "Media preset ledger: separate service PB593, execution R6E15. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DC641",
+          "text": "Media preset ledger: separate service PA4EE, execution R38CF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DE0FF",
+          "text": "Media preset ledger: separate service P7BCF, execution R3C91. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D34A3",
+          "text": "Released media preset for service PEE72, period 2026-09, north studio. The output codec is AVIF, maximum width is 1440 pixels, metadata stripping is enabled, and the retry limit is 3 attempts. Encode metadata stripping as yes. These settings are final for the named service and period, and there are no overrides in this packet. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        }
+      ],
+      "id": "E-N01",
+      "phase": "evaluation",
+      "query": "Find the released 2026-09 media preset for service PEE72. Return codec in lowercase, max_width_px, strip_metadata as yes or no, and retry_limit as a count. Return answers with exactly these fields: codec, max_width_px, strip_metadata, retry_limit. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "noisy_retrieval"
+    },
+    {
+      "answer_fields": [
+        "received",
+        "successful",
+        "failed",
+        "queue"
+      ],
+      "documents": [
+        {
+          "id": "D25E6",
+          "text": "Execution report: separate service P83C9, execution RFE96. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DBC24",
+          "text": "Execution report: separate service P5FB7, execution RCBBE. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D2E47",
+          "text": "Execution report: separate service PC0AA, execution RE610. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DC721",
+          "text": "Execution report: separate service P68C8, execution R7393. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D3DE1",
+          "text": "Execution report: separate service PDE28, execution RC00A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DB0B9",
+          "text": "Execution report: separate service PDB53, execution R4D0E. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D6E32",
+          "text": "Execution report: separate service P2B17, execution RCEA4. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 3, and its maximum image width is 1504 pixels. The run received 421 items and released 367 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DE709",
+          "text": "Execution report: separate service PE82E, execution R66D3. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DEFAB",
+          "text": "Execution report: separate service PA6EE, execution R3E99. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D58C1",
+          "text": "Execution report: separate service P3DF2, execution R3FF5. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DCCD5",
+          "text": "Execution report: separate service P344A, execution RD096. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 4, and its maximum image width is 1536 pixels. The run received 434 items and released 378 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D103E",
+          "text": "Final execution report for service P8F2A, run R730B, period 2026-09. Received items total 420, successful items total 392, and failed items total 28. The queue used for this run was cobalt. These are final observed counts, with no pending items, and replace the estimates used before execution. Counts from other runs are separate and must not be combined with this one. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DF2BC",
+          "text": "Execution report: separate service P5CA4, execution RC8BA. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DE1D8",
+          "text": "Execution report: separate service PC76F, execution RFF0D. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 1, and its maximum image width is 1440 pixels. The run received 395 items and released 345 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D1A4A",
+          "text": "Execution report: separate service P8B7B, execution RECD0. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D1E21",
+          "text": "Execution report: separate service PC5D1, execution R78AF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D4A75",
+          "text": "Execution report: separate service PCB29, execution R907B. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DCA2D",
+          "text": "Execution report: separate service PF747, execution R5187. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DED97",
+          "text": "Execution report: separate service P281E, execution RFD2A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 2, and its maximum image width is 1472 pixels. The run received 408 items and released 356 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D26FC",
+          "text": "Execution report: separate service PA3F4, execution REE5A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        }
+      ],
+      "id": "E-N02",
+      "phase": "evaluation",
+      "query": "For service P8F2A, run R730B, report received, successful, and failed as final item counts, and queue as its lowercase name. Return answers with exactly these fields: received, successful, failed, queue. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "noisy_retrieval"
+    },
+    {
+      "answer_fields": [
+        "selected_revision",
+        "timeout_seconds",
+        "queue"
+      ],
+      "documents": [
+        {
+          "id": "D51F6",
+          "text": "Configuration ledger: separate service P2349, execution R696B. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D268C",
+          "text": "Service P3C68, revision 3, released: timeout is 45 seconds and queue is amber. These values govern when revision 3 is the highest released revision in the revision registry. The timeout is measured in whole seconds; the queue name is an exact configuration value, not a description of an interface color. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DFD70",
+          "text": "Configuration ledger: separate service P1806, execution R406D. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D9D36",
+          "text": "Configuration ledger: separate service P9EA3, execution R3411. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D7146",
+          "text": "Service P3C68, revision 4, draft: proposed timeout is 12 seconds and proposed queue is teal. This draft has not been released. Its proposed settings are available for planning but are not effective configuration. The revision registry controls the choice between released and draft entries in this packet. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D92A8",
+          "text": "Revision registry for service P3C68. The complete revision list is revision 2 released, revision 3 released, and revision 4 draft. The governing revision is the highest numbered released revision. A draft is never effective, even if its number is larger. No other revisions or special overrides exist for this service in the current period. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D91B3",
+          "text": "Configuration ledger: separate service P4E13, execution RE91B. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D852F",
+          "text": "Configuration ledger: separate service PA850, execution R9BD0. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DF06D",
+          "text": "Configuration ledger: separate service PE30A, execution RC8A4. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DD511",
+          "text": "Configuration ledger: separate service PD7A3, execution RC396. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DF02E",
+          "text": "Configuration ledger: separate service PC7E4, execution R9051. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DAD06",
+          "text": "Configuration ledger: separate service P53B6, execution R4C71. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DD215",
+          "text": "Service P3C68, revision 2, released: timeout is 30 seconds and queue is slate. This revision remains archived after later releases so that prior executions can be reproduced. It is selected only when the revision registry identifies it as the highest released revision for the requested period. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DB1A0",
+          "text": "Configuration ledger: separate service P76D9, execution R7B44. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D74A7",
+          "text": "Configuration ledger: separate service P67E9, execution RA1E3. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D9787",
+          "text": "Configuration ledger: separate service PB03E, execution R9401. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DE241",
+          "text": "Configuration ledger: separate service P648B, execution R85F8. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DA984",
+          "text": "Configuration ledger: separate service PF9EF, execution REF87. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D1D6A",
+          "text": "Configuration ledger: separate service P780F, execution REB57. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 1, and its maximum image width is 1440 pixels. The run received 395 items and released 345 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D6CEF",
+          "text": "Configuration ledger: separate service P7AC2, execution R9FD8. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        }
+      ],
+      "id": "E-N03",
+      "phase": "evaluation",
+      "query": "Find the currently governing configuration for service P3C68. Return selected_revision as its number, timeout_seconds, and queue as the exact lowercase name. Return answers with exactly these fields: selected_revision, timeout_seconds, queue. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "noisy_retrieval"
+    },
+    {
+      "answer_fields": [
+        "inserts_per_box",
+        "label_mode",
+        "seal_code",
+        "carton_limit_kg"
+      ],
+      "documents": [
+        {
+          "id": "DE5B7",
+          "text": "Packing archive: separate service P8941, execution RBF5F. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D6E4F",
+          "text": "Packing archive: separate service P245F, execution RF9FA. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D5BEA",
+          "text": "Packing archive: separate service PF501, execution R72FD. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 4, and its maximum image width is 1536 pixels. The run received 434 items and released 378 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D3E1A",
+          "text": "Packing archive: separate service P55E9, execution R6699. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D963C",
+          "text": "Packing archive: separate service P6D5A, execution R456F. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DD6C3",
+          "text": "Packing archive: separate service PF6A0, execution R5348. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DDA46",
+          "text": "Packing archive: separate service P32B9, execution R5BD3. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D80F1",
+          "text": "Packing archive: separate service P65E0, execution RF85C. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D630E",
+          "text": "Packing archive: separate service PCF56, execution RD7BF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 1, and its maximum image width is 1440 pixels. The run received 395 items and released 345 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DE91F",
+          "text": "Packing archive: separate service P3672, execution RB051. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D19E7",
+          "text": "Final packing card for exhibition project PE646. Destination is the north gallery and shipment class is display. Use 6 inserts per box, label mode monochrome, and seal code R2. The carton limit is 18 kilograms. This card includes all approved packing exceptions for this exact project, and none change the values printed here. Cards for the south annex rehearsal workflow apply to different projects. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D2CD0",
+          "text": "Packing archive: separate service P341C, execution RD4A5. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D6B75",
+          "text": "Packing archive: separate service PEFC1, execution R1125. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DB6A8",
+          "text": "Packing archive: separate service PFC83, execution R367A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D36CC",
+          "text": "Packing archive: separate service P5CB0, execution RA23C. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 2, and its maximum image width is 1472 pixels. The run received 408 items and released 356 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DF8E1",
+          "text": "Packing archive: separate service PFE80, execution R9513. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DF8D5",
+          "text": "Packing archive: separate service P9CD5, execution R1F11. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DACDB",
+          "text": "Packing archive: separate service P2755, execution R3360. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DDFD1",
+          "text": "Packing archive: separate service PCEC8, execution R3C4B. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DB8C8",
+          "text": "Packing archive: separate service P8AE1, execution RE06D. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 3, and its maximum image width is 1504 pixels. The run received 421 items and released 367 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        }
+      ],
+      "id": "E-N04",
+      "phase": "evaluation",
+      "query": "For the final packing card of project PE646, return inserts_per_box, label_mode as its lowercase code, seal_code with original case, and carton_limit_kg in kilograms. Return answers with exactly these fields: inserts_per_box, label_mode, seal_code, carton_limit_kg. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "noisy_retrieval"
+    },
+    {
+      "answer_fields": [
+        "effective_workers",
+        "execution_slots",
+        "allocation_mode",
+        "cap_applied"
+      ],
+      "documents": [
+        {
+          "id": "DBD00",
+          "text": "Capacity archive: separate service PF5F7, execution R206E. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D262F",
+          "text": "Account assignment for project P208F: plan L7C78, region north, job type preview. The surge flag is active. The requested capacity date is 2026-09-10. This entry is the complete current assignment for the project; it has no other quota adjustments or region aliases. Follow the named plan and region rules to calculate its effective capacity. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DB72E",
+          "text": "Released capacity plan L7C78 provides a base allocation of 10 workers. The base allocation is counted in workers, not execution slots. A qualifying surge rule can increase this allocation before the region limit is enforced. The plan record supplies no exemption from a region limit, and no account-level override is part of this plan. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DFE89",
+          "text": "Capacity archive: separate service P5CA6, execution R6B00. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D8C07",
+          "text": "Capacity archive: separate service P44BC, execution RCB4B. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D438F",
+          "text": "Capacity archive: separate service P5237, execution RCA81. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D4181",
+          "text": "Capacity archive: separate service P44E9, execution RFC93. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DC440",
+          "text": "Capacity archive: separate service PE834, execution R5F64. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D2F0C",
+          "text": "Capacity archive: separate service PFE0D, execution R6BA8. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D90CD",
+          "text": "Capacity archive: separate service PE8EB, execution R46BF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D9D51",
+          "text": "Released temporary surge rule: a preview job with an active surge flag receives 4 extra workers if its requested capacity date is on or before 2026-09-12. All three conditions are required. Other jobs receive no extra workers. Encode allocation_mode as surge when the rule applies, even if a region limit subsequently reduces the allocation; otherwise encode it as base. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D2973",
+          "text": "Capacity archive: separate service P6020, execution R6A51. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DF2EF",
+          "text": "Capacity archive: separate service P5422, execution R780A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D36D2",
+          "text": "Released north region limit: effective allocation must not exceed 12 workers. First compute the base allocation with any permitted surge increase, then apply this region limit. The limit remains active for preview jobs and for accounts with an active surge flag. A value above the limit is reduced to 12 workers before converting workers to slots. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D9E5A",
+          "text": "Capacity archive: separate service P8056, execution R8F90. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DDDF9",
+          "text": "Capacity archive: separate service P94FE, execution RA644. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D9FC8",
+          "text": "Released execution unit dictionary: one worker provides exactly 3 execution slots. Convert only the final effective worker allocation after all increases and region limits have been applied. There are no fractional workers or additional slot allowances in this policy packet. The slot conversion does not change which allocation mode was selected by the surge rule. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D8A38",
+          "text": "Capacity archive: separate service PE92D, execution R7B5A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D5A6C",
+          "text": "Capacity archive: separate service P8B27, execution RD9D7. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DE534",
+          "text": "Capacity archive: separate service PE092, execution R8D49. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        }
+      ],
+      "id": "E-C01",
+      "phase": "evaluation",
+      "query": "Compute capacity for project P208F at its requested date. Return effective_workers, execution_slots, allocation_mode as surge or base, and cap_applied as yes if the region cap reduces the increased allocation or no otherwise. Return answers with exactly these fields: effective_workers, execution_slots, allocation_mode, cap_applied. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "cross_document"
+    },
+    {
+      "answer_fields": [
+        "included_items",
+        "defects",
+        "rate_per_1000",
+        "alert"
+      ],
+      "documents": [
+        {
+          "id": "DE5C0",
+          "text": "Final count record for segment B9A59, run R7254: inspected_items = 160; defect_items = 8. Defect items are included within the inspected count, not additional items. This record is final and has no later adjustment. Use the reporting manifest to decide whether this segment belongs in a production-only summary; the count record itself does not change its segment classification. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D2F51",
+          "text": "Segment report archive: separate service PA449, execution RC4A2. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DE7B4",
+          "text": "Segment report archive: separate service PE75A, execution RAF79. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D581A",
+          "text": "Segment report archive: separate service PD181, execution R7FFC. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D1CCD",
+          "text": "Segment report archive: separate service PC195, execution RC655. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D428B",
+          "text": "Final manifest for reporting run R7254: production segments are BB71A and B9A59; trial segment is B2187. These are the only segments in this run. Each segment has a separate final count record. Segment classifications in this manifest are authoritative; similar segment identifiers in other runs do not belong to this report. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D4F31",
+          "text": "Final count record for segment B2187, run R7254: inspected_items = 50; defect_items = 10. Defect items are included within the inspected count, not additional items. This record is final and has no later adjustment. Use the reporting manifest to decide whether this segment belongs in a production-only summary; the count record itself does not change its segment classification. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DF7F4",
+          "text": "Segment report archive: separate service PB98B, execution R3F88. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DC00F",
+          "text": "Segment report archive: separate service PFFD2, execution R7088. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DE9EE",
+          "text": "Segment report archive: separate service PDAAC, execution R33BF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D1155",
+          "text": "Segment report archive: separate service PED89, execution R50E5. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D6CC4",
+          "text": "Segment report archive: separate service PC79F, execution R6D4F. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D4028",
+          "text": "Segment report archive: separate service P5D37, execution R3A31. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D2B80",
+          "text": "Released summary rule: include production segments only and exclude trial segments. Add included inspected counts for the denominator and included defect counts for the numerator. rate_per_1000 equals total included defects divided by total included inspected items, multiplied by 1000. Set alert to warn when rate_per_1000 is greater than 40; otherwise set it to clear. Do not round intermediate values. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D266B",
+          "text": "Segment report archive: separate service P38CD, execution R21FB. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D349A",
+          "text": "Segment report archive: separate service P8810, execution R6852. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DF176",
+          "text": "Segment report archive: separate service P7DC3, execution RA1D6. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D27C3",
+          "text": "Segment report archive: separate service P806F, execution RC0DC. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D2051",
+          "text": "Final count record for segment BB71A, run R7254: inspected_items = 240; defect_items = 12. Defect items are included within the inspected count, not additional items. This record is final and has no later adjustment. Use the reporting manifest to decide whether this segment belongs in a production-only summary; the count record itself does not change its segment classification. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D12D2",
+          "text": "Segment report archive: separate service P4A4F, execution R8A40. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        }
+      ],
+      "id": "E-C02",
+      "phase": "evaluation",
+      "query": "Produce the production-only summary for run R7254. Return included_items and defects as counts, rate_per_1000 using the named rate unit, and alert as warn or clear. Return answers with exactly these fields: included_items, defects, rate_per_1000, alert. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "cross_document"
+    },
+    {
+      "answer_fields": [
+        "endpoint",
+        "conflict",
+        "retention_days",
+        "action"
+      ],
+      "documents": [
+        {
+          "id": "D8400",
+          "text": "Endpoint archive: separate service PE91C, execution R1F4E. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D70FE",
+          "text": "Endpoint archive: separate service P6190, execution R4FAC. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DE43B",
+          "text": "Endpoint archive: separate service P24FB, execution R971F. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DA933",
+          "text": "Endpoint archive: separate service P7A97, execution R3A19. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DBA82",
+          "text": "Endpoint archive: separate service P6BB5, execution R6733. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D8F3A",
+          "text": "Endpoint archive: separate service P6D3E, execution R2E84. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DB002",
+          "text": "Resolution procedure for service P68EF: the two signed endpoint sheets in release V1BFF have equal authority. Neither has timestamp or ordering priority, and no tie-break record exists. If their endpoint values disagree, report endpoint as null, conflict as unresolved, and action as hold. A separate retention policy is unaffected by an endpoint conflict. Do not select a value by its place in the packet. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D5C83",
+          "text": "Endpoint archive: separate service PE2F0, execution RC746. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D966B",
+          "text": "Endpoint archive: separate service PB504, execution R790B. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D1C7D",
+          "text": "Endpoint archive: separate service PB8E0, execution R6ABE. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D1ED6",
+          "text": "Endpoint archive: separate service P6A46, execution R348A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D8E58",
+          "text": "Endpoint archive: separate service P9535, execution RC5A3. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D6052",
+          "text": "Endpoint archive: separate service P7ABA, execution RF352. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DFCA3",
+          "text": "Endpoint archive: separate service PA597, execution R2809. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D4D7C",
+          "text": "Released retention policy for service P68EF: retain rehearsal logs for 14 days. This retention value is complete and unambiguous for the current release. It is maintained independently from endpoint routing and remains in force while an endpoint disagreement is being resolved. No other document in this packet overrides this retention policy. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D8CE0",
+          "text": "Endpoint archive: separate service PC556, execution R36BF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D70CF",
+          "text": "Signed endpoint sheet for service P68EF, release V1BFF, authority level approved: endpoint = birch. This sheet covers the current main endpoint. It has the same release scope and authority as the other signed endpoint sheet in this packet, and it contains no withdrawal or supersession statement. Birch is an internal route code, not a network address. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D8A54",
+          "text": "Signed endpoint sheet for service P68EF, release V1BFF, authority level approved: endpoint = cedar. This sheet covers the current main endpoint. It has the same release scope and authority as the other signed endpoint sheet in this packet, and it contains no withdrawal or supersession statement. Cedar is an internal route code, not a network address. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D9D2D",
+          "text": "Endpoint archive: separate service PC8B4, execution R3667. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 1, and its maximum image width is 1440 pixels. The run received 395 items and released 345 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D5430",
+          "text": "Endpoint archive: separate service PCBEE, execution R7AE2. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        }
+      ],
+      "id": "E-C03",
+      "phase": "evaluation",
+      "query": "Resolve service P68EF under its supplied procedure. Return endpoint as its lowercase code or null, conflict as unresolved or none, retention_days in days, and action as hold or proceed. Return answers with exactly these fields: endpoint, conflict, retention_days, action. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "cross_document"
+    },
+    {
+      "answer_fields": [
+        "known_subtotal_credits",
+        "full_total_credits",
+        "missing_sku",
+        "priced_lines",
+        "total_units",
+        "quote_state"
+      ],
+      "documents": [
+        {
+          "id": "D8002",
+          "text": "Quantity record for quotation QDBE8, SKU S43B4: requested quantity is 16 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DFF01",
+          "text": "Complete line manifest for quotation QDBE8: the required SKU identifiers are SCDDA, S3156, S43B4, S1C16, SCCC8, S84F8. Each appears once. Every required quantity entry and current price entry is included in this packet. No unlisted SKU belongs in the quotation. The quantity records describe individual units; use the packaging dictionary to convert them before applying current pack prices. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "D2AB2",
+          "text": "Current price register for quotation QDBE8, SKU SCDDA: the price is 11 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D9105",
+          "text": "Current price register for quotation QDBE8, SKU S3156: the price is 13 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DB356",
+          "text": "Current price register for quotation QDBE8, SKU S1C16: the price is 19 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DFA10",
+          "text": "Quantity record for quotation QDBE8, SKU SCDDA: requested quantity is 8 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D712E",
+          "text": "Completion rule for quotation QDBE8: known_subtotal_credits includes only manifest lines with a current numeric price, followed by the fixed allowance. full_total_credits must be null if any required manifest line lacks a current price. In that situation quote_state is incomplete and missing_sku is that line's exact SKU identifier. Count only numerically priced lines in priced_lines. For total_units, include all manifest quantities, including any line with a missing price. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "DE726",
+          "text": "Packaging dictionary for quotation QDBE8: every listed SKU has exactly 4 individual units per pack. All requested quantities are whole multiples of a pack. For each priced line, divide its individual-unit quantity by 4 and multiply the resulting pack count by its current credits-per-pack price. Do not treat an individual unit as an entire pack. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "DBD1B",
+          "text": "Quantity record for quotation QDBE8, SKU S1C16: requested quantity is 20 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DA5E9",
+          "text": "Quantity record for quotation QDBE8, SKU S3156: requested quantity is 12 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D7BDD",
+          "text": "Quantity record for quotation QDBE8, SKU SCCC8: requested quantity is 24 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        },
+        {
+          "id": "D7C88",
+          "text": "Current price register for quotation QDBE8, SKU SCCC8: the price is 23 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+        },
+        {
+          "id": "D5FCE",
+          "text": "Current price register for quotation QDBE8, SKU S84F8: the pack price is unavailable. The register contains no current numeric price for this SKU, and no fallback price is authorized. This is an explicit missing entry, not a zero-price offer. All current pricing records are included in this packet. The final quantity entry remains valid even though this price is missing. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+        },
+        {
+          "id": "DA16A",
+          "text": "Adjustment rule for quotation QDBE8: subtract one fixed allowance of 17 credits from the sum of all currently priced line costs. Apply this allowance once to the known subtotal even when another required line lacks a price. The allowance does not supply a price for a missing line and does not make an incomplete full quotation complete. No other monetary adjustments apply. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "DD2AB",
+          "text": "Quantity record for quotation QDBE8, SKU S84F8: requested quantity is 28 individual units. This is the final quantity for this SKU and supersedes planning estimates. The entry does not state a price or package count. Use the packaging dictionary and the matching current price entry when calculating a cost. Quantities for all manifest lines are required for the total requested-unit count. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+        },
+        {
+          "id": "D88D6",
+          "text": "Current price register for quotation QDBE8, SKU S43B4: the price is 17 credits per pack. This is the only current price for this SKU. It is a pack price rather than an individual-unit price. No tax, shipping, or SKU-specific adjustment applies. Use the packaging dictionary to translate the matching quantity into packs, and then apply the quotation adjustment rule to the combined known line costs. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+        }
+      ],
+      "id": "E-C04",
+      "phase": "evaluation",
+      "query": "Assemble quotation QDBE8. Return known_subtotal_credits after the allowance, full_total_credits or null, missing_sku as the exact missing-price SKU code, priced_lines as a count, total_units in individual units, and quote_state as complete or incomplete. Return answers with exactly these fields: known_subtotal_credits, full_total_credits, missing_sku, priced_lines, total_units, quote_state. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+      "split": "evaluation",
+      "stratum": "cross_document"
+    }
+  ],
+  "version": "cidm-synthetic-pilot-1.0"
+}

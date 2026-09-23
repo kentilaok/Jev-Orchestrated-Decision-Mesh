@@ -1,0 +1,189 @@
+{
+  "model": "openai/gpt-5.6-sol",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Answer the requested fields using only the supplied source documents. Respect scope, exceptions, dependencies, units, and conflicting or missing evidence. Return null for an answer that cannot be established; do not guess. Cite supporting document IDs for each field. Follow the exact requested answer encoding. Use partial status if any requested value is unavailable or unresolved; otherwise complete. Before finalizing, check your answers against the evidence. Return only the requested JSON object. Also return a cidm object with five integer self_scores rated 1 to 5 (correctness,evidence_support,completeness,constraint_compliance,usefulness), self_estimated_success_probability (uncalibrated number 0 to 1 or null), missing_evidence array, and next_action chosen from finish, retrieve, revise. Keep missing_evidence to at most three short entries. Keep the packet concise. These self-assessments are not proof and must not replace checking sources."
+    },
+    {
+      "role": "user",
+      "content": "{\"answer_fields\":[\"selected_revision\",\"timeout_seconds\",\"queue\"],\"documents\":[{\"id\":\"D268C\",\"text\":\"Service P3C68, revision 3, released: timeout is 45 seconds and queue is amber. These values govern when revision 3 is the highest released revision in the revision registry. The timeout is measured in whole seconds; the queue name is an exact configuration value, not a description of an interface color. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary.\"},{\"id\":\"D7146\",\"text\":\"Service P3C68, revision 4, draft: proposed timeout is 12 seconds and proposed queue is teal. This draft has not been released. Its proposed settings are available for planning but are not effective configuration. The revision registry controls the choice between released and draft entries in this packet. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment.\"},{\"id\":\"D92A8\",\"text\":\"Revision registry for service P3C68. The complete revision list is revision 2 released, revision 3 released, and revision 4 draft. The governing revision is the highest numbered released revision. A draft is never effective, even if its number is larger. No other revisions or special overrides exist for this service in the current period. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here.\"},{\"id\":\"DD215\",\"text\":\"Service P3C68, revision 2, released: timeout is 30 seconds and queue is slate. This revision remains archived after later releases so that prior executions can be reproduced. It is selected only when the revision registry identifies it as the highest released revision for the requested period. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units.\"}],\"query\":\"Find the currently governing configuration for service P3C68. Return selected_revision as its number, timeout_seconds, and queue as the exact lowercase name. Return answers with exactly these fields: selected_revision, timeout_seconds, queue. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.\"}"
+    }
+  ],
+  "reasoning": {
+    "effort": "medium",
+    "exclude": true
+  },
+  "max_completion_tokens": 4000,
+  "seed": 1729,
+  "provider": {
+    "only": [
+      "azure"
+    ],
+    "ignore": [
+      "azure/us",
+      "azure/eu"
+    ],
+    "allow_fallbacks": false,
+    "require_parameters": true
+  },
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "task_answer",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "object",
+            "properties": {
+              "selected_revision": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "timeout_seconds": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "queue": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "selected_revision",
+              "timeout_seconds",
+              "queue"
+            ],
+            "additionalProperties": false
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "selected_revision": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "timeout_seconds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "queue": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "selected_revision",
+              "timeout_seconds",
+              "queue"
+            ],
+            "additionalProperties": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial"
+            ]
+          },
+          "cidm": {
+            "type": "object",
+            "properties": {
+              "self_scores": {
+                "type": "object",
+                "properties": {
+                  "correctness": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "evidence_support": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "completeness": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "constraint_compliance": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "usefulness": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  }
+                },
+                "required": [
+                  "correctness",
+                  "evidence_support",
+                  "completeness",
+                  "constraint_compliance",
+                  "usefulness"
+                ],
+                "additionalProperties": false
+              },
+              "self_estimated_success_probability": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              "missing_evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "next_action": {
+                "type": "string",
+                "enum": [
+                  "finish",
+                  "retrieve",
+                  "revise"
+                ]
+              }
+            },
+            "required": [
+              "self_scores",
+              "self_estimated_success_probability",
+              "missing_evidence",
+              "next_action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "answers",
+          "evidence",
+          "status",
+          "cidm"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

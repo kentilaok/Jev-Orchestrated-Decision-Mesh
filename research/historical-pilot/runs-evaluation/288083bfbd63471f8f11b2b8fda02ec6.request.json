@@ -1,0 +1,184 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "original_request": "Resolve service P68EF under its supplied procedure. Return endpoint as its lowercase code or null, conflict as unresolved or none, retention_days in days, and action as hold or proceed. Return answers with exactly these fields: endpoint, conflict, retention_days, action. Use JSON numbers for numeric fields and JSON null for any unavailable or unresolved answer. For each field, cite the necessary document IDs in evidence. Set status to partial if any answer is null, otherwise complete. Return the prescribed JSON object only.",
+    "answer_fields": [
+      "endpoint",
+      "conflict",
+      "retention_days",
+      "action"
+    ],
+    "documents": [
+      {
+        "id": "D8400",
+        "text": "Endpoint archive: separate service PE91C, execution R1F4E. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 5, and its maximum image width is 1408 pixels. The run received 382 items and released 334 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+      },
+      {
+        "id": "D70FE",
+        "text": "Endpoint archive: separate service P6190, execution R4FAC. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 5, and its maximum image width is 1248 pixels. The run received 317 items and released 279 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+      },
+      {
+        "id": "DE43B",
+        "text": "Endpoint archive: separate service P24FB, execution R971F. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 4, and its maximum image width is 1376 pixels. The run received 369 items and released 323 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+      },
+      {
+        "id": "DA933",
+        "text": "Endpoint archive: separate service P7A97, execution R3A19. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 2, and its maximum image width is 992 pixels. The run received 213 items and released 191 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+      },
+      {
+        "id": "DBA82",
+        "text": "Endpoint archive: separate service P6BB5, execution R6733. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 3, and its maximum image width is 1344 pixels. The run received 356 items and released 312 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+      },
+      {
+        "id": "D8F3A",
+        "text": "Endpoint archive: separate service P6D3E, execution R2E84. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 1, and its maximum image width is 960 pixels. The run received 200 items and released 180 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+      },
+      {
+        "id": "DB002",
+        "text": "Resolution procedure for service P68EF: the two signed endpoint sheets in release V1BFF have equal authority. Neither has timestamp or ordering priority, and no tie-break record exists. If their endpoint values disagree, report endpoint as null, conflict as unresolved, and action as hold. A separate retention policy is unaffected by an endpoint conflict. Do not select a value by its place in the packet. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+      },
+      {
+        "id": "D5C83",
+        "text": "Endpoint archive: separate service PE2F0, execution RC746. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 3, and its maximum image width is 1024 pixels. The run received 226 items and released 202 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+      },
+      {
+        "id": "D966B",
+        "text": "Endpoint archive: separate service PB504, execution R790B. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 4, and its maximum image width is 1216 pixels. The run received 304 items and released 268 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+      },
+      {
+        "id": "D1C7D",
+        "text": "Endpoint archive: separate service PB8E0, execution R6ABE. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is cobalt, its retry limit is 1, and its maximum image width is 1120 pixels. The run received 265 items and released 235 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+      },
+      {
+        "id": "D1ED6",
+        "text": "Endpoint archive: separate service P6A46, execution R348A. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 2, and its maximum image width is 1312 pixels. The run received 343 items and released 301 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+      },
+      {
+        "id": "D8E58",
+        "text": "Endpoint archive: separate service P9535, execution RC5A3. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 4, and its maximum image width is 1056 pixels. The run received 239 items and released 213 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+      },
+      {
+        "id": "D6052",
+        "text": "Endpoint archive: separate service P7ABA, execution RF352. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 1, and its maximum image width is 1280 pixels. The run received 330 items and released 290 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+      },
+      {
+        "id": "DFCA3",
+        "text": "Endpoint archive: separate service PA597, execution R2809. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is slate, its retry limit is 2, and its maximum image width is 1152 pixels. The run received 278 items and released 246 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+      },
+      {
+        "id": "D4D7C",
+        "text": "Released retention policy for service P68EF: retain rehearsal logs for 14 days. This retention value is complete and unambiguous for the current release. It is maintained independently from endpoint routing and remains in force while an endpoint disagreement is being resolved. No other document in this packet overrides this retention policy. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+      },
+      {
+        "id": "D8CE0",
+        "text": "Endpoint archive: separate service PC556, execution R36BF. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is amber, its retry limit is 5, and its maximum image width is 1088 pixels. The run received 252 items and released 224 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. This entry belongs to the studio operations archive. Its scope is the named service and period; names that resemble other services do not merge their settings. The archive preserves separate entries for planning, released work, and completed jobs. Operators retain the recorded units when copying values into a summary. Any change to a setting is recorded in a separate signed entry, and informal discussion does not amend the values printed here."
+      },
+      {
+        "id": "D70CF",
+        "text": "Signed endpoint sheet for service P68EF, release V1BFF, authority level approved: endpoint = birch. This sheet covers the current main endpoint. It has the same release scope and authority as the other signed endpoint sheet in this packet, and it contains no withdrawal or supersession statement. Birch is an internal route code, not a network address. Archive handling follows the ordinary internal process: a clerk checks the title, a reviewer checks the scope, and the record is then made available to the service desk. This handling note supplies no additional configuration values. Cross references must be followed by their exact identifier rather than by resemblance of names. A source copied into another folder retains the scope written in its body. The original entry remains available for verification of any operational summary."
+      },
+      {
+        "id": "D8A54",
+        "text": "Signed endpoint sheet for service P68EF, release V1BFF, authority level approved: endpoint = cedar. This sheet covers the current main endpoint. It has the same release scope and authority as the other signed endpoint sheet in this packet, and it contains no withdrawal or supersession statement. Cedar is an internal route code, not a network address. The operations team stores this record as a separate source unit so that its scope remains visible when an excerpt is reused. A project label identifies the object being described, while a run label identifies one execution. Similar labels are not aliases. The filing process records successful handoff of the document but does not imply approval of a different project. Values in this entry apply only within its stated scope and should retain their original units."
+      },
+      {
+        "id": "D9D2D",
+        "text": "Endpoint archive: separate service PC8B4, execution R3667. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 1, and its maximum image width is 1440 pixels. The run received 395 items and released 345 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+      },
+      {
+        "id": "D5430",
+        "text": "Endpoint archive: separate service PCBEE, execution R7AE2. This record covers the south annex rehearsal workflow in period 2026-08. Its queue is teal, its retry limit is 3, and its maximum image width is 1184 pixels. The run received 291 items and released 257 items. The export preset uses PNG with metadata retained. This service is independent of every other project identifier; the record does not amend their settings or reports. The document is part of a fictional internal exercise for an ordinary creative production service. Its terms describe local workflow choices rather than external standards. The team keeps separate records for different locations and periods because a rule from one location need not apply at another. A summary should keep the named scope attached to each value. Supporting attachments are independent records; this filing note does not silently import values from a similarly titled attachment."
+      }
+    ]
+  },
+  "questions": {
+    "operation": {
+      "type": "choice",
+      "instructions": "Choose a suitable way to send sources to the fixed Sol worker for this task.",
+      "criteria": {
+        "select_context": "Some documents do not contribute; use the independently evaluated relevance results to select sources.",
+        "use_all": "All documents may be needed, or reliable source selection is uncertain."
+      }
+    },
+    "keep_D8400": {
+      "type": "noul",
+      "instructions": "Is document D8400 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D70FE": {
+      "type": "noul",
+      "instructions": "Is document D70FE potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_DE43B": {
+      "type": "noul",
+      "instructions": "Is document DE43B potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_DA933": {
+      "type": "noul",
+      "instructions": "Is document DA933 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_DBA82": {
+      "type": "noul",
+      "instructions": "Is document DBA82 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D8F3A": {
+      "type": "noul",
+      "instructions": "Is document D8F3A potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_DB002": {
+      "type": "noul",
+      "instructions": "Is document DB002 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D5C83": {
+      "type": "noul",
+      "instructions": "Is document D5C83 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D966B": {
+      "type": "noul",
+      "instructions": "Is document D966B potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D1C7D": {
+      "type": "noul",
+      "instructions": "Is document D1C7D potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D1ED6": {
+      "type": "noul",
+      "instructions": "Is document D1ED6 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D8E58": {
+      "type": "noul",
+      "instructions": "Is document D8E58 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D6052": {
+      "type": "noul",
+      "instructions": "Is document D6052 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_DFCA3": {
+      "type": "noul",
+      "instructions": "Is document DFCA3 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D4D7C": {
+      "type": "noul",
+      "instructions": "Is document D4D7C potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D8CE0": {
+      "type": "noul",
+      "instructions": "Is document D8CE0 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D70CF": {
+      "type": "noul",
+      "instructions": "Is document D70CF potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D8A54": {
+      "type": "noul",
+      "instructions": "Is document D8A54 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D9D2D": {
+      "type": "noul",
+      "instructions": "Is document D9D2D potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    },
+    "keep_D5430": {
+      "type": "noul",
+      "instructions": "Is document D5430 potentially necessary for any requested answer, evidence, exception, dependency, contradiction, or missing-information determination? Retain indirect supporting records."
+    }
+  }
+}

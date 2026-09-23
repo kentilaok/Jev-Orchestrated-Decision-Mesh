@@ -1,0 +1,85 @@
+{
+  "model": "typesafe/jev-1.13-20260917",
+  "answers": {
+    "keep_D2AB2": {
+      "type": "noul",
+      "noul": 0.94
+    },
+    "keep_D5FCE": {
+      "type": "noul",
+      "noul": 0.97
+    },
+    "keep_D712E": {
+      "type": "noul",
+      "noul": 0.97
+    },
+    "keep_D7BDD": {
+      "type": "noul",
+      "noul": 0.93
+    },
+    "keep_D7C88": {
+      "type": "noul",
+      "noul": 0.94
+    },
+    "keep_D8002": {
+      "type": "noul",
+      "noul": 0.93
+    },
+    "keep_D88D6": {
+      "type": "noul",
+      "noul": 0.95
+    },
+    "keep_D9105": {
+      "type": "noul",
+      "noul": 0.95
+    },
+    "keep_DA16A": {
+      "type": "noul",
+      "noul": 0.95
+    },
+    "keep_DA5E9": {
+      "type": "noul",
+      "noul": 0.93
+    },
+    "keep_DB356": {
+      "type": "noul",
+      "noul": 0.91
+    },
+    "keep_DBD1B": {
+      "type": "noul",
+      "noul": 0.94
+    },
+    "keep_DD2AB": {
+      "type": "noul",
+      "noul": 0.94
+    },
+    "keep_DE726": {
+      "type": "noul",
+      "noul": 0.94
+    },
+    "keep_DFA10": {
+      "type": "noul",
+      "noul": 0.91
+    },
+    "keep_DFF01": {
+      "type": "noul",
+      "noul": 0.92
+    },
+    "operation": {
+      "type": "choice",
+      "choice": "use_all",
+      "probabilities": {
+        "select_context": 0.09,
+        "use_all": 0.91
+      },
+      "confidence": 0.82
+    }
+  },
+  "usage": {
+    "input_tokens": 4123,
+    "output_tokens": 360,
+    "cost": 0.000173166
+  },
+  "id": "gen-dec-1790101856-Hj1OCeZQ9QPSgzLOW2vN",
+  "provider": "TypeSafe"
+}

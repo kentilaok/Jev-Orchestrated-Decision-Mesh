@@ -1,0 +1,54 @@
+{
+  "id": "gen-1790144273-mbUUNHxVHqwg852iSECd",
+  "object": "chat.completion",
+  "created": 1790144273,
+  "model": "openai/gpt-6-sol",
+  "provider": "Azure",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "completed",
+      "message": {
+        "role": "assistant",
+        "content": "{\"failed_criteria\":[],\"missing_evidence\":[],\"reason\":\"The candidate preserves all original records and values, including the trial record, and retains the production-only scope, scale, and source reference. The rate calculation is outside this normalization unit.\",\"verdict\":\"pass\"}",
+        "refusal": null,
+        "reasoning_details": [
+          {
+            "type": "reasoning.encrypted",
+            "data": "gAAAAABqs28WG-lmbJYboJr4oqVQZGjSyAyfvp31J_vkzUtLwVi677DQEB7fKAnTOfr4URm5X5DsxWSPnARzrEY722CiMsxzO8tgtipEBSHmS8PoV-jQDHYGm5ZSyYB5P037nT_FrkpWthPIVwoQIzk4Yjay8NCqXMnLplOEQTBKxDNVxL5vI2JvZfChbXSX-iUIqI_Q4T5lzF5yVHj4mUVI4hwVGoX4nM_aboDSMUgEMYpvsAgEPn8vNYCza480dJbR-S9szc2lo3STxSTIFEh76UX-6wtRt6AYL75Dc8TCHu4xVBmgDQnA9Z1o6o0xZRq2SLbsUK8LdNGRq3hrkQAPCe5XskWKJCLuYv6l-tIpzYEyG-3jCUrikeFQ266-Vf828a-L9wElO9U5cywWh-tRXFniIKrQ7FaS6EExcuy_Vt5nvp6jTnL97OzaSM27k5gduKL1TQjMub4yZ02w_mnEPZWtinkN6ps-YNw2xApwmVUnV7XIvAaPfPpGdUK77yixYV7mRDtqxRbjZetbpa52htxkgi8fpaBIhY5eg6Ofs8g44Dhfjjg3fNwLYB0h9TgNN2mIWqkcxqw_pY60UyoYZQLmq4hH6R3zAcBrK8SfhAvJuQEw7Kzm2YD2mqUCDBEER_kb_su9F80xu4lbgT7eRYKktabsY3N9152cuOljT4o5btP6MlDEo7dKxlmtjGnWO9GAQzT2ql4ZEbRVQBGNa4Bt7ulK8uvNOFfqcVh2y01azzX3RfyrJozCbxRCuDGjSYOPKzfEX9YxemixgY6w62NtmkG_pm2T6J1C861G29S96CfhdsbSi1bbOoss86K6RjT8k6mWb168mC7WTCgeTTjC3FqgXte8TKoey6O8dHxqXHIQ4Ymq6Eg0c6UScU1enVToqnhLvYiMlTavZGWYHnqJT4P8kPbNPUje3k8_P9pWF6mrtVOwYi1G7GEcE7pL2RNPcG3JQtLyL5TK5eo5jmGnRkDjR_NiYeXjeqw1OghvCn2dQ1PUIvEm3cpbcP2Nk4H9OvPq44T4vzf-qOGWcxkZtrpdA7u_EjL1EGec0l3RmAG1d2QhMesYmhunbQKwLJgWpo-ed4c0-CgCjw7mvnFMnDBfqEn8uyYdmwbhOxNRNICICdxcfkB-pbQEsdF-LDfkS00nzfjD1TQ_5bpZfDWYCkk2ooRWRg8aSPpL6ElOolIu8cipOCHxeqf4wddoLoz4-ztZGaZW6Ebd9xCU7lkhiOUQL9QHwA4-2YAm-QSORl0vgDOLu3ZYQQ4rjPu_rYnsglKl3o7PIPcit3rHAHcfR58iRB_PeZ_B230RCIulVI1Djyg6Q0vfw4Qvin2QpgQhXOI5se27uTokdz-hrsnfyhv0x-Pb9_gIk_q8g5k6N7-gqlJ6xW7nIYFhc3m8Hl3J5XY3Ge_ndxchoGkkadlEILlPPQ==.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC02LXNvbC0yMDI2MDkyMnxhenVyZSJ9",
+            "format": "azure-openai-responses-v1",
+            "id": "rs_0ca4c6c80ce0273c016ab36f167bec8193804e3f30bb79057d",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 461,
+    "completion_tokens": 112,
+    "total_tokens": 573,
+    "cost": 0.002042,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.002042,
+      "upstream_inference_prompt_cost": 0.000922,
+      "upstream_inference_completions_cost": 0.00112
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 48,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

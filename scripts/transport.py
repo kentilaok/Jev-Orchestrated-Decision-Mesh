@@ -29,7 +29,7 @@ class DecisionAdapter(Protocol):
 
 
 class GenerativeAdapter(Protocol):
-    def ask(self, role: str, instructions: str, state: dict, schema=None) -> dict: ...
+    def ask(self, role: str, instructions: str, state: dict, schema=None, worker_route=None) -> dict: ...
     def high_check(self, state: dict) -> dict: ...
 
 
@@ -129,7 +129,7 @@ class Gateway:
         returned = response.get("model")
         require(isinstance(returned, str), "missing_response_model")
         normalized = "typesafe/" + returned.removeprefix("typesafe/") if role == "jev" else returned
-        require(normalized in self.config.response_models(role), "response_model_mismatch")
+        require(normalized in self.config.response_models(role, payload["model"]), "response_model_mismatch")
         provider = response.get("provider")
         if role == "jev":
             require(provider is None or provider == self.config.jev_provider_name, "response_provider_mismatch")
@@ -145,19 +145,25 @@ class Gateway:
     def call(self, role, payload):
         require(role in ("worker", "checker", "jev"), "invalid_role")
         require(self.config.policy_hash == self._policy_hash, "configuration_changed_during_run")
-        require(payload.get("model") == getattr(self.config, role + "_model"), "request_model_mismatch")
+        if role == "worker":
+            require(self.config.worker_route_allowed(payload.get("model"),
+                                                     payload.get("reasoning", {}).get("effort")),
+                    "worker_route_not_permitted")
+        else:
+            require(payload.get("model") == getattr(self.config, role + "_model"), "request_model_mismatch")
         if role == "jev":
             jev.validate_request(payload, "openrouter")
         else:
-            require(payload.get("reasoning", {}).get("effort") == getattr(self.config, role + "_effort"),
-                    "request_effort_mismatch")
+            if role == "checker":
+                require(payload.get("reasoning", {}).get("effort") == self.config.checker_effort,
+                        "request_effort_mismatch")
             route = payload.get("provider", {})
             require(route.get("only") == [self.config.provider_route] and route.get("allow_fallbacks") is False
                     and route.get("require_parameters") is True, "request_provider_policy_mismatch")
             require(payload.get("max_completion_tokens") == self.config.max_output_tokens, "request_output_cap_mismatch")
         data = packed(payload).encode()
         require(len(data) <= MAX_REQUEST_BYTES, "request_byte_limit")
-        reserve = self.config.reserve_usd(role, len(data))
+        reserve = self.config.reserve_usd(role, len(data), payload["model"] if role == "worker" else None)
         # A completed checker must return to Jev before any forward decision.
         # Admit both calls together, reserving the largest permitted Jev request.
         # Keep this call's own ceiling separate from that following reservation.
@@ -228,15 +234,21 @@ class Gateway:
         require(event["status"] == "ok", "provider_call_failed")
         return response, event
 
-    def ask(self, role, instructions, state, schema=None):
+    def ask(self, role, instructions, state, schema=None, worker_route=None):
         require(role in ("worker", "checker"), "invalid_generative_role")
+        require(role == "worker" or worker_route is None, "checker_cannot_use_worker_route")
         if role == "checker" and schema is None:
             schema = CHECK_SCHEMA
-        effort = self.config.worker_effort if role == "worker" else "high"
+        if worker_route is not None:
+            require(worker_route in self.config.worker_routes(), "worker_route_not_permitted")
+        model = (worker_route["model"] if worker_route is not None else
+                 getattr(self.config, role + "_model"))
+        effort = (worker_route["effort"] if worker_route is not None else
+                  (self.config.worker_effort if role == "worker" else "high"))
         provider = {"only": [self.config.provider_route], "allow_fallbacks": False, "require_parameters": True}
         if self.config.provider_route == "azure":
             provider["ignore"] = ["azure/us", "azure/eu"]
-        payload = {"model": getattr(self.config, role + "_model"),
+        payload = {"model": model,
                    "messages": [{"role": "system", "content": instructions}, {"role": "user", "content": packed(state)}],
                    "reasoning": {"effort": effort, "exclude": True}, "max_completion_tokens": self.config.max_output_tokens,
                    "provider": provider,
@@ -254,8 +266,8 @@ class Gateway:
 
     def network_judge(self, phase, options, state):
         instructions = {
-            "authorize_unit": "Choose compute to execute only this unit objective, or stop if prerequisites are missing. Judge the local objective, not completion of the whole task.",
-            "authorize_checker": "Choose check for the mandatory separate high-effort review, including diagnosis of failed hard checks. Checking cannot authorize forwarding. Choose stop if this bounded diagnostic work cannot usefully continue.",
+            "authorize_unit": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+            "authorize_checker": "Judge only this local unit; intermediate units need not answer the entire user task. If all hard checks pass and original evidence is available, choose check for the mandatory separate Sol-high review. If a hard check fails and repair is offered, choose repair to produce a new candidate without spending a checker call, unless the defect needs checker diagnosis. Choose stop only for a real evidence, safety, or capacity blocker. Checking alone cannot authorize forwarding.",
             "after_sol_high": "Choose the next option explicitly after this checker return. Forward only when the current unit passes every hard check and has a valid passing checker report. Otherwise repair a concrete defect, retrieve_evidence for absent evidence, verify_again for unresolved disagreement, or stop. Intermediate units need not finish the whole task. Self-reported confidence cannot override these conditions.",
         }
         require(phase in instructions, "unknown_network_phase")

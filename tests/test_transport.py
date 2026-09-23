@@ -56,20 +56,44 @@ class ConfigTests(unittest.TestCase):
         self.assertFalse(any("key" in name or "secret" in name for name in config.to_dict()))
         with self.assertRaises(FrozenInstanceError):
             config.worker_effort = "low"
-        aliases = ["openai/gpt-5.6-sol-20260709"]
+        aliases = ["openai/gpt-6-sol-20260922"]
         config = RunConfig.from_dict({"worker_model_aliases": aliases})
         aliases.append("changed")
-        self.assertEqual(config.worker_model_aliases, ("openai/gpt-5.6-sol-20260709",))
+        self.assertEqual(config.worker_model_aliases, ("openai/gpt-6-sol-20260922",))
+
+    def test_worker_catalog_is_luna_and_sol_low_through_xhigh_only(self):
+        config=RunConfig()
+        self.assertEqual(len(config.worker_routes()),8)
+        self.assertEqual({r['model'] for r in config.worker_routes()},
+                         {'openai/gpt-6-luna','openai/gpt-6-sol'})
+        self.assertEqual({r['effort'] for r in config.worker_routes()},
+                         {'low','medium','high','xhigh'})
+        self.assertEqual((config.checker_model,config.checker_effort),('openai/gpt-6-sol','high'))
+        self.assertFalse(config.astra_explicitly_authorized)
 
     def test_reject_invalid_config_and_unknown_fields(self):
         cases = [
             {"worker_model": "other/model"}, {"checker_model": "other/model"},
+            {"worker_model": "openai/gpt-5.6-sol"},
+            {"worker_model": "openai/gpt-5.6-luna"},
+            {"worker_model": "openai/gpt-5.6-terra"},
+            {"worker_model": "openai/gpt-6-astra"},
+            {"checker_model": "openai/gpt-6-luna"},
+            {"worker_effort": "max"},
+            {"astra_explicitly_authorized": "true"},
+            {"astra_explicitly_authorized": True, "worker_model": "openai/gpt-6-astra",
+             "worker_effort": "high"},
             {"checker_effort": "medium"}, {"worker_effort": "unsupported"},
             {"max_calls": True}, {"max_calls": 0}, {"max_usd": float("nan")},
             {"max_usd": float("inf")}, {"max_usd": 10 ** 1000},
             {"timeout": 0}, {"max_output_tokens": 0}, {"provider_route": "https://example.invalid"},
             {"api_key": "placeholder"}, {"base_url": "https://example.invalid"},
-            {"worker_input_usd_per_million": -1}, {"jev_model": "typesafe/jev-latest"},
+            {"worker_input_usd_per_million": -1},
+            {"worker_luna_input_usd_per_million": 0.09},
+            {"worker_luna_output_usd_per_million": 0.49},
+            {"worker_astra_input_usd_per_million": 9.99},
+            {"worker_astra_output_usd_per_million": 49.99},
+            {"jev_model": "typesafe/jev-latest"},
             {"worker_model_aliases": ["openai/unrelated-model"]},
         ]
         for value in cases:
@@ -81,6 +105,38 @@ class ConfigTests(unittest.TestCase):
         for role in ("worker", "checker", "jev"):
             self.assertGreater(config.reserve_usd(role, 100), config.reserve_usd(role, 0))
             self.assertGreater(config.reserve_usd(role, 0), 0)
+
+    def test_worker_reservation_uses_selected_family_and_full_input(self):
+        config = RunConfig(max_output_tokens=2000)
+        request_bytes = 1000
+        luna = config.reserve_usd("worker", request_bytes, "openai/gpt-6-luna")
+        sol = config.reserve_usd("worker", request_bytes, "openai/gpt-6-sol")
+        self.assertAlmostEqual(luna, (1000 * 0.10 + 2000 * 0.50) / 1_000_000)
+        self.assertAlmostEqual(sol, (1000 * 2 + 2000 * 10) / 1_000_000)
+        self.assertLess(luna, sol)
+        # The admission estimate has no cache information, so all request
+        # bytes receive the selected model's full input ceiling.
+        self.assertAlmostEqual(config.reserve_usd("worker", 2000, "openai/gpt-6-luna") - luna,
+                               1000 * 0.10 / 1_000_000)
+        with self.assertRaisesRegex(ValueError, "worker_model_not_permitted"):
+            config.reserve_usd("worker", request_bytes, "openai/gpt-6-astra")
+
+    def test_custom_family_ceilings_and_explicit_astra(self):
+        config = RunConfig(astra_explicitly_authorized=True,
+                           worker_luna_input_usd_per_million=0.20,
+                           worker_luna_output_usd_per_million=1.0,
+                           worker_input_usd_per_million=3.0,
+                           worker_output_usd_per_million=12.0,
+                           worker_astra_input_usd_per_million=11.0,
+                           worker_astra_output_usd_per_million=55.0,
+                           max_output_tokens=1000)
+        for family, inp, out in (("luna", 0.20, 1.0), ("sol", 3.0, 12.0),
+                                 ("astra", 11.0, 55.0)):
+            with self.subTest(family=family):
+                self.assertAlmostEqual(config.reserve_usd("worker", 500, "openai/gpt-6-" + family),
+                                       (500 * inp + 1000 * out) / 1_000_000)
+        self.assertEqual([route["id"] for route in config.worker_routes() if "astra" in route["id"]],
+                         ["astra_low"])
 
 
 class TransportTests(unittest.TestCase):
@@ -108,11 +164,11 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(payload["reasoning"]["effort"], "high")
         self.assertEqual(payload["response_format"]["json_schema"]["schema"], CHECK_SCHEMA)
         self.assertFalse(payload["provider"]["allow_fallbacks"])
-        self.assertEqual(payload["provider"]["only"], ["azure/us"])
+        self.assertEqual(payload["provider"]["only"], ["azure"])
 
     def test_model_provider_and_effort_are_configurable(self):
-        config = RunConfig(worker_model="openai/configured-worker", checker_model="openai/configured-checker",
-                           worker_effort="xhigh", provider_route="openai", provider_name="OpenAI")
+        config = RunConfig(worker_model="openai/gpt-6-luna",worker_effort="xhigh",
+                           provider_route="openai", provider_name="OpenAI")
         gateway = self.gateway(config)
         with patch.object(gateway, "_request", return_value=chat_response(config)) as request:
             self.assertEqual(gateway.ask("worker", "Bounded task", {"value": 1}), {"value": 1})
@@ -121,6 +177,60 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(payload["reasoning"]["effort"], "xhigh")
         self.assertEqual(payload["provider"]["only"], ["openai"])
         self.assertEqual(gateway.calls[0]["provider"], "OpenAI")
+
+    def test_jev_selected_luna_and_sol_routes_reach_exact_model_and_effort(self):
+        gateway=self.gateway()
+        for route_id in ('luna_low','luna_xhigh','sol_low','sol_xhigh'):
+            route=next(r for r in gateway.config.worker_routes() if r['id']==route_id)
+            response=chat_response(gateway.config,role='worker')
+            response['model']=route['model']
+            with patch.object(gateway,'_request',return_value=response) as request:
+                gateway.ask('worker','Task',{'value':1},worker_route=route)
+            payload=request.call_args.args[1]
+            self.assertEqual((payload['model'],payload['reasoning']['effort']),
+                             (route['model'],route['effort']))
+            self.assertAlmostEqual(gateway.calls[-1]['reserved_usd'],
+                                   gateway.config.reserve_usd('worker', len(packed(payload).encode()),
+                                                              route['model']))
+        self.assertEqual(len(gateway.calls),4)
+
+    def test_luna_call_admitted_when_same_budget_rejects_sol(self):
+        config = RunConfig(max_usd=0.005)
+        gateway = self.gateway(config)
+        luna = next(route for route in config.worker_routes() if route['id'] == 'luna_low')
+        sol = next(route for route in config.worker_routes() if route['id'] == 'sol_low')
+        luna_response = chat_response(config)
+        luna_response['model'] = luna['model']
+        with patch.object(gateway, '_request', return_value=luna_response) as request:
+            gateway.ask('worker', 'Task', {'value': 1}, worker_route=luna)
+            with self.assertRaisesRegex(MeshError, 'call_or_cost_budget_exhausted'):
+                gateway.ask('worker', 'Task', {'value': 1}, worker_route=sol)
+        request.assert_called_once()
+        self.assertEqual(gateway.calls[0]['requested_model'], luna['model'])
+        self.assertLess(gateway.calls[0]['reserved_usd'], config.max_usd)
+        self.assertLess(gateway.spent, config.max_usd)
+
+    def test_luna_actual_charge_above_family_ceiling_blocks(self):
+        gateway = self.gateway()
+        luna = next(route for route in gateway.config.worker_routes() if route['id'] == 'luna_low')
+        response = chat_response(role='worker', cost=0.005)
+        response['model'] = luna['model']
+        with patch.object(gateway, '_request', return_value=response), self.assertRaises(MeshError):
+            gateway.ask('worker', 'Task', {'value': 1}, worker_route=luna)
+        self.assertEqual(gateway.spent, 0.005)
+        self.assertEqual(gateway.calls[0]['error']['code'], 'price_ceiling_exceeded')
+        self.assertTrue(gateway.blocked)
+
+    def test_unlisted_worker_route_is_rejected_before_dispatch(self):
+        gateway=self.gateway()
+        routes=[{'id':'astra_low','model':'openai/gpt-6-astra','effort':'low'},
+                {'id':'terra_low','model':'openai/gpt-5.6-terra','effort':'low'},
+                {'id':'luna_max','model':'openai/gpt-6-luna','effort':'max'}]
+        with patch.object(gateway,'_request') as request:
+            for route in routes:
+                with self.assertRaisesRegex(MeshError,'worker_route_not_permitted'):
+                    gateway.ask('worker','Task',{'value':1},worker_route=route)
+        request.assert_not_called()
 
     def test_cache_and_reasoning_are_not_added_twice(self):
         gateway = self.gateway()
@@ -157,7 +267,7 @@ class TransportTests(unittest.TestCase):
         self.assertTrue(gateway.blocked)
 
     def test_explicit_model_alias_accepted(self):
-        config = RunConfig(worker_model_aliases=("openai/gpt-5.6-sol-20260709",))
+        config = RunConfig(worker_model_aliases=("openai/gpt-6-sol-20260922",))
         gateway = self.gateway(config)
         response = chat_response(config)
         response["model"] = config.worker_model_aliases[0]
@@ -330,4 +440,3 @@ class TransportTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

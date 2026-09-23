@@ -1,0 +1,451 @@
+{
+  "status": "failed",
+  "answer": null,
+  "policy_version": "09e2946f3ad40f0ccd1ec4b0acb2b511fd1203352e45a907e4e0304f2a4c20c9",
+  "simulation": false,
+  "committed": [],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "09e2946f3ad40f0ccd1ec4b0acb2b511fd1203352e45a907e4e0304f2a4c20c9",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "9212c481f8683decbfe16095f50a8122c2ca4499737009614e46238784716a21",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Normalize the original data without changing source values or scope."
+        },
+        "parents": [],
+        "policy_version": "09e2946f3ad40f0ccd1ec4b0acb2b511fd1203352e45a907e4e0304f2a4c20c9",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "stop": 0.02,
+          "compute": 0.98
+        },
+        "confidence": 0.96,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 998,
+          "output_tokens": 31,
+          "total_tokens": 1029,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 4.1916e-05
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "09e2946f3ad40f0ccd1ec4b0acb2b511fd1203352e45a907e4e0304f2a4c20c9",
+        "worker_route": null
+      },
+      "action_hash": "f02c7455f8de1e3f186f78a04ed0a901cbba3fe4dcac7591a9290f201c073809",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Original records normalized without changing values.",
+        "data": {
+          "records": [
+            {
+              "segment": "A",
+              "kind": "production",
+              "items": 240,
+              "defects": 12
+            },
+            {
+              "segment": "B",
+              "kind": "production",
+              "items": 160,
+              "defects": 8
+            },
+            {
+              "segment": "T",
+              "kind": "trial",
+              "items": 100,
+              "defects": 30
+            }
+          ],
+          "include_kind": "production",
+          "scale": 1000
+        },
+        "source_ids": [
+          "records"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_checker",
+      "options": {
+        "check": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+            "policy_version": "09e2946f3ad40f0ccd1ec4b0acb2b511fd1203352e45a907e4e0304f2a4c20c9"
+          },
+          "description": "Run a separate Sol-high check on this exact candidate."
+        },
+        "stop": {
+          "description": "Stop; an unchecked candidate cannot advance."
+        }
+      },
+      "state_hash": "9212c481f8683decbfe16095f50a8122c2ca4499737009614e46238784716a21",
+      "state": {
+        "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "records",
+            "title": "Original records"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "records",
+            "hash": "da8b320170cb25ec363e2ac9f83a811ecbb5b35efc80a9738df5e761bff60d82",
+            "text": "{\"goal\":\"Report production defects per 1,000 items, excluding trial records, with source support.\",\"include_kind\":\"production\",\"records\":[{\"defects\":12,\"items\":240,\"kind\":\"production\",\"segment\":\"A\"},{\"defects\":8,\"items\":160,\"kind\":\"production\",\"segment\":\"B\"},{\"defects\":30,\"items\":100,\"kind\":\"trial\",\"segment\":\"T\"}],\"scale\":1000}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Normalize the original data without changing source values or scope."
+        },
+        "parents": [],
+        "policy_version": "09e2946f3ad40f0ccd1ec4b0acb2b511fd1203352e45a907e4e0304f2a4c20c9",
+        "candidate": {
+          "text": "Original records normalized without changing values.",
+          "data": {
+            "records": [
+              {
+                "segment": "A",
+                "kind": "production",
+                "items": 240,
+                "defects": 12
+              },
+              {
+                "segment": "B",
+                "kind": "production",
+                "items": 160,
+                "defects": 8
+              },
+              {
+                "segment": "T",
+                "kind": "trial",
+                "items": 100,
+                "defects": 30
+              }
+            ],
+            "include_kind": "production",
+            "scale": 1000
+          },
+          "source_ids": [
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "source_present": true,
+          "exact_original_values": true,
+          "artifact_schema_valid": true
+        }
+      },
+      "decision": {
+        "choice": "check",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check": 0.59,
+          "stop": 0.41
+        },
+        "confidence": 0.18,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 1229,
+          "output_tokens": 31,
+          "total_tokens": 1260,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 5.1618e-05
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "checker",
+      "action": {
+        "operation": "sol_high_check",
+        "unit_id": "input",
+        "attempt": 0,
+        "check_attempt": 0,
+        "candidate_hash": "658370e083c6c1c1aa7d9afbff5966bb36726ddbd398c523aab3d5b45e29d038",
+        "policy_version": "09e2946f3ad40f0ccd1ec4b0acb2b511fd1203352e45a907e4e0304f2a4c20c9"
+      },
+      "action_hash": "b3867a2134cdff219c3e61b2c309d8f4e354f8e3ff5ae7c2d9b8b141940e462d",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e6",
+      "kind": "halt",
+      "version": 0,
+      "simulation": false,
+      "error": "MeshError: provider_call_failed"
+    }
+  ],
+  "calls": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "699d00584f45faf8b990a941e8e47fbff77f6ababb33fd372f240e0b13b23838",
+      "policy_hash": "0686af54fb0065987c573a129f2bc157c0892a9032ab9fb93b94eb128826046f",
+      "reserved_usd": 0.00020165,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 998,
+        "output_tokens": 31,
+        "total_tokens": 1029,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 4.1916e-05
+      },
+      "usage_raw": {
+        "input_tokens": 998,
+        "output_tokens": 31,
+        "cost": 4.1916e-05
+      },
+      "latency_ms": 765.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "548080cca93defcd021bf1517f5726f0d956bfbadc5cc610148f58aa615b75a3",
+      "policy_hash": "0686af54fb0065987c573a129f2bc157c0892a9032ab9fb93b94eb128826046f",
+      "reserved_usd": 0.00021965,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1229,
+        "output_tokens": 31,
+        "total_tokens": 1260,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 5.1618e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1229,
+        "output_tokens": 31,
+        "cost": 5.1618e-05
+      },
+      "latency_ms": 391.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "checker",
+      "status": "failed",
+      "requested_model": "openai/gpt-6-sol",
+      "returned_model": null,
+      "provider": null,
+      "request_hash": "dab815b67bebfb81dbf13e03d12b61520b10b805651722669b9f8f8ba5cbbc5a",
+      "policy_hash": "0686af54fb0065987c573a129f2bc157c0892a9032ab9fb93b94eb128826046f",
+      "reserved_usd": 0.02528,
+      "followup_jev_reserved_usd": 0.0013,
+      "admission_reserved_calls": 2,
+      "reasoning_effort": "high",
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "total_tokens_source": null,
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": null
+      },
+      "usage_raw": null,
+      "latency_ms": 141.0,
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "error": {
+        "code": "http_error",
+        "http_status": 404
+      }
+    }
+  ],
+  "reported_cost": 9.3534e-05,
+  "configuration": {
+    "worker_model": "openai/gpt-6-sol",
+    "worker_effort": "medium",
+    "checker_model": "openai/gpt-6-sol",
+    "checker_effort": "high",
+    "astra_explicitly_authorized": false,
+    "jev_model": "typesafe/jev-1.13",
+    "provider_route": "openai",
+    "provider_name": "OpenAI",
+    "jev_provider_name": "TypeSafe",
+    "worker_model_aliases": [],
+    "checker_model_aliases": [],
+    "jev_model_aliases": [
+      "typesafe/jev-1.13-20260917"
+    ],
+    "max_usd": 1.5,
+    "max_calls": 40,
+    "max_output_tokens": 2000,
+    "timeout": 45,
+    "worker_luna_input_usd_per_million": 0.1,
+    "worker_luna_output_usd_per_million": 0.5,
+    "worker_input_usd_per_million": 2.0,
+    "worker_output_usd_per_million": 10.0,
+    "worker_astra_input_usd_per_million": 10.0,
+    "worker_astra_output_usd_per_million": 50.0,
+    "checker_input_usd_per_million": 2.0,
+    "checker_output_usd_per_million": 10.0,
+    "jev_input_usd_per_million": 0.05,
+    "jev_output_usd_per_million": 0.05
+  },
+  "training_performed": false,
+  "scope": "Training-free Jev orchestration. Neural-network and Transformer concepts are routing inspirations only."
+}

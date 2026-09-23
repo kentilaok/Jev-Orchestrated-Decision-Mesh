@@ -1,0 +1,54 @@
+{
+  "id": "gen-1790144287-PFzp1kE4yELWjOlpdqIP",
+  "object": "chat.completion",
+  "created": 1790144287,
+  "model": "openai/gpt-6-sol",
+  "provider": "Azure",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "completed",
+      "message": {
+        "role": "assistant",
+        "content": "{\"failed_criteria\":[],\"missing_evidence\":[],\"reason\":\"Production segments A and B total 20 defects across 400 items; the trial segment is excluded. Exact arithmetic gives 20/400 \u00d7 1,000 = 50 defects per 1,000 items, supported by the records.\",\"verdict\":\"pass\"}",
+        "refusal": null,
+        "reasoning_details": [
+          {
+            "type": "reasoning.encrypted",
+            "data": "gAAAAABqs28hnWJbQfBSfqatHX5syHTYV0KM-AoVzEMsHetro7EwY72rr0K-0LzIrMrzOAmkDp2yc3v_dwCxEoij21XBpYx3_-d8OxRwHeiq8aNqwHREAAjCST4FCASb2Z1MMxcDgspQnftLOrmzPjQXADC-wd1l1S1kPZ0WcYnu1F8Jn7u4dF-LwH8y6vkTuKTfyyrf2T0q18v2VVGylyewq4lfdwq4TLCKOAVEh71Pi9Haghf4ZWX35_zJ893BXNF6c9dqWxyLDIRqpV06-X7EHacHpC1wZ3yImVpmQ_gzAx-O3PfaE9py8y-bcoT9Ti4llCESPrlb47jzmZs3dU-KUy6a0rvQR_ytFl78mTTbsl-3tNG54swKqTtmxLBunsbWzn892s_3cyCpOop76MIAy8N8ylPb4zRweEOH7ox3d0hPRv3duOIXYfWVKvXW9DLq70qj8KwZvuBBFWRwLRDVK91aTgdlQSgtwFgjp5etffP4nNRERJclxuqjGiWUJLfBHOFRJSU2cblDXeYGf1gT2cQRW02uLI6Hqv6-wzx3XmkeE9BV4_vsIi1xoF5GWYb2d2PSSWyYBGgfV-Cg8RRK8vQn9lh-TE8Tweyol80yDp9y8WfpB_uL0YiUCKqaTS403yz_2S126K_ARV8jaPqNd7zawPQBZpEJEA8-pXRk5lq2gtmq2aaPWgmC_xup2jYsxGTTsiyyrI3WsKhK13u1rdkcS1epBnf3zGDf88iRIy6nriMhYwDWq3dwQxKR_DZofoI9G8u7I5YmxEgCd3bLEr8zojtQAk4TMq-MfqDPjnIKMaXrMS0bOuzDE5OhPotSPpB6EJvWpMz5K3v8ZjvbPLUeSr5Uq4OYD8Vx11_yOdmHUPnOGSq4ZO_9HQRUggDOJ163slwv6MkWlTxI3Vu63YMgeangkYNMqJya9Kr1nXz5G1SL9ZmS-WoXUIIeLe-lt5AXlJ4Ky4wQynX1VBWIcB7uK0-RU4r0d5W6tft6KLs1McL4Qxg32k2VJE1tgoefOlFNI0kJlWP-mTmX3fO3hrAMblMJ4yVRBsA12ou5vz0G7VrbQgioEdaZBqe-qkIVhxnBgPLGRdQjSyLMPm1oG0jnfwddwwnFBPKGyS2xwfZvfOCvptKpYmVbg62q167kZaTSvhNFwEWtJHa5ONGmMFCEq2zUPqcYNw4FTGE5s6cupMfu8Ni-a5VV3CYFu-2D1nQfVrwMBHQPgOwDZ4csEg77dZ0YhG31lAXsm2o6CFZphXubaqeH6vcRM_xS6k8v379JK79UG1T4VdK2gXG3oJTnGWQjIEwXRltNzjbEEEItQu8U0gA=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC02LXNvbC0yMDI2MDkyMnxhenVyZSJ9",
+            "format": "azure-openai-responses-v1",
+            "id": "rs_0f690edfc4b4bcfc016ab36f2113388194b0b48b8b7df949f7",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 493,
+    "completion_tokens": 116,
+    "total_tokens": 609,
+    "cost": 0.002146,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.002146,
+      "upstream_inference_prompt_cost": 0.000986,
+      "upstream_inference_completions_cost": 0.00116
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 40,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}
