@@ -188,7 +188,7 @@ class NativeTransitionBroker:
             require(self.checker_count < self.config.max_checker_calls,
                     'native_checker_call_budget_exhausted')
             self.checker_count += 1
-        requested = model.removeprefix('openai/')
+        requested = model.split('/', 1)[-1]   # 'openai/gpt-6-luna' -> 'gpt-6-luna'; 'anthropic/claude-opus-5' -> 'claude-opus-5'
         response = None
         try:
             response = self.adapter.run(requested, effort, prompt, schema, self.worker_workspace)
@@ -265,11 +265,11 @@ class NativeTransitionBroker:
                 route = action.get('worker_route')
                 if route is not None:
                     dispatches.append(('worker', action.get('unit_id'),
-                                       route.get('model', '').removeprefix('openai/'),
+                                       route.get('model', '').split('/', 1)[-1],
                                        route.get('effort')))
             elif kind == 'dispatch' and event.get('worker_id') == 'checker':
                 dispatches.append(('checker', action.get('unit_id'),
-                                   self.config.checker_model.removeprefix('openai/'),
+                                   self.config.checker_model.split('/', 1)[-1],
                                    self.config.checker_effort))
         returns = [event for event in events if event['kind'] == 'provisional_return'
                    and (event.get('worker_id') == 'checker'
@@ -362,15 +362,16 @@ class NativeTransitionBroker:
                                  'required_source_hashes': self._source_hashes(sources, sources),
                                  'required_parent_hashes': [],
                                  'format': 'Return the requested structured artifact. State unresolved issues.'})
-                candidate = self._codex('worker', 'openai/gpt-6-luna', 'low', prompt,
+                short = self.config.short_route()
+                candidate = self._codex('worker', short['model'], short['effort'], prompt,
                                         artifact_schema(sources))
                 checks = self._validate_candidate(candidate, sources, [], output=True)
                 result.update({'hard_checks': checks, 'candidate_hash': fingerprint(candidate),
                                'status': 'complete' if all(checks.values()) else 'quality_failed',
                                'answer': candidate['text'] if all(checks.values()) else None})
                 if (len(self.calls) != 1 or self.calls[0].get('role') != 'worker'
-                        or self.calls[0].get('requested_model') != 'gpt-6-luna'
-                        or self.calls[0].get('requested_effort') != 'low'):
+                        or self.calls[0].get('requested_model') != short['model'].split('/', 1)[-1]
+                        or self.calls[0].get('requested_effort') != short['effort']):
                     result['status'], result['answer'] = 'audit_failed', None
                 journal({'kind': 'short_result', 'candidate_hash': fingerprint(candidate),
                          'hard_checks': checks, 'released': result['status'] == 'complete'})
@@ -475,6 +476,8 @@ def main():
                         help='JSON goal, accepted context, sources, and fresh classification')
     parser.add_argument('--out', type=Path)
     parser.add_argument('--config', type=Path)
+    parser.add_argument('--host', choices=('codex', 'claude'), default='codex',
+                        help='Worker host: Codex CLI (GPT-6 routes) or Claude Code CLI (Sonnet/Opus routes)')
     parser.add_argument('--gate-policy', choices=('legacy', 'fused'), default='legacy',
                         help='Use the optional fused Jev gate protocol for broad requests')
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -484,18 +487,19 @@ def main():
                       help='Validate the bounded input and report its route without model calls')
     args = parser.parse_args()
     spec = json.loads(args.task.read_text(encoding='utf-8-sig'))
-    from codex_cli_adapter import CodexCliAdapter
     normalized = validate_spec(spec)
     if args.validate_only:
         print(packed({'route': normalized['classification']['scope'],
-                      'gate_policy': args.gate_policy,
+                      'gate_policy': args.gate_policy, 'host': args.host,
                       'snapshot_hash': normalized['snapshot_hash'],
                       'source_ids': list(normalized['sources']),
                       'model_calls': 0}))
         return 0
     require(args.out is not None, 'output_directory_required_for_live_run')
-    config = RunConfig.from_dict(json.loads(args.config.read_text(encoding='utf-8-sig'))
-                                 if args.config else {})
+    settings = json.loads(args.config.read_text(encoding='utf-8-sig')) if args.config else {}
+    family = 'claude' if args.host == 'claude' else 'gpt6'
+    require(settings.get('worker_family', family) == family, 'host_and_worker_family_mismatch')
+    config = RunConfig.from_dict({**settings, 'worker_family': family})
     require(not args.out.exists(), 'output_directory_must_be_new')
     gateway = None
     def judge(phase, options, state):
@@ -503,9 +507,13 @@ def main():
         if gateway is None:
             gateway = Gateway(args.out, config)
         return gateway.network_judge(phase, options, state)
-    broker = NativeTransitionBroker(
-        CodexCliAdapter(astra_explicitly_authorized=config.astra_explicitly_authorized),
-        judge, config, args.out, gate_policy=args.gate_policy)
+    if args.host == 'claude':
+        from claude_cli_adapter import ClaudeCliAdapter
+        adapter = ClaudeCliAdapter()
+    else:
+        from codex_cli_adapter import CodexCliAdapter
+        adapter = CodexCliAdapter(astra_explicitly_authorized=config.astra_explicitly_authorized)
+    broker = NativeTransitionBroker(adapter, judge, config, args.out, gate_policy=args.gate_policy)
     result = broker.run(spec)
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []
     result['jev_provider_events'] = provider_events
