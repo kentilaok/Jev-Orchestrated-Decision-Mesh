@@ -1,0 +1,77 @@
+{
+  "context": "",
+  "family": "multi_file_review",
+  "goal": "Review these files. Report each defect as file, line and category. Do not report style issues.",
+  "lineage": "L-review-connector",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "defects": {
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "malformed_http_200",
+    "missing_usage_fields",
+    "provider_fallback"
+  ],
+  "sources": {
+    "README_md": {
+      "text": "1 Responses are always well formed.\n",
+      "title": "README.md"
+    },
+    "client_py": {
+      "text": "1 def fetch(session, url):\n2     r = session.post(url)\n3     if r.status_code == 200:\n4         return r.json()\n5     raise RuntimeError(r.status_code)\n",
+      "title": "client.py"
+    },
+    "route_py": {
+      "text": "1 def call(model, provider):\n2     resp = send(model=model, provider={'allow_fallbacks': True})\n3     return resp\n",
+      "title": "route.py"
+    },
+    "usage_py": {
+      "text": "1 def record(resp, ledger):\n2     u = resp['usage']\n3     ledger.append(u['prompt_tokens'] + u['completion_tokens'] + u['cached_tokens'])\n",
+      "title": "usage.py"
+    }
+  },
+  "split": "heldout",
+  "task_id": "MFR-H1",
+  "variation": {}
+}

@@ -1,0 +1,113 @@
+{
+  "context": "",
+  "family": "long_context_synthesis",
+  "goal": "What is the request limit per second for the Upland region? Cite every chunk your answer depends on.",
+  "lineage": "L-limits-dev",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "per_second": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "negation",
+    "units",
+    "distant_dependency"
+  ],
+  "sources": {
+    "chunk-000": {
+      "text": "The standard request limit is 180 requests per minute for every region.",
+      "title": "Corpus chunk 0"
+    },
+    "chunk-001": {
+      "text": "The standard limit does not apply to the Upland region, which uses 3 times the standard limit.",
+      "title": "Corpus chunk 1"
+    },
+    "chunk-002": {
+      "text": "All limits in this corpus are expressed per minute; convert to per second by dividing by 60 and round to 2 decimals.",
+      "title": "Corpus chunk 2"
+    },
+    "chunk-003": {
+      "text": "Background note 3: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 3"
+    },
+    "chunk-004": {
+      "text": "Background note 4: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 4"
+    },
+    "chunk-005": {
+      "text": "Background note 5: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 5"
+    },
+    "chunk-006": {
+      "text": "Background note 6: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 6"
+    },
+    "chunk-007": {
+      "text": "Background note 7: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 7"
+    },
+    "chunk-008": {
+      "text": "Background note 8: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 8"
+    },
+    "chunk-009": {
+      "text": "Background note 9: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 9"
+    },
+    "chunk-010": {
+      "text": "Background note 10: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 10"
+    },
+    "chunk-011": {
+      "text": "Background note 11: operational context about scheduling, staffing and facilities; no service limits are defined here.",
+      "title": "Corpus chunk 11"
+    }
+  },
+  "split": "dev",
+  "task_id": "LCS-D1",
+  "variation": {
+    "chunk_boundary_split": false,
+    "chunks": 12,
+    "evidence_position": "start"
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "seed": 20260928,
+  "generator": "build_fixtures.py",
+  "data": "fictional",
+  "tasks": [
+    {
+      "task_id": "SSA-D1",
+      "family": "short_sourced_answer",
+      "lineage": "L-retention",
+      "split": "dev",
+      "seeded_conditions": [
+        "stale_evidence"
+      ],
+      "variation": {},
+      "task_sha256": "1a409b71e24e309dcf7855e42d3473064b5ea2d8a1bb957e552de38537f9e039",
+      "key_sha256": "91e2ebf369d1439a648ff402abfe606e53a286878284b66a27ed8d69c78f4e47"
+    },
+    {
+      "task_id": "DEA-D1",
+      "family": "deterministic_extraction_arithmetic",
+      "lineage": "L-defect-rate",
+      "split": "dev",
+      "seeded_conditions": [],
+      "variation": {},
+      "task_sha256": "862af3001084df3947b290dd609a5475e50bd817900366e4fdd7c0fab487cf16",
+      "key_sha256": "b2d8f6345559219b7197467a66d6cb66351ec3e8897c9cfc28d2f7cf9bfa8023"
+    },
+    {
+      "task_id": "DEA-D2",
+      "family": "deterministic_extraction_arithmetic",
+      "lineage": "L-spend-usd",
+      "split": "dev",
+      "seeded_conditions": [
+        "unsupported_currency_label"
+      ],
+      "variation": {},
+      "task_sha256": "967f9b4fb084a434a2fadf129e9385e90723364197f3b6ee0a65b6705f5daf1f",
+      "key_sha256": "214e8856679d1606596cf585b21d2130fe0ebf6b14d9789bc32b3f01f2eb75c3"
+    },
+    {
+      "task_id": "CDR-D1",
+      "family": "context_dependent_recommendation",
+      "lineage": "L-release-window",
+      "split": "dev",
+      "seeded_conditions": [
+        "cross_source_dependency"
+      ],
+      "variation": {},
+      "task_sha256": "acaa7ddfadb84d60b7d4368bf27f99ce332dafb998efb4c865ebb9f18a7ee0e4",
+      "key_sha256": "ee001744854b796f33396f6ad5fe5aa8af3cce65e53a803a7d4f82bd958f1d9b"
+    },
+    {
+      "task_id": "IMP-D1",
+      "family": "implementation_debugging",
+      "lineage": "L-duration",
+      "split": "dev",
+      "seeded_conditions": [],
+      "variation": {},
+      "task_sha256": "931222173bcd7a62cfa4fd827d87890881514733b335bf66f9ce46b082324c52",
+      "key_sha256": "2e8631b38da2744b691159b3ca2175a4f6b06e25ed4a6e8825dccc59c3842397"
+    },
+    {
+      "task_id": "MFR-D1",
+      "family": "multi_file_review",
+      "lineage": "L-review-webapp",
+      "split": "dev",
+      "seeded_conditions": [],
+      "variation": {},
+      "task_sha256": "38f1b747e34300b80c82f0f6660452fc440666812cbda1b8c8d0eb3cda72bb3d",
+      "key_sha256": "6bfb6b5ee6a12b3fc8567d997bfcf46f4808131ba1c164e1c7b49d94330be9c8"
+    },
+    {
+      "task_id": "SSA-H1",
+      "family": "short_sourced_answer",
+      "lineage": "L-refund-annual",
+      "split": "heldout",
+      "seeded_conditions": [
+        "negation",
+        "exception"
+      ],
+      "variation": {
+        "evidence_position": "start"
+      },
+      "task_sha256": "1e7b76f53eb48f775a529f8337420943d92a41d568a68570ca8bc7894fcb91ec",
+      "key_sha256": "2b30296478d2703a8a53f6dea3239275ed04d3acc76e02bde3b8a1b100be7956"
+    },
+    {
+      "task_id": "SSA-H2",
+      "family": "short_sourced_answer",
+      "lineage": "L-refund-team",
+      "split": "heldout",
+      "seeded_conditions": [
+        "negation",
+        "exception"
+      ],
+      "variation": {
+        "evidence_position": "end"
+      },
+      "task_sha256": "8c907434c41851e9706f3fef69f434e02636a804b71d60f77ce196b9821727bb",
+      "key_sha256": "ba50012b7c1314823cb80930157072198cd2783c78a7ec01611ee3283813746a"
+    },
+    {
+      "task_id": "DEA-H1",
+      "family": "deterministic_extraction_arithmetic",
+      "lineage": "L-cpa",
+      "split": "heldout",
+      "seeded_conditions": [
+        "unsupported_currency_label",
+        "numerical_precision",
+        "exclusion"
+      ],
+      "variation": {},
+      "task_sha256": "4f24f3795bf859c8caba4ad85fe0f380be81e119b976d32a3918db4d5495ac66",
+      "key_sha256": "7904fa68d78fceb148cdea51577a8b23d9870ec0e16d60b7763f7dbcd486f070"
+    },
+    {
+      "task_id": "DEA-H2",
+      "family": "deterministic_extraction_arithmetic",
+      "lineage": "L-shipping-mass",
+      "split": "heldout",
+      "seeded_conditions": [
+        "units",
+        "exclusion",
+        "numerical_precision"
+      ],
+      "variation": {},
+      "task_sha256": "3f4bf62f55d9b12a535079b6dc101c920ca14f3b8405275fae8de2cf7ff222de",
+      "key_sha256": "9c128cf3358ccf2b673bc200c0710763131e80919f0a654a0fa35f84bb5401c0"
+    },
+    {
+      "task_id": "CDR-H1",
+      "family": "context_dependent_recommendation",
+      "lineage": "L-pilot-cohort",
+      "split": "heldout",
+      "seeded_conditions": [
+        "missing_permissions"
+      ],
+      "variation": {},
+      "task_sha256": "79d01a73ad857a5c165d566c7eab24260bd675457c17dc2fccc9c58f34cb7c08",
+      "key_sha256": "00e3e73d40db5536a2e0aff05d2d40752cf860d7df608c9142deb86804bcf720"
+    },
+    {
+      "task_id": "CDR-H2",
+      "family": "context_dependent_recommendation",
+      "lineage": "L-restore-gate",
+      "split": "heldout",
+      "seeded_conditions": [
+        "contradictory_facts",
+        "prompt_injection"
+      ],
+      "variation": {},
+      "task_sha256": "fc420d78f1c7b3b0d45fd950e5fdeb368e84caed9b7fc203278b9549ec4b2aab",
+      "key_sha256": "ddc4391d43a2f0c28e510dfc99f1fd11c4d0f957297a9effc9ecf264e50afafe"
+    },
+    {
+      "task_id": "IMP-H1",
+      "family": "implementation_debugging",
+      "lineage": "L-money",
+      "split": "heldout",
+      "seeded_conditions": [
+        "unsupported_currency_label",
+        "numerical_precision"
+      ],
+      "variation": {},
+      "task_sha256": "1bd6d2ad223ee248c27ff12942d62edbb7ef2d1bce272f85c8013c4a6243f64b",
+      "key_sha256": "b45d4b49caaf7966b410c3d6f51f9dff855a1eda3a7ae494736df7f01108f4e6"
+    },
+    {
+      "task_id": "MFR-H1",
+      "family": "multi_file_review",
+      "lineage": "L-review-connector",
+      "split": "heldout",
+      "seeded_conditions": [
+        "malformed_http_200",
+        "missing_usage_fields",
+        "provider_fallback"
+      ],
+      "variation": {},
+      "task_sha256": "77f8b6ed9d0242ab879cfa9816a852c4c2b56c61d98b34c6633f8ca89f812b94",
+      "key_sha256": "75f2ae492333fbe6cef0201f1b8751fe41bc17ddeb6a3a0fcc66d146403d375c"
+    },
+    {
+      "task_id": "LCS-D1",
+      "family": "long_context_synthesis",
+      "lineage": "L-limits-dev",
+      "split": "dev",
+      "seeded_conditions": [
+        "negation",
+        "units",
+        "distant_dependency"
+      ],
+      "variation": {
+        "chunks": 12,
+        "evidence_position": "start",
+        "chunk_boundary_split": false
+      },
+      "task_sha256": "d9f8a40e659b33a6adb754d108b2c57073e6aaffeb6e406cd9bf2cb0ff716a76",
+      "key_sha256": "8a1e9231e07d6b65778c74dec23bd4e516b7520a77d8aa843b52485a1def0631"
+    },
+    {
+      "task_id": "LCS-H1",
+      "family": "long_context_synthesis",
+      "lineage": "L-limits-ho0",
+      "split": "heldout",
+      "seeded_conditions": [
+        "prompt_injection",
+        "negation",
+        "units",
+        "distant_dependency"
+      ],
+      "variation": {
+        "chunks": 40,
+        "evidence_position": "middle",
+        "chunk_boundary_split": false
+      },
+      "task_sha256": "5cf7ebeeed3af8c73f36b7384b58b2a339b00edd67349c85ac7ddeb33a6264f4",
+      "key_sha256": "12cb8eb7b64c499ada4aa7770a8ebb7cf48c57312dbfff8f1e5e20e4fcb1bb7f"
+    },
+    {
+      "task_id": "LCS-H2",
+      "family": "long_context_synthesis",
+      "lineage": "L-limits-ho1",
+      "split": "heldout",
+      "seeded_conditions": [
+        "negation",
+        "units",
+        "distant_dependency"
+      ],
+      "variation": {
+        "chunks": 40,
+        "evidence_position": "spread",
+        "chunk_boundary_split": true
+      },
+      "task_sha256": "685ee7083e7e9f62713b576b2a9299c0f440bf9dbad9bc8aadf8afc0002c5050",
+      "key_sha256": "fc8317e6ecc4cba78d770612d8b082e14da3a6a999f7bce8c2b248f46d5b69d1"
+    },
+    {
+      "task_id": "LCS-H3",
+      "family": "long_context_synthesis",
+      "lineage": "L-limits-ho2",
+      "split": "heldout",
+      "seeded_conditions": [
+        "prompt_injection",
+        "negation",
+        "units",
+        "distant_dependency"
+      ],
+      "variation": {
+        "chunks": 80,
+        "evidence_position": "end",
+        "chunk_boundary_split": false
+      },
+      "task_sha256": "0751588da0cd5a4c29d17dbd6e3ce7cd2736c086106c3d4401282f14ae0b996a",
+      "key_sha256": "e4b795f74909628558e04f053acedf2ac11a9aa5a1299c97003d3fd46a63c62d"
+    },
+    {
+      "task_id": "LCS-H4",
+      "family": "long_context_synthesis",
+      "lineage": "L-limits-ho3",
+      "split": "heldout",
+      "seeded_conditions": [
+        "prompt_injection",
+        "negation",
+        "units",
+        "distant_dependency"
+      ],
+      "variation": {
+        "chunks": 80,
+        "evidence_position": "middle",
+        "chunk_boundary_split": true
+      },
+      "task_sha256": "5df397bf571d915f8fcae9e69c6018cb619bbd9469c52b68120560444901eab3",
+      "key_sha256": "b857bc6774f3512650b967995cc3a9fc8da32f70094f56f71a049a8315f71d4a"
+    }
+  ],
+  "note": "Task views and answer keys are in separate trees; arms receive task views only."
+}

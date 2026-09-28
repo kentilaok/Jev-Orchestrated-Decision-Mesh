@@ -1,0 +1,215 @@
+--- a/tests/test_candidate_flags.py
++++ b/tests/test_candidate_flags.py
+@@ -0,0 +1,212 @@
++"""Candidate-only behaviour: instrumentation fixes (default on) and flagged policies (default off)."""
++import copy
++import json
++from pathlib import Path
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
++import jev_decide  # noqa: E402
++from atomic_mesh import MeshError, packed  # noqa: E402
++from audit_network import audit  # noqa: E402
++from checked_network import CheckedNetwork  # noqa: E402
++from codex_cli_adapter import CodexCliAdapter, CodexCliError  # noqa: E402
++from config import RunConfig  # noqa: E402
++from native_transition_broker import NativeTransitionBroker  # noqa: E402
++from network_run import DemoPipeline, fake_check  # noqa: E402
++from transport import Gateway  # noqa: E402
++
++TASK = json.loads((Path(__file__).resolve().parents[1] / 'examples/production-records.json').read_text())
++SPEC = {'goal': 'Write a source-supported release checklist for the service.', 'context': '',
++        'sources': {'policy': {'title': 'Release policy', 'text': 'Each release needs tests, rollback and an owner.'}},
++        'active_project': False, 'unresolved_stages': [], 'classification': None}
++
++
++class Codex:
++    def __init__(self, unresolved_unit=None):
++        self.unresolved_unit = unresolved_unit
++
++    def run(self, model, effort, prompt, schema, workspace):
++        data = json.loads(prompt)
++        if data.get('role') == 'separate Sol-high checker':
++            artifact = {'verdict': 'pass', 'failed_criteria': [], 'reason': 'ok', 'missing_evidence': []}
++        else:
++            unit = data.get('unit', {}).get('id')
++            artifact = {'text': 'Result.', 'data': {'summary': 'x', 'claims': [],
++                                                    'unresolved': ['gap'] if unit == self.unresolved_unit else [],
++                                                    'parent_hashes': data['required_parent_hashes'],
++                                                    'source_hashes': data['required_source_hashes']},
++                        'source_ids': list(data['sources']), 'five_scores': [4] * 5, 'self_probability': None}
++        return {'artifact': artifact, 'usage': {'input_tokens': 10, 'output_tokens': 5}, 'requested_model': model,
++                'requested_effort': effort, 'actual_model': None, 'actual_effort': None,
++                'identity_verification': 'requested_only', 'events': []}
++
++
++class Jev:
++    def __init__(self):
++        self.phases = []
++
++    def __call__(self, phase, options, state):
++        self.phases.append(phase)
++        if phase == 'project_route':
++            choice = 'five_unit'
++        elif phase == 'authorize_unit':
++            choice = 'compute' if 'compute' in options else 'luna_low'
++        else:
++            choice = 'forward' if 'forward' in options else ('repair' if 'repair' in options else 'stop')
++        return {'choice': choice, 'model': 'typesafe/jev-1.13-20260917', 'live': True,
++                'usage': {'input_tokens': 10, 'output_tokens': 1, 'cost': 0.0000005}}
++
++
++class Base(unittest.TestCase):
++    def setUp(self):
++        tmp = tempfile.TemporaryDirectory()
++        self.addCleanup(tmp.cleanup)
++        self.folder = Path(tmp.name)
++
++
++class InstrumentationFixes(Base):
++    def test_jev_receipt_keeps_generation_id_and_timestamps_and_refuses_overwrite(self):
++        request = {'model': 'typesafe/jev-1.13', 'state': {'x': 1},
++                   'questions': {'next': {'type': 'choice', 'instructions': 'Pick.', 'criteria': {'a': 'A', 'b': 'B'}}}}
++        req, out = self.folder / 'r.json', self.folder / 'o.json'
++        req.write_text(json.dumps(request))
++        response = {'id': 'gen-dec-42', 'model': 'typesafe/jev-1.13-20260917', 'provider': 'TypeSafe',
++                    'usage': {'input_tokens': 5, 'output_tokens': 1, 'cost': 0.00000021},
++                    'answers': {'next': {'type': 'choice', 'choice': 'a', 'confidence': 0.9,
++                                         'probabilities': {'a': 0.95, 'b': 0.05}}}}
++        with patch.object(jev_decide, 'call_api', return_value=(response, 12.0)), \
++                patch.dict('os.environ', {'OPENROUTER_API_KEY': 'k'}):
++            self.assertEqual(jev_decide.main(['--request', str(req), '--out', str(out)]), 0)
++            receipt = json.loads(out.read_text())
++            self.assertEqual(receipt['provider_request_id'], 'gen-dec-42')
++            self.assertTrue(receipt['started_at'].endswith('Z') and receipt['ended_at'].endswith('Z'))
++            self.assertEqual(jev_decide.main(['--request', str(req), '--out', str(out)]), 2)
++            self.assertEqual(json.loads(out.read_text()), receipt)   # first receipt preserved
++
++    def test_gateway_event_has_generation_id_and_timestamps(self):
++        gateway = Gateway(self.folder, RunConfig())
++        response = {'id': 'gen-dec-7', 'model': 'typesafe/jev-1.13-20260917', 'provider': 'TypeSafe',
++                    'usage': {'input_tokens': 10, 'output_tokens': 2, 'cost': 0.00000042},
++                    'answers': {'next': {'type': 'choice', 'choice': 'compute', 'confidence': 0.96,
++                                         'probabilities': {'compute': 0.98, 'stop': 0.02}}}}
++        with patch.object(gateway, '_request', return_value=response):
++            gateway.network_judge('authorize_unit', {'compute': 'Run code.', 'stop': 'Stop.'}, {'x': 1})
++        event = gateway.calls[-1]
++        self.assertEqual(event['provider_request_id'], 'gen-dec-7')
++        self.assertTrue(event['started_at'] and event['ended_at'])
++
++    def test_codex_usage_survives_post_completion_rejection(self):
++        class Stream(CodexCliAdapter):
++            def _execute(self, argv, workspace, prompt_path, stdout_path, stderr_path):
++                events = [{'type': 'thread.started'}, {'type': 'turn.started'},
++                          {'type': 'item.completed', 'item': {'type': 'agent_message', 'text': '{"bad": 1}'}},
++                          {'type': 'turn.completed', 'usage': {'input_tokens': 900, 'output_tokens': 80}}]
++                stdout_path.write_text('\n'.join(json.dumps(e) for e in events) + '\n')
++        schema = {'type': 'object', 'properties': {'answer': {'type': 'string'}}, 'required': ['answer'],
++                  'additionalProperties': False}
++        with self.assertRaises(CodexCliError) as caught:
++            Stream().run('gpt-6-luna', 'low', 'x', schema, self.folder)
++        self.assertEqual(caught.exception.usage['input_tokens'], 900)
++        broker = NativeTransitionBroker(Stream(), Jev(), RunConfig(), self.folder / 'b')
++        broker.worker_workspace = self.folder
++        with self.assertRaises(MeshError):
++            broker._codex('worker', 'openai/gpt-6-luna', 'low', 'x', schema)
++        self.assertEqual(broker.calls[-1]['usage']['output_tokens'], 80)
++        self.assertEqual(broker.calls[-1]['usage_status'], 'reported_before_rejection')
++
++    def test_broker_reports_accounting_completeness(self):
++        result = NativeTransitionBroker(Codex(), Jev(), RunConfig(), self.folder / 'r').run(SPEC)
++        self.assertEqual(result['status'], 'complete')
++        self.assertFalse(result['accounting']['complete_system_accounting'])
++        self.assertEqual(result['accounting']['primary_agent_usage'], 'unmetered')
++        self.assertEqual(result['accounting']['codex_calls_usage_unknown'], 0)
++
++
++class FlaggedPolicies(Base):
++    def network(self, judge, **kw):
++        pipe = DemoPipeline(TASK)
++        return CheckedNetwork(TASK['goal'], {'records': {'title': 'r', 'text': packed(TASK)}}, judge, pipe.produce,
++                              fake_check, pipe.validate, simulation=True, **kw)
++
++    def judge(self, calls):
++        def decide(phase, options, state):
++            calls.append((phase, state['unit']['id']))
++            if phase == 'authorize_unit':
++                return {'choice': 'compute' if 'compute' in options else 'luna_low', 'live': False}
++            return {'choice': 'forward', 'live': False}
++        return decide
++
++    def test_defaults_are_the_installed_protocol(self):
++        calls = []
++        result = self.network(self.judge(calls)).run()
++        self.assertEqual(result['status'], 'complete')
++        self.assertEqual(len(calls), 10)
++        self.assertNotIn('candidate_flags', self.network(self.judge([])).policy)
++
++    def test_skip_vacuous_gates_removes_four_jev_calls_and_audits(self):
++        calls = []
++        result = self.network(self.judge(calls), skip_vacuous_gates=True).run()
++        self.assertEqual(result['status'], 'complete')
++        self.assertEqual(len(calls), 6)
++        self.assertFalse(any(unit in ('input', 'hidden2') for _, unit in calls))
++        policy = [e for e in result['events'] if e['kind'] == 'policy_decision']
++        self.assertEqual(len(policy), 4)
++        self.assertTrue(audit(result)['valid'], audit(result)['issues'])
++
++    def test_skip_returns_failed_deterministic_result_to_jev(self):
++        calls = []
++        net = self.network(self.judge(calls), skip_vacuous_gates=True)
++        original = net.validator
++        net.validator = lambda unit, cand, parents: ({**original(unit, cand, parents), 'forced': False}
++                                                      if unit.id == 'input' else original(unit, cand, parents))
++        net.run()
++        self.assertIn(('after_worker', 'input'), calls)
++
++    def test_policy_decision_without_flag_is_rejected_by_audit(self):
++        result = self.network(self.judge([]), skip_vacuous_gates=True).run()
++        result['policy_flags'] = {'skip_vacuous_gates': False}
++        self.assertIn('unauthorized_policy_decision', audit(result)['issues'])
++
++    def test_cited_only_state_omits_uncited_text_with_retrieval_pointer(self):
++        seen = []
++
++        def decide(phase, options, state):
++            seen.append(state)
++            if phase == 'authorize_unit':
++                return {'choice': 'compute' if 'compute' in options else 'luna_low', 'live': False}
++            return {'choice': 'forward', 'live': False}
++        pipe = DemoPipeline(TASK)
++        sources = {'records': {'title': 'r', 'text': packed(TASK)}, 'extra': {'title': 'e', 'text': 'unrelated note'}}
++        CheckedNetwork(TASK['goal'], sources, decide, pipe.produce, fake_check, pipe.validate, simulation=True,
++                       jev_evidence_mode='cited_only').run()
++        after = [s for s in seen if 'candidate' in s]
++        self.assertTrue(after and all([e['id'] for e in s['evidence']] == ['records'] for s in after))
++        self.assertTrue(all(s['evidence_omitted'][0]['id'] == 'extra' for s in after))
++
++    def test_block_at_unit_fails_early_instead_of_dooming_output(self):
++        legacy = NativeTransitionBroker(Codex('hidden1'), Jev(), RunConfig(), self.folder / 'l').run(SPEC)
++        early = NativeTransitionBroker(Codex('hidden1'), Jev(), RunConfig(), self.folder / 'e',
++                                       unresolved_policy='block_at_unit').run(SPEC)
++        self.assertIsNone(early['answer'])
++        self.assertLess(len(early['calls']), len(legacy['calls']))
++        self.assertNotIn('hidden1', [p['id'] for p in early['committed']])
++
++    def test_native_skip_removes_the_two_vacuous_input_gates(self):
++        base_jev, skip_jev = Jev(), Jev()
++        base = NativeTransitionBroker(Codex(), base_jev, RunConfig(), self.folder / 'a').run(SPEC)
++        skip = NativeTransitionBroker(Codex(), skip_jev, RunConfig(), self.folder / 'b', skip_vacuous_gates=True).run(SPEC)
++        self.assertEqual((base['status'], skip['status']), ('complete', 'complete'))
++        self.assertEqual(len(base_jev.phases) - len(skip_jev.phases), 2)
++        self.assertTrue(skip['native_audit']['valid'], skip['native_audit'])
++
++    def test_skip_flag_rejected_for_fused(self):
++        with self.assertRaises(MeshError):
++            NativeTransitionBroker(Codex(), Jev(), RunConfig(), self.folder / 'f', gate_policy='fused',
++                                   skip_vacuous_gates=True)
++
++
++if __name__ == '__main__':
++    unittest.main()

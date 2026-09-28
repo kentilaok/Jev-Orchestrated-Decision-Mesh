@@ -1,0 +1,32 @@
+{
+  "research/live-gpt6-fixture": {
+    "listed": 81,
+    "mismatched": [],
+    "missing": [],
+    "uncovered_files": []
+  },
+  "research/live-gpt6-optional-fixture": {
+    "listed": 43,
+    "mismatched": [],
+    "missing": [],
+    "uncovered_files": []
+  },
+  "research/live-gpt6-optional-final": {
+    "listed": 43,
+    "mismatched": [],
+    "missing": [],
+    "uncovered_files": []
+  },
+  "research/live-gpt6-fast-exit": {
+    "listed": 11,
+    "mismatched": [],
+    "missing": [],
+    "uncovered_files": []
+  },
+  "research/historical-pilot": {
+    "listed": 135,
+    "mismatched": [],
+    "missing": [],
+    "uncovered_files": []
+  }
+}

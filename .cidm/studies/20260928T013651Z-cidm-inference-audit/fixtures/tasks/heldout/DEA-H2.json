@@ -1,0 +1,65 @@
+{
+  "context": "",
+  "family": "deterministic_extraction_arithmetic",
+  "goal": "Total the mass in kilograms of shipments that are not cancelled, to 3 decimals. 1 lb = 0.45359237 kg.",
+  "lineage": "L-shipping-mass",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "total_kg": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "units",
+    "exclusion",
+    "numerical_precision"
+  ],
+  "sources": {
+    "shipments": {
+      "text": "[{\"id\": \"S1\", \"weight\": 12.5, \"unit\": \"kg\"}, {\"id\": \"S2\", \"weight\": 22.0, \"unit\": \"lb\"}, {\"id\": \"S3\", \"weight\": 3000, \"unit\": \"g\"}, {\"id\": \"S4\", \"weight\": 7.0, \"unit\": \"kg\", \"status\": \"cancelled\"}]",
+      "title": "Shipment manifest"
+    }
+  },
+  "split": "heldout",
+  "task_id": "DEA-H2",
+  "variation": {}
+}

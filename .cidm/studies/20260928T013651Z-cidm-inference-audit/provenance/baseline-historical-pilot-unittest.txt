@@ -1,0 +1,54 @@
+test_all_success_quality_retains_uncertainty (test_analysis.AccountingTests.test_all_success_quality_retains_uncertainty) ... ok
+test_authoritative_total_takes_precedence (test_analysis.AccountingTests.test_authoritative_total_takes_precedence) ... ok
+test_bootstrap_respects_seed_and_strata (test_analysis.AccountingTests.test_bootstrap_respects_seed_and_strata) ... ok
+test_invalid_numeric_usage_is_not_known (test_analysis.AccountingTests.test_invalid_numeric_usage_is_not_known) ... ok
+test_paired_quality_counts_direction_correctly (test_analysis.AccountingTests.test_paired_quality_counts_direction_correctly) ... ok
+test_reasoning_and_cache_are_not_counted_twice (test_analysis.AccountingTests.test_reasoning_and_cache_are_not_counted_twice) ... ok
+test_unknown_jev_output_is_unknown_not_zero (test_analysis.AccountingTests.test_unknown_jev_output_is_unknown_not_zero) ... ok
+test_zero_billing_is_distinct_from_missing_billing (test_analysis.AccountingTests.test_zero_billing_is_distinct_from_missing_billing) ... ok
+test_ambiguous_duplicate_events_invalidate_accounting (test_analysis.IntegrationTests.test_ambiguous_duplicate_events_invalidate_accounting) ... ok
+test_auth_failure_stays_in_denominator (test_analysis.IntegrationTests.test_auth_failure_stays_in_denominator) ... ok
+test_complete_paired_accounting (test_analysis.IntegrationTests.test_complete_paired_accounting) ... ok
+test_known_failed_retry_is_counted (test_analysis.IntegrationTests.test_known_failed_retry_is_counted) ... ok
+test_missing_billing_only_invalidates_cost (test_analysis.IntegrationTests.test_missing_billing_only_invalidates_cost) ... ok
+test_missing_linkage_prevents_full_result (test_analysis.IntegrationTests.test_missing_linkage_prevents_full_result) ... ok
+test_rejected_correct_candidate_has_zero_served_credit (test_analysis.IntegrationTests.test_rejected_correct_candidate_has_zero_served_credit) ... ok
+test_unknown_jev_output_prevents_full_result (test_analysis.IntegrationTests.test_unknown_jev_output_prevents_full_result) ... ok
+test_expected_null_partial_answer_can_pass_served_and_raw (test_analysis_measured.MeasurementCorrectionTests.test_expected_null_partial_answer_can_pass_served_and_raw) ... ok
+test_metered_early_failure_counts_only_actual_calls (test_analysis_measured.MeasurementCorrectionTests.test_metered_early_failure_counts_only_actual_calls) ... ok
+test_metered_failed_rejected_candidate_retains_consumption (test_analysis_measured.MeasurementCorrectionTests.test_metered_failed_rejected_candidate_retains_consumption) ... FAIL
+test_unmetered_failure_still_prevents_consumption_claim (test_analysis_measured.MeasurementCorrectionTests.test_unmetered_failure_still_prevents_consumption_claim) ... ok
+test_gold_never_embedded_in_tasks (test_dataset_grader.DatasetTests.test_gold_never_embedded_in_tasks) ... ok
+test_long_complete_dependency_case_needs_every_document (test_dataset_grader.DatasetTests.test_long_complete_dependency_case_needs_every_document) ... ok
+test_reproducible_and_valid (test_dataset_grader.DatasetTests.test_reproducible_and_valid) ... ok
+test_contradiction_requires_both_sheets_and_null (test_dataset_grader.GraderTests.test_contradiction_requires_both_sheets_and_null) ... ok
+test_correct_number_without_cap_source_fails (test_dataset_grader.GraderTests.test_correct_number_without_cap_source_fails) ... ok
+test_equivalent_json_number_is_accepted (test_dataset_grader.GraderTests.test_equivalent_json_number_is_accepted) ... ok
+test_every_perfect_response_passes (test_dataset_grader.GraderTests.test_every_perfect_response_passes) ... ok
+test_grader_is_invariant_to_arm_and_metadata (test_dataset_grader.GraderTests.test_grader_is_invariant_to_arm_and_metadata) ... ok
+test_legitimate_extra_support_is_allowed (test_dataset_grader.GraderTests.test_legitimate_extra_support_is_allowed) ... ok
+test_malformed_json_nonfinite_and_duplicate_key_rejected (test_dataset_grader.GraderTests.test_malformed_json_nonfinite_and_duplicate_key_rejected) ... ok
+test_missing_field_fails_and_is_not_null_credit (test_dataset_grader.GraderTests.test_missing_field_fails_and_is_not_null_credit) ... ok
+test_missing_price_cannot_be_zero_or_historical_guess (test_dataset_grader.GraderTests.test_missing_price_cannot_be_zero_or_historical_guess) ... ok
+test_numeric_string_and_boolean_fail (test_dataset_grader.GraderTests.test_numeric_string_and_boolean_fail) ... ok
+test_omitted_region_cap_caveat_fails (test_dataset_grader.GraderTests.test_omitted_region_cap_caveat_fails) ... ok
+test_or_groups_are_alternatives_and_groups_are_conjunctive (test_dataset_grader.GraderTests.test_or_groups_are_alternatives_and_groups_are_conjunctive) ... ok
+test_unrelated_citation_fails_even_with_all_support (test_dataset_grader.GraderTests.test_unrelated_citation_fails_even_with_all_support) ... ok
+test_wrong_status_duplicate_citation_and_extra_field_fail (test_dataset_grader.GraderTests.test_wrong_status_duplicate_citation_and_extra_field_fail) ... ok
+test_extra_packet_keys_are_rejected (test_harness_review.OfflineReviewTests.test_extra_packet_keys_are_rejected) ... ok
+test_rejected_accept_does_not_authorize_revision (test_harness_review.OfflineReviewTests.test_rejected_accept_does_not_authorize_revision) ... {"arm":"B","completed_task":"offline","elapsed_seconds":0.0,"released":false}
+ok
+test_truncated_worker_artifact_is_not_erased (test_harness_review.OfflineReviewTests.test_truncated_worker_artifact_is_not_erased) ... ok
+
+======================================================================
+FAIL: test_metered_failed_rejected_candidate_retains_consumption (test_analysis_measured.MeasurementCorrectionTests.test_metered_failed_rejected_candidate_retains_consumption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/Jev-Orchestrated-Decision-Mesh/research/historical-pilot/test_analysis_measured.py", line 30, in test_metered_failed_rejected_candidate_retains_consumption
+    self.assertEqual(result["cost_savings"]["B_sum"], 24*0.001)
+AssertionError: 0.024000000000000007 != 0.024
+
+----------------------------------------------------------------------
+Ran 40 tests in 0.141s
+
+FAILED (failures=1)
