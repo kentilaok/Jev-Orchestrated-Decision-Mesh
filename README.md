@@ -223,3 +223,29 @@ If either file changes, the recorded admission no longer matches that version.
 Verified Experience Distiller skills now receive conservative candidate `ARSENAL.json` files automatically, so learned procedures become searchable without self-authorizing a no-frontier action.
 
 See [CIDM Arsenal Architecture V1](docs/ARSENAL-V1.md) and [Arsenal Manifest and Skill Admission](docs/ARSENAL-MANIFEST.md).
+
+Optional CPU semantic ranking remains separate from the required stdlib path:
+
+```bash
+pip install -r requirements-arsenal-semantic.txt
+
+python scripts/arsenal_semantic.py build \
+  --model BAAI/bge-small-en-v1.5
+
+python scripts/arsenal_semantic.py query \
+  --task "Protected content remains visible while logged out" \
+  --model BAAI/bge-small-en-v1.5 \
+  --reranker-model Xenova/ms-marco-MiniLM-L-6-v2
+```
+
+For calibration, run the local router in Shadow Mode. It fuses registry and optional semantic evidence but **does not bypass Jev or a frontier worker**:
+
+```bash
+python scripts/arsenal_shadow.py \
+  --task "Protected content remains visible while logged out" \
+  --project-scope wordpress \
+  --bug-key wordpress.memberpress.logged_out_visibility \
+  --operation inspect_content
+```
+
+Shadow observations default to `~/.jev/arsenal/shadow.jsonl`. V1 Fast Path execution remains disabled until these predictions are evaluated against real outcomes.
