@@ -298,6 +298,39 @@ class DistillationTests(unittest.TestCase):
             {"riftforge", "se-knowledge"},
         )
 
+    def test_automatic_skill_promotion_requires_project_scope(self):
+        records = []
+        records += extract_experiences(self.fixture("r1"), run_id="r1")
+        records += extract_experiences(self.fixture("r2"), run_id="r2")
+        lesson = distill_lessons(records)[0]
+        with tempfile.TemporaryDirectory() as td:
+            with self.assertRaisesRegex(
+                ValueError, "project_scope_required_for_skill_promotion"
+            ):
+                write_promoted_skills([lesson], Path(td), min_verified=2)
+
+    def test_existing_nonmatching_skill_is_not_overwritten(self):
+        records = []
+        records += extract_experiences(
+            self.fixture("r1"), run_id="r1", project_scope="riftforge"
+        )
+        records += extract_experiences(
+            self.fixture("r2"), run_id="r2", project_scope="riftforge"
+        )
+        lesson = distill_lessons(records)[0]
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            written = write_promoted_skills([lesson], root, min_verified=2)
+            self.assertEqual(len(written), 1)
+            written[0].write_text(
+                "---\nname: custom\ndescription: manually maintained\n---\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError, "refusing_to_overwrite_nonmatching_skill"
+            ):
+                write_promoted_skills([lesson], root, min_verified=2)
+
     def test_ledger_deduplicates_same_experience_id(self):
         record = extract_experiences(self.fixture("r1"), run_id="r1")[0]
         with tempfile.TemporaryDirectory() as td:
