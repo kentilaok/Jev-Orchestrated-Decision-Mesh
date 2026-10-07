@@ -41,6 +41,7 @@ def extract_experiences(result: dict, *, run_id: str | None = None,
 
     commits_by_unit: dict[str, list[tuple[int, dict]]] = defaultdict(list)
     recovery_by_unit: dict[str, list[tuple[int, dict]]] = defaultdict(list)
+    notes_by_unit: dict[str, list[tuple[int, dict]]] = defaultdict(list)
     failures: list[tuple[int, dict]] = []
 
     for index, event in enumerate(events):
@@ -53,6 +54,10 @@ def extract_experiences(result: dict, *, run_id: str | None = None,
         elif kind in ("recovery_replan", "recovery_evidence_added", "recovery_checkpoint"):
             if unit_id:
                 recovery_by_unit[str(unit_id)].append((index, event))
+        elif kind == "recovery_note" and unit_id:
+            note = event.get("note")
+            if isinstance(note, dict):
+                notes_by_unit[str(unit_id)].append((index, event))
         elif kind == "post_worker_decision":
             failed = _failed_criteria(event)
             choice = str(event.get("choice") or "")
@@ -83,6 +88,17 @@ def extract_experiences(result: dict, *, run_id: str | None = None,
             e for i, e in recovery_by_unit.get(unit_id, [])
             if index < i < boundary
         ]
+        note_events = [
+            e for i, e in notes_by_unit.get(unit_id, [])
+            if index < i < boundary
+        ]
+        recovery_notes = [
+            dict(e["note"]) for e in note_events if isinstance(e.get("note"), dict)
+        ]
+        bug_keys = [
+            note.get("bug_key") for note in recovery_notes if note.get("bug_key")
+        ]
+        bug_key = str(bug_keys[-1]) if bug_keys else None
 
         actions = []
         choice = str(event.get("choice") or "")
@@ -96,6 +112,7 @@ def extract_experiences(result: dict, *, run_id: str | None = None,
         signature_payload = {
             "project_scope": scope,
             "unit_id": unit_id,
+            "bug_key": bug_key,
             "failed_criteria": criteria,
             "failure_kind": event.get("kind"),
         }
@@ -116,6 +133,7 @@ def extract_experiences(result: dict, *, run_id: str | None = None,
                 or (receipt.get("candidate_hash") if isinstance(receipt, dict) else None)
             ),
             "recovery_actions": list(dict.fromkeys(actions)),
+            "recovery_notes": recovery_notes,
             "verified_recovery": verified,
             "verification_event_id": commit.get("id") if commit else None,
             "verified_artifact_hash": (
@@ -174,10 +192,27 @@ def distill_lessons(records: Iterable[dict]) -> list[dict]:
             str(c) for item in verified for c in item.get("failed_criteria", [])
         })
         actions = []
+        notes = []
         for item in verified:
             for action in item.get("recovery_actions", []):
                 if action not in actions:
                     actions.append(action)
+            for note in item.get("recovery_notes", []):
+                if isinstance(note, dict):
+                    notes.append(note)
+        def unique_note_values(key):
+            values = []
+            for note in notes:
+                value = note.get(key)
+                if value and value not in values:
+                    values.append(str(value))
+            return values
+        bug_keys = unique_note_values("bug_key")
+        symptoms = unique_note_values("symptom")
+        root_causes = unique_note_values("root_cause")
+        failed_strategies = unique_note_values("failed_strategy")
+        successful_strategies = unique_note_values("successful_strategy")
+        verifications = unique_note_values("verification")
 
         observation_runs = {str(item.get("run_id")) for item in items}
         verified_runs = {str(item.get("run_id")) for item in verified}
@@ -188,6 +223,12 @@ def distill_lessons(records: Iterable[dict]) -> list[dict]:
             "unit_id": unit_id,
             "failed_criteria": criteria,
             "successful_recovery_actions": actions,
+            "bug_keys": bug_keys,
+            "symptoms": symptoms,
+            "root_causes": root_causes,
+            "failed_strategies": failed_strategies,
+            "successful_strategies": successful_strategies,
+            "verifications": verifications,
             "observations": len(observation_runs),
             "verified_observations": len(verified_runs),
             "verified_experiences": len(verified),
@@ -230,6 +271,12 @@ def render_skill(lesson: dict) -> str:
     name = skill_name(lesson)
     criteria = lesson.get("failed_criteria") or ["unspecified gate failure"]
     actions = lesson.get("successful_recovery_actions") or ["replan"]
+    bug_keys = lesson.get("bug_keys") or []
+    symptoms = lesson.get("symptoms") or []
+    root_causes = lesson.get("root_causes") or []
+    failed_strategies = lesson.get("failed_strategies") or []
+    successful_strategies = lesson.get("successful_strategies") or []
+    verifications = lesson.get("verifications") or []
     provenance = lesson.get("provenance") or []
 
     lines = [
@@ -249,11 +296,29 @@ def render_skill(lesson: dict) -> str:
         "",
     ]
     lines += [f"- Failed criterion: `{criterion}`" for criterion in criteria]
+    lines += [f"- Bug key: `{key}`" for key in bug_keys]
+    lines += [f"- Observed symptom: {value}" for value in symptoms]
+    if root_causes:
+        lines += ["", "## Root-cause notes from verified recoveries", ""]
+        lines += [f"- {value}" for value in root_causes]
+    if failed_strategies:
+        lines += ["", "## Avoid repeated dead ends", ""]
+        lines += [f"- {value}" for value in failed_strategies]
     lines += ["", "## Verified recovery pattern", ""]
-    lines += [f"{i}. `{action}`" for i, action in enumerate(actions, 1)]
+    steps = successful_strategies or [f"Use recovery action `{action}`." for action in actions]
+    lines += [f"{i}. {step}" for i, step in enumerate(steps, 1)]
     lines += [
-        f"{len(actions)+1}. Re-run the same hard validators.",
-        f"{len(actions)+2}. Commit only when the candidate passes and Jev explicitly authorizes forwarding.",
+        f"{len(steps)+1}. Re-run the same hard validators.",
+        f"{len(steps)+2}. Commit only when the candidate passes and Jev explicitly authorizes forwarding.",
+        "",
+        "",
+        "## Verification evidence",
+        "",
+    ]
+    lines += [f"- {value}" for value in verifications] or [
+        "- A later checked CIDM commit verified the recovered unit."
+    ]
+    lines += [
         "",
         "## Confidence",
         "",
