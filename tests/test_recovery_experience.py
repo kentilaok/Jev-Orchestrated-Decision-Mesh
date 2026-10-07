@@ -80,12 +80,14 @@ class RecoveryTests(unittest.TestCase):
             return {"choice": "repair", "live": False, "model": "simulation"}
 
         wrapped = RecoveryJudge(judge)
-        result = wrapped(
+        offered = wrapped.filter_options(
             "after_worker",
             {"repair": {}, "retrieve_evidence": {}, "stop": {}},
             {},
         )
+        result = wrapped("after_worker", offered, {})
         self.assertEqual(result["choice"], "repair")
+        self.assertNotIn("stop", offered)
         self.assertNotIn("stop", seen[0])
 
     def test_operator_abort_restores_stop(self):
@@ -94,7 +96,10 @@ class RecoveryTests(unittest.TestCase):
             return {"choice": "stop", "live": False, "model": "simulation"}
 
         wrapped = RecoveryJudge(judge, abort_requested=lambda: True)
-        result = wrapped("after_worker", {"repair": {}, "stop": {}}, {})
+        offered = wrapped.filter_options(
+            "after_worker", {"repair": {}, "retrieve_evidence": {}, "stop": {}}, {}
+        )
+        result = wrapped("after_worker", offered, {})
         self.assertEqual(result["choice"], "stop")
 
     def test_repair_limit_replans_same_unit_instead_of_ending_project(self):
