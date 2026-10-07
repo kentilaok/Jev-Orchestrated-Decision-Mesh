@@ -45,6 +45,9 @@ class RunConfig:
     max_jev_tokens: int = 50000
     max_worker_calls: int = 12
     max_checker_calls: int = 10
+    max_recovery_attempts: int = 2
+    max_verification_attempts: int = 2
+    max_recovery_rounds: int = 2
     max_output_tokens: int = 2000
     timeout: float = 45
     worker_luna_input_usd_per_million: float = 0.10
@@ -93,6 +96,12 @@ class RunConfig:
         for name in ("max_jev_calls","max_worker_calls","max_checker_calls"):
             value=getattr(self,name)
             _require(type(value) is int and 0 <= value <= 1000,"invalid_"+name)
+        _require(type(self.max_recovery_attempts) is int and 1 <= self.max_recovery_attempts <= 8,
+                 "invalid_max_recovery_attempts")
+        _require(type(self.max_verification_attempts) is int and 1 <= self.max_verification_attempts <= 4,
+                 "invalid_max_verification_attempts")
+        _require(type(self.max_recovery_rounds) is int and 0 <= self.max_recovery_rounds <= 8,
+                 "invalid_max_recovery_rounds")
         _require(type(self.max_jev_tokens) is int and 1 <= self.max_jev_tokens <= 10000000,
                  "invalid_max_jev_tokens")
         _require(type(self.max_output_tokens) is int and 1 <= self.max_output_tokens <= 32768,
