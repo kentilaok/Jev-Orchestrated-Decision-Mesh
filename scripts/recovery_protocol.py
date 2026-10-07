@@ -80,6 +80,39 @@ def build_recovery_network(goal, sources, judge, producer, checker, validator, *
     )
 
 
+
+def record_recovery_note(network, unit_id: str, note: dict) -> str:
+    """Record a bounded, provisional bug/repair note for later verification.
+
+    The note is never proof by itself. Experience distillation only treats it as
+    durable knowledge when a later checked_commit for the same unit verifies the
+    recovery path.
+    """
+    require(isinstance(unit_id, str) and unit_id in {u.id for u in network.units},
+            "recovery_note_unknown_unit")
+    require(isinstance(note, dict), "recovery_note_must_be_object")
+    allowed = {
+        "bug_key", "symptom", "root_cause", "failed_strategy",
+        "successful_strategy", "verification",
+    }
+    require(set(note) <= allowed and note, "invalid_recovery_note_fields")
+    cleaned = {}
+    for key, value in note.items():
+        require(isinstance(value, str) and 0 < len(value.strip()) <= 800,
+                "invalid_recovery_note_value")
+        value = value.strip()
+        if key == "bug_key":
+            require(
+                len(value) <= 96
+                and all(ch.isalnum() or ch in "._-" for ch in value),
+                "invalid_recovery_bug_key",
+            )
+        cleaned[key] = value
+    return network.mesh.record(
+        "recovery_note", unit_id=unit_id, note=copy.deepcopy(cleaned)
+    )
+
+
 class RecoverySupervisor:
     """Run CheckedNetwork unit-by-unit with bounded recovery rounds.
 
