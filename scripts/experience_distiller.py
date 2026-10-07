@@ -164,17 +164,20 @@ def distill_lessons(records: Iterable[dict]) -> list[dict]:
                 if action not in actions:
                     actions.append(action)
 
+        observation_runs = {str(item.get("run_id")) for item in items}
+        verified_runs = {str(item.get("run_id")) for item in verified}
         lessons.append({
             "lesson_id": "lesson-" + signature[:12],
             "signature": signature,
             "unit_id": unit_id,
             "failed_criteria": criteria,
             "successful_recovery_actions": actions,
-            "observations": len(items),
-            "verified_observations": len(verified),
+            "observations": len(observation_runs),
+            "verified_observations": len(verified_runs),
+            "verified_experiences": len(verified),
             "confidence": (
-                "high" if len(verified) >= 3
-                else "medium" if len(verified) >= 2
+                "high" if len(verified_runs) >= 3
+                else "medium" if len(verified_runs) >= 2
                 else "provisional"
             ),
             "provenance": [{
@@ -200,7 +203,9 @@ def promotable(lesson: dict, *, min_verified: int = 2,
 
 
 def skill_name(lesson: dict) -> str:
-    base = "cidm-" + str(lesson.get("unit_id") or "recovery").lower().replace("_", "-")
+    unit = str(lesson.get("unit_id") or "recovery").lower().replace("_", "-")
+    signature = str(lesson.get("signature") or "unknown")[:8].lower()
+    base = "cidm-" + unit + "-" + signature
     return "".join(ch for ch in base if ch.isalnum() or ch == "-")[:64]
 
 
@@ -217,6 +222,8 @@ def render_skill(lesson: dict) -> str:
         "---",
         "",
         f"# {name}",
+        "",
+        f"Failure signature: `{lesson.get('signature', 'unknown')}`",
         "",
         "Use this skill when the current CIDM unit matches the failure signature below.",
         "Do not use it to bypass validators, source requirements, or Jev permits.",
