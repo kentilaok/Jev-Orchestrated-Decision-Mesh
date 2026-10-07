@@ -28,9 +28,11 @@ def _failed_criteria(event: dict) -> list[str]:
     return []
 
 
-def extract_experiences(result: dict, *, run_id: str | None = None) -> list[dict]:
+def extract_experiences(result: dict, *, run_id: str | None = None,
+                        project_scope: str | None = None) -> list[dict]:
     """Extract failure -> recovery -> verified-commit episodes from one CIDM result."""
     events = result.get("events") or []
+    scope = str(project_scope or result.get("project_scope") or result.get("project_id") or "unscoped")
     run_id = run_id or result.get("run_id") or digest({
         "policy": result.get("policy_version"),
         "events": [event.get("id") for event in events if isinstance(event, dict)],
@@ -92,6 +94,7 @@ def extract_experiences(result: dict, *, run_id: str | None = None) -> list[dict
                 actions.append(str(action))
 
         signature_payload = {
+            "project_scope": scope,
             "unit_id": unit_id,
             "failed_criteria": criteria,
             "failure_kind": event.get("kind"),
@@ -102,6 +105,7 @@ def extract_experiences(result: dict, *, run_id: str | None = None) -> list[dict
                 "signature": signature_payload,
             })[:20],
             "run_id": run_id,
+            "project_scope": scope,
             "unit_id": unit_id,
             "failure_event_id": event.get("id"),
             "failure_kind": event.get("kind"),
@@ -125,10 +129,20 @@ def extract_experiences(result: dict, *, run_id: str | None = None) -> list[dict
 
 def append_jsonl(path: Path, records: Iterable[dict]) -> int:
     path.parent.mkdir(parents=True, exist_ok=True)
+    existing_ids = {
+        str(item.get("experience_id"))
+        for item in load_jsonl(path)
+        if isinstance(item, dict) and item.get("experience_id")
+    }
     count = 0
     with path.open("a", encoding="utf-8") as stream:
         for record in records:
+            experience_id = str(record.get("experience_id") or "")
+            if experience_id and experience_id in existing_ids:
+                continue
             stream.write(canonical(record) + "\n")
+            if experience_id:
+                existing_ids.add(experience_id)
             count += 1
     return count
 
@@ -155,6 +169,7 @@ def distill_lessons(records: Iterable[dict]) -> list[dict]:
         if not verified:
             continue
         unit_id = str(verified[0].get("unit_id") or "unknown")
+        project_scope = str(verified[0].get("project_scope") or "unscoped")
         criteria = sorted({
             str(c) for item in verified for c in item.get("failed_criteria", [])
         })
@@ -169,6 +184,7 @@ def distill_lessons(records: Iterable[dict]) -> list[dict]:
         lessons.append({
             "lesson_id": "lesson-" + signature[:12],
             "signature": signature,
+            "project_scope": project_scope,
             "unit_id": unit_id,
             "failed_criteria": criteria,
             "successful_recovery_actions": actions,
@@ -203,9 +219,10 @@ def promotable(lesson: dict, *, min_verified: int = 2,
 
 
 def skill_name(lesson: dict) -> str:
+    scope = str(lesson.get("project_scope") or "unscoped").lower().replace("_", "-")
     unit = str(lesson.get("unit_id") or "recovery").lower().replace("_", "-")
     signature = str(lesson.get("signature") or "unknown")[:8].lower()
-    base = "cidm-" + unit + "-" + signature
+    base = "cidm-" + scope + "-" + unit + "-" + signature
     return "".join(ch for ch in base if ch.isalnum() or ch == "-")[:64]
 
 
@@ -218,7 +235,7 @@ def render_skill(lesson: dict) -> str:
     lines = [
         "---",
         f"name: {name}",
-        f"description: Recovery procedure distilled from verified CIDM runs for {lesson.get('unit_id', 'a unit')} failures.",
+        f"description: Recovery procedure distilled from verified CIDM runs in {lesson.get('project_scope', 'unscoped')} for {lesson.get('unit_id', 'a unit')} failures.",
         "---",
         "",
         f"# {name}",
@@ -305,6 +322,7 @@ def main(argv=None):
         default=Path("~/.jev/experience/lessons.json").expanduser(),
     )
     parser.add_argument("--skills-dir", type=Path)
+    parser.add_argument("--project-scope", type=str, help="Namespace lessons/skills to one project or domain")
     parser.add_argument("--min-verified", type=int, default=2)
     parser.add_argument("--owner-approved", action="store_true")
     args = parser.parse_args(argv)
@@ -319,7 +337,9 @@ def main(argv=None):
         result = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(result, dict) and isinstance(result.get("events"), list):
             run_id = path.stem + "-" + digest(str(path))[:8]
-            extracted.extend(extract_experiences(result, run_id=run_id))
+            extracted.extend(extract_experiences(
+                result, run_id=run_id, project_scope=args.project_scope
+            ))
 
     append_jsonl(args.ledger, extracted)
     lessons = distill_lessons(load_jsonl(args.ledger))
