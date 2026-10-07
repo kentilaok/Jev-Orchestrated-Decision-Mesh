@@ -22,7 +22,7 @@ The new `scripts/recovery_protocol.py` provides two components.
 
 ### RecoveryJudge
 
-`RecoveryJudge` wraps the normal Jev judge. When a gate contains both `stop` and at least one bounded progress option, it withholds `stop` from the offered action set.
+`RecoveryJudge` wraps the normal Jev judge. When a gate contains `stop` plus at least two bounded progress alternatives, it withholds `stop` from the offered action set. The filtering happens at the `AtomicMesh.gate()` boundary, so the exact option set Jev sees is also the set hashed, journaled, and later bound to permits.
 
 Jev still chooses among the remaining actions. The wrapper does not fabricate a decision.
 
@@ -40,9 +40,12 @@ Its behaviour is:
 forwarded
   -> next unit
 
-repair_limit / verification_limit / non-explicit stop
+repair_limit / verification_limit
   -> fresh local replan of the same unit
   -> bounded by max_recovery_rounds
+
+remaining explicit stop
+  -> terminal stopped_by_jev
 
 needs_evidence
   -> trusted read-only evidence retriever if configured
@@ -124,7 +127,7 @@ A model explanation is not enough to create durable skill knowledge.
 
 A recovery is considered verified only when a failure event for a unit is followed later by a `checked_commit` for that same unit.
 
-By default, a lesson becomes promotable after **two verified observations**. The operator can explicitly approve a one-off lesson with `--owner-approved`.
+By default, a lesson becomes promotable after **two verified observations from different run IDs**. Multiple retries inside one run cannot self-promote a lesson. The operator can explicitly approve a one-off verified lesson with `--owner-approved`.
 
 Every generated skill includes provenance back to run IDs, failure events, verification events, and accepted artifact hashes.
 
@@ -149,6 +152,7 @@ These are local runtime state rather than source-controlled claims.
 ```bash
 python scripts/experience_distiller.py \
   --scan-dir research \
+  --project-scope cidm-research \
   --skills-dir ~/.hermes/skills
 ```
 
@@ -160,9 +164,12 @@ To approve a known one-off recovery:
 
 ```bash
 python scripts/experience_distiller.py path/to/result.json \
+  --project-scope riftforge \
   --skills-dir ~/.hermes/skills \
   --owner-approved
 ```
+
+Experience IDs are deduplicated when the same run is scanned again. Skill names include the project scope, unit, and failure-signature prefix so unrelated projects or different bugs in the same unit do not collide. Automatic promotion refuses an `unscoped` lesson; use `--project-scope` unless an owner is deliberately approving a verified one-off lesson. An existing skill file is only updated when it contains the same failure signature, preventing the distiller from overwriting an unrelated skill.
 
 After skill files are written, Hermes should reload or begin a new session so its skill registry sees the change.
 
@@ -221,7 +228,7 @@ A recovery policy is an improvement only if it raises useful completion without 
 3. Newly retrieved evidence uses new source IDs and hashes.
 4. Checkpoints are state records, not permits.
 5. A distilled lesson requires a later verified commit.
-6. Automatic skill promotion requires repeated verified observations.
+6. Automatic skill promotion requires repeated verified observations from distinct runs and a project scope.
 7. Owner approval can promote a single verified lesson, but cannot turn an unverified failure into a skill.
 8. Current evidence and validators override old skills.
 9. Operator abort remains terminal.
@@ -232,7 +239,7 @@ A recovery policy is an improvement only if it raises useful completion without 
 1. Add persistent reconstruction/resume of a checkpoint across process restarts.
 2. Give the Operator Console a recovery/checkpoint view and experience-learning view.
 3. Connect Hermes' skill enable/disable UI to distilled-skill provenance.
-4. Add project-scoped skill namespaces so unrelated projects do not cross-contaminate.
+4. Add project-profile policy for controlled sharing of explicitly generic lessons across project-scoped skill namespaces.
 5. Add negative-transfer telemetry when a skill is loaded but a different recovery succeeds.
 6. Design a recovery-first fused permit protocol instead of extending the current two-attempt fused contract implicitly.
 7. Benchmark against the current separate-gate and fused baselines on frozen project-scale tasks.
