@@ -20,7 +20,7 @@ description: Fix public visibility of protected content.
 
 ## Trigger
 
-- Bug key: \`wordpress.memberpress.logged_out_visibility\`
+- Bug key: wordpress.memberpress.logged_out_visibility
 - Observed symptom: Protected product is visible while signed out.
 - Failed criterion: anonymous_access_blocked
 
