@@ -93,6 +93,37 @@ class ArsenalShadowTests(unittest.TestCase):
         self.assertFalse(result["frontier_call_avoided"])
         self.assertEqual(result["authority"], "none_shadow_observation_only")
 
+    def test_verified_experience_can_be_loaded_before_jev_without_fast_path(self):
+        lessons = self.root / "lessons.json"
+        lessons.write_text(json.dumps([{
+            "lesson_id": "lesson-shadow1",
+            "signature": "shadow1",
+            "project_scope": "wordpress",
+            "unit_id": "hidden1",
+            "confidence": "medium",
+            "verified_observations": 2,
+            "bug_keys": ["wordpress.memberpress.logged_out_visibility"],
+            "symptoms": ["Protected content remains visible while signed out."],
+            "root_causes": ["Anonymous route escaped the expected protection."],
+            "failed_strategies": [],
+            "successful_strategies": ["Use the verified anonymous protection path."],
+            "verifications": ["Anonymous browser validation passed."],
+            "provenance": [{"run_id": "r1"}, {"run_id": "r2"}],
+        }], indent=2) + "\n", encoding="utf-8")
+        with ArsenalRegistry(self.db) as registry:
+            registry.index_lessons(lessons)
+        result = run_shadow(
+            self.db,
+            "Protected content remains visible while signed out",
+            project_scope="wordpress",
+            bug_key="wordpress.memberpress.logged_out_visibility",
+            operation="inspect_content",
+        )
+        self.assertEqual(result["recommendation"], "load_experience_then_jev")
+        self.assertEqual(result["selected_experience_id"], "lesson-shadow1")
+        self.assertFalse(result["fast_path_candidate"])
+        self.assertFalse(result["frontier_call_avoided"])
+
     def test_unadmitted_skill_can_be_context_but_not_fast_path(self):
         self.create_skill(with_manifest=False)
         with ArsenalRegistry(self.db) as registry:
