@@ -295,7 +295,7 @@ def write_promoted_skills(lessons: Iterable[dict], skills_dir: Path, *,
         rendered = render_skill(lesson)
         if path.exists():
             existing = path.read_text(encoding="utf-8")
-            signature_marker = "Failure signature: \`" + str(lesson.get("signature") or "unknown") + "\`"
+            signature_marker = "Failure signature: `" + str(lesson.get("signature") or "unknown") + "`"
             if signature_marker not in existing:
                 raise ValueError("refusing_to_overwrite_nonmatching_skill")
         path.write_text(rendered, encoding="utf-8")
