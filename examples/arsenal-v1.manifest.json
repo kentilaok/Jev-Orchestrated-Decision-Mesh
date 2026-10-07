@@ -1,0 +1,216 @@
+{
+  "version": "arsenal-v1-plan",
+  "architecture": "frontier-first-thin-client",
+  "authority": {
+    "global_controller": "jev-cidm",
+    "operational_runtime": "hermes",
+    "rule": "capabilities_may_not_commit_without_cidm_authorization"
+  },
+  "constraints": {
+    "local_llm_required": false,
+    "local_training_required": false,
+    "heavy_local_embedding_required": false,
+    "heavy_local_reranking_required": false
+  },
+  "components": [
+    {
+      "id": "jev-cidm",
+      "type": "decision_plane",
+      "status": "core",
+      "location": "local-lightweight",
+      "authority": "global"
+    },
+    {
+      "id": "hermes",
+      "type": "execution_runtime",
+      "status": "core",
+      "location": "local-lightweight",
+      "authority": "bounded-execution"
+    },
+    {
+      "id": "claude-code",
+      "type": "frontier_provider",
+      "status": "core",
+      "location": "cloud-via-native-client",
+      "auth": "native-claude-code-session",
+      "authority": "candidate-only"
+    },
+    {
+      "id": "codex-chatgpt",
+      "type": "frontier_provider",
+      "status": "core",
+      "location": "cloud",
+      "auth": "chatgpt-account-or-native-codex-session",
+      "authority": "candidate-only"
+    },
+    {
+      "id": "mcp",
+      "type": "capability_bus",
+      "status": "core",
+      "location": "mixed",
+      "authority": "tool-interface-only"
+    },
+    {
+      "id": "leanctx",
+      "type": "context_gateway",
+      "status": "core-experiment",
+      "location": "local-lightweight",
+      "mode": "read-path-shadow-first",
+      "authority": "context-transform-only"
+    },
+    {
+      "id": "qdrant-cloud",
+      "type": "retrieval",
+      "status": "core",
+      "location": "managed-cloud",
+      "mode": "hybrid-dense-sparse",
+      "authority": "evidence-candidate-only"
+    },
+    {
+      "id": "hosted-reranker",
+      "type": "retrieval-reranker",
+      "status": "core",
+      "location": "cloud",
+      "candidates": ["cohere-rerank-v4", "voyage-rerank-3"],
+      "authority": "ranking-only"
+    },
+    {
+      "id": "phoenix-opentelemetry",
+      "type": "observability",
+      "status": "core",
+      "location": "managed-or-cloud-vps",
+      "authority": "observation-only"
+    },
+    {
+      "id": "skill-admission-registry",
+      "type": "governance",
+      "status": "core",
+      "location": "local-git-state",
+      "authority": "admission-policy"
+    },
+    {
+      "id": "experience-distiller",
+      "type": "learning-plane",
+      "status": "core",
+      "location": "local-lightweight",
+      "authority": "propose-knowledge-only"
+    },
+    {
+      "id": "superpowers-subset",
+      "type": "methodology-skills",
+      "status": "candidate",
+      "skills": [
+        "systematic-debugging",
+        "verification-before-completion",
+        "test-driven-development",
+        "writing-plans",
+        "requesting-code-review",
+        "receiving-code-review",
+        "using-git-worktrees"
+      ],
+      "authority": "procedure-only"
+    },
+    {
+      "id": "karpathy-derived-subset",
+      "type": "methodology-skills",
+      "status": "candidate",
+      "skills": [
+        "task-routing",
+        "context-engineering",
+        "verification",
+        "recurring-error-codification"
+      ],
+      "authority": "procedure-only"
+    },
+    {
+      "id": "ponytail",
+      "type": "methodology-skills",
+      "status": "candidate",
+      "authority": "procedure-only"
+    },
+    {
+      "id": "taste",
+      "type": "design-skill-mcp",
+      "status": "project-specific",
+      "location": "remote-mcp",
+      "authority": "design-evidence-only"
+    },
+    {
+      "id": "headroom",
+      "type": "context-compression",
+      "status": "ab-test-later",
+      "location": "local-lightweight",
+      "authority": "context-transform-only"
+    },
+    {
+      "id": "semantic-router",
+      "type": "route-hint",
+      "status": "ab-test-later",
+      "location": "mixed",
+      "authority": "hint-only"
+    },
+    {
+      "id": "litellm",
+      "type": "model-gateway",
+      "status": "later",
+      "location": "cloud-vps",
+      "authority": "transport-budget-only"
+    },
+    {
+      "id": "temporal",
+      "type": "durable-execution",
+      "status": "later",
+      "location": "cloud-vps-managed",
+      "authority": "durability-only"
+    },
+    {
+      "id": "dspy",
+      "type": "offline-optimizer",
+      "status": "offline-later",
+      "location": "cloud-frontier",
+      "authority": "candidate-policy-only"
+    },
+    {
+      "id": "openclaw",
+      "type": "edge-channel",
+      "status": "later",
+      "authority": "ingress-only"
+    },
+    {
+      "id": "clawhub",
+      "type": "skill-discovery",
+      "status": "discovery-only",
+      "authority": "none"
+    },
+    {
+      "id": "langgraph",
+      "type": "agent-orchestration",
+      "status": "not-core",
+      "authority": "must-not-replace-cidm"
+    },
+    {
+      "id": "llmlingua",
+      "type": "compression",
+      "status": "research-only",
+      "authority": "must-not-transform-protocol-state"
+    },
+    {
+      "id": "chroma",
+      "type": "vector-store",
+      "status": "dev-fallback",
+      "location": "local"
+    },
+    {
+      "id": "faiss",
+      "type": "vector-search-library",
+      "status": "benchmark-only",
+      "location": "local"
+    },
+    {
+      "id": "local-qwen-ajax-odysseus",
+      "type": "local-model-runtime",
+      "status": "deferred",
+      "reason": "v1-does-not-require-heavy-local-inference"
+    }
+  ]
+}
