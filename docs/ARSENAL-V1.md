@@ -837,65 +837,57 @@ Do not apply it to:
 
 **Decision:** BUILD before large-scale skill installation.
 
-Every installed skill should have an Arsenal Manifest entry:
+This boundary is now partially implemented in `scripts/arsenal_registry.py`.
 
-```yaml
-id: systematic-debugging
-type: methodology-skill
+Each Arsenal-aware skill may contain:
 
-source:
-  repository: ...
-  revision: ...
-  license: ...
-
-scope:
-  - debugging
-
-permissions:
-  shell: false
-  network: false
-  write_files: false
-
-trust:
-  tier: reviewed
-  owner_approved: true
-
-conflicts:
-  - none
-
-evaluation:
-  suite: debugging-v1
-  last_passed: ...
-  regressions: ...
-
-hash: ...
-enabled: true
+```text
+some-skill/
+  SKILL.md
+  ARSENAL.json
 ```
+
+`SKILL.md` remains the procedural document. `ARSENAL.json` supplies machine-readable scope, triggers, requested permissions, risk, validators, and predeclared operations.
+
+The skill package itself is **not the authority for admission**. Owner approval is stored separately in the local Arsenal SQLite database and bound to the exact hashes of both `SKILL.md` and the normalized manifest. A changed skill or manifest therefore loses its effective admission until explicitly reviewed again.
 
 ### Admission workflow
 
 ```text
-external skill / generated skill
+external / generated skill
           |
           v
-      quarantine
+      searchable index
           |
           +-- inspect provenance/license
           +-- static instruction review
           +-- requested permissions
           +-- prompt-injection review
-          +-- conflict review
+          +-- validator review
+          +-- operation/risk review
           +-- evaluation tasks
           |
           v
-      owner approval
+ explicit local owner admission
           |
           v
-  pinned version + hash
+ exact skill hash + manifest hash
           |
           v
-      enabled arsenal
+ eligible for policy evaluation
 ```
+
+Commands:
+
+```bash
+python scripts/arsenal_registry.py scan --skills-dir ~/.hermes/skills
+python scripts/arsenal_registry.py admit --skill-id some-reviewed-skill
+python scripts/arsenal_registry.py revoke --skill-id some-reviewed-skill
+```
+
+A public or model-generated skill can therefore be useful for retrieval before it is trusted for execution.
+
+See [Arsenal Manifest and Skill Admission](ARSENAL-MANIFEST.md).
 
 ### ClawHub
 
@@ -909,7 +901,7 @@ Never auto-install or auto-update a production skill from a public registry.
 
 ## 13. Remote execution and browser arsenal
 
-### 12.1 Cloud sandbox — recommended V1 capability
+### 13.1 Cloud sandbox — recommended V1 capability
 
 **Decision:** ADD one remote sandbox provider so frontier workers can compile, install dependencies, run tests, generate artifacts, and execute untrusted code without consuming the local workstation.
 
@@ -1235,66 +1227,86 @@ Jev -> Hermes
 
 ## 21. Recommended implementation order
 
-### Phase A — build the local cognitive substrate\n\n1. Add SQLite FTS5 indexes for skills, bug signatures, experience summaries, tools, and project rules.\n2. Add FastEmbed/ONNX embedding service with content-hash caching.\n3. Add a small local ONNX reranker for top-k only.\n4. Implement the Skill Compiler and machine-readable trigger/permission/validator metadata.\n5. Implement CIDM Fast Path policy for low-risk, deterministic, pre-authorized skills.\n6. Record local match confidence, selected skill, and avoided frontier calls.\n\n### Phase B — make the frontier arsenal safe
+### Phase A — local cognitive substrate
 
-1. Finalize `FrontierProvider` adapter contract.
-2. Keep Claude Code as default provider.
-3. Add official Codex/ChatGPT account integration/model discovery.
-4. Add provider health/account/model state to Operator Console.
-5. Ensure every frontier execution receives a CIDM capability permit.
+**Implemented in the current experimental branch:**
 
-### Phase B — reduce context/tool overhead
+1. SQLite skill/bug/trigger registry with FTS5 when available.
+2. `SKILL.md` compiler with conservative treatment of unmanifested skills.
+3. `ARSENAL.json` schema and machine-readable scope/permissions/risk/validators/operations.
+4. Exact bug-key and lexical task matching.
+5. Separate hash-bound local owner admission and revocation.
+6. Fast Path **eligibility evaluation**; execution is not yet automatic.
+7. Experience Distiller generation of conservative candidate manifests.
 
-6. Add MCP capability registry.
-7. Integrate LeanCTX in read-path/Shadow Mode.
-8. Put downstream MCP servers behind catalog discovery instead of exposing every schema.
-9. Record context/tool-catalog savings in CIDM/Phoenix traces.
+**Still required before Phase A is complete:**
 
-### Phase C — knowledge retrieval
+8. Optional FastEmbed/ONNX semantic index with content-hash caching.
+9. Small CPU reranker for top-k candidates.
+10. Experience-summary indexing beyond promoted skills.
+11. Bind eligible operations to real CIDM permits and validator receipts.
+12. Shadow-mode telemetry for local match confidence and frontier-call avoidance.
+13. Negative-transfer measurement when a local match later fails.
 
-10. Provision managed Qdrant.
-11. Move knowledge collections behind project/access namespaces.
-12. Enable dense + sparse hybrid retrieval.
-13. Add hosted reranker adapter.
-14. Bind retrieved chunks to source IDs/hashes in CIDM.
+### Phase B — frontier adapter safety
 
-### Phase D — governed skill arsenal
+14. Finalize the `FrontierProvider` adapter contract.
+15. Keep Claude Code as the default frontier provider.
+16. Add supported Codex/ChatGPT account model discovery.
+17. Add provider health/account/model state to Operator Console.
+18. Ensure every frontier execution receives a CIDM capability permit.
 
-15. Add Arsenal Manifest schema.
-16. Add skill quarantine/admission commands.
-17. Import a small reviewed methodology set:
+### Phase C — context and MCP efficiency
+
+19. Add MCP capability registry.
+20. Integrate LeanCTX in read-path/Shadow Mode.
+21. Put downstream MCP servers behind catalog discovery rather than exposing every schema.
+22. Record context/tool-catalog savings in CIDM/Phoenix traces.
+
+### Phase D — knowledge retrieval
+
+23. Provision managed Qdrant for durable/scaled collections.
+24. Move knowledge collections behind project/access namespaces.
+25. Enable dense + sparse hybrid retrieval.
+26. Use local reranking first and hosted reranking as fallback.
+27. Bind retrieved chunks to source IDs/hashes in CIDM.
+
+### Phase E — governed methodology arsenal
+
+28. Import a small reviewed methodology set:
     - systematic debugging
     - verification before completion
     - TDD
     - planning
     - Ponytail minimalism
     - selected context-engineering rules
-18. Record exact loaded skill versions in every run.
-19. Connect Experience Distiller promotions to the same admission registry.
+29. Record exact loaded skill versions/hashes in every run.
+30. Route Experience Distiller promotions through the same registry/admission boundary.
 
-### Phase E — measurement
+### Phase F — remote execution and browser tools
 
-20. Add one remote sandbox provider behind `SandboxProvider`.
-21. Add secret capability references and egress policies.
-22. Add Playwright automation with read/mutate permit classes.
-23. Add Browserbase/Stagehand only for projects that need hosted browser sessions.
+31. Add one remote sandbox provider behind `SandboxProvider`.
+32. Add secret capability references and egress policies.
+33. Add Playwright automation with read/mutate permit classes.
+34. Add Browserbase/Stagehand only where hosted browser sessions are justified.
 
-### Phase F — measurement
+### Phase G — measurement
 
-24. Instrument CIDM/Hermes/frontier/retrieval with OpenTelemetry.
-25. Connect Phoenix.
-26. Create frozen evaluation datasets.
-27. Measure baseline vs LeanCTX.
-28. Measure hybrid retrieval + reranker vs current retrieval.
-29. Measure each methodology skill for completion, regression, tokens, and latency.
+35. Instrument CIDM/Hermes/frontier/retrieval with OpenTelemetry.
+36. Connect Phoenix.
+37. Create frozen evaluation datasets.
+38. Measure frontier-call avoidance from deterministic/skill/local-semantic tiers.
+39. Measure baseline vs LeanCTX.
+40. Measure hybrid retrieval + local reranker vs hosted alternatives.
+41. Measure each methodology skill for completion, regression, tokens, and latency.
 
-### Phase G — production resilience
+### Phase H — production resilience
 
-30. Persistent checkpoint reconstruction.
-31. Add Temporal only if workflow duration/external waits justify it.
-32. Evaluate Headroom separately against LeanCTX.
-33. Evaluate Semantic Router only when routing volume justifies an extra layer.
-34. Evaluate LiteLLM when multi-user/API-key governance becomes necessary.
+42. Add persistent checkpoint reconstruction.
+43. Add Temporal only if workflow duration/external waits justify it.
+44. Evaluate Headroom separately against LeanCTX.
+45. Evaluate Semantic Router against the simpler local substrate only when traffic justifies it.
+46. Evaluate LiteLLM when multi-user/API-key governance becomes necessary.
 
 ---
 
