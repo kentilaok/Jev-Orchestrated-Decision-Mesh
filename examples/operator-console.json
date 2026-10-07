@@ -1,0 +1,32 @@
+{
+  "frontier_provider": "claude",
+  "providers": {
+    "claude": {
+      "enabled": true,
+      "model": "default",
+      "models": [
+        "default",
+        "claude-sonnet-5-5",
+        "claude-opus-5-5",
+        "claude-fable-5-1"
+      ]
+    },
+    "codex": {
+      "enabled": true,
+      "model": "default",
+      "models": [
+        "default",
+        "gpt-6.1-sol",
+        "gpt-6-sol",
+        "gpt-6-luna"
+      ]
+    }
+  },
+  "skills_source": "~/.hermes/skills",
+  "hermes_dashboard_url": "http://127.0.0.1:9119",
+  "project_directory": ".",
+  "execution_mode": "preview",
+  "decision_policy": "jev-managed",
+  "evidence_policy": "required",
+  "depth": "balanced"
+}
