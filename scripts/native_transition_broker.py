@@ -110,12 +110,15 @@ def artifact_schema(source_ids):
 
 class NativeTransitionBroker:
     def __init__(self, adapter, judge, config, folder, *, simulation=False,
-                 gate_policy='legacy'):
+                 gate_policy='legacy', arsenal_observer=None):
         require(isinstance(config, RunConfig), 'validated_run_config_required')
         require(gate_policy in ('legacy', 'fused', 'recovery'), 'invalid_native_gate_policy')
         self.adapter, self.judge, self.config = adapter, judge, config
         self.folder, self.simulation = Path(folder), simulation
         self.gate_policy = gate_policy
+        require(arsenal_observer is None or callable(arsenal_observer),
+                'invalid_arsenal_observer')
+        self.arsenal_observer = arsenal_observer
         self.calls = []
         self.worker_count = 0
         self.checker_count = 0
@@ -358,6 +361,27 @@ class NativeTransitionBroker:
         def journal(event):
             with (self.folder / 'journal.jsonl').open('a', encoding='utf-8') as stream:
                 stream.write(packed(event) + '\n')
+        if self.arsenal_observer is not None:
+            try:
+                observation = self.arsenal_observer({
+                    'goal': goal,
+                    'context_hash': fingerprint(context),
+                    'source_ids': list(sources),
+                    'classification': copy.deepcopy(normalized['classification']),
+                    'task_hash': normalized['snapshot_hash'],
+                })
+                require(type(observation) is dict, 'invalid_arsenal_observation')
+                result['arsenal_shadow'] = copy.deepcopy(observation)
+                journal({'kind': 'arsenal_shadow', 'observation': observation})
+            except Exception as error:
+                result['arsenal_shadow'] = {
+                    'mode': 'shadow',
+                    'status': 'observer_error',
+                    'error_type': type(error).__name__,
+                    'authority': 'none_shadow_observation_only',
+                }
+                journal({'kind': 'arsenal_shadow_error',
+                         'error_type': type(error).__name__})
         try:
             if route == 'short_self_contained':
                 prompt = packed({'objective': 'Answer this one bounded request using only supplied evidence.',
@@ -503,6 +527,17 @@ def main():
     parser.add_argument('--config', type=Path)
     parser.add_argument('--gate-policy', choices=('legacy', 'fused', 'recovery'), default='legacy',
                         help='Choose legacy, fused, or recovery-first Jev gate policy for broad requests')
+    parser.add_argument('--arsenal-shadow', action='store_true',
+                        help='Record local Arsenal routing evidence without changing execution')
+    parser.add_argument('--arsenal-db', type=Path,
+                        default=Path('~/.jev/arsenal/arsenal.db').expanduser())
+    parser.add_argument('--arsenal-project-scope')
+    parser.add_argument('--arsenal-bug-key')
+    parser.add_argument('--arsenal-operation')
+    parser.add_argument('--arsenal-semantic-model')
+    parser.add_argument('--arsenal-reranker-model')
+    parser.add_argument('--arsenal-shadow-ledger', type=Path,
+                        default=Path('~/.jev/arsenal/native-shadow.jsonl').expanduser())
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
@@ -512,12 +547,43 @@ def main():
     spec = json.loads(args.task.read_text(encoding='utf-8-sig'))
     from codex_cli_adapter import CodexCliAdapter
     normalized = validate_spec(spec)
+    arsenal_observer = None
+    if args.arsenal_shadow:
+        from arsenal_shadow import append_ledger, run_shadow
+        def arsenal_observer(state):
+            observation = run_shadow(
+                args.arsenal_db,
+                state['goal'],
+                project_scope=args.arsenal_project_scope,
+                bug_key=args.arsenal_bug_key,
+                operation=args.arsenal_operation,
+                semantic_model=args.arsenal_semantic_model,
+                reranker_model=args.arsenal_reranker_model,
+            )
+            append_ledger(args.arsenal_shadow_ledger, observation)
+            return observation
     if args.validate_only:
-        print(packed({'route': normalized['classification']['scope'],
-                      'gate_policy': args.gate_policy,
-                      'snapshot_hash': normalized['snapshot_hash'],
-                      'source_ids': list(normalized['sources']),
-                      'model_calls': 0}))
+        output = {'route': normalized['classification']['scope'],
+                  'gate_policy': args.gate_policy,
+                  'snapshot_hash': normalized['snapshot_hash'],
+                  'source_ids': list(normalized['sources']),
+                  'model_calls': 0}
+        if arsenal_observer is not None:
+            try:
+                output['arsenal_shadow'] = arsenal_observer({
+                    'goal': normalized['goal'],
+                    'context_hash': fingerprint(normalized['context']),
+                    'source_ids': list(normalized['sources']),
+                    'classification': copy.deepcopy(normalized['classification']),
+                    'task_hash': normalized['snapshot_hash'],
+                })
+            except Exception as error:
+                output['arsenal_shadow'] = {
+                    'mode': 'shadow', 'status': 'observer_error',
+                    'error_type': type(error).__name__,
+                    'authority': 'none_shadow_observation_only',
+                }
+        print(packed(output))
         return 0
     require(args.out is not None, 'output_directory_required_for_live_run')
     config = RunConfig.from_dict(json.loads(args.config.read_text(encoding='utf-8-sig'))
@@ -531,7 +597,8 @@ def main():
         return gateway.network_judge(phase, options, state)
     broker = NativeTransitionBroker(
         CodexCliAdapter(astra_explicitly_authorized=config.astra_explicitly_authorized),
-        judge, config, args.out, gate_policy=args.gate_policy)
+        judge, config, args.out, gate_policy=args.gate_policy,
+        arsenal_observer=arsenal_observer)
     result = broker.run(spec)
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []
     result['jev_provider_events'] = provider_events
