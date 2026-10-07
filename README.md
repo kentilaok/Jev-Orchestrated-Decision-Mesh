@@ -180,9 +180,9 @@ An experimental recovery layer now separates **candidate rejection** from **proj
 CIDM run history can also be distilled into verified procedural lessons:
 
 ```bash
-python scripts/experience_distiller.py --scan-dir research --skills-dir ~/.hermes/skills
+python scripts/experience_distiller.py --scan-dir research --project-scope cidm-research --skills-dir ~/.hermes/skills
 ```
 
-Only a failure followed by a later checked commit for the same unit counts as a verified recovery. Skills require repeated verified observations by default, or explicit owner approval. This is procedural/context memory for Hermes, not model-weight training.
+Only a failure followed by a later checked commit for the same unit counts as a verified recovery. Skills require repeated verified observations from distinct runs by default, or explicit owner approval of a verified lesson. Automatic promotion is project-scoped to reduce cross-project contamination. This is procedural/context memory for Hermes, not model-weight training.
 
 See [Recovery-first CIDM and Experience Distillation](docs/RECOVERY-AND-DISTILLATION.md).
