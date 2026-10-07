@@ -1,4 +1,5 @@
 import copy
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -309,6 +310,13 @@ class DistillationTests(unittest.TestCase):
             self.assertIn("name: cidm-unscoped-hidden1-", text)
             self.assertIn("Failure signature:", text)
             self.assertIn("## Provenance", text)
+            manifest = json.loads(
+                (written[0].parent / "ARSENAL.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(manifest["admission"]["status"], "candidate")
+            self.assertFalse(manifest["admission"]["owner_approved"])
+            self.assertTrue(manifest["frontier_required"])
+            self.assertEqual(manifest["risk"], "medium")
 
     def test_project_scope_separates_otherwise_identical_lessons(self):
         left = extract_experiences(
