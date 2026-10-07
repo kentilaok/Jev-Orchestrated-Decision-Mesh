@@ -1,212 +1,151 @@
-# Jev Operator Console — Claude-first UI
+# Jev Operator Console
 
-The Operator Console is the first user-facing control surface for the Jev-Orchestrated Decision Mesh (CIDM). It is intentionally **Claude-first**: Anthropic is the only enabled frontier provider in v1, while the model/provider registry remains extensible so future providers can be added without rewriting the UI.
-
-## Goal
-
-The console makes the architecture understandable and usable from one screen:
+The Operator Console is an experimental local UI for supervising the Jev-Orchestrated Decision Mesh (CIDM) without turning Jev, Hermes, and a frontier model into one opaque agent.
 
 ```text
-User
-  ↓
-Jev control plane
-  ↓
-Hermes operational worker
-  ↓
-Selected Claude frontier model
-  ↓
-Deterministic validators / evidence
-  ↓
-Jev arbitration
+Operator -> Jev policy -> Hermes procedure/skills -> frontier worker -> validators -> Jev arbitration
 ```
 
-The responsibilities stay separate:
+Jev owns global routing, evidence, budget, and acceptance policy. Hermes owns local procedural execution and reusable skills. Claude Code is the default frontier worker in v0.1; Codex is available as an optional switch. Preview mode never pretends to be a live Jev call.
 
-- **Jev** owns global orchestration: task classification, evidence sufficiency, model/effort allocation, budgets, retries, escalation and final acceptance.
-- **Hermes Agent** owns bounded operational execution: project rules, persistent skills/memory, terminal/tools and sessions.
-- **Claude** supplies frontier reasoning inside the Hermes worker.
-- **Validators** supply evidence rather than asking a model to grade itself.
+## Start
 
-This avoids building a second autonomous orchestrator under Jev. Hermes can coordinate locally inside a bounded operation, but global fan-out, escalation and acceptance remain CIDM policy decisions.
-
-## What is implemented in v1
-
-The browser UI provides:
-
-1. A task composer with a workspace field.
-2. A **frontier model switcher** backed by `console/frontier-models.json`.
-3. Anthropic/Claude as the only enabled provider.
-4. A live runtime panel for Hermes, Anthropic credentials and the existing Jev/OpenRouter gateway.
-5. A route preview showing `Jev → Hermes → Claude → Validators → Jev`.
-6. A **Run through Hermes** action that invokes a local, one-shot Hermes worker in safe mode.
-7. A standard-library Python server so the repository does not gain a JavaScript build-tool dependency.
-
-The live Run button is deliberately a **worker boundary**, not a claim of full CIDM acceptance. Its result is labelled `worker_complete_pending_validation`. The next integration milestone is a Hermes-backed `GenerativeAdapter` wired into the existing `CheckedNetwork`, so live Jev decisions, executable checks and one-use commit permissions govern the same worker the UI launches.
-
-## Current Claude model registry
-
-The initial registry uses current Anthropic model IDs and can be edited without touching the UI code:
-
-| Model | Intended console role |
-|---|---|
-| `claude-opus-5-5` | Default frontier model for complex coding/orchestration |
-| `claude-fable-5-1` | Hardest long-horizon reasoning |
-| `claude-sonnet-5-5` | Faster balanced engineering work |
-| `claude-haiku-4-5-20251001` | Fast/low-cost bounded tasks |
-
-Do not treat the file as a permanent source of truth. Provider catalogs change. Before a production rollout, the backend should query Hermes' model/provider API (or Anthropic's Models API) and reconcile the configured allow-list with models actually available to the account.
-
-## Start the console
-
-Requirements:
-
-- Python 3.10+
-- Hermes Agent installed for live execution
-- An Anthropic credential path supported by Hermes
-
-Run:
+Python 3.10+ is sufficient; there is no JavaScript build step.
 
 ```bash
 python scripts/operator_console.py
 ```
 
-Open:
+The console binds to `127.0.0.1:8765` and stores its UI state at `~/.jev/operator-console.json` by default.
 
-```text
-http://127.0.0.1:8765
-```
+## Hermes Skills workspace
 
-Preview mode works even when Hermes is not installed. The Run button activates when the `hermes` executable is visible in `PATH`.
+The **Hermes Skills** page provides a dedicated source-folder workflow:
 
-### Hermes + Claude authentication
+1. The default source is `~/.hermes/skills/`.
+2. Click **Open folder** to open that directory in Finder/File Explorer/the Linux file manager.
+3. Add one folder per skill, with a `SKILL.md` inside it.
+4. Click **Refresh** to re-scan the source.
+5. When Hermes' dashboard API is reachable, use the toggle beside each skill to enable or disable it.
 
-Hermes owns model authentication. Use its model/auth setup rather than storing secrets in this project. Supported paths include Anthropic API credentials and Hermes/Claude Code authentication. The console never returns secret values to the browser.
+Hermes treats `~/.hermes/skills/` as its primary skill directory. It also supports external skill directories through `skills.external_dirs`. If the console points at another source directory, add that directory to Hermes' configuration so Hermes can load the same skills.
 
-A simple setup path is:
-
-```bash
-hermes model
-```
-
-Then select Anthropic and the Claude model you want Hermes to use. The console still passes an explicit provider/model on each run so the UI selection is auditable.
-
-## Safe-mode execution
-
-The backend executes a task approximately as:
+Start Hermes' local management API with:
 
 ```bash
-hermes --safe-mode chat \
-  --oneshot \
-  --provider anthropic \
-  --model claude-opus-5-5 \
-  --reasoning medium \
-  --query-file -
+hermes dashboard --no-open
 ```
 
-The actual binary path is resolved with `PATH`; the user's prompt is passed on stdin, not interpolated into a shell command. This prevents command injection through task text.
+The default endpoint is `http://127.0.0.1:9119`. The console uses Hermes' own `GET /api/skills` and `PUT /api/skills/toggle` endpoints. A toggle therefore changes Hermes' skill state rather than renaming files or maintaining a second registry. Changes take effect in a new Hermes session.
 
-The console binds to `127.0.0.1` by default. Do not expose it publicly without adding authentication, CSRF protection, rate limits and a stricter workspace policy.
+If the dashboard is not reachable, the UI can still list skills from the source folder but it refuses to pretend a toggle was applied.
 
-## Workspaces
+## Frontier account switcher
 
-Leaving Workspace blank runs Hermes in this repository. You can enter another **existing local directory** (for example RiftForge) to scope Hermes to that project. Hermes then sees that project's repository rules and skills according to its own configuration.
+The **Frontier Accounts** page exposes two local adapters:
 
-Because a selected workspace can contain sensitive material, the console does not upload workspace contents anywhere itself; any external model/tool traffic is governed by Hermes and the selected provider.
+- **Claude Code** — default.
+- **Codex** — optional.
 
-## Frontier model switcher design
+The console does not read or copy credentials from the Claude or ChatGPT/Codex desktop apps. Instead, each CLI uses its supported sign-in flow with the same subscription account.
 
-The UI reads `console/frontier-models.json`. A provider entry has this shape:
+### Claude Code
 
-```json
-{
-  "id": "anthropic",
-  "label": "Anthropic / Claude",
-  "enabled": true,
-  "runtime": "hermes",
-  "models": [
-    {
-      "id": "claude-opus-5-5",
-      "label": "Claude Opus 5.5",
-      "tier": "frontier",
-      "default_effort": "medium"
-    }
-  ]
-}
+Run `claude`, then `/login` if needed. Claude Code can use an eligible Claude subscription account. The `/model` menu is the authoritative list for that account, and `--model` can select a model for a one-shot run.
+
+The UI includes convenience presets:
+
+- `default`
+- `claude-sonnet-5-5`
+- `claude-opus-5-5`
+- `claude-fable-5-1`
+
+Availability remains account- and rollout-dependent. There is no silent model fallback in the console.
+
+If `ANTHROPIC_API_KEY` is present, Claude Code may prefer API-key billing over subscription authentication. Use Claude Code's `/status` view to verify the billing/auth source before live work.
+
+### Codex
+
+Run:
+
+```bash
+codex login
+codex login status
 ```
 
-To add a future frontier provider:
+Authenticate with the ChatGPT account associated with your Codex access. The UI includes current Codex-oriented presets:
 
-1. Implement or confirm a Hermes provider adapter.
-2. Add a provider entry and allow-listed models to the registry.
-3. Add provider-specific validation only if its CLI invocation differs.
-4. Add identity and usage accounting tests.
-5. Keep Jev's decision policy provider-neutral: it should select a capability/cost route, not hard-code UI labels.
+- `default`
+- `gpt-6.1-sol`
+- `gpt-6-sol`
+- `gpt-6-luna`
 
-The console should eventually replace static model metadata with live discovery plus an allow-list so model retirement or renaming fails closed rather than silently switching to another model.
+Actual options depend on the ChatGPT plan, workspace policy, and rollout. The console surfaces provider errors instead of silently substituting a model.
 
-## CIDM integration milestone
+## Execution modes
 
-The desired full execution path is:
+### Preview only
+
+Default. Produces the intended route without model usage or project mutation:
 
 ```text
-UI creates task envelope
-        ↓
-Host classification + Jev decision
-        ↓
-CheckedNetwork issues one-use worker permit
-        ↓
-HermesGenerativeAdapter
-        ↓
-Hermes + selected Claude model + project skills
-        ↓
-Structured candidate + evidence receipt
-        ↓
-Executable validators
-        ↓
-Jev post-worker decision
-        ↓
-commit / repair / retrieve / escalate / stop
+Input -> Jev -> Hermes -> selected frontier -> Validators -> Jev
 ```
 
-A `HermesGenerativeAdapter` should implement the repository's existing `GenerativeAdapter` contract rather than creating a parallel orchestration framework. It should record at least:
+### Frontier direct
 
-- requested provider and model;
-- reasoning effort;
-- workspace and task binding;
-- Hermes session/run identifier when exposed;
-- tool/skill set requested;
-- exit status and duration;
-- usage/cost if exposed by the provider;
-- output hash and evidence references;
-- any served-model identity Hermes reports.
+Runs the selected locally authenticated CLI explicitly:
 
-Unknown usage, cost or served identity must remain unknown—not be recorded as zero or assumed to equal the requested model.
+- Claude: `claude [--model <id>] -p <task>`
+- Codex: `codex exec --sandbox read-only [--model <id>] <task>`
 
-## Suggested next phases
+This mode is primarily for validating local account authentication and the frontier switcher before the full Jev/Hermes dispatch adapter is connected.
 
-**Phase 2 — governed Hermes adapter:** implement `HermesGenerativeAdapter` and route one CIDM unit through it. Preserve the existing one-use permits and post-worker Jev gate.
+### Hermes + Jev
 
-**Phase 3 — run observability:** show unit state, evidence receipts, token/cost counters, retries, validator results and Jev decisions in the console.
+The UI exposes this target mode but deliberately fails closed today. It is not simulated.
 
-**Phase 4 — skills:** browse and pin Hermes skills per project. Keep skill creation/versioning distinct from Jev's global routing policy.
+A production adapter must:
 
-**Phase 5 — multi-provider frontier switcher:** add providers only after provider identity, auth, accounting and failure-mode tests exist. The switcher should support a manual model choice plus a Jev-controlled `Auto` mode.
+1. accept a bounded Jev-authorized operation,
+2. bind the selected Hermes skill set,
+3. dispatch the selected frontier worker,
+4. return candidate output and evidence receipts to Jev,
+5. apply hard validators before commit,
+6. keep retry/delegation budgets visible to the CIDM ledger.
 
-**Phase 6 — controlled parallelism:** allow Jev to issue multiple independent worker permits when decomposition is justified; cap concurrency and delegation depth so Hermes local delegation cannot create hidden combinatorial fan-out.
+## Security and trust boundaries
 
-## Security notes
+- The web server binds to loopback by default.
+- Desktop-app cookies and bearer tokens are never read by this project.
+- Credential files are not returned to the browser.
+- Preview mode is the default.
+- Skill toggles fail closed unless Hermes confirms them.
+- Codex direct execution is forced to read-only sandbox mode in this MVP.
+- Global agent fan-out remains a Jev concern; Hermes may orchestrate only inside a bounded operation.
+- Missing model/account capabilities are surfaced as errors, not guessed.
 
-- The server has no user authentication and is intended for localhost only.
-- Never place API keys in `frontier-models.json`, JavaScript, URLs or Git.
-- Keep secrets in provider/Hermes credential stores or environment variables.
-- Treat model output as provisional until validators and Jev accept it.
-- Do not enable destructive Hermes behavior globally just to make the UI convenient.
-- If remote access is later required, add authentication and an explicit allow-list of workspaces before changing the bind address.
+## Environment variables
 
-## External references
+| Variable | Purpose |
+|---|---|
+| `JEV_OPERATOR_STATE` | Override the console state JSON path |
+| `HERMES_HOME` | Change the default Hermes home and skill source |
+| `HERMES_DASHBOARD_URL` | Override the Hermes dashboard API URL |
 
-- Anthropic model overview: https://platform.claude.com/docs/en/models/overview
-- Anthropic Models API: https://platform.claude.com/docs/en/api/http/models
-- Hermes CLI: https://hermes-agent.nousresearch.com/docs/user-guide/cli/
-- Hermes providers: https://hermes-agent.nousresearch.com/docs/integrations/providers
-- Hermes configuration: https://hermes-agent.nousresearch.com/docs/user-guide/configuration/
+## Test
+
+```bash
+python -m unittest tests/test_operator_console.py -v
+```
+
+The console tests cover persisted defaults, skill-folder discovery, Claude-first route previews, and provider configuration merging.
+
+## Next milestones
+
+1. Implement the live Jev decision adapter.
+2. Add a Hermes dispatch adapter that accepts Jev-issued bounded permits.
+3. Add supported live model discovery where each provider exposes a non-destructive interface.
+4. Record usage/budget counters without converting unknown values to zero.
+5. Bind validator outputs and artifact hashes into the existing CIDM commit protocol.
+6. Add project profiles so RiftForge, Gatebreaker, and other workspaces can select different Hermes skill bundles.

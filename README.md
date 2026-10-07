@@ -169,3 +169,14 @@ The executable demo is a structured-record calculation. [Extension boundaries](d
 **Kenneth Vic A. Caber** is the main contributor and creator of the CIDM concept and skill project. Development used AI coding assistance. The architecture builds on existing ideas in model routing, modular computation, verification, and context management; this attribution is not a claim to have invented those broader fields.
 
 See the [technical thesis](docs/THESIS.md), [research context](docs/RESEARCH-CONTEXT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [CITATION.cff](CITATION.cff). Code and documentation are released under the [MIT license](LICENSE).
+
+
+## Operator Console (experimental)
+
+A local browser control surface is available on the `feature/operator-console-claude-frontier` line of development. It keeps **Jev as the global control plane**, uses **Hermes for reusable skills/procedures**, and defaults the frontier worker to **Claude Code** while exposing **Codex** as an optional locally authenticated provider.
+
+```bash
+python scripts/operator_console.py
+```
+
+The console includes a dedicated Hermes skill-source folder with enable/disable controls (through Hermes' own local dashboard API), Claude/Codex account readiness, and a model picker. Preview mode is the default and does not fake a live Jev call. See [Operator Console](docs/OPERATOR-CONSOLE.md).

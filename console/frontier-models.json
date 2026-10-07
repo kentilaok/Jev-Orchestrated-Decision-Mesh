@@ -1,47 +1,21 @@
 {
-  "version": 1,
-  "default_provider": "anthropic",
-  "default_model": "claude-opus-5-5",
+  "version": 2,
+  "default_provider": "claude",
   "providers": [
     {
-      "id": "anthropic",
-      "label": "Anthropic / Claude",
+      "id": "claude",
+      "label": "Claude Code",
       "enabled": true,
-      "runtime": "hermes",
-      "models": [
-        {
-          "id": "claude-opus-5-5",
-          "label": "Claude Opus 5.5",
-          "tier": "frontier",
-          "recommended_for": "Default for complex coding, orchestration and knowledge work",
-          "default_effort": "medium"
-        },
-        {
-          "id": "claude-fable-5-1",
-          "label": "Claude Fable 5.1",
-          "tier": "frontier-plus",
-          "recommended_for": "Hardest long-horizon reasoning and agentic work",
-          "default_effort": "high"
-        },
-        {
-          "id": "claude-sonnet-5-5",
-          "label": "Claude Sonnet 5.5",
-          "tier": "balanced",
-          "recommended_for": "Fast, capable everyday engineering and iteration",
-          "default_effort": "high"
-        },
-        {
-          "id": "claude-haiku-4-5-20251001",
-          "label": "Claude Haiku 4.5",
-          "tier": "fast",
-          "recommended_for": "Cheap, fast bounded worker tasks",
-          "default_effort": "medium"
-        }
-      ]
+      "auth": "local subscription or CLI session",
+      "models": ["default", "claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-1"]
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "enabled": true,
+      "auth": "local ChatGPT/Codex CLI session",
+      "models": ["default", "gpt-6.1-sol", "gpt-6-sol", "gpt-6-luna"]
     }
   ],
-  "future_provider_contract": {
-    "note": "Add another provider object and a runtime adapter; the UI does not assume Anthropic beyond the enabled registry entry.",
-    "required_fields": ["id", "label", "enabled", "runtime", "models"]
-  }
+  "note": "Convenience presets only. Provider/account model availability is authoritative; the console must surface errors rather than silently substitute."
 }

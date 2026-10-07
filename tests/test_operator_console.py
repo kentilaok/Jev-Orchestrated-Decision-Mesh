@@ -1,47 +1,56 @@
 import importlib.util
-import unittest
 from pathlib import Path
-from unittest.mock import patch
+import tempfile
+import unittest
 
-ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts" / "operator_console.py"
-spec = importlib.util.spec_from_file_location("operator_console", SCRIPT)
-mod = importlib.util.module_from_spec(spec)
-assert spec and spec.loader
-spec.loader.exec_module(mod)
+MODULE = Path(__file__).resolve().parents[1] / "scripts" / "operator_console.py"
+spec = importlib.util.spec_from_file_location("operator_console", MODULE)
+console = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(console)
 
 
 class OperatorConsoleTests(unittest.TestCase):
-    def setUp(self):
-        self.registry = mod.load_registry()
+    def test_state_store_roundtrip_and_defaults(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "state.json"
+            store = console.StateStore(path)
+            config = store.load()
+            self.assertEqual(config["frontier_provider"], "claude")
+            config["frontier_provider"] = "codex"
+            store.save(config)
+            self.assertEqual(store.load()["frontier_provider"], "codex")
 
-    def test_registry_defaults_are_enabled(self):
-        enabled = mod.enabled_models(self.registry)
-        key = (self.registry["default_provider"], self.registry["default_model"])
-        self.assertIn(key, enabled)
+    def test_local_skill_discovery(self):
+        with tempfile.TemporaryDirectory() as td:
+            skill = Path(td) / "repo-review"
+            skill.mkdir()
+            (skill / "SKILL.md").write_text(
+                "---\nname: repo-review\ndescription: Review a repository safely.\n---\n# Skill\n",
+                encoding="utf-8",
+            )
+            cfg = console._merge_config({"skills_source": td})
+            skills = console.local_skills(cfg)
+            self.assertEqual(skills[0]["name"], "repo-review")
+            self.assertIn("safely", skills[0]["description"])
 
-    def test_preview_uses_jev_hermes_claude_jev_route(self):
-        route = mod.build_route({"prompt": "Inspect the project"}, self.registry)
-        self.assertEqual(route["route"][0]["actor"], "Jev")
-        self.assertEqual(route["route"][1]["actor"], "Hermes")
-        self.assertEqual(route["route"][2]["actor"], "claude-opus-5-5")
-        self.assertEqual(route["route"][-1]["actor"], "Jev")
+    def test_route_preview_defaults_to_claude(self):
+        cfg = console._merge_config({})
+        original = console.merged_skills
+        console.merged_skills = lambda _cfg: []
+        try:
+            result = console.route_preview({"task": "test"}, cfg)
+        finally:
+            console.merged_skills = original
+        self.assertEqual(result["provider"], "claude")
+        self.assertEqual(result["route"][1]["actor"], "Jev")
+        self.assertEqual(result["route"][2]["actor"], "Hermes")
 
-    def test_rejects_unlisted_model(self):
-        with self.assertRaises(ValueError):
-            mod.build_route({"prompt": "x", "model": "made-up-model"}, self.registry)
-
-    def test_workspace_must_exist(self):
-        with self.assertRaises(ValueError):
-            mod.resolve_workspace("/definitely/not/a/real/jev-console-path")
-
-    def test_hermes_command_is_not_shell_interpolated(self):
-        with patch.object(mod.shutil, "which", return_value="/usr/local/bin/hermes"):
-            cmd = mod.build_hermes_command("anthropic", "claude-opus-5-5", "medium", True)
-        self.assertEqual(cmd[0], "/usr/local/bin/hermes")
-        self.assertIn("--safe-mode", cmd)
-        self.assertIn("--query-file", cmd)
-        self.assertEqual(cmd[-1], "-")
+    def test_provider_model_patch_keeps_other_provider(self):
+        base = console._merge_config({})
+        raw = {**base, "providers": {"claude": {"model": "claude-opus-5-5"}}}
+        merged = console._merge_config(raw)
+        self.assertEqual(merged["providers"]["claude"]["model"], "claude-opus-5-5")
+        self.assertIn("codex", merged["providers"])
 
 
 if __name__ == "__main__":
