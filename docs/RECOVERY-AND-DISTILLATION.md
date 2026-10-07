@@ -121,6 +121,21 @@ experience extraction
 
 This is **not model-weight training**. It is retrieval/procedural context that reduces repeated reasoning.
 
+### Structured recovery notes
+
+A Hermes worker or trusted host can record a bounded provisional `recovery_note` with:
+
+- `bug_key` — stable project-local identifier for the failure pattern
+- `symptom`
+- `root_cause`
+- `failed_strategy`
+- `successful_strategy`
+- `verification`
+
+Use `record_recovery_note(...)` from `scripts/recovery_protocol.py`. These fields are observations, not authority. The note does not change a candidate, satisfy a validator, or issue a permit. The distiller only carries the note into durable lessons when a later `checked_commit` verifies recovery of the same unit.
+
+When a stable `bug_key` is present it becomes part of the failure signature, preventing unrelated bugs that happen to fail the same broad validator criterion from being merged into one lesson.
+
 ### Promotion rule
 
 A model explanation is not enough to create durable skill knowledge.
