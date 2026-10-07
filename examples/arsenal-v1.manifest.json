@@ -1,6 +1,6 @@
 {
   "version": "arsenal-v1-plan",
-  "architecture": "frontier-first-thin-client",
+  "architecture": "frontier-efficient-thin-client",
   "authority": {
     "global_controller": "jev-cidm",
     "operational_runtime": "hermes",
@@ -10,7 +10,10 @@
     "local_llm_required": false,
     "local_training_required": false,
     "heavy_local_embedding_required": false,
-    "heavy_local_reranking_required": false
+    "heavy_local_reranking_required": false,
+    "lightweight_local_intelligence": true,
+    "local_cpu_embeddings_allowed": true,
+    "local_small_reranker_allowed": true
   },
   "components": [
     {
@@ -26,6 +29,54 @@
       "status": "core",
       "location": "local-lightweight",
       "authority": "bounded-execution"
+    },
+    {
+      "id": "local-cognitive-substrate",
+      "type": "local-decision-support",
+      "status": "core",
+      "location": "local-lightweight",
+      "layers": [
+        "deterministic-policy",
+        "lexical-search",
+        "skill-experience-match",
+        "validators"
+      ],
+      "authority": "hint-and-policy-evaluation"
+    },
+    {
+      "id": "sqlite-fts5",
+      "type": "local-lexical-retrieval",
+      "status": "implemented-core",
+      "location": "local-lightweight",
+      "authority": "ranking-only"
+    },
+    {
+      "id": "skill-compiler",
+      "type": "procedural-knowledge-compiler",
+      "status": "implemented-core",
+      "location": "local-lightweight",
+      "authority": "metadata-only"
+    },
+    {
+      "id": "cidm-fast-path",
+      "type": "compiled-policy-execution",
+      "status": "eligibility-implemented-execution-pending",
+      "location": "local-lightweight",
+      "authority": "cidm-only"
+    },
+    {
+      "id": "fastembed-onnx",
+      "type": "local-semantic-retrieval",
+      "status": "next-phase",
+      "location": "local-cpu",
+      "authority": "ranking-only"
+    },
+    {
+      "id": "small-onnx-reranker",
+      "type": "local-retrieval-reranker",
+      "status": "next-phase",
+      "location": "local-cpu",
+      "authority": "ranking-only"
     },
     {
       "id": "claude-code",
@@ -61,15 +112,15 @@
     {
       "id": "qdrant-cloud",
       "type": "retrieval",
-      "status": "core",
+      "status": "core-scaled-retrieval",
       "location": "managed-cloud",
-      "mode": "hybrid-dense-sparse",
+      "mode": "durable-hybrid-dense-sparse-after-local-prefilter",
       "authority": "evidence-candidate-only"
     },
     {
       "id": "hosted-reranker",
       "type": "retrieval-reranker",
-      "status": "core",
+      "status": "fallback",
       "location": "cloud",
       "candidates": [
         "cohere-rerank-v4",
@@ -87,9 +138,9 @@
     {
       "id": "skill-admission-registry",
       "type": "governance",
-      "status": "core",
-      "location": "local-git-state",
-      "authority": "admission-policy"
+      "status": "implemented-core",
+      "location": "local-sqlite-hash-bound",
+      "authority": "owner-admission-policy"
     },
     {
       "id": "experience-distiller",
