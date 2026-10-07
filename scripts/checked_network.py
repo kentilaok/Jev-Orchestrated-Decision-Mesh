@@ -33,6 +33,7 @@ class PlaceholderWorker:
 
 
 class CheckedNetwork:
+    protocol_version='cidm-conditional-review-v3'
     def __init__(self, goal, sources, judge, producer, checker, validator, *,
                  policy=None, checker_identity=None, worker_routes=None, simulation=False, journal=None, units=UNITS,
                  deterministic_units=None):
@@ -136,7 +137,9 @@ class CheckedNetwork:
                 'unit_predecessor_missing')
         feedback=None
         min_route_rank=0
-        for attempt in range(2):
+        attempt_limit=self.policy.get('max_recovery_attempts',2)
+        require(type(attempt_limit) is int and 1<=attempt_limit<=8,'invalid_recovery_attempt_limit')
+        for attempt in range(attempt_limit):
             self.active_route=None
             parents=[{'id':p['id'],'hash':p['artifact_hash']} for p in self.committed[-1:]]
             base_action={'operation':'compute_unit','unit_id':unit.id,'attempt':attempt,'parents':parents,
@@ -211,7 +214,9 @@ class CheckedNetwork:
                           'candidate':blind(candidate),'hard_checks':checks}
             check_action=options['check_sol_high']['action']
             check_gate=gate
-            for check_attempt in range(2):
+            check_limit=self.policy.get('max_verification_attempts',2)
+            require(type(check_limit) is int and 1<=check_limit<=4,'invalid_verification_attempt_limit')
+            for check_attempt in range(check_limit):
                 check=self.invoke('checker',check_action,check_gate,lambda:self.checker(copy.deepcopy(review_input)))
                 check_valid=True
                 try: self.validate_check(check)
@@ -231,9 +236,9 @@ class CheckedNetwork:
                     options['forward']={'worker_id':'policy',
                                         'action':self.forward_action(unit,index,candidate_hash,receipt),
                                         'description':'Accept only the exact candidate that passed hard checks and this Sol-high review.'}
-                if check_attempt==0 and len(self.checks)<self.policy.get('max_checker_calls',10):
+                if check_attempt+1<check_limit and len(self.checks)<self.policy.get('max_checker_calls',10):
                     next_check={'operation':'sol_high_check','unit_id':unit.id,'attempt':attempt,
-                                'check_attempt':1,'candidate_hash':candidate_hash,'policy_version':self.policy_version}
+                                'check_attempt':check_attempt+1,'candidate_hash':candidate_hash,'policy_version':self.policy_version}
                     options['verify_again']={'worker_id':'checker','action':next_check,
                                               'description':'Request one more separate Sol-high review of the same candidate.'}
                 if self.active_route is not None and route_rank+1<len(self.worker_routes):
@@ -268,6 +273,6 @@ class CheckedNetwork:
         except Exception as error:
             status='failed'
             self.mesh.record('halt',error=error.code if hasattr(error,'code') else type(error).__name__+': '+str(error))
-        return {'status':status,'answer':self.final,'protocol_version':'cidm-conditional-review-v3',
+        return {'status':status,'answer':self.final,'protocol_version':self.protocol_version,
                 'policy_version':self.policy_version,
                 'simulation':self.mesh.simulation,'committed':self.committed,'checks':self.checks,'events':self.mesh.events}
