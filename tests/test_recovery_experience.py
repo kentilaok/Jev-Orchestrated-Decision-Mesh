@@ -7,7 +7,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from atomic_mesh import AtomicMesh, fingerprint
+from atomic_mesh import AtomicMesh, fingerprint, packed
+from checked_network import CheckedNetwork
+from network_run import DEMO, DemoPipeline, fake_check
 from experience_distiller import (
     distill_lessons,
     extract_experiences,
@@ -159,6 +161,44 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(
             result["checkpoint"]["recovery_kind"], "retrieve_evidence"
         )
+
+    def test_checked_network_can_opt_into_third_local_attempt(self):
+        demo = DemoPipeline(DEMO)
+        attempts = {}
+
+        def producer(unit, parents, feedback, route):
+            candidate = demo.produce(unit, parents, feedback, route)
+            attempts[unit.id] = attempts.get(unit.id, 0) + 1
+            if unit.id == "hidden1" and attempts[unit.id] < 3:
+                candidate["data"]["scale"] = 2000
+            return candidate
+
+        def judge(phase, options, state):
+            if phase == "authorize_unit":
+                choice = "compute" if "compute" in options else next(
+                    key for key in options if key != "stop"
+                )
+            elif phase == "after_worker":
+                choice = "forward" if "forward" in options else "repair"
+            elif phase == "after_sol_high":
+                choice = "forward" if "forward" in options else "repair"
+            else:
+                raise AssertionError(phase)
+            return {"choice": choice, "live": False, "model": "simulation"}
+
+        network = CheckedNetwork(
+            DEMO["goal"],
+            {"records": {"text": packed(DEMO)}},
+            judge,
+            producer,
+            fake_check,
+            demo.validate,
+            policy={"version": "recovery-attempt-test", "max_recovery_attempts": 3},
+            simulation=True,
+        )
+        result = network.run()
+        self.assertEqual(result["status"], "complete")
+        self.assertEqual(attempts["hidden1"], 3)
 
 
 class DistillationTests(unittest.TestCase):
