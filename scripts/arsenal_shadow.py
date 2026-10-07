@@ -90,11 +90,15 @@ def run_shadow(
         and lexical_fast.get("eligible") is True
     )
 
+    experience_candidates = lexical.get("experience_matches", [])
+    selected_experience = experience_candidates[0] if experience_candidates else None
     recommendation = (
         "fast_path_candidate"
         if fast_candidate
         else "load_skill_then_jev"
         if selected
+        else "load_experience_then_jev"
+        if selected_experience
         else "jev_only"
     )
     return {
@@ -107,6 +111,10 @@ def run_shadow(
         "semantic": semantic_result,
         "fused_candidates": fused[:top_k],
         "selected_skill_id": selected["skill_id"] if selected else None,
+        "selected_experience_id": (
+            selected_experience["lesson_id"] if selected_experience else None
+        ),
+        "experience_candidates": experience_candidates,
         "recommendation": recommendation,
         "fast_path_candidate": fast_candidate,
         "frontier_call_avoided": False,
