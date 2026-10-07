@@ -132,6 +132,14 @@ To study the revised decision density, use `--gate-policy fused` and a different
 python scripts/native_transition_broker.py --live --gate-policy fused --task examples/native-project.request.json --out runs/native-fused-001
 ```
 
+To run the recovery-first separate-gate controller, use `--gate-policy recovery`. Failed candidates still cannot forward, but exhausted local repair/verification can trigger a bounded fresh replan instead of ending the whole project. Missing evidence becomes a recoverable checkpoint unless a host retrieval adapter is supplied.
+
+```bash
+python scripts/native_transition_broker.py --live --gate-policy recovery --task examples/native-project.request.json --out runs/native-recovery-001
+```
+
+Recovery limits are explicit configuration fields: `max_recovery_attempts` (default 2), `max_verification_attempts` (default 2), and `max_recovery_rounds` (default 2).
+
 The broker limits the goal, carried context, and source excerpts; its generic checks validate structure and reference integrity, not whether a project answer is correct. It records Codex usage when the CLI reports it, but leaves Codex plan dollar cost and ordinary primary-agent tokens unknown. No live project-level savings have been measured for this route.
 
 ## Use as a Codex skill
