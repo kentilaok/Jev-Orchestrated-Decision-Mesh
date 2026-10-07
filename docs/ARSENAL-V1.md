@@ -282,7 +282,7 @@ CIDM should support a no-frontier route for **pre-authorized, deterministic, rev
 
 Requirements:
 
-1. exact or high-confidence match to an approved skill;
+1. exact stable bug-key match to an approved skill for V1; lexical/semantic similarity may select context but does not authorize Fast Path;
 2. skill version/hash is admitted in the Arsenal Registry;
 3. project scope matches;
 4. required inputs are present;
