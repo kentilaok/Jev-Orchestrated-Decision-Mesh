@@ -44,12 +44,19 @@ class RecoveryJudge:
         self.judge = judge
         self.abort_requested = abort_requested or (lambda: False)
 
-    def __call__(self, phase, options, state):
+    def filter_options(self, phase, options, state):
+        """Return the exact option set that should be shown, hashed, and journaled."""
         offered = copy.deepcopy(options)
-        if "stop" in offered and len(offered) > 1 and not self.abort_requested():
+        # Keep at least two typed alternatives because Jev choice questions require
+        # a genuine decision. Failed-result gates normally contain repair,
+        # retrieve_evidence, and stop, so stop can be removed safely there.
+        if "stop" in offered and len(offered) > 2 and not self.abort_requested():
             del offered["stop"]
-        decision = self.judge(phase, offered, state)
-        require(isinstance(decision, dict) and decision.get("choice") in offered,
+        return offered
+
+    def __call__(self, phase, options, state):
+        decision = self.judge(phase, options, state)
+        require(isinstance(decision, dict) and decision.get("choice") in options,
                 "recovery_judge_invalid_choice")
         return decision
 
@@ -207,7 +214,7 @@ class RecoverySupervisor:
                     self._append_evidence(packet, unit_id=unit.id)
                     continue
 
-                if outcome in ("repair_limit", "verification_limit", "stopped_by_jev"):
+                if outcome in ("repair_limit", "verification_limit"):
                     used = self.recovery_rounds.get(unit.id, 0)
                     if used < self.max_recovery_rounds:
                         self._fresh_replan(unit, outcome)
@@ -216,6 +223,12 @@ class RecoverySupervisor:
                         unit, index, "recovery_budget_exhausted",
                         f"Local recovery budget exhausted after {used} replans; candidate remains uncommitted.",
                     )
+
+                # A remaining stop is explicit: the filtered gate could not remove
+                # it while preserving a valid typed choice, or the operator/judge
+                # intentionally selected it. Do not auto-recover over that choice.
+                if outcome == "stopped_by_jev":
+                    return self._result("stopped_by_jev", terminal=True)
 
                 return self._result(outcome)
 
