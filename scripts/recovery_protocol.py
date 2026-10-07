@@ -156,9 +156,37 @@ class RecoverySupervisor:
     def _fresh_replan(self, unit, outcome: str):
         round_no = self.recovery_rounds.get(unit.id, 0) + 1
         self.recovery_rounds[unit.id] = round_no
+        failed_criteria = []
+        missing_evidence = []
+        reason = f"Fresh bounded replan after {outcome}."
+        for event in reversed(self.network.mesh.events):
+            if event.get("unit_id") != unit.id:
+                continue
+            if event.get("kind") == "post_worker_decision":
+                checks = event.get("hard_checks") or {}
+                if isinstance(checks, dict):
+                    failed_criteria = [k for k, passed in checks.items() if passed is False]
+                break
+            if event.get("kind") == "post_checker_decision":
+                receipt = event.get("receipt") or {}
+                result = receipt.get("result") if isinstance(receipt, dict) else None
+                if isinstance(result, dict):
+                    failed_criteria = list(result.get("failed_criteria") or [])
+                    missing_evidence = list(result.get("missing_evidence") or [])
+                    reason = result.get("reason") or reason
+                break
+        feedback = {
+            "verdict": "repair_required",
+            "failed_criteria": failed_criteria,
+            "reason": reason,
+            "missing_evidence": missing_evidence,
+            "recovery_round": round_no,
+        }
+        self.network.recovery_feedback = feedback
         issue = {
             "recovery_kind": "replan", "unit_id": unit.id,
             "prior_outcome": outcome, "recovery_round": round_no,
+            "feedback": copy.deepcopy(feedback),
         }
         self.network.mesh.last_issue = issue
         self._event("recovery_replan", **issue)
