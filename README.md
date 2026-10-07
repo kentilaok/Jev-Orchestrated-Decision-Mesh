@@ -198,6 +198,28 @@ See [Recovery-first CIDM and Experience Distillation](docs/RECOVERY-AND-DISTILLA
 
 ## Arsenal V1 direction
 
-The next architecture milestone is a **frontier-first, thin-client capability arsenal**. The local machine remains a lightweight control node; Claude/Codex provide frontier intelligence, while managed retrieval, hosted reranking, MCP tools, context management, observability, and governed skills expand what CIDM can do without adding another global decision brain.
+The next architecture milestone is a **frontier-efficient capability arsenal**. The local machine does not need a heavy generative model: CIDM should first reuse deterministic policy, approved skills, verified experience, lexical retrieval, lightweight semantic helpers, caches, and validators before escalating to Jev or Claude/Codex.
 
-See [CIDM Arsenal Architecture V1](docs/ARSENAL-V1.md).
+The first local substrate is now implemented in `scripts/arsenal_registry.py`. It compiles Hermes `SKILL.md` files, reads optional `ARSENAL.json` manifests, indexes skill/bug/trigger knowledge in SQLite FTS5, and reports whether a matched skill is eligible for a future CIDM Fast Path.
+
+```bash
+python scripts/arsenal_registry.py scan --skills-dir ~/.hermes/skills
+python scripts/arsenal_registry.py match \
+  --task "Protected content is visible while signed out" \
+  --project-scope wordpress \
+  --bug-key wordpress.memberpress.logged_out_visibility \
+  --operation inspect_content
+```
+
+Discoverability does not grant execution authority. Owner admission is stored separately in the local Arsenal database and bound to the exact skill + manifest hashes:
+
+```bash
+python scripts/arsenal_registry.py admit --skill-id some-reviewed-skill
+python scripts/arsenal_registry.py revoke --skill-id some-reviewed-skill
+```
+
+If either file changes, the recorded admission no longer matches that version.
+
+Verified Experience Distiller skills now receive conservative candidate `ARSENAL.json` files automatically, so learned procedures become searchable without self-authorizing a no-frontier action.
+
+See [CIDM Arsenal Architecture V1](docs/ARSENAL-V1.md) and [Arsenal Manifest and Skill Admission](docs/ARSENAL-MANIFEST.md).
