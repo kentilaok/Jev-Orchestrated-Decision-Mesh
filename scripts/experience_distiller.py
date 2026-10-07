@@ -342,6 +342,49 @@ def render_skill(lesson: dict) -> str:
     return "\n".join(lines)
 
 
+def render_arsenal_manifest(lesson: dict) -> dict:
+    """Create a conservative candidate manifest for one verified recovery skill.
+
+    Experience can become searchable immediately, but never self-admits to the
+    no-frontier Fast Path. Arsenal admission is a separate owner-reviewed step.
+    """
+    scope = str(lesson.get("project_scope") or "unscoped")
+    return {
+        "schema_version": 1,
+        "id": skill_name(lesson),
+        "type": "recovery-skill",
+        "version": 1,
+        "description": (
+            "Recovery procedure distilled from verified CIDM runs in "
+            + scope + " for " + str(lesson.get("unit_id") or "a unit") + " failures."
+        ),
+        "project_scope": [scope],
+        "triggers": {
+            "bug_keys": list(lesson.get("bug_keys") or []),
+            "phrases": list(lesson.get("symptoms") or []),
+            "keywords": list(lesson.get("failed_criteria") or []),
+        },
+        "permissions": {
+            "shell": False,
+            "network": False,
+            "write_files": False,
+        },
+        "risk": "medium",
+        "frontier_required": True,
+        "validators": [],
+        "operations": [],
+        "admission": {
+            "status": "candidate",
+            "owner_approved": False,
+        },
+        "source": {
+            "kind": "cidm-experience-distiller",
+            "lesson_id": str(lesson.get("lesson_id") or ""),
+            "signature": str(lesson.get("signature") or ""),
+        },
+    }
+
+
 def write_promoted_skills(lessons: Iterable[dict], skills_dir: Path, *,
                           min_verified: int = 2,
                           owner_approved: bool = False) -> list[Path]:
@@ -364,6 +407,16 @@ def write_promoted_skills(lessons: Iterable[dict], skills_dir: Path, *,
             if signature_marker not in existing:
                 raise ValueError("refusing_to_overwrite_nonmatching_skill")
         path.write_text(rendered, encoding="utf-8")
+
+        manifest = render_arsenal_manifest(lesson)
+        manifest_path = folder / "ARSENAL.json"
+        if manifest_path.exists():
+            existing = json.loads(manifest_path.read_text(encoding="utf-8"))
+            source = existing.get("source") if isinstance(existing, dict) else None
+            if not isinstance(source, dict) or source.get("signature") != manifest["source"]["signature"]:
+                raise ValueError("refusing_to_overwrite_nonmatching_arsenal_manifest")
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
         written.append(path)
     return written
 
