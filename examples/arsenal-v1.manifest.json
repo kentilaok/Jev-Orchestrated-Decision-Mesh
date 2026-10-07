@@ -71,7 +71,10 @@
       "type": "retrieval-reranker",
       "status": "core",
       "location": "cloud",
-      "candidates": ["cohere-rerank-v4", "voyage-rerank-3"],
+      "candidates": [
+        "cohere-rerank-v4",
+        "voyage-rerank-3"
+      ],
       "authority": "ranking-only"
     },
     {
@@ -211,6 +214,53 @@
       "type": "local-model-runtime",
       "status": "deferred",
       "reason": "v1-does-not-require-heavy-local-inference"
+    },
+    {
+      "id": "remote-sandbox",
+      "type": "sandbox-execution",
+      "status": "core-experiment",
+      "location": "managed-cloud",
+      "candidates": [
+        "e2b",
+        "daytona"
+      ],
+      "authority": "execution-only"
+    },
+    {
+      "id": "secrets-proxy",
+      "type": "secret-governance",
+      "status": "core-experiment",
+      "location": "managed-or-self-hosted",
+      "candidates": [
+        "infisical",
+        "sandbox-native-secret-proxy"
+      ],
+      "authority": "credential-use-only"
+    },
+    {
+      "id": "playwright",
+      "type": "browser-automation",
+      "status": "core-tool",
+      "location": "local-or-cloud",
+      "modes": [
+        "cli-skills",
+        "mcp"
+      ],
+      "authority": "browser-actions-under-permit"
+    },
+    {
+      "id": "browserbase-stagehand",
+      "type": "cloud-browser-automation",
+      "status": "project-specific",
+      "location": "managed-cloud",
+      "authority": "browser-actions-under-permit"
+    },
+    {
+      "id": "promptfoo",
+      "type": "security-evaluation",
+      "status": "offline-eval-candidate",
+      "location": "local-controller-plus-frontier-provider",
+      "authority": "evaluation-only"
     }
   ]
 }
