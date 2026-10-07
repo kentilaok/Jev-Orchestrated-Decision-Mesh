@@ -1,8 +1,8 @@
-# CIDM Arsenal Architecture V1 — Frontier-First, Thin-Client
+# CIDM Arsenal Architecture V1 — Frontier-Efficient, Thin-Client
 
 **Status:** future build direction.
 
-**Constraint:** V1 must not require local LLM inference, fine-tuning, GPU-heavy embedding, or sustained local compute. A modest workstation should be able to operate the system as a control node while frontier models and managed retrieval/evaluation services perform expensive work.
+**Constraint:** V1 must not require heavy local generative-model inference, fine-tuning, GPU-heavy workloads, or sustained local compute. A modest workstation should be able to operate the system as a control node while still using lightweight local intelligence—deterministic policy, lexical search, CPU embeddings, small rerankers, caches, code analysis, and compiled skill knowledge—to avoid unnecessary frontier calls.
 
 The design target is:
 
@@ -31,23 +31,310 @@ The workstation may run lightweight processes:
 - local state/ledgers
 - Git/worktrees
 - browser/UI
-- small SQLite/JSON metadata stores
+- SQLite FTS5/BM25 indexes
+- FastEmbed/ONNX CPU embeddings
+- a small CPU reranker for top-k candidates
+- deterministic policy/rule evaluation
+- skill/experience signature matching
+- AST/tree/file analysis and validators
+- content-addressed caches
 
-Heavy work should be remote:
+Heavy work should be remote or optional:
 
-- frontier inference
-- embeddings
-- reranking
+- frontier generation/reasoning
+- large corpus embedding backfills when local throughput is insufficient
+- large rerankers or expensive evaluation models
 - vector search at scale
-- LLM evaluation
 - long-lived observability storage
 - optional durable workflow service
 
-Local Qwen/Ajax/Odysseus model inference is deliberately **deferred from V1**. The architecture must leave a model-adapter slot so local workers can be added later without changing CIDM policy.
+Local Qwen/Ajax/Odysseus **generative** inference is deliberately deferred from V1. The architecture must leave a model-adapter slot so local workers can be added later without changing CIDM policy.
 
 ---
 
-## 2. Target architecture
+## 2. Local cognitive substrate — reduce frontier work before it starts
+
+V1 should be **frontier-efficient**, not frontier-dependent.
+
+The workstation should answer cheap questions locally whenever the answer can be derived from deterministic policy, indexed system knowledge, approved skills, or small CPU models.
+
+### 2.1 Decision ladder
+
+Every task should move through the cheapest sufficient tier:
+
+```text
+TIER 0  deterministic policy / exact signatures
+        |
+        | unresolved
+        v
+TIER 1  lexical retrieval (SQLite FTS5 / BM25)
+        |
+        | ambiguous
+        v
+TIER 2  local semantic embedding match (FastEmbed / ONNX CPU)
+        |
+        | close candidates
+        v
+TIER 3  small local reranker on top-k only
+        |
+        | still uncertain / novel / consequential
+        v
+TIER 4  Jev model decision
+        |
+        | substantive reasoning required
+        v
+TIER 5  Claude / Codex frontier worker
+```
+
+A frontier call is therefore an **escalation**, not the default mechanism for classification, retrieval, or known-procedure selection.
+
+### 2.2 Tier 0 — deterministic intelligence
+
+The cheapest layer should handle anything that can be proved from structured state.
+
+Use:
+
+- exact task/skill IDs
+- file extensions and repository paths
+- regex and typed parsers
+- JSON Schema
+- hash/signature matching
+- CIDM policy tables
+- known bug keys
+- dependency graphs
+- AST and syntax-tree inspection
+- ripgrep/file indexes
+- test exit codes
+- static-analysis results
+- Git diff/status
+- cached successful tool receipts
+- project/user capability rules
+
+Examples:
+
+```text
+bug_key == "wordpress.memberpress.logged_out_visibility"
+    -> candidate skill = memberpress-public-protection
+
+file_changed == "*.py"
+    -> required validators += python_compile + unit_tests
+
+task_type == "rewrite_email"
+    -> no repository worker required
+
+known source hash + known transform + cached accepted result
+    -> reuse cache if policy permits
+```
+
+These require no LLM tokens.
+
+### 2.3 Tier 1 — SQLite FTS5/BM25 local lexical memory
+
+Use SQLite FTS5 as a tiny local knowledge index for:
+
+- skill descriptions
+- bug signatures
+- command/error messages
+- filenames/symbols
+- experience summaries
+- project rules
+- known fixes
+- tool capabilities
+
+FTS5 provides built-in BM25 ranking and snippets. It is especially useful for exact technical strings where embeddings can be worse:
+
+- error codes
+- class names
+- plugin names
+- commands
+- function names
+- IDs
+- stack traces
+
+This should be the first search over the local experience/skill catalog.
+
+### 2.4 Tier 2 — FastEmbed / ONNX local semantic matching
+
+Use a **small embedding model**, not a generative LLM.
+
+FastEmbed is appropriate for V1 because it is CPU-first, ONNX-based, quantized, and does not require PyTorch.
+
+Use it for:
+
+- task -> skill similarity
+- question -> experience similarity
+- bug description -> known bug cluster
+- query -> local document candidates
+- tool intent -> capability candidates
+- duplicate/near-duplicate detection
+
+The embedding model should be loaded only when needed or kept as a modest CPU process with a strict memory budget.
+
+No GPU is required.
+
+### 2.5 Tier 3 — small CPU reranker
+
+A small cross-encoder reranker can cheaply refine only the best lexical/embedding candidates.
+
+Example V1 pattern:
+
+```text
+1000+ skills / lessons
+      |
+SQLite BM25 + embedding search
+      |
+    top 20
+      |
+MiniLM-class ONNX reranker
+      |
+     top 3
+      |
+confidence threshold
+```
+
+Qdrant/FastEmbed documentation currently lists an ONNX MiniLM reranker around 80 MB, making this class of model realistic on a 16 GB RAM workstation.
+
+Run reranking only on a small candidate set.
+
+If the local reranker is slow, uncertain, or the task is high-value, fall back to a hosted reranker.
+
+### 2.6 Skill Compiler
+
+Hermes skills should not exist only as prose loaded into a frontier prompt.
+
+On admission, compile every approved skill into a machine-readable local index:
+
+```yaml
+skill_id: wordpress-memberpress-public-protection
+version: 3
+hash: ...
+
+triggers:
+  lexical:
+    - "logged out can still view product"
+    - "memberpress protection not public"
+  bug_keys:
+    - wordpress.memberpress.logged_out_visibility
+  semantic_examples:
+    - "protected WooCommerce product visible when signed out"
+
+preconditions:
+  project_type: wordpress
+  plugins:
+    - memberpress
+
+required_capabilities:
+  - read_files
+  - wordpress_admin
+
+required_validators:
+  - anonymous_browser_check
+
+risk: medium
+frontier_required: false
+```
+
+The compiler should produce:
+
+- FTS5 records
+- local embeddings
+- trigger examples
+- permission requirements
+- validator contract
+- project scopes
+- known failure signatures
+- recovery links
+- skill version/hash
+
+This turns accumulated Hermes knowledge into **locally searchable executable knowledge**, reducing prompt stuffing and frontier classification.
+
+### 2.7 Experience Cache
+
+The Experience Plane should expose a lightweight local lookup service:
+
+```text
+bug_key / symptom / validator failure
+        |
+        +--> exact signature lookup
+        |
+        +--> BM25
+        |
+        +--> embedding similarity
+        |
+        +--> local reranking
+        |
+        v
+previous verified recovery
+```
+
+A retrieved experience does not become authority. It proposes:
+
+- likely skill
+- known dead ends
+- known successful strategy
+- required validator
+
+CIDM still enforces the current policy and evidence.
+
+### 2.8 CIDM Fast Path
+
+CIDM should support a no-frontier route for **pre-authorized, deterministic, reversible operations**.
+
+Requirements:
+
+1. exact or high-confidence match to an approved skill;
+2. skill version/hash is admitted in the Arsenal Registry;
+3. project scope matches;
+4. required inputs are present;
+5. permissions are predeclared;
+6. operation is within configured risk tier;
+7. deterministic validators exist;
+8. no unresolved ambiguity or missing evidence.
+
+Then:
+
+```text
+task
+  |
+local skill/signature match
+  |
+CIDM compiled policy check
+  |
+bounded Hermes/tool execution
+  |
+deterministic validators
+  |
+  +-- pass -> commit under pre-authorized policy
+  |
+  +-- fail -> Jev recovery/escalation
+```
+
+This is not bypassing CIDM. It is CIDM executing a **compiled policy** instead of paying for a model decision that has already been encoded and validated.
+
+Any novel, ambiguous, destructive, externally consequential, or policy-sensitive task must escalate to Jev.
+
+### 2.9 Local resource budget
+
+V1 should enforce explicit lightweight-compute ceilings:
+
+- no resident generative LLM
+- default CPU execution for embeddings/reranking
+- one local semantic worker by default
+- small quantized/ONNX models preferred
+- configurable process RAM cap
+- no automatic GPU reservation
+- batch/background embedding backfill throttled
+- cache embeddings by content hash
+- rerank only top-k
+- evict/reload models when idle if necessary
+
+The RTX 3050 4 GB remains available for UI/normal workstation use rather than becoming a required AI inference device.
+
+---
+
+## 3. Target architecture
+
+## 3. Target architecture
 
 ```text
                          USER / PROJECT
@@ -131,7 +418,7 @@ Local Qwen/Ajax/Odysseus model inference is deliberately **deferred from V1**. T
 
 ---
 
-## 3. Core V1 components
+## 4. Core V1 components
 
 ### 3.1 Jev / CIDM — global authority
 
@@ -172,7 +459,7 @@ Hermes does **not** own global project fan-out, global budget escalation, or fin
 
 ---
 
-## 4. Frontier model layer
+## 5. Frontier model layer
 
 ### 4.1 Claude Code adapter — primary V1 worker
 
@@ -231,7 +518,7 @@ The adapter must report unknown usage/cost as unknown, never zero.
 
 ---
 
-## 5. Context plane
+## 6. Context plane
 
 ### 5.1 LeanCTX — recommended V1 context gateway
 
@@ -295,7 +582,7 @@ If tested later, only compress natural-language evidence copies; never mutate au
 
 ---
 
-## 6. MCP as the capability bus
+## 7. MCP as the capability bus
 
 **Decision:** BUILD around MCP.
 
@@ -337,15 +624,16 @@ LeanCTX's MCP Tool-Catalog Gateway is a strong V1 candidate because it can colla
 
 ---
 
-## 7. Retrieval and durable knowledge
+## 8. Retrieval and durable knowledge
 
-### 7.1 Qdrant Cloud — recommended V1 vector/search service
+### 8.1 Hybrid local + Qdrant retrieval — recommended V1
 
-**Decision:** BUILD using managed Qdrant rather than local vector infrastructure.
+**Decision:** BUILD a two-tier retrieval plane: local lexical/semantic prefiltering for cheap decisions, with managed Qdrant for larger durable collections.
 
 Reasons:
 
-- no local embedding workload required
+- local query embeddings can be generated cheaply with FastEmbed/ONNX
+- large backfills can be local-throttled or remote when needed
 - dense + sparse named vectors
 - lexical + semantic hybrid retrieval
 - metadata/payload filtering
@@ -379,30 +667,30 @@ user/task query
 
 For Solutions Empowerment, access/product/source metadata should be payload filters rather than prompt instructions alone.
 
-### 7.2 Hosted reranker — recommended
+### 8.2 Local-first reranker with hosted fallback
 
-Do not run BGE locally in V1.
+Do not require a large BGE-class reranker locally in V1. Use a small ONNX cross-encoder locally for routine top-k reranking, and keep a hosted reranker as the stronger fallback.
 
 Implement a provider-neutral reranker interface.
 
-Preferred hosted candidates:
+Hosted fallback candidates:
 
 - **Cohere Rerank v4** — strong multilingual and semi-structured/JSON support
 - **Voyage rerank-3 / rerank-3-lite** — strong hosted retrieval/reranking option
 
 The exact provider should be benchmarked on the real transcript/query set rather than selected only from vendor claims.
 
-### 7.3 Chroma — development fallback only
+### 8.3 Chroma — development fallback only
 
 Good for a tiny local POC, but V1 production direction should be managed Qdrant to keep storage/search infrastructure off the workstation.
 
-### 7.4 FAISS — benchmark/library only
+### 8.4 FAISS — benchmark/library only
 
 Excellent vector-search library, but V1 should not require us to build persistence, metadata filtering, multi-user service, hybrid retrieval, backup, and operational APIs around FAISS ourselves.
 
 ---
 
-## 8. Routing
+## 9. Routing
 
 ### 8.1 Jev remains the authoritative router
 
@@ -437,11 +725,11 @@ Semantic Router may reduce unnecessary frontier calls for obvious task categorie
 - it cannot skip Jev on consequential tasks
 - pin an explicitly tested release line because the project has undergone a breaking rewrite
 
-V1 can initially use deterministic rules + Jev and add Semantic Router only after enough traffic exists to justify it.
+V1 should first use the local cognitive substrate (compiled rules + FTS5 + FastEmbed + small reranker). Semantic Router becomes an optional implementation/benchmark once that simpler path has enough traffic to evaluate.
 
 ---
 
-## 9. Model gateway
+## 10. Model gateway
 
 ### 9.1 Direct account adapters first
 
@@ -480,7 +768,7 @@ Do not introduce it merely to wrap two already-working authenticated frontier cl
 
 ---
 
-## 10. Engineering methodology skill arsenal
+## 11. Engineering methodology skill arsenal
 
 Skills are procedures, not authorities.
 
@@ -547,7 +835,7 @@ Do not apply it to:
 
 ---
 
-## 11. Skill admission and registry
+## 12. Skill admission and registry
 
 **Decision:** BUILD before large-scale skill installation.
 
@@ -621,7 +909,7 @@ Never auto-install or auto-update a production skill from a public registry.
 
 ---
 
-## 12. Remote execution and browser arsenal
+## 13. Remote execution and browser arsenal
 
 ### 12.1 Cloud sandbox — recommended V1 capability
 
@@ -699,7 +987,7 @@ Only the latter two should require stronger permits.
 
 ---
 
-## 13. Observability and evaluation
+## 14. Observability and evaluation
 
 ### 13.1 Phoenix + OpenTelemetry — recommended V1
 
@@ -756,7 +1044,7 @@ Unknown accounting fields remain `null`/unknown.
 
 ---
 
-## 14. Experience plane
+## 15. Experience plane
 
 The already implemented recovery/distillation layer becomes a first-class V1 service:
 
@@ -796,7 +1084,7 @@ This lets the arsenal improve while retaining provenance.
 
 ---
 
-## 15. Durable execution
+## 16. Durable execution
 
 ### Temporal — V1.x / production hardening
 
@@ -830,7 +1118,7 @@ Do not let Temporal workflow code become a second decision brain.
 
 ---
 
-## 16. LangGraph
+## 17. LangGraph
 
 **Decision:** do not use as CIDM's core orchestrator.
 
@@ -847,7 +1135,7 @@ Not acceptable:
 
 ---
 
-## 17. DSPy
+## 18. DSPy
 
 **Decision:** offline optimisation only.
 
@@ -876,7 +1164,7 @@ DSPy must never rewrite production Jev policy automatically.
 
 ---
 
-## 18. OpenClaw
+## 19. OpenClaw
 
 **Decision:** not a core runtime in V1.
 
@@ -909,7 +1197,7 @@ Jev -> Hermes
 
 ---
 
-## 19. V1 build matrix
+## 20. V1 build matrix
 
 | Component | V1 status | Compute location | Reason |
 |---|---|---|---|
@@ -919,8 +1207,8 @@ Jev -> Hermes
 | Codex/ChatGPT adapter | **Core** | frontier/cloud | alternate worker + model switch |
 | MCP capability bus | **Core** | local/remote mix | standard tool boundary |
 | LeanCTX read-path | **Core experiment** | local/lightweight | context/tool-catalog efficiency |
-| Qdrant Cloud | **Core** | managed cloud | hybrid retrieval |
-| Hosted reranker | **Core** | cloud API | retrieval precision |
+| SQLite FTS5 + FastEmbed | **Core** | local/lightweight | lexical + semantic skill/experience retrieval |\n| Small ONNX reranker | **Core** | local/lightweight | cheap top-k relevance decisions |\n| Qdrant Cloud | **Core** | managed cloud | durable/scaled hybrid retrieval |
+| Hosted reranker | **Fallback** | cloud API | stronger reranking when local confidence is insufficient |
 | Phoenix + OpenTelemetry | **Core** | cloud/VPS/managed | tracing/evaluation |
 | E2B or Daytona | **Core experiment** | managed cloud | isolated code execution off local machine |
 | Infisical / sandbox secret proxy | **Core experiment** | managed/self-hosted | keep secrets out of agent context |
@@ -933,7 +1221,7 @@ Jev -> Hermes
 | Ponytail | **Approved candidate** | skill only | reduce overengineering |
 | Taste | **Project-specific** | remote MCP | design/brand work |
 | Headroom | **A/B later** | local/lightweight | reversible compression |
-| Semantic Router | **A/B later** | cloud encoder/local lib | cheap route hints |
+| Skill Compiler + CIDM Fast Path | **Core** | local/lightweight | execute known validated procedures without frontier calls |\n| Semantic Router | **A/B later** | local lib | benchmark against simpler local routing |
 | LiteLLM | **Later** | cloud/VPS | multi-provider API gateway |
 | Temporal | **Later** | cloud/VPS | crash-safe long workflows |
 | DSPy | **Offline later** | cloud/frontier | prompt/program optimisation |
@@ -947,9 +1235,9 @@ Jev -> Hermes
 
 ---
 
-## 20. Recommended implementation order
+## 21. Recommended implementation order
 
-### Phase A — make the frontier arsenal safe
+### Phase A — build the local cognitive substrate\n\n1. Add SQLite FTS5 indexes for skills, bug signatures, experience summaries, tools, and project rules.\n2. Add FastEmbed/ONNX embedding service with content-hash caching.\n3. Add a small local ONNX reranker for top-k only.\n4. Implement the Skill Compiler and machine-readable trigger/permission/validator metadata.\n5. Implement CIDM Fast Path policy for low-risk, deterministic, pre-authorized skills.\n6. Record local match confidence, selected skill, and avoided frontier calls.\n\n### Phase B — make the frontier arsenal safe
 
 1. Finalize `FrontierProvider` adapter contract.
 2. Keep Claude Code as default provider.
@@ -1012,7 +1300,7 @@ Jev -> Hermes
 
 ---
 
-## 21. V1 non-goals
+## 22. V1 non-goals
 
 Do not spend V1 effort on:
 
@@ -1029,7 +1317,7 @@ Do not spend V1 effort on:
 
 ---
 
-## 22. V1 success criteria
+## 23. V1 success criteria
 
 Arsenal V1 is successful if:
 
@@ -1044,7 +1332,7 @@ Arsenal V1 is successful if:
 9. verified experience can become governed procedural knowledge;
 10. Phoenix/CIDM traces can explain why a run succeeded, failed, escalated, or stopped;
 11. no new component can independently bypass validators or commit policy;
-12. every optimisation is benchmarked against a frozen baseline before becoming default.
+12. routine known tasks can resolve skill/tool/experience candidates without a frontier call;\n13. local semantic helpers stay within explicit CPU/RAM budgets;\n14. the system records how many Jev/frontier calls were avoided and why;\n15. every optimisation is benchmarked against a frozen baseline before becoming default.
 
 ---
 
