@@ -19,7 +19,7 @@ from experience_distiller import (
     render_skill,
     write_promoted_skills,
 )
-from recovery_protocol import RecoveryJudge, RecoverySupervisor
+from recovery_protocol import RecoveryJudge, RecoverySupervisor, record_recovery_note
 
 
 class Unit:
@@ -129,6 +129,19 @@ class RecoveryTests(unittest.TestCase):
         result = wrapped("after_worker", offered, {})
         self.assertEqual(result["choice"], "stop")
 
+    def test_recovery_note_is_provisional_structured_evidence(self):
+        network = FakeNetwork(["forwarded"])
+        event_id = record_recovery_note(network, "u1", {
+            "bug_key": "lookup.root",
+            "symptom": "Expected object was not found.",
+            "root_cause": "Lookup started below the actual owner.",
+            "successful_strategy": "Resolve from the owning root.",
+            "verification": "Runtime validator passed.",
+        })
+        event = next(e for e in network.mesh.events if e["id"] == event_id)
+        self.assertEqual(event["kind"], "recovery_note")
+        self.assertEqual(event["note"]["bug_key"], "lookup.root")
+
     def test_repair_limit_replans_same_unit_instead_of_ending_project(self):
         network = FakeNetwork(["repair_limit", "forwarded"])
         result = RecoverySupervisor(network, max_recovery_rounds=2).run()
@@ -223,6 +236,19 @@ class DistillationTests(unittest.TestCase):
                     "recovery_kind": "replan",
                 },
                 {
+                    "id": "e2b",
+                    "kind": "recovery_note",
+                    "unit_id": "hidden1",
+                    "note": {
+                        "bug_key": "scale-mismatch",
+                        "symptom": "Semantic validator rejects the candidate scale.",
+                        "root_cause": "The worker reused an unchecked scale assumption.",
+                        "failed_strategy": "Retrying without explicit scale feedback.",
+                        "successful_strategy": "Use the checked production scale from the validated evidence.",
+                        "verification": "The same semantic validator passed before checked commit.",
+                    },
+                },
+                {
                     "id": "e3",
                     "kind": "checked_commit",
                     "unit_id": "hidden1",
@@ -251,10 +277,10 @@ class DistillationTests(unittest.TestCase):
         lessons = distill_lessons(records)
         self.assertEqual(len(lessons), 1)
         self.assertTrue(promotable(lessons[0], min_verified=2))
-        self.assertIn(
-            "Re-run the same hard validators",
-            render_skill(lessons[0]),
-        )
+        rendered = render_skill(lessons[0])
+        self.assertIn("Re-run the same hard validators", rendered)
+        self.assertIn("Use the checked production scale", rendered)
+        self.assertIn("unchecked scale assumption", rendered)
 
     def test_multiple_failures_in_one_run_do_not_self_promote(self):
         run = self.fixture("r1")
