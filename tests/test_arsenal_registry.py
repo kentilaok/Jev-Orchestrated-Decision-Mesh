@@ -199,6 +199,20 @@ class ArsenalRegistryTests(unittest.TestCase):
         self.assertFalse(match["fast_path"]["eligible"])
         self.assertIn("skill_not_admitted", match["fast_path"]["reasons"])
 
+    def test_removed_skill_is_pruned_with_its_admission(self):
+        target = self.write_skill(manifest=admitted_manifest())
+        with ArsenalRegistry(self.db) as registry:
+            registry.scan(self.skills)
+            registry.admit("public-protection")
+            for child in target.iterdir():
+                child.unlink()
+            target.rmdir()
+            result = registry.scan(self.skills)
+            self.assertEqual(result["pruned"], ["public-protection"])
+            self.assertEqual(registry.list_skills(), [])
+            with self.assertRaisesRegex(Exception, "unknown_skill"):
+                registry.admit("public-protection")
+
     def test_invalid_manifest_is_quarantined_as_scan_error(self):
         target = self.write_skill()
         (target / "ARSENAL.json").write_text(
