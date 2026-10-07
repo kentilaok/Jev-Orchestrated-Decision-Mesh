@@ -449,6 +449,10 @@ def main(argv=None):
         default=Path("~/.jev/experience/lessons.json").expanduser(),
     )
     parser.add_argument("--skills-dir", type=Path)
+    parser.add_argument(
+        "--arsenal-db", type=Path,
+        help="Optionally refresh the local Arsenal verified-experience index after distillation",
+    )
     parser.add_argument("--project-scope", type=str, help="Namespace lessons/skills to one project or domain")
     parser.add_argument("--min-verified", type=int, default=2)
     parser.add_argument("--owner-approved", action="store_true")
@@ -473,6 +477,12 @@ def main(argv=None):
     args.lessons.parent.mkdir(parents=True, exist_ok=True)
     args.lessons.write_text(json.dumps(lessons, indent=2) + "\n", encoding="utf-8")
 
+    arsenal_index = None
+    if args.arsenal_db:
+        from arsenal_registry import ArsenalRegistry
+        with ArsenalRegistry(args.arsenal_db) as registry:
+            arsenal_index = registry.index_lessons(args.lessons)
+
     written = (
         write_promoted_skills(
             lessons, args.skills_dir,
@@ -485,6 +495,7 @@ def main(argv=None):
         "results_scanned": len(paths),
         "experiences_added": len(extracted),
         "lessons": len(lessons),
+        "arsenal_experience_index": arsenal_index,
         "skills_written": [str(path) for path in written],
     }, indent=2))
 
