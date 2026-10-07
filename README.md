@@ -169,3 +169,20 @@ The executable demo is a structured-record calculation. [Extension boundaries](d
 **Kenneth Vic A. Caber** is the main contributor and creator of the CIDM concept and skill project. Development used AI coding assistance. The architecture builds on existing ideas in model routing, modular computation, verification, and context management; this attribution is not a claim to have invented those broader fields.
 
 See the [technical thesis](docs/THESIS.md), [research context](docs/RESEARCH-CONTEXT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [CITATION.cff](CITATION.cff). Code and documentation are released under the [MIT license](LICENSE).
+
+
+## Recovery-first CIDM
+
+An experimental recovery layer now separates **candidate rejection** from **project termination**.
+
+`scripts/recovery_protocol.py` supervises the existing separate-gate `CheckedNetwork` without weakening its commit rules. Local repair/verification exhaustion can replan the same unit, missing evidence can be supplied by a trusted retrieval callback, and unresolved external dependencies become `paused_recoverable` checkpoints rather than generic terminal failures.
+
+CIDM run history can also be distilled into verified procedural lessons:
+
+```bash
+python scripts/experience_distiller.py --scan-dir research --skills-dir ~/.hermes/skills
+```
+
+Only a failure followed by a later checked commit for the same unit counts as a verified recovery. Skills require repeated verified observations by default, or explicit owner approval. This is procedural/context memory for Hermes, not model-weight training.
+
+See [Recovery-first CIDM and Experience Distillation](docs/RECOVERY-AND-DISTILLATION.md).
