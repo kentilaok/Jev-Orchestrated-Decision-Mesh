@@ -188,7 +188,12 @@ An experimental recovery layer now separates **candidate rejection** from **proj
 CIDM run history can also be distilled into verified procedural lessons:
 
 ```bash
-python scripts/experience_distiller.py --scan-dir research --project-scope cidm-research --skills-dir ~/.hermes/skills
+python scripts/experience_distiller.py \
+  --scan-dir research \
+  --project-scope cidm-research \
+  --lessons ~/.jev/experience/lessons.json \
+  --arsenal-db ~/.jev/arsenal/arsenal.db \
+  --skills-dir ~/.hermes/skills
 ```
 
 Only a failure followed by a later checked commit for the same unit counts as a verified recovery. Skills require repeated verified observations from distinct runs by default, or explicit owner approval of a verified lesson. Automatic promotion is project-scoped to reduce cross-project contamination. This is procedural/context memory for Hermes, not model-weight training.
@@ -220,7 +225,7 @@ python scripts/arsenal_registry.py revoke --skill-id some-reviewed-skill
 
 If either file changes, the recorded admission no longer matches that version.
 
-Verified Experience Distiller skills now receive conservative candidate `ARSENAL.json` files automatically, so learned procedures become searchable without self-authorizing a no-frontier action.
+Verified Experience Distiller skills now receive conservative candidate `ARSENAL.json` files automatically, so learned procedures become searchable without self-authorizing a no-frontier action. Verified distilled lessons can also be indexed directly in Arsenal before skill promotion; these experience matches are context-only and always continue to Jev/frontier unless a separately reviewed skill is later admitted.
 
 See [CIDM Arsenal Architecture V1](docs/ARSENAL-V1.md) and [Arsenal Manifest and Skill Admission](docs/ARSENAL-MANIFEST.md).
 
