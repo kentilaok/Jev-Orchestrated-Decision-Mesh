@@ -204,6 +204,39 @@ This means learned experience becomes locally searchable without granting itself
 
 The operator may later edit/review the manifest, add a real deterministic validator and bounded operation, rescan, and explicitly admit that exact version.
 
+## Verified experience index
+
+A distilled lesson does not need to become a skill before it is useful.
+
+Index the current verified lessons directly:
+
+```bash
+python scripts/arsenal_registry.py index-lessons \
+  --lessons ~/.jev/experience/lessons.json
+```
+
+Or refresh the index during distillation:
+
+```bash
+python scripts/experience_distiller.py \
+  --scan-dir research \
+  --project-scope cidm-research \
+  --arsenal-db ~/.jev/arsenal/arsenal.db
+```
+
+Experience matches are deliberately weaker than skill matches:
+
+- they may provide bug keys, symptoms, root-cause notes, dead ends, successful strategies, verification notes, and provenance;
+- project scope is enforced;
+- they are marked `context_only_no_fast_path`;
+- they never satisfy skill admission;
+- they never authorize an operation;
+- they never qualify for Fast Path.
+
+In shadow mode an experience-only match produces `load_experience_then_jev`, not `fast_path_candidate`.
+
+This lets CIDM reuse verified history immediately while preserving the separate promotion/admission boundary.
+
 ## V1 security rule
 
 > A skill package can request capabilities. It cannot grant itself capabilities.
