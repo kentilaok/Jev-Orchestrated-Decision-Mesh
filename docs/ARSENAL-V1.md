@@ -621,9 +621,87 @@ Never auto-install or auto-update a production skill from a public registry.
 
 ---
 
-## 12. Observability and evaluation
+## 12. Remote execution and browser arsenal
 
-### 12.1 Phoenix + OpenTelemetry — recommended V1
+### 12.1 Cloud sandbox — recommended V1 capability
+
+**Decision:** ADD one remote sandbox provider so frontier workers can compile, install dependencies, run tests, generate artifacts, and execute untrusted code without consuming the local workstation.
+
+Strong candidates:
+
+- **E2B** — isolated microVM per agent/session, pause/resume, filesystem, browser/desktop options, egress controls, metrics, and existing Codex/Claude/OpenAI-agent integrations.
+- **Daytona** — isolated cloud sandboxes with dedicated filesystem/network/runtime resources, snapshots/persistence, Linux/Windows/macOS/GPU options, and SDK/API control.
+
+V1 should implement a provider-neutral `SandboxProvider` interface and choose one first rather than integrating both simultaneously.
+
+Suggested permit shape:
+
+```text
+sandbox.create(
+  image,
+  cpu_limit,
+  ram_limit,
+  network_policy,
+  ttl,
+  project_snapshot
+)
+```
+
+CIDM controls:
+
+- whether a sandbox may be created
+- repository snapshot/branch
+- filesystem scope
+- egress allowlist
+- TTL
+- maximum spend/runtime
+- which artifacts may be imported back
+
+The sandbox never receives commit authority.
+
+### 12.2 Secrets — Infisical or sandbox-native secret proxy
+
+**Decision:** ADD before giving frontier agents broad external-service access.
+
+Prefer secret systems where the agent can use a credential without reading its plaintext.
+
+Candidates:
+
+- **Infisical Agent Proxy**
+- E2B/Daytona secret injection/proxy capabilities
+
+CIDM permits should reference secret capability IDs, not raw secret values.
+
+### 12.3 Browser automation
+
+**Decision:** ADD in two tiers.
+
+**Deterministic/browser-testing tier: Playwright**
+
+- Playwright CLI/skills for coding-agent workflows
+- Playwright MCP when structured MCP browser control is more useful
+- accessibility-snapshot interactions avoid requiring a vision model for ordinary DOM workflows
+
+**Cloud-browser tier: Browserbase + Stagehand**
+
+Use when browser sessions should be moved off the workstation or when production browser automation needs hosted session infrastructure. Stagehand adds natural-language `act`/`extract`/`observe` while Browserbase provides the cloud browser.
+
+CIDM should distinguish:
+
+```text
+READ_BROWSER
+EXTRACT_BROWSER
+MUTATE_BROWSER
+SUBMIT_TRANSACTION
+```
+
+Only the latter two should require stronger permits.
+
+---
+
+## 13. Observability and evaluation
+
+### 13.1 Phoenix + OpenTelemetry — recommended V1
 
 **Decision:** BUILD.
 
@@ -652,7 +730,7 @@ Phoenix
 
 Trace identifiers should link the two systems.
 
-### 12.2 What every run should measure
+### 13.2 What every run should measure
 
 - task/project ID
 - CIDM protocol version
@@ -678,7 +756,7 @@ Unknown accounting fields remain `null`/unknown.
 
 ---
 
-## 13. Experience plane
+## 14. Experience plane
 
 The already implemented recovery/distillation layer becomes a first-class V1 service:
 
@@ -718,7 +796,7 @@ This lets the arsenal improve while retaining provenance.
 
 ---
 
-## 14. Durable execution
+## 15. Durable execution
 
 ### Temporal — V1.x / production hardening
 
@@ -752,7 +830,7 @@ Do not let Temporal workflow code become a second decision brain.
 
 ---
 
-## 15. LangGraph
+## 16. LangGraph
 
 **Decision:** do not use as CIDM's core orchestrator.
 
@@ -769,7 +847,7 @@ Not acceptable:
 
 ---
 
-## 16. DSPy
+## 17. DSPy
 
 **Decision:** offline optimisation only.
 
@@ -798,7 +876,7 @@ DSPy must never rewrite production Jev policy automatically.
 
 ---
 
-## 17. OpenClaw
+## 18. OpenClaw
 
 **Decision:** not a core runtime in V1.
 
@@ -831,7 +909,7 @@ Jev -> Hermes
 
 ---
 
-## 18. V1 build matrix
+## 19. V1 build matrix
 
 | Component | V1 status | Compute location | Reason |
 |---|---|---|---|
@@ -844,6 +922,10 @@ Jev -> Hermes
 | Qdrant Cloud | **Core** | managed cloud | hybrid retrieval |
 | Hosted reranker | **Core** | cloud API | retrieval precision |
 | Phoenix + OpenTelemetry | **Core** | cloud/VPS/managed | tracing/evaluation |
+| E2B or Daytona | **Core experiment** | managed cloud | isolated code execution off local machine |
+| Infisical / sandbox secret proxy | **Core experiment** | managed/self-hosted | keep secrets out of agent context |
+| Playwright | **Core tool** | local/light/cloud | deterministic browser automation/testing |
+| Browserbase + Stagehand | **Project-specific** | managed cloud | offloaded resilient browser automation |
 | Skill Admission Registry | **Core** | local Git/state | trust/provenance |
 | Experience Distiller | **Core** | local/lightweight | verified learning |
 | Superpowers subset | **Approved candidates** | skill only | engineering procedure |
@@ -865,7 +947,7 @@ Jev -> Hermes
 
 ---
 
-## 19. Recommended implementation order
+## 20. Recommended implementation order
 
 ### Phase A — make the frontier arsenal safe
 
@@ -906,24 +988,31 @@ Jev -> Hermes
 
 ### Phase E — measurement
 
-20. Instrument CIDM/Hermes/frontier/retrieval with OpenTelemetry.
-21. Connect Phoenix.
-22. Create frozen evaluation datasets.
-23. Measure baseline vs LeanCTX.
-24. Measure hybrid retrieval + reranker vs current retrieval.
-25. Measure each methodology skill for completion, regression, tokens, and latency.
+20. Add one remote sandbox provider behind `SandboxProvider`.
+21. Add secret capability references and egress policies.
+22. Add Playwright automation with read/mutate permit classes.
+23. Add Browserbase/Stagehand only for projects that need hosted browser sessions.
 
-### Phase F — production resilience
+### Phase F — measurement
 
-26. Persistent checkpoint reconstruction.
-27. Add Temporal only if workflow duration/external waits justify it.
-28. Evaluate Headroom separately against LeanCTX.
-29. Evaluate Semantic Router only when routing volume justifies an extra layer.
-30. Evaluate LiteLLM when multi-user/API-key governance becomes necessary.
+24. Instrument CIDM/Hermes/frontier/retrieval with OpenTelemetry.
+25. Connect Phoenix.
+26. Create frozen evaluation datasets.
+27. Measure baseline vs LeanCTX.
+28. Measure hybrid retrieval + reranker vs current retrieval.
+29. Measure each methodology skill for completion, regression, tokens, and latency.
+
+### Phase G — production resilience
+
+30. Persistent checkpoint reconstruction.
+31. Add Temporal only if workflow duration/external waits justify it.
+32. Evaluate Headroom separately against LeanCTX.
+33. Evaluate Semantic Router only when routing volume justifies an extra layer.
+34. Evaluate LiteLLM when multi-user/API-key governance becomes necessary.
 
 ---
 
-## 20. V1 non-goals
+## 21. V1 non-goals
 
 Do not spend V1 effort on:
 
@@ -940,7 +1029,7 @@ Do not spend V1 effort on:
 
 ---
 
-## 21. V1 success criteria
+## 22. V1 success criteria
 
 Arsenal V1 is successful if:
 
@@ -959,7 +1048,7 @@ Arsenal V1 is successful if:
 
 ---
 
-## 22. Governing thesis
+## 23. Governing thesis
 
 **CIDM Arsenal Principle**
 
