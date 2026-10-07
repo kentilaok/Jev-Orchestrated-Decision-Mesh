@@ -269,11 +269,23 @@ class ArsenalRegistry:
           bug_key TEXT,skill_id TEXT,PRIMARY KEY(bug_key,skill_id));
         CREATE TABLE IF NOT EXISTS admissions(
           skill_id TEXT PRIMARY KEY,skill_hash TEXT NOT NULL,manifest_hash TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS experience_lessons(
+          lesson_id TEXT PRIMARY KEY,signature TEXT NOT NULL,project_scope TEXT NOT NULL,
+          unit_id TEXT NOT NULL,confidence TEXT NOT NULL,verified_observations INTEGER NOT NULL,
+          bug_keys TEXT NOT NULL,symptoms TEXT NOT NULL,root_causes TEXT NOT NULL,
+          failed_strategies TEXT NOT NULL,successful_strategies TEXT NOT NULL,
+          verifications TEXT NOT NULL,provenance TEXT NOT NULL,search_text TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS experience_bug_keys(
+          bug_key TEXT NOT NULL,lesson_id TEXT NOT NULL,PRIMARY KEY(bug_key,lesson_id));
         """)
         try:
             self.db.execute(
                 "CREATE VIRTUAL TABLE IF NOT EXISTS skill_fts USING "
                 "fts5(skill_id UNINDEXED,name,description,search_text)"
+            )
+            self.db.execute(
+                "CREATE VIRTUAL TABLE IF NOT EXISTS experience_fts USING "
+                "fts5(lesson_id UNINDEXED,project_scope,unit_id,search_text)"
             )
             self.fts5 = True
         except sqlite3.OperationalError:
@@ -378,6 +390,160 @@ class ArsenalRegistry:
             for row in self.db.execute("SELECT * FROM skills ORDER BY skill_id")
         ]
 
+    def index_lessons(self, lessons_path: Path) -> dict[str, Any]:
+        path = Path(lessons_path).expanduser()
+        require(path.is_file(), "lessons_file_not_found")
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        require(isinstance(raw, list) and len(raw) <= 10_000, "invalid_lessons_file")
+        indexed, errors = [], []
+        live_ids = set()
+        for item in raw:
+            try:
+                require(isinstance(item, dict), "invalid_lesson")
+                lesson_id = item.get("lesson_id")
+                scope = item.get("project_scope")
+                unit_id = item.get("unit_id")
+                signature = item.get("signature")
+                verified = item.get("verified_observations")
+                require(isinstance(lesson_id, str) and ID_RE.fullmatch(lesson_id), "invalid_lesson_id")
+                require(isinstance(scope, str) and ID_RE.fullmatch(scope), "invalid_lesson_scope")
+                require(isinstance(unit_id, str) and ID_RE.fullmatch(unit_id), "invalid_lesson_unit")
+                require(isinstance(signature, str) and 0 < len(signature) <= 128, "invalid_lesson_signature")
+                require(type(verified) is int and verified >= 1, "lesson_must_be_verified")
+                bug_keys = string_list(item.get("bug_keys", []), "lesson_bug_keys")
+                require(all(ID_RE.fullmatch(key) for key in bug_keys), "invalid_lesson_bug_key")
+                symptoms = string_list(item.get("symptoms", []), "lesson_symptoms")
+                root_causes = string_list(item.get("root_causes", []), "lesson_root_causes")
+                failed = string_list(item.get("failed_strategies", []), "lesson_failed_strategies")
+                successful = string_list(item.get("successful_strategies", []), "lesson_successful_strategies")
+                verifications = string_list(item.get("verifications", []), "lesson_verifications")
+                provenance = item.get("provenance", [])
+                require(isinstance(provenance, list) and len(provenance) <= 128, "invalid_lesson_provenance")
+                confidence = str(item.get("confidence") or "provisional")
+                search_text = "\n".join(
+                    [lesson_id, scope, unit_id, *bug_keys, *symptoms, *root_causes,
+                     *failed, *successful, *verifications]
+                )
+                with self.db:
+                    self.db.execute("DELETE FROM experience_bug_keys WHERE lesson_id=?", (lesson_id,))
+                    self.db.execute(
+                        """INSERT OR REPLACE INTO experience_lessons
+                           VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        (
+                            lesson_id, signature, scope, unit_id, confidence, verified,
+                            canonical(bug_keys), canonical(symptoms), canonical(root_causes),
+                            canonical(failed), canonical(successful), canonical(verifications),
+                            canonical(provenance), search_text,
+                        ),
+                    )
+                    for bug_key in bug_keys:
+                        self.db.execute(
+                            "INSERT OR IGNORE INTO experience_bug_keys VALUES(?,?)",
+                            (bug_key, lesson_id),
+                        )
+                    if self.fts5:
+                        self.db.execute("DELETE FROM experience_fts WHERE lesson_id=?", (lesson_id,))
+                        self.db.execute(
+                            "INSERT INTO experience_fts VALUES(?,?,?,?)",
+                            (lesson_id, scope, unit_id, search_text),
+                        )
+                live_ids.add(lesson_id)
+                indexed.append(lesson_id)
+            except Exception as error:
+                errors.append({
+                    "lesson_id": item.get("lesson_id") if isinstance(item, dict) else None,
+                    "error": str(error),
+                })
+        existing = [row["lesson_id"] for row in self.db.execute(
+            "SELECT lesson_id FROM experience_lessons"
+        ).fetchall()]
+        pruned = [lesson_id for lesson_id in existing if lesson_id not in live_ids]
+        if pruned:
+            with self.db:
+                for lesson_id in pruned:
+                    self.db.execute("DELETE FROM experience_bug_keys WHERE lesson_id=?", (lesson_id,))
+                    self.db.execute("DELETE FROM experience_lessons WHERE lesson_id=?", (lesson_id,))
+                    if self.fts5:
+                        self.db.execute("DELETE FROM experience_fts WHERE lesson_id=?", (lesson_id,))
+        return {
+            "indexed": len(indexed), "lesson_ids": indexed,
+            "errors": errors, "pruned": pruned,
+        }
+
+    def match_experiences(
+        self, task: str, *, project_scope: str | None = None,
+        bug_key: str | None = None, top_k: int = 5,
+    ) -> list[dict[str, Any]]:
+        require(isinstance(task, str) and 0 < len(task.strip()) <= 20_000, "invalid_task")
+        require(isinstance(top_k, int) and 1 <= top_k <= 20, "invalid_top_k")
+        exact = []
+        if bug_key is not None:
+            require(isinstance(bug_key, str) and ID_RE.fullmatch(bug_key), "invalid_bug_key")
+            exact = [row["lesson_id"] for row in self.db.execute(
+                "SELECT lesson_id FROM experience_bug_keys WHERE bug_key=?", (bug_key,)
+            ).fetchall()]
+        terms = self._tokens(task)[:24]
+        lexical = []
+        if terms and self.fts5:
+            query = " OR ".join('"' + term.replace('"', '""') + '"' for term in terms)
+            try:
+                lexical = [row["lesson_id"] for row in self.db.execute(
+                    "SELECT lesson_id FROM experience_fts WHERE experience_fts MATCH ? "
+                    "ORDER BY bm25(experience_fts) LIMIT ?", (query, max(20, top_k * 4))
+                ).fetchall()]
+            except sqlite3.OperationalError:
+                lexical = []
+        if not lexical:
+            rows = self.db.execute(
+                "SELECT lesson_id,search_text FROM experience_lessons"
+            ).fetchall()
+            rows = sorted(
+                rows, key=lambda row: self._lexical_score(task, row["search_text"]),
+                reverse=True,
+            )
+            lexical = [
+                row["lesson_id"] for row in rows[:max(20, top_k * 4)]
+                if self._lexical_score(task, row["search_text"]) > 0
+            ]
+        ids = list(dict.fromkeys(exact + lexical))
+        if not ids:
+            return []
+        marks = ",".join("?" for _ in ids)
+        matches = []
+        for row in self.db.execute(
+            "SELECT * FROM experience_lessons WHERE lesson_id IN (" + marks + ")",
+            tuple(ids),
+        ).fetchall():
+            if project_scope is not None and row["project_scope"] not in (project_scope, "global"):
+                continue
+            exact_bug = bool(bug_key and row["lesson_id"] in exact)
+            score = 1.0 if exact_bug else self._lexical_score(task, row["search_text"])
+            if project_scope and row["project_scope"] == project_scope:
+                score = min(1.0, score + 0.05)
+            matches.append({
+                "lesson_id": row["lesson_id"], "signature": row["signature"],
+                "project_scope": row["project_scope"], "unit_id": row["unit_id"],
+                "confidence": row["confidence"],
+                "verified_observations": row["verified_observations"],
+                "bug_keys": json.loads(row["bug_keys"]),
+                "symptoms": json.loads(row["symptoms"]),
+                "root_causes": json.loads(row["root_causes"]),
+                "failed_strategies": json.loads(row["failed_strategies"]),
+                "successful_strategies": json.loads(row["successful_strategies"]),
+                "verifications": json.loads(row["verifications"]),
+                "provenance": json.loads(row["provenance"]),
+                "match": {"score": round(score, 6), "exact_bug_key": exact_bug},
+                "authority": "context_only_no_fast_path",
+            })
+        matches.sort(
+            key=lambda item: (
+                item["match"]["exact_bug_key"], item["match"]["score"],
+                item["verified_observations"],
+            ),
+            reverse=True,
+        )
+        return matches[:top_k]
+
     def admit(self, skill_id: str) -> dict[str, Any]:
         require(isinstance(skill_id, str) and ID_RE.fullmatch(skill_id), "invalid_skill_id")
         row = self.db.execute(
@@ -463,10 +629,15 @@ class ArsenalRegistry:
             )
         ]
         ids = list(dict.fromkeys(exact + self._candidate_ids(task, max(20, top_k * 4))))
+        experience_matches = self.match_experiences(
+            task, project_scope=project_scope, bug_key=bug_key, top_k=top_k
+        )
         if not ids:
             return {
-                "decision": "escalate_to_jev", "reason": "no_local_candidate",
-                "confidence": 0.0, "matches": [],
+                "decision": "escalate_to_jev",
+                "reason": "known_experience_only" if experience_matches else "no_local_candidate",
+                "confidence": experience_matches[0]["match"]["score"] if experience_matches else 0.0,
+                "matches": [], "experience_matches": experience_matches,
             }
 
         marks = ",".join("?" for _ in ids)
@@ -503,8 +674,10 @@ class ArsenalRegistry:
         matches = matches[:top_k]
         if not matches:
             return {
-                "decision": "escalate_to_jev", "reason": "no_scope_candidate",
-                "confidence": 0.0, "matches": [],
+                "decision": "escalate_to_jev",
+                "reason": "known_experience_only" if experience_matches else "no_scope_candidate",
+                "confidence": experience_matches[0]["match"]["score"] if experience_matches else 0.0,
+                "matches": [], "experience_matches": experience_matches,
             }
 
         best = matches[0]
@@ -526,6 +699,7 @@ class ArsenalRegistry:
             "skill_id": best["skill_id"] if known else None,
             "fast_path": fast,
             "matches": matches,
+            "experience_matches": experience_matches,
         }
 
     def fast_path(
@@ -581,6 +755,8 @@ def main(argv=None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     scan = sub.add_parser("scan")
     scan.add_argument("--skills-dir", type=Path, required=True)
+    lessons = sub.add_parser("index-lessons")
+    lessons.add_argument("--lessons", type=Path, required=True)
     admit = sub.add_parser("admit")
     admit.add_argument("--skill-id", required=True)
     revoke = sub.add_parser("revoke")
@@ -597,6 +773,8 @@ def main(argv=None) -> int:
     with ArsenalRegistry(args.db) as registry:
         if args.command == "scan":
             result = registry.scan(args.skills_dir)
+        elif args.command == "index-lessons":
+            result = registry.index_lessons(args.lessons)
         elif args.command == "admit":
             result = registry.admit(args.skill_id)
         elif args.command == "revoke":
