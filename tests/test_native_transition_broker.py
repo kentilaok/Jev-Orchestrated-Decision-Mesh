@@ -286,10 +286,10 @@ class NativeTransitionBrokerTests(unittest.TestCase):
         self.assertEqual(len(observed), 1)
         self.assertEqual(len(codex.calls), 4)
         self.assertEqual(len(jev.calls), 11)
-        self.assertTrue(any(
-            event.get('kind') == 'arsenal_shadow'
-            for event in result['events']
-        ))
+        journal = (self.folder / 'arsenal-shadow' / 'journal.jsonl').read_text(
+            encoding='utf-8'
+        )
+        self.assertIn('"kind":"arsenal_shadow"', journal)
 
     def test_arsenal_shadow_failure_never_blocks_cidm_run(self):
         def observer(_state):
