@@ -77,6 +77,28 @@ This keeps historical behaviour unchanged unless an experiment opts into a diffe
 
 The fused protocol remains a separate experimental baseline. Its deferred permits encode a two-attempt assumption and should not be generalized until a recovery-specific fused permit contract is designed and audited.
 
+## Native broker integration
+
+The standalone native broker now accepts:
+
+```bash
+python scripts/native_transition_broker.py \
+  --live \
+  --gate-policy recovery \
+  --task examples/native-project.request.json \
+  --out runs/native-recovery-001
+```
+
+The recovery policy is audited with the same separate-gate commit checks as the conditional-review controller. It deliberately skips the legacy `project_route` stop gate and begins at `authorize_unit`; every completed worker result still returns to Jev before any commit.
+
+The three recovery limits are independent:
+
+- `max_recovery_attempts`: candidate attempts inside one `run_unit` call (default 2)
+- `max_verification_attempts`: checker attempts for one candidate (default 2)
+- `max_recovery_rounds`: fresh supervisor-level replans of the same unit after local limits are exhausted (default 2)
+
+They are safety ceilings, not optimization targets. A larger value can increase calls, tokens and latency.
+
 ## Evidence recovery
 
 A recovery evidence callback receives a bounded packet containing:
