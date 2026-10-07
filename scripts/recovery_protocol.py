@@ -131,7 +131,8 @@ class RecoverySupervisor:
             mesh_state_hash=payload["mesh_state_hash"],
             event_cursor=payload["event_cursor"],
         )
-        self._event("recovery_checkpoint", checkpoint=self.checkpoint.to_dict())
+        self._event("recovery_checkpoint", unit_id=unit.id,
+                    checkpoint=self.checkpoint.to_dict())
         return self._result("paused_recoverable", checkpoint=self.checkpoint.to_dict())
 
     def _append_evidence(self, packet: dict, *, unit_id: str):
