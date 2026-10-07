@@ -178,3 +178,29 @@ The experience plane has no commit authority. Its purpose is to improve future e
 This changes the primary stability question. A useful CIDM system should not merely minimize unsafe forwarding. It should also minimize **false terminality**: cases where the current candidate must be rejected but useful project progress remains possible. Future evaluation should therefore report project completion, gate false-negative rate, successful recovery rate, external checkpoints, integrity failures, retry cost, and recurrence of previously solved bugs before and after skill promotion, alongside correctness, release quality, total tokens, API cost, and latency.
 
 The recovery and distillation design is specified in [RECOVERY-AND-DISTILLATION.md](RECOVERY-AND-DISTILLATION.md). It is an implemented experimental extension, not yet evidence of project-scale efficiency or robustness.
+
+
+## Frontier-first capability arsenal
+
+The next build direction is deliberately **frontier-first and thin-client**. CIDM should not require local LLM inference, local fine-tuning, or sustained GPU workloads to become useful. A modest workstation can remain the control node while Claude, Codex/ChatGPT, managed retrieval, hosted reranking, and remote evaluation services perform expensive work.
+
+This leads to a broader architectural rule:
+
+> **Capability expansion should occur horizontally beneath a stable authority boundary, rather than vertically by stacking autonomous orchestrators.**
+
+Jev therefore remains the global decision plane. Hermes remains the operational execution/skill plane. Frontier providers, MCP tools, retrieval systems, context gateways, methodology skills, and durable workflow infrastructure are capabilities that Jev may admit and bound; none of them independently gain commit authority.
+
+The first Arsenal architecture prioritizes:
+
+- Claude Code plus an account-aware Codex/ChatGPT frontier adapter;
+- MCP as the capability bus;
+- LeanCTX as an initial measurable read-path/context/tool-catalog gateway;
+- managed Qdrant hybrid retrieval plus a hosted reranker;
+- Phoenix/OpenTelemetry for observability and evaluation;
+- a governed skill-admission registry;
+- a small reviewed engineering-methodology skill set;
+- the existing experience-distillation layer for verified procedural learning.
+
+Local Qwen/Ajax/Odysseus inference, LangGraph as a core controller, lossy protocol compression, and public-skill auto-installation are explicitly outside V1.
+
+The detailed build order, compatibility constraints, and V1 acceptance criteria are specified in [ARSENAL-V1.md](ARSENAL-V1.md).
