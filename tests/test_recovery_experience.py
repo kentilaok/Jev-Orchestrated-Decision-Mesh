@@ -1,4 +1,6 @@
+import contextlib
 import copy
+import io
 import json
 from pathlib import Path
 import sys
@@ -19,7 +21,9 @@ from experience_distiller import (
     promotable,
     render_skill,
     write_promoted_skills,
+    main as distill_main,
 )
+from arsenal_registry import ArsenalRegistry
 from recovery_protocol import RecoveryJudge, RecoverySupervisor, record_recovery_note
 
 
@@ -257,6 +261,40 @@ class DistillationTests(unittest.TestCase):
                 },
             ],
         }
+
+    def test_distiller_can_refresh_arsenal_verified_experience_index(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            result_path = root / "result.json"
+            result_path.write_text(
+                json.dumps(self.fixture("r1"), indent=2) + "\n",
+                encoding="utf-8",
+            )
+            ledger = root / "ledger.jsonl"
+            lessons = root / "lessons.json"
+            arsenal_db = root / "arsenal.db"
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = distill_main([
+                    str(result_path),
+                    "--ledger", str(ledger),
+                    "--lessons", str(lessons),
+                    "--arsenal-db", str(arsenal_db),
+                    "--project-scope", "wordpress",
+                ])
+            self.assertIsNone(code)
+            with ArsenalRegistry(arsenal_db) as registry:
+                match = registry.match(
+                    "candidate scale fails the semantic validator",
+                    project_scope="wordpress",
+                    bug_key="scale-mismatch",
+                )
+            self.assertEqual(match["decision"], "escalate_to_jev")
+            self.assertEqual(match["reason"], "known_experience_only")
+            self.assertEqual(len(match["experience_matches"]), 1)
+            self.assertEqual(
+                match["experience_matches"][0]["authority"],
+                "context_only_no_fast_path",
+            )
 
     def test_only_verified_recoveries_become_lessons(self):
         unresolved = {
