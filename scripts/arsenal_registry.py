@@ -97,6 +97,7 @@ def normalize_manifest(value: Any) -> dict[str, Any]:
     require(isinstance(value["description"], str) and value["description"].strip(), "invalid_description")
     scopes = string_list(value["project_scope"], "project_scope", 24)
     require(bool(scopes), "project_scope_required")
+    require(all(ID_RE.fullmatch(scope) for scope in scopes), "invalid_project_scope")
 
     raw_triggers = value["triggers"]
     require(isinstance(raw_triggers, dict), "invalid_triggers")
@@ -118,6 +119,8 @@ def normalize_manifest(value: Any) -> dict[str, Any]:
     require(type(value["frontier_required"]) is bool, "invalid_frontier_required")
     validators = string_list(value["validators"], "validators", 32)
     operations = string_list(value["operations"], "operations", 32)
+    require(all(ID_RE.fullmatch(item) for item in validators), "invalid_validator_id")
+    require(all(ID_RE.fullmatch(item) for item in operations), "invalid_operation_id")
     admission = value["admission"]
     require(
         isinstance(admission, dict)
@@ -310,6 +313,25 @@ class ArsenalRegistry:
         paths = sorted(root.rglob("SKILL.md"))
         require(len(paths) <= 500, "skill_scan_limit_exceeded")
         indexed, errors = [], []
+        live_paths = {str(path.resolve()) for path in paths}
+        root_resolved = root.resolve()
+        pruned = []
+        for row in self.db.execute("SELECT skill_id,skill_path FROM skills").fetchall():
+            stored = Path(row["skill_path"])
+            try:
+                inside = stored.is_relative_to(root_resolved)
+            except ValueError:
+                inside = False
+            if inside and str(stored) not in live_paths:
+                pruned.append(row["skill_id"])
+        if pruned:
+            with self.db:
+                for skill_id in pruned:
+                    self.db.execute("DELETE FROM bug_keys WHERE skill_id=?", (skill_id,))
+                    self.db.execute("DELETE FROM admissions WHERE skill_id=?", (skill_id,))
+                    self.db.execute("DELETE FROM skills WHERE skill_id=?", (skill_id,))
+                    if self.fts5:
+                        self.db.execute("DELETE FROM skill_fts WHERE skill_id=?", (skill_id,))
         for path in paths:
             try:
                 skill = compile_skill(path)
@@ -319,7 +341,7 @@ class ArsenalRegistry:
                 errors.append({"path": str(path), "error": str(error)})
         return {
             "found": len(paths), "indexed": len(indexed), "skill_ids": indexed,
-            "errors": errors, "fts5": self.fts5,
+            "errors": errors, "fts5": self.fts5, "pruned": pruned,
         }
 
     def _is_admitted(self, row: sqlite3.Row) -> bool:
@@ -430,6 +452,10 @@ class ArsenalRegistry:
         require(0.5 <= threshold <= 1.0 and 1 <= top_k <= 20, "invalid_match_config")
         if bug_key is not None:
             require(isinstance(bug_key, str) and ID_RE.fullmatch(bug_key), "invalid_bug_key")
+        if project_scope is not None:
+            require(isinstance(project_scope, str) and ID_RE.fullmatch(project_scope), "invalid_project_scope")
+        if operation is not None:
+            require(isinstance(operation, str) and ID_RE.fullmatch(operation), "invalid_operation_id")
 
         exact = [] if not bug_key else [
             row["skill_id"] for row in self.db.execute(
