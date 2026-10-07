@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jev Operator Console</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">J</div>
+        <div><strong>Jev Console</strong><span>Decision Mesh</span></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-view="operate">Operate</button>
+        <button class="nav-item" data-view="models">Frontier models</button>
+        <button class="nav-item" data-view="runtime">Runtime</button>
+        <button class="nav-item" data-view="about">Architecture</button>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="dot" id="healthDot"></span>
+        <span id="healthText">Checking runtime…</span>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">JEV · HERMES · CLAUDE</p>
+          <h1>Operator Console</h1>
+        </div>
+        <div class="model-pill">
+          <span>Frontier</span>
+          <strong id="modelPill">Loading…</strong>
+        </div>
+      </header>
+
+      <section id="operate" class="view active-view">
+        <div class="hero-grid">
+          <article class="card composer">
+            <div class="card-head">
+              <div><p class="eyebrow">TASK</p><h2>What should the system do?</h2></div>
+              <span class="badge">Claude-first</span>
+            </div>
+            <textarea id="taskInput" placeholder="Describe the outcome, constraints, evidence requirements and what counts as done…"></textarea>
+            <div class="controls-grid">
+              <label>Provider<select id="providerSelect"></select></label>
+              <label>Frontier model<select id="modelSelect"></select></label>
+              <label>Reasoning<select id="effortSelect">
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="max">Max</option>
+                <option value="low">Low</option>
+                <option value="none">Provider default</option>
+              </select></label>
+            </div>
+            <label class="workspace-label">Workspace
+              <input id="workspaceInput" placeholder="Leave blank for this repository, or enter an existing local project directory" />
+            </label>
+            <div class="action-row">
+              <button id="previewBtn" class="button secondary">Preview route</button>
+              <button id="runBtn" class="button primary">Run through Hermes</button>
+            </div>
+            <p class="fine-print">Runs bind to localhost by default. Hermes executes with <code>--safe-mode</code>; keep irreversible mutations behind explicit project approvals.</p>
+          </article>
+
+          <article class="card route-card">
+            <div class="card-head"><div><p class="eyebrow">CONTROL PLANE</p><h2>Execution route</h2></div><span id="routeStatus" class="badge neutral">Idle</span></div>
+            <div id="routeGraph" class="route-graph">
+              <div class="route-node"><span>1</span><div><strong>Jev</strong><small>Classify · budget · route</small></div></div>
+              <div class="route-arrow">↓</div>
+              <div class="route-node"><span>2</span><div><strong>Hermes</strong><small>Skills · memory · local tools</small></div></div>
+              <div class="route-arrow">↓</div>
+              <div class="route-node accent"><span>3</span><div><strong id="routeModel">Claude</strong><small>Frontier reasoning worker</small></div></div>
+              <div class="route-arrow">↓</div>
+              <div class="route-node"><span>4</span><div><strong>Validators</strong><small>Tests · evidence · policy</small></div></div>
+              <div class="route-arrow">↓</div>
+              <div class="route-node"><span>5</span><div><strong>Jev</strong><small>Accept · retry · escalate · stop</small></div></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="lower-grid">
+          <article class="card output-card">
+            <div class="card-head"><div><p class="eyebrow">RESULT</p><h2>Run output</h2></div><button id="clearBtn" class="text-button">Clear</button></div>
+            <pre id="output">No run yet. Preview a route or execute a task.</pre>
+          </article>
+          <article class="card status-card">
+            <p class="eyebrow">LIVE STATUS</p>
+            <h2>Runtime</h2>
+            <div class="status-list">
+              <div><span>Hermes CLI</span><strong id="hermesStatus">—</strong></div>
+              <div><span>Claude provider</span><strong id="claudeStatus">—</strong></div>
+              <div><span>Jev gateway</span><strong id="jevStatus">—</strong></div>
+              <div><span>Console mode</span><strong>Local</strong></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="models" class="view">
+        <article class="card wide-card">
+          <p class="eyebrow">MODEL REGISTRY</p><h2>Frontier model switcher</h2>
+          <p class="muted">Anthropic is the only enabled provider in v1. The registry is provider-neutral so other frontier providers can be added later.</p>
+          <div id="modelCards" class="model-cards"></div>
+        </article>
+      </section>
+
+      <section id="runtime" class="view">
+        <article class="card wide-card">
+          <p class="eyebrow">RUNTIME</p><h2>Execution boundary</h2>
+          <div class="architecture-strip">
+            <span>Browser UI</span><b>→</b><span>Local Python API</span><b>→</b><span>Hermes CLI</span><b>→</b><span>Claude</span>
+          </div>
+          <p class="muted">Jev remains the global control plane. This console exposes Jev readiness and route previews now; the live Hermes worker is isolated behind a runtime adapter so CIDM can later call it as a governed worker without coupling the UI to one model vendor.</p>
+        </article>
+      </section>
+
+      <section id="about" class="view">
+        <article class="card wide-card">
+          <p class="eyebrow">ARCHITECTURE</p><h2>Why this separation matters</h2>
+          <div class="about-grid">
+            <div><strong>Jev</strong><p>Owns global routing, evidence sufficiency, budgets, retry/escalation policy and final arbitration.</p></div>
+            <div><strong>Hermes</strong><p>Owns persistent operational context, skills, sessions and tool execution for a bounded task.</p></div>
+            <div><strong>Claude</strong><p>Provides the frontier reasoning capacity selected for this run.</p></div>
+            <div><strong>Validators</strong><p>Provide deterministic evidence so the control plane does not rely on self-reported confidence.</p></div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
