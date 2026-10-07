@@ -16,4 +16,17 @@ jobs:
         with:
           python-version: "3.11"
       - name: Run unit tests
-        run: python -B -m unittest discover -s tests -p "test_*.py" -v
+        shell: bash
+        run: |
+          set +e
+          python -B -m unittest discover -s tests -p "test_*.py" -v 2>&1 | tee test-output.txt
+          code=${PIPESTATUS[0]}
+          echo "TEST_EXIT_CODE=${code}" >> "${GITHUB_ENV}"
+          exit "${code}"
+      - name: Upload unittest transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unittest-transcript
+          path: test-output.txt
+          if-no-files-found: error
