@@ -11,8 +11,10 @@ from atomic_mesh import AtomicMesh, fingerprint, packed
 from checked_network import CheckedNetwork
 from network_run import DEMO, DemoPipeline, fake_check
 from experience_distiller import (
+    append_jsonl,
     distill_lessons,
     extract_experiences,
+    load_jsonl,
     promotable,
     render_skill,
     write_promoted_skills,
@@ -278,9 +280,31 @@ class DistillationTests(unittest.TestCase):
             )
             self.assertEqual(len(written), 1)
             text = written[0].read_text(encoding="utf-8")
-            self.assertIn("name: cidm-hidden1-", text)
+            self.assertIn("name: cidm-unscoped-hidden1-", text)
             self.assertIn("Failure signature:", text)
             self.assertIn("## Provenance", text)
+
+    def test_project_scope_separates_otherwise_identical_lessons(self):
+        left = extract_experiences(
+            self.fixture("r1"), run_id="r1", project_scope="riftforge"
+        )
+        right = extract_experiences(
+            self.fixture("r2"), run_id="r2", project_scope="se-knowledge"
+        )
+        lessons = distill_lessons(left + right)
+        self.assertEqual(len(lessons), 2)
+        self.assertEqual(
+            {lesson["project_scope"] for lesson in lessons},
+            {"riftforge", "se-knowledge"},
+        )
+
+    def test_ledger_deduplicates_same_experience_id(self):
+        record = extract_experiences(self.fixture("r1"), run_id="r1")[0]
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "ledger.jsonl"
+            self.assertEqual(append_jsonl(path, [record]), 1)
+            self.assertEqual(append_jsonl(path, [record]), 0)
+            self.assertEqual(len(load_jsonl(path)), 1)
 
 
 if __name__ == "__main__":
