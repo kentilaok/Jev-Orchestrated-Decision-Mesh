@@ -65,16 +65,23 @@
       "authority": "cidm-only"
     },
     {
+      "id": "arsenal-shadow",
+      "type": "local-routing-observer",
+      "status": "implemented-core-calibration",
+      "location": "local-lightweight",
+      "authority": "observation-only"
+    },
+    {
       "id": "fastembed-onnx",
       "type": "local-semantic-retrieval",
-      "status": "next-phase",
+      "status": "implemented-optional",
       "location": "local-cpu",
       "authority": "ranking-only"
     },
     {
       "id": "small-onnx-reranker",
       "type": "local-retrieval-reranker",
-      "status": "next-phase",
+      "status": "implemented-optional",
       "location": "local-cpu",
       "authority": "ranking-only"
     },
