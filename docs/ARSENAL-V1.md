@@ -1238,15 +1238,19 @@ Jev -> Hermes
 5. Separate hash-bound local owner admission and revocation.
 6. Fast Path **eligibility evaluation**; execution is not yet automatic.
 7. Experience Distiller generation of conservative candidate manifests.
+8. Optional FastEmbed/ONNX semantic index with skill-hash caching.
+9. Optional FastEmbed cross-encoder reranking for top-k candidates.
+10. RRF Shadow Mode that fuses lexical + semantic rankings without bypassing Jev.
+11. Shadow JSONL records for would-be Fast Path decisions.
 
 **Still required before Phase A is complete:**
 
-8. Optional FastEmbed/ONNX semantic index with content-hash caching.
-9. Small CPU reranker for top-k candidates.
-10. Experience-summary indexing beyond promoted skills.
-11. Bind eligible operations to real CIDM permits and validator receipts.
-12. Shadow-mode telemetry for local match confidence and frontier-call avoidance.
-13. Negative-transfer measurement when a local match later fails.
+12. Experience-summary indexing beyond promoted skills.
+13. Bind eligible operations to real CIDM permits and validator receipts.
+14. Integrate Shadow Mode into the live/native task path rather than invoking it only as a standalone command.
+15. Score Shadow predictions against eventual Jev/frontier/validator outcomes.
+16. Negative-transfer measurement when a local match later fails.
+17. Establish calibrated promotion thresholds before enabling any non-exact Fast Path class.
 
 ### Phase B — frontier adapter safety
 
