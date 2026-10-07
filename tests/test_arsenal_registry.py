@@ -237,6 +237,69 @@ class ArsenalRegistryTests(unittest.TestCase):
         )
         self.assertFalse(skill.admitted)
 
+    def test_verified_lesson_is_searchable_but_never_fast_path_authority(self):
+        lessons = self.root / "lessons.json"
+        lessons.write_text(json.dumps([{
+            "lesson_id": "lesson-abc123",
+            "signature": "abc123",
+            "project_scope": "wordpress",
+            "unit_id": "hidden1",
+            "confidence": "medium",
+            "verified_observations": 2,
+            "bug_keys": ["wordpress.memberpress.logged_out_visibility"],
+            "symptoms": ["Protected product is visible while signed out."],
+            "root_causes": ["Anonymous protection did not cover the product route."],
+            "failed_strategies": ["MemberPress rule alone."],
+            "successful_strategies": ["Inspect public visibility and apply the verified protection path."],
+            "verifications": ["Anonymous browser check passed."],
+            "provenance": [{"run_id": "r1"}, {"run_id": "r2"}],
+        }], indent=2) + "\n", encoding="utf-8")
+
+        with ArsenalRegistry(self.db) as registry:
+            indexed = registry.index_lessons(lessons)
+            match = registry.match(
+                "protected product visible while signed out",
+                project_scope="wordpress",
+                bug_key="wordpress.memberpress.logged_out_visibility",
+                operation="inspect_content",
+            )
+        self.assertEqual(indexed["indexed"], 1)
+        self.assertEqual(match["decision"], "escalate_to_jev")
+        self.assertEqual(match["reason"], "known_experience_only")
+        self.assertEqual(match["experience_matches"][0]["lesson_id"], "lesson-abc123")
+        self.assertEqual(
+            match["experience_matches"][0]["authority"],
+            "context_only_no_fast_path",
+        )
+
+    def test_verified_lesson_respects_project_scope(self):
+        lessons = self.root / "lessons.json"
+        lessons.write_text(json.dumps([{
+            "lesson_id": "lesson-scope1",
+            "signature": "scope1",
+            "project_scope": "wordpress",
+            "unit_id": "hidden1",
+            "confidence": "medium",
+            "verified_observations": 2,
+            "bug_keys": ["wordpress.memberpress.logged_out_visibility"],
+            "symptoms": ["Protected product is visible while signed out."],
+            "root_causes": [],
+            "failed_strategies": [],
+            "successful_strategies": [],
+            "verifications": [],
+            "provenance": [],
+        }], indent=2) + "\n", encoding="utf-8")
+
+        with ArsenalRegistry(self.db) as registry:
+            registry.index_lessons(lessons)
+            match = registry.match(
+                "protected product visible while signed out",
+                project_scope="roblox",
+                bug_key="wordpress.memberpress.logged_out_visibility",
+            )
+        self.assertEqual(match["reason"], "no_local_candidate")
+        self.assertEqual(match["experience_matches"], [])
+
     def test_experience_distiller_manifest_is_conservative_candidate(self):
         lesson = {
             "lesson_id": "lesson-123",
