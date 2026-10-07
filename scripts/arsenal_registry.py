@@ -212,9 +212,9 @@ def compile_skill(path: Path) -> CompiledSkill:
         frontier_required = manifest["frontier_required"]
         validators = tuple(manifest["validators"])
         operations = tuple(manifest["operations"])
-        admitted = manifest["admission"] == {
-            "status": "admitted", "owner_approved": True
-        }
+        # Manifest admission fields are descriptive/request metadata only.
+        # Trust is granted separately in the local hash-bound admissions table.
+        admitted = False
     else:
         skill_id = path.parent.name if ID_RE.fullmatch(path.parent.name) else digest(str(path))[:24]
         version = "unmanifested"
@@ -264,6 +264,8 @@ class ArsenalRegistry:
           triggers TEXT,search_text TEXT);
         CREATE TABLE IF NOT EXISTS bug_keys(
           bug_key TEXT,skill_id TEXT,PRIMARY KEY(bug_key,skill_id));
+        CREATE TABLE IF NOT EXISTS admissions(
+          skill_id TEXT PRIMARY KEY,skill_hash TEXT NOT NULL,manifest_hash TEXT NOT NULL);
         """)
         try:
             self.db.execute(
@@ -320,13 +322,26 @@ class ArsenalRegistry:
             "errors": errors, "fts5": self.fts5,
         }
 
+    def _is_admitted(self, row: sqlite3.Row) -> bool:
+        if not row["manifest_hash"]:
+            return False
+        approval = self.db.execute(
+            "SELECT skill_hash,manifest_hash FROM admissions WHERE skill_id=?",
+            (row["skill_id"],),
+        ).fetchone()
+        return bool(
+            approval
+            and approval["skill_hash"] == row["skill_hash"]
+            and approval["manifest_hash"] == row["manifest_hash"]
+        )
+
     def _skill(self, row: sqlite3.Row) -> dict[str, Any]:
         return {
             "skill_id": row["skill_id"], "name": row["name"],
             "description": row["description"], "version": row["version"],
             "project_scope": json.loads(row["scope"]), "skill_path": row["skill_path"],
             "skill_hash": row["skill_hash"], "manifest_hash": row["manifest_hash"],
-            "admitted": bool(row["admitted"]), "risk": row["risk"],
+            "admitted": self._is_admitted(row), "risk": row["risk"],
             "frontier_required": bool(row["frontier_required"]),
             "validators": json.loads(row["validators"]),
             "operations": json.loads(row["operations"]),
@@ -340,6 +355,33 @@ class ArsenalRegistry:
             self._skill(row)
             for row in self.db.execute("SELECT * FROM skills ORDER BY skill_id")
         ]
+
+    def admit(self, skill_id: str) -> dict[str, Any]:
+        require(isinstance(skill_id, str) and ID_RE.fullmatch(skill_id), "invalid_skill_id")
+        row = self.db.execute(
+            "SELECT * FROM skills WHERE skill_id=?", (skill_id,)
+        ).fetchone()
+        require(row is not None, "unknown_skill")
+        require(bool(row["manifest_hash"]), "manifest_required_for_admission")
+        with self.db:
+            self.db.execute(
+                "INSERT OR REPLACE INTO admissions(skill_id,skill_hash,manifest_hash) VALUES(?,?,?)",
+                (skill_id, row["skill_hash"], row["manifest_hash"]),
+            )
+        return {
+            "skill_id": skill_id,
+            "admitted": True,
+            "skill_hash": row["skill_hash"],
+            "manifest_hash": row["manifest_hash"],
+        }
+
+    def revoke(self, skill_id: str) -> dict[str, Any]:
+        require(isinstance(skill_id, str) and ID_RE.fullmatch(skill_id), "invalid_skill_id")
+        with self.db:
+            cursor = self.db.execute(
+                "DELETE FROM admissions WHERE skill_id=?", (skill_id,)
+            )
+        return {"skill_id": skill_id, "revoked": cursor.rowcount > 0}
 
     def _tokens(self, text: str) -> list[str]:
         return list(dict.fromkeys(token.lower() for token in WORD_RE.findall(text)))
@@ -510,6 +552,10 @@ def main(argv=None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     scan = sub.add_parser("scan")
     scan.add_argument("--skills-dir", type=Path, required=True)
+    admit = sub.add_parser("admit")
+    admit.add_argument("--skill-id", required=True)
+    revoke = sub.add_parser("revoke")
+    revoke.add_argument("--skill-id", required=True)
     match = sub.add_parser("match")
     match.add_argument("--task", required=True)
     match.add_argument("--project-scope")
@@ -522,6 +568,10 @@ def main(argv=None) -> int:
     with ArsenalRegistry(args.db) as registry:
         if args.command == "scan":
             result = registry.scan(args.skills_dir)
+        elif args.command == "admit":
+            result = registry.admit(args.skill_id)
+        elif args.command == "revoke":
+            result = registry.revoke(args.skill_id)
         elif args.command == "match":
             result = registry.match(
                 args.task, project_scope=args.project_scope,
