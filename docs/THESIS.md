@@ -204,3 +204,29 @@ The first Arsenal architecture prioritizes:
 Local Qwen/Ajax/Odysseus inference, LangGraph as a core controller, lossy protocol compression, and public-skill auto-installation are explicitly outside V1.
 
 The detailed build order, compatibility constraints, and V1 acceptance criteria are specified in [ARSENAL-V1.md](ARSENAL-V1.md).
+
+
+## Local cognitive substrate and frontier-call avoidance
+
+A frontier model should not be the default mechanism for every classification, lookup, routing decision, or already-known repair. CIDM should first exploit a **local cognitive substrate** composed of deterministic policy, lexical retrieval, small CPU embedding/reranking models, cached experience, compiled skill metadata, static analysis, and hard validators. These components do not need the broad generative capacity of Claude, Codex, or a local LLM.
+
+The intended escalation ladder is:
+
+```text
+deterministic policy / exact signature
+        -> SQLite FTS5/BM25
+        -> local embedding similarity
+        -> small local reranker
+        -> Jev model decision
+        -> frontier worker
+```
+
+Each tier is entered only when the cheaper tier cannot resolve the decision with sufficient confidence and policy coverage.
+
+Hermes skills should therefore have two representations. The human/agent-facing `SKILL.md` remains procedural knowledge, while admission also produces a machine-readable compiled representation containing trigger examples, bug keys, lexical terms, project scope, required capabilities, permissions, validator contract, risk tier, and content hash. The local substrate indexes these records so a known task can often select an already-approved procedure without sending the full skill library to a frontier model.
+
+For low-risk, reversible, pre-authorized procedures with deterministic validators, CIDM may eventually support a **compiled-policy fast path**: a matching approved skill can be executed by Hermes/tools and accepted only after its declared validators pass. This does not bypass CIDM; CIDM itself is executing an already reviewed policy rather than paying for a model to rediscover the same decision. Novel, ambiguous, destructive, externally consequential, or policy-sensitive tasks still escalate to Jev.
+
+This changes the efficiency objective. CIDM should measure not only tokens per call but also **frontier-call avoidance rate**, including why each avoided call was considered safe, which skill/policy resolved it, what validators ran, and whether the outcome later required recovery. A successful experience/skill system should progressively increase the share of routine work resolved below the frontier tier without increasing false commits or negative transfer.
+
+The V1 hardware assumption is therefore **no heavy local generative inference**, not no local intelligence. CPU-first ONNX embedding and small reranking models, lexical search, caches, AST analysis, and deterministic validation are compatible with a modest workstation and are specifically intended to reduce frontier usage. The implementation direction is specified in [ARSENAL-V1.md](ARSENAL-V1.md).
