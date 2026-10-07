@@ -99,12 +99,14 @@ class ArsenalRegistryTests(unittest.TestCase):
         self.write_skill(manifest=admitted_manifest())
         with ArsenalRegistry(self.db) as registry:
             registry.scan(self.skills)
+            approval = registry.admit("public-protection")
             match = registry.match(
                 "protected product visible while signed out",
                 project_scope="wordpress",
                 bug_key="wordpress.memberpress.logged_out_visibility",
                 operation="inspect_content",
             )
+        self.assertTrue(approval["admitted"])
         self.assertEqual(match["decision"], "known_skill")
         self.assertTrue(match["fast_path"]["eligible"])
         self.assertEqual(
@@ -116,6 +118,7 @@ class ArsenalRegistryTests(unittest.TestCase):
         self.write_skill(manifest=admitted_manifest())
         with ArsenalRegistry(self.db) as registry:
             registry.scan(self.skills)
+            registry.admit("public-protection")
             missing = registry.match(
                 "protected product visible while signed out",
                 project_scope="wordpress",
@@ -142,6 +145,43 @@ class ArsenalRegistryTests(unittest.TestCase):
             )
         self.assertEqual(match["decision"], "escalate_to_jev")
         self.assertEqual(match["reason"], "no_scope_candidate")
+
+    def test_manifest_cannot_self_admit_without_local_hash_bound_approval(self):
+        self.write_skill(manifest=admitted_manifest())
+        with ArsenalRegistry(self.db) as registry:
+            registry.scan(self.skills)
+            match = registry.match(
+                "protected product visible while signed out",
+                project_scope="wordpress",
+                bug_key="wordpress.memberpress.logged_out_visibility",
+                operation="inspect_content",
+            )
+        self.assertFalse(match["matches"][0]["admitted"])
+        self.assertIn("skill_not_admitted", match["fast_path"]["reasons"])
+
+    def test_skill_change_invalidates_existing_admission(self):
+        target = self.write_skill(manifest=admitted_manifest())
+        with ArsenalRegistry(self.db) as registry:
+            registry.scan(self.skills)
+            registry.admit("public-protection")
+            before = registry.match(
+                "protected product visible while signed out",
+                project_scope="wordpress",
+                bug_key="wordpress.memberpress.logged_out_visibility",
+                operation="inspect_content",
+            )
+            self.assertTrue(before["fast_path"]["eligible"])
+            with (target / "SKILL.md").open("a", encoding="utf-8") as stream:
+                stream.write("\nNew owner review required after this change.\n")
+            registry.scan(self.skills)
+            after = registry.match(
+                "protected product visible while signed out",
+                project_scope="wordpress",
+                bug_key="wordpress.memberpress.logged_out_visibility",
+                operation="inspect_content",
+            )
+        self.assertFalse(after["matches"][0]["admitted"])
+        self.assertIn("skill_not_admitted", after["fast_path"]["reasons"])
 
     def test_candidate_manifest_remains_searchable_without_fast_path_authority(self):
         manifest = admitted_manifest()
@@ -181,7 +221,7 @@ class ArsenalRegistryTests(unittest.TestCase):
             "Protected product is visible while signed out.",
             skill.triggers["phrases"],
         )
-        self.assertTrue(skill.admitted)
+        self.assertFalse(skill.admitted)
 
     def test_experience_distiller_manifest_is_conservative_candidate(self):
         lesson = {
