@@ -286,10 +286,19 @@ def write_promoted_skills(lessons: Iterable[dict], skills_dir: Path, *,
             lesson, min_verified=min_verified, owner_approved=owner_approved
         ):
             continue
+        scope = str(lesson.get("project_scope") or "unscoped")
+        if scope == "unscoped" and not owner_approved:
+            raise ValueError("project_scope_required_for_skill_promotion")
         folder = skills_dir / skill_name(lesson)
         folder.mkdir(parents=True, exist_ok=True)
         path = folder / "SKILL.md"
-        path.write_text(render_skill(lesson), encoding="utf-8")
+        rendered = render_skill(lesson)
+        if path.exists():
+            existing = path.read_text(encoding="utf-8")
+            signature_marker = "Failure signature: \`" + str(lesson.get("signature") or "unknown") + "\`"
+            if signature_marker not in existing:
+                raise ValueError("refusing_to_overwrite_nonmatching_skill")
+        path.write_text(rendered, encoding="utf-8")
         written.append(path)
     return written
 
