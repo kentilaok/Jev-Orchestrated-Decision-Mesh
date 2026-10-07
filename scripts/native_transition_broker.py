@@ -14,6 +14,7 @@ from atomic_mesh import MeshError, fingerprint, packed, require
 from checked_network import CheckedNetwork, Unit, blind
 from config import RunConfig
 from fused_checked_network import FusedCheckedNetwork
+from recovery_protocol import RecoverySupervisor, build_recovery_network
 from transport import CHECK_SCHEMA, Gateway
 
 
@@ -111,7 +112,7 @@ class NativeTransitionBroker:
     def __init__(self, adapter, judge, config, folder, *, simulation=False,
                  gate_policy='legacy'):
         require(isinstance(config, RunConfig), 'validated_run_config_required')
-        require(gate_policy in ('legacy', 'fused'), 'invalid_native_gate_policy')
+        require(gate_policy in ('legacy', 'fused', 'recovery'), 'invalid_native_gate_policy')
         self.adapter, self.judge, self.config = adapter, judge, config
         self.folder, self.simulation = Path(folder), simulation
         self.gate_policy = gate_policy
@@ -224,7 +225,9 @@ class NativeTransitionBroker:
         events = network_result.get('events', [])
         calls = self.calls
         fused = network_result.get('protocol_version') == 'cidm-fused-review-v1'
-        entry_phase = 'authorize_first_unit' if fused else 'project_route'
+        recovery = network_result.get('protocol_version') == 'cidm-recovery-first-v1'
+        entry_phase = ('authorize_first_unit' if fused else
+                       'authorize_unit' if recovery else 'project_route')
         if not calls or calls[0].get('role') != 'jev' or calls[0].get('phase') != entry_phase:
             issues.append('missing_entry_jev')
         if any(call.get('status') != 'ok' for call in calls):
@@ -240,13 +243,13 @@ class NativeTransitionBroker:
                 issues.append('native_return_without_jev_' + call['role'])
         decision_events = [event for event in events if event['kind'] == 'jev_decision']
         jev_calls = [call for call in calls if call['role'] == 'jev']
-        network_jev_calls = jev_calls if fused else jev_calls[1:]
+        network_jev_calls = jev_calls if (fused or recovery) else jev_calls[1:]
         for call, event in zip(network_jev_calls, decision_events):
             if (call.get('phase') != event.get('phase')
                     or call.get('choice') != event.get('decision', {}).get('choice')):
                 issues.append('jev_call_event_binding_mismatch')
-        if not fused and jev_calls and (jev_calls[0].get('choice') !=
-                                       network_result.get('entry_decision', {}).get('choice')):
+        if not (fused or recovery) and jev_calls and (jev_calls[0].get('choice') !=
+                                                     network_result.get('entry_decision', {}).get('choice')):
             issues.append('entry_jev_choice_mismatch')
         decisions = len(decision_events)
         requested_workers = sum(
@@ -286,7 +289,7 @@ class NativeTransitionBroker:
                     or returned.get('unit_id') != unit_id
                     or call.get('artifact_hash') != fingerprint(returned.get('value'))):
                 issues.append('native_call_event_binding_mismatch')
-        if sum(call['role'] == 'jev' for call in calls) != decisions + (0 if fused else 1):
+        if sum(call['role'] == 'jev' for call in calls) != decisions + (0 if (fused or recovery) else 1):
             issues.append('jev_call_event_mismatch')
         if sum(call['role'] == 'worker' for call in calls) != requested_workers:
             issues.append('worker_call_event_mismatch')
@@ -419,16 +422,39 @@ class NativeTransitionBroker:
                                                    'Judge the local unit, not entire project completion.'})
                         return self._codex('checker', self.config.checker_model,
                                            self.config.checker_effort, prompt, CHECK_SCHEMA)
-                    network_class = (FusedCheckedNetwork if self.gate_policy == 'fused'
-                                     else CheckedNetwork)
-                    network = network_class(goal, sources, self._judge, produce, check, validate,
-                                             policy=self.config.to_dict(),
-                                             checker_identity={'model': self.config.checker_model,
-                                                               'effort': self.config.checker_effort},
-                                             worker_routes=self.config.worker_routes(),
-                                             simulation=self.simulation, journal=journal,
-                                             units=PROJECT_UNITS, deterministic_units={'input'})
-                    network_result = network.run()
+                    if self.gate_policy == 'fused':
+                        network = FusedCheckedNetwork(
+                            goal, sources, self._judge, produce, check, validate,
+                            policy=self.config.to_dict(),
+                            checker_identity={'model': self.config.checker_model,
+                                              'effort': self.config.checker_effort},
+                            worker_routes=self.config.worker_routes(),
+                            simulation=self.simulation, journal=journal,
+                            units=PROJECT_UNITS, deterministic_units={'input'})
+                        network_result = network.run()
+                    elif self.gate_policy == 'recovery':
+                        network = build_recovery_network(
+                            goal, sources, self._judge, produce, check, validate,
+                            policy=self.config.to_dict(),
+                            checker_identity={'model': self.config.checker_model,
+                                              'effort': self.config.checker_effort},
+                            worker_routes=self.config.worker_routes(),
+                            simulation=self.simulation, journal=journal,
+                            units=PROJECT_UNITS, deterministic_units={'input'})
+                        network_result = RecoverySupervisor(
+                            network,
+                            max_recovery_rounds=self.config.max_recovery_rounds,
+                        ).run()
+                    else:
+                        network = CheckedNetwork(
+                            goal, sources, self._judge, produce, check, validate,
+                            policy=self.config.to_dict(),
+                            checker_identity={'model': self.config.checker_model,
+                                              'effort': self.config.checker_effort},
+                            worker_routes=self.config.worker_routes(),
+                            simulation=self.simulation, journal=journal,
+                            units=PROJECT_UNITS, deterministic_units={'input'})
+                        network_result = network.run()
                     result.update(network_result)
                     result['route'] = route
                     if result['status'] == 'complete':
@@ -475,8 +501,8 @@ def main():
                         help='JSON goal, accepted context, sources, and fresh classification')
     parser.add_argument('--out', type=Path)
     parser.add_argument('--config', type=Path)
-    parser.add_argument('--gate-policy', choices=('legacy', 'fused'), default='legacy',
-                        help='Use the optional fused Jev gate protocol for broad requests')
+    parser.add_argument('--gate-policy', choices=('legacy', 'fused', 'recovery'), default='legacy',
+                        help='Choose legacy, fused, or recovery-first Jev gate policy for broad requests')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
