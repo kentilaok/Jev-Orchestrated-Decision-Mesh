@@ -194,3 +194,10 @@ python scripts/experience_distiller.py --scan-dir research --project-scope cidm-
 Only a failure followed by a later checked commit for the same unit counts as a verified recovery. Skills require repeated verified observations from distinct runs by default, or explicit owner approval of a verified lesson. Automatic promotion is project-scoped to reduce cross-project contamination. This is procedural/context memory for Hermes, not model-weight training.
 
 See [Recovery-first CIDM and Experience Distillation](docs/RECOVERY-AND-DISTILLATION.md).
+
+
+## Arsenal V1 direction
+
+The next architecture milestone is a **frontier-first, thin-client capability arsenal**. The local machine remains a lightweight control node; Claude/Codex provide frontier intelligence, while managed retrieval, hosted reranking, MCP tools, context management, observability, and governed skills expand what CIDM can do without adding another global decision brain.
+
+See [CIDM Arsenal Architecture V1](docs/ARSENAL-V1.md).
