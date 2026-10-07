@@ -211,10 +211,12 @@ class NativeTransitionBrokerTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.folder = Path(temporary.name)
 
-    def broker(self, adapter=None, judge=None, name='run', *, gate_policy='legacy', config=None):
-        return NativeTransitionBroker(adapter or FakeCodex(), judge or FakeJev(),
-                                      config or RunConfig(), self.folder / name,
-                                      gate_policy=gate_policy)
+    def broker(self, adapter=None, judge=None, name='run', *, gate_policy='legacy',
+               config=None, arsenal_observer=None):
+        return NativeTransitionBroker(
+            adapter or FakeCodex(), judge or FakeJev(),
+            config or RunConfig(), self.folder / name,
+            gate_policy=gate_policy, arsenal_observer=arsenal_observer)
 
     def short_spec(self):
         spec = copy.deepcopy(SPEC)
@@ -262,6 +264,46 @@ class NativeTransitionBrokerTests(unittest.TestCase):
             event['kind'] == 'recovery_replan' and event['unit_id'] == 'hidden1'
             for event in result['events']
         ))
+
+    def test_arsenal_shadow_observation_does_not_change_normal_execution(self):
+        observed = []
+        def observer(state):
+            observed.append(copy.deepcopy(state))
+            return {
+                'mode': 'shadow',
+                'recommendation': 'load_skill_then_jev',
+                'selected_skill_id': 'known-fix',
+                'frontier_call_avoided': False,
+                'authority': 'none_shadow_observation_only',
+            }
+        codex, jev = FakeCodex(), FakeJev()
+        result = self.broker(
+            codex, jev, 'arsenal-shadow', arsenal_observer=observer
+        ).run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        self.assertEqual(result['arsenal_shadow']['selected_skill_id'], 'known-fix')
+        self.assertFalse(result['arsenal_shadow']['frontier_call_avoided'])
+        self.assertEqual(len(observed), 1)
+        self.assertEqual(len(codex.calls), 4)
+        self.assertEqual(len(jev.calls), 11)
+        self.assertTrue(any(
+            event.get('kind') == 'arsenal_shadow'
+            for event in result['events']
+        ))
+
+    def test_arsenal_shadow_failure_never_blocks_cidm_run(self):
+        def observer(_state):
+            raise RuntimeError('shadow unavailable')
+        result = self.broker(
+            FakeCodex(), FakeJev(), 'arsenal-shadow-error',
+            arsenal_observer=observer,
+        ).run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        self.assertEqual(result['arsenal_shadow']['status'], 'observer_error')
+        self.assertEqual(
+            result['arsenal_shadow']['authority'],
+            'none_shadow_observation_only',
+        )
 
     def test_jev_budget_is_derived_from_receipts_and_exhaustion_makes_no_fake_call(self):
         jev = FakeJev()
