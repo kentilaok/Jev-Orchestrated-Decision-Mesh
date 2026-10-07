@@ -7,7 +7,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from atomic_mesh import fingerprint
+from atomic_mesh import AtomicMesh, fingerprint
 from experience_distiller import (
     distill_lessons,
     extract_experiences,
@@ -89,6 +89,29 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(result["choice"], "repair")
         self.assertNotIn("stop", offered)
         self.assertNotIn("stop", seen[0])
+
+    def test_mesh_journals_exact_filtered_options(self):
+        seen = []
+        def judge(_phase, options, _state):
+            seen.append(set(options))
+            return {"choice": "repair", "live": False, "model": "simulation"}
+        wrapped = RecoveryJudge(judge)
+        mesh = AtomicMesh(
+            "goal",
+            {"s": {"text": "evidence"}},
+            {"policy": object()},
+            wrapped,
+            simulation=True,
+        )
+        choice, event_id = mesh.gate(
+            "after_worker",
+            {"repair": {}, "retrieve_evidence": {}, "stop": {}},
+            mesh.context(["s"]),
+        )
+        event = next(event for event in mesh.events if event["id"] == event_id)
+        self.assertEqual(choice, "repair")
+        self.assertNotIn("stop", event["options"])
+        self.assertEqual(set(event["options"]), seen[0])
 
     def test_operator_abort_restores_stop(self):
         def judge(_phase, options, _state):
@@ -191,6 +214,21 @@ class DistillationTests(unittest.TestCase):
             render_skill(lessons[0]),
         )
 
+    def test_multiple_failures_in_one_run_do_not_self_promote(self):
+        run = self.fixture("r1")
+        run["events"].insert(1, {
+            "id": "e1b",
+            "kind": "post_worker_decision",
+            "unit_id": "hidden1",
+            "choice": "repair",
+            "candidate_hash": "bad2",
+            "hard_checks": {"semantic": False},
+        })
+        records = extract_experiences(run, run_id="r1")
+        lesson = distill_lessons(records)[0]
+        self.assertEqual(lesson["verified_observations"], 1)
+        self.assertFalse(promotable(lesson, min_verified=2))
+
     def test_skill_promotion_writes_hermes_shape(self):
         records = extract_experiences(self.fixture("r1"), run_id="r1")
         lesson = distill_lessons(records)[0]
@@ -200,7 +238,8 @@ class DistillationTests(unittest.TestCase):
             )
             self.assertEqual(len(written), 1)
             text = written[0].read_text(encoding="utf-8")
-            self.assertIn("name: cidm-hidden1", text)
+            self.assertIn("name: cidm-hidden1-", text)
+            self.assertIn("Failure signature:", text)
             self.assertIn("## Provenance", text)
 
 
