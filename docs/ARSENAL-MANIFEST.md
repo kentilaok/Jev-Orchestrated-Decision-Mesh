@@ -170,7 +170,7 @@ A matched skill is Fast Path eligible only when all of these are true:
 5. project scope matches, or the skill is explicitly global;
 6. the caller supplies an operation;
 7. that operation appears in the manifest's preapproved operations;
-8. the local match reaches the configured threshold, unless an exact bug key matched.
+8. an exact stable bug key matched. Lexical, embedding, and reranker scores remain ranking/context evidence only in V1.
 
 Failure of any condition produces explicit reasons such as:
 
@@ -182,7 +182,7 @@ Failure of any condition produces explicit reasons such as:
 - `project_scope_mismatch`
 - `operation_required`
 - `operation_not_preapproved`
-- `confidence_below_threshold`
+- `exact_bug_key_required_for_v1_fast_path`
 
 The next execution milestone should bind these conditions to CIDM permits and actual validator receipts before any automatic commit is allowed.
 
