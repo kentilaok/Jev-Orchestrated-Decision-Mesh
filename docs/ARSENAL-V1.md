@@ -1238,6 +1238,8 @@ Jev -> Hermes
 5. Separate hash-bound local owner admission and revocation.
 6. Fast Path **eligibility evaluation**; execution is not yet automatic.
 7. Experience Distiller generation of conservative candidate manifests.
+8. Direct indexing of verified distilled lessons into SQLite/FTS5 as context-only experience memory.
+9. Native broker shadow observations can distinguish `load_experience_then_jev` from `jev_only`.
 8. Optional FastEmbed/ONNX semantic index with skill-hash caching.
 9. Optional FastEmbed cross-encoder reranking for top-k candidates.
 10. RRF Shadow Mode that fuses lexical + semantic rankings without bypassing Jev.
