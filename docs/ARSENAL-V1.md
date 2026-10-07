@@ -334,8 +334,6 @@ The RTX 3050 4 GB remains available for UI/normal workstation use rather than be
 
 ## 3. Target architecture
 
-## 3. Target architecture
-
 ```text
                          USER / PROJECT
                                |
@@ -1336,7 +1334,7 @@ Arsenal V1 is successful if:
 
 ---
 
-## 23. Governing thesis
+## 24. Governing thesis
 
 **CIDM Arsenal Principle**
 
