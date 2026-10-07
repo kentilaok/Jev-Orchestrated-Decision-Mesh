@@ -135,7 +135,8 @@ class CheckedNetwork:
         require(type(index) is int and 0<=index<len(self.units) and unit==self.units[index],'unit_index_mismatch')
         require(len(self.committed)==index and [p['id'] for p in self.committed]==[u.id for u in self.units[:index]],
                 'unit_predecessor_missing')
-        feedback=None
+        feedback=copy.deepcopy(getattr(self,'recovery_feedback',None))
+        self.recovery_feedback=None
         min_route_rank=0
         attempt_limit=self.policy.get('max_recovery_attempts',2)
         require(type(attempt_limit) is int and 1<=attempt_limit<=8,'invalid_recovery_attempt_limit')
