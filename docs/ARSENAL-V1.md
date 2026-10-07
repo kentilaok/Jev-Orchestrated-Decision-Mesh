@@ -1242,12 +1242,12 @@ Jev -> Hermes
 9. Optional FastEmbed cross-encoder reranking for top-k candidates.
 10. RRF Shadow Mode that fuses lexical + semantic rankings without bypassing Jev.
 11. Shadow JSONL records for would-be Fast Path decisions.
+12. Native transition-broker Shadow observer with failure isolation and no authority.
 
 **Still required before Phase A is complete:**
 
-12. Experience-summary indexing beyond promoted skills.
-13. Bind eligible operations to real CIDM permits and validator receipts.
-14. Integrate Shadow Mode into the live/native task path rather than invoking it only as a standalone command.
+13. Experience-summary indexing beyond promoted skills.
+14. Bind eligible operations to real CIDM permits and validator receipts.
 15. Score Shadow predictions against eventual Jev/frontier/validator outcomes.
 16. Negative-transfer measurement when a local match later fails.
 17. Establish calibrated promotion thresholds before enabling any non-exact Fast Path class.
