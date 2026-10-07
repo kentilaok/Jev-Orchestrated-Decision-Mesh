@@ -531,8 +531,11 @@ class ArsenalRegistry:
             reasons.append("operation_required")
         elif operation not in skill["operations"]:
             reasons.append("operation_not_preapproved")
-        if not exact_bug and confidence < threshold:
-            reasons.append("confidence_below_threshold")
+        # V1 Fast Path is intentionally stricter than local discovery.
+        # Lexical/semantic scores can select context, but only an exact stable
+        # bug key can presently authorize a no-frontier execution candidate.
+        if not exact_bug:
+            reasons.append("exact_bug_key_required_for_v1_fast_path")
 
         return {
             "eligible": not reasons, "reasons": reasons,
