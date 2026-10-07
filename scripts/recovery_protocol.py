@@ -148,9 +148,18 @@ class RecoverySupervisor:
             added.append({"id": sid, "hash": mesh.source_hashes[sid]})
         mesh.version += 1
         self._event("recovery_evidence_added", unit_id=unit_id, added=added)
+        feedback = {
+            "verdict": "insufficient_evidence",
+            "failed_criteria": [],
+            "reason": "New original evidence was added; reassess the same unit against the expanded source set.",
+            "missing_evidence": [],
+            "source_ids": [item["id"] for item in added],
+        }
+        self.network.recovery_feedback = feedback
         mesh.last_issue = {
             "recovery_kind": "evidence_added", "unit_id": unit_id,
             "source_ids": [item["id"] for item in added],
+            "feedback": copy.deepcopy(feedback),
         }
 
     def _fresh_replan(self, unit, outcome: str):
