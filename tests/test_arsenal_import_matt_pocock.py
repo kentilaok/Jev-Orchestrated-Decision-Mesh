@@ -33,6 +33,9 @@ class MattPocockImportTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (folder / "reference.md").write_text("Reference", encoding="utf-8")
+        (self.upstream / "LICENSE").write_text(
+            "MIT License - upstream copyright notice fixture.", encoding="utf-8"
+        )
         self.git("add", ".")
         self.git("commit", "-qm", "pinned source")
         self.rev = self.git("rev-parse", "HEAD")
@@ -91,6 +94,7 @@ class MattPocockImportTests(unittest.TestCase):
         self.assertEqual(
             (folder / "reference.md").read_text(encoding="utf-8"), "Reference"
         )
+        self.assertTrue((folder / "UPSTREAM_LICENSE.txt").exists())
         manifest = normalize_manifest(json.loads(
             (folder / "ARSENAL.json").read_text(encoding="utf-8")
         ))
@@ -118,6 +122,12 @@ class MattPocockImportTests(unittest.TestCase):
         self.assertEqual(manifest["risk"], "high")
         self.assertFalse(manifest["permissions"]["spawn_subagents"])
         self.assertFalse(manifest["permissions"]["issue_tracker_write"])
+
+    def test_missing_license_refuses_import(self):
+        (self.upstream / "LICENSE").unlink()
+        with self.assertRaisesRegex(ValueError, "upstream_checkout_is_dirty"):
+            self.stage(install=True)
+        self.assertFalse(self.dest.exists())
 
     def test_revision_mismatch_refuses_import(self):
         data = dict(self.data, pinned_revision="0" * 40)
