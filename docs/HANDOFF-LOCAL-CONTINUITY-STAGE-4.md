@@ -10,7 +10,7 @@
 
 ## What's *not* yet wired
 
-- The Console selects all four modes for inspection, but execution of **dual teacher + student** or **automatic frontier quota failover** is blocked. Existing Claude/Codex native broker and recovery checkpoint cannot be safely switched to an unsupported local route by changing a dropdown.
+- The Console selects all four modes for inspection. **Dual teacher + student is available only through the explicitly approved `dual_shadow_runner.py` CLI (Stage 3 extension), not through the Console.** Automatic frontier quota failover is still blocked. Existing Claude/Codex native broker and recovery checkpoint cannot be safely switched to an unsupported local route by changing a dropdown.
 - Provider adapters must emit **trusted typed quota/error events**; text-searching stderr or model output is unacceptable.
 - Reusing native broker checkpoints with a new model route needs a proper fresh Jev decision or a narrowly approved deterministic continuity policy. This is a separate production acceptance gate.
 - Operator Console does not make Hermes a Jev-governed dispatch worker; that earlier V1 task remains open.
