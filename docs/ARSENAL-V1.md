@@ -818,7 +818,29 @@ Taste's current skills can search/extract design references and grade output aga
 
 Use only for relevant visual/design projects. It is not a generic code-quality authority.
 
-### 10.5 Caveman-style compression — optional
+### 10.5 Matt Pocock — Skills for Real Engineers (curated)
+
+**Decision:** ADD a pinned external methodology source, not a second orchestrator.
+
+Upstream: [mattpocock/skills](https://github.com/mattpocock/skills) (MIT); reviewed and pinned in `arsenal/sources/matt-pocock.json`.
+
+Core candidates:
+
+- `diagnosing-bugs` — reproducible failure/feedback-loop discipline;
+- `tdd` — public-seam red/green/refactor tests;
+- `codebase-design` — deep modules and small exposed interfaces;
+- `domain-modeling` — shared vocabulary, glossary and ADRs;
+- `writing-for-agents` — compact context pointers, more reliable skill instructions.
+
+Review-tier candidates include `code-review`, `retro`, `to-spec`, `to-tickets`, `grill-with-docs` and `handoff`. Model-invoked reference methods can be offered as bounded context; upstream user-invoked workflow commands remain explicitly invoked. Restrict upstream routers, full-workflow implementers and parallel subagent workflows: Jev still owns project planning, tool permission and final commit.
+
+`scripts/arsenal_import_matt_pocock.py` can stage selected skills from an exact pinned and clean upstream checkout. Its default mode is read-only preview. With `--install`, it copies selected skill directories plus **candidate-only** `ARSENAL.json` manifests into the Hermes skill folder, without admission or execution.
+
+This intentionally avoids making a GitHub plugin auto-update a trusted procedural dependency. All new versions require re-review and measured evaluation, especially where Matt's workflow overlaps Superpowers or Karpathy-derived methods.
+
+See [Matt Pocock Skills — governed Arsenal source](MATT-POCOCK-ARSENAL.md).
+
+### 10.6 Caveman-style compression — optional
 
 May help compact internal summaries or handoffs, but readability and exactness are more important in CIDM protocol data.
 
@@ -1207,6 +1229,7 @@ Jev -> Hermes
 | Skill Admission Registry | **Core** | local Git/state | trust/provenance |
 | Experience Distiller | **Core** | local/lightweight | verified learning |
 | Superpowers subset | **Approved candidates** | skill only | engineering procedure |
+| Matt Pocock methods | **Pinned candidates** | skill only | debugging, TDD, domain language, architecture, review |
 | Karpathy-derived subset | **Approved candidates** | skill only | context/task methodology |
 | Ponytail | **Approved candidate** | skill only | reduce overengineering |
 | Taste | **Project-specific** | remote MCP | design/brand work |
@@ -1285,6 +1308,7 @@ Jev -> Hermes
     - TDD
     - planning
     - Ponytail minimalism
+    - Matt Pocock diagnosing-bugs, tdd, codebase-design, domain-modeling, writing-for-agents
     - selected context-engineering rules
 29. Record exact loaded skill versions/hashes in every run.
 30. Route Experience Distiller promotions through the same registry/admission boundary.
