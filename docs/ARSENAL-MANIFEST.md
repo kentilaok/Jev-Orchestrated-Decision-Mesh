@@ -242,3 +242,8 @@ This lets CIDM reuse verified history immediately while preserving the separate 
 > A skill package can request capabilities. It cannot grant itself capabilities.
 
 Public registries, generated skills, model-written manifests, and copied project skills therefore remain useful as discovery/context sources while CIDM keeps execution authority outside the skill package.
+
+
+---
+
+*CIDM architecture and research direction: Ken Caber (Kenneth Vic A. Caber). External projects and skills retain their respective authorship and licences.*
