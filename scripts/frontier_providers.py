@@ -238,8 +238,17 @@ class CodexProvider(_BoundedProvider):
                            "visibility": item.get("visibility"), "efforts": efforts,
                            "default_effort": item.get("default_reasoning_level"),
                            "context_window": item.get("context_window")})
+        # Codex answers from a local cache that it refreshes in the background, so
+        # a first query can be stale; report the cache age instead of hiding it.
+        cache = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex") / "models_cache.json"
+        try:
+            import time
+            cache_age = round(time.time() - cache.stat().st_mtime)
+        except OSError:
+            cache_age = None
         return {"provider": self.provider_id, "account_derived": True, "source": "codex debug models",
-                "catalogue_hash": digest(models), "models": models}
+                "catalogue_hash": digest(models), "models": models, "cache_age_seconds": cache_age,
+                "note": "Served from Codex's local catalogue cache; re-check if routes look missing."}
 
     def capabilities(self) -> dict:
         return {"provider": self.provider_id, "structured_output": True, "tools_disabled": True,

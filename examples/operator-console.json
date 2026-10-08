@@ -1,11 +1,14 @@
 {
-  "frontier_provider": "anthropic",
-  "frontier_model": "claude-opus-5-5",
-  "reasoning_effort": "medium",
+  "frontier_provider": "claude",
+  "providers": {
+    "claude": {"enabled": true, "model": "claude-sonnet-5-5"},
+    "codex": {"enabled": true, "model": "default"}
+  },
   "skills_source": "~/.hermes/skills",
   "project_directory": ".",
-  "execution_mode": "preview-or-hermes",
+  "runs_directory": "runs",
+  "execution_mode": "preview",
+  "gate_policy": "recovery",
   "decision_policy": "jev-managed",
-  "evidence_policy": "required",
-  "future_providers_enabled": false
+  "evidence_policy": "required"
 }

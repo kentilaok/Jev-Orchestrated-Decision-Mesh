@@ -173,7 +173,7 @@ class CodexCliAdapter:
                  max_stderr_bytes=65_536, max_prompt_bytes=24_000,
                  max_schema_bytes=65_536, max_events=256,
                  astra_explicitly_authorized=False, executable="codex",
-                 secret_env_names=()):
+                 secret_env_names=(), permitted_models=None):
         limits = (timeout_seconds, max_stdout_bytes, max_stderr_bytes,
                   max_prompt_bytes, max_schema_bytes, max_events)
         if (any(type(v) is not int or v <= 0 for v in limits)
@@ -197,6 +197,9 @@ class CodexCliAdapter:
         self.max_events = max_events
         self.astra_explicitly_authorized = astra_explicitly_authorized
         self.executable = executable
+        # None keeps the CIDM GPT-6 catalogue; an explicit set is used by the
+        # operator console for bounded smoke tests of account-listed models.
+        self.permitted_models = None if permitted_models is None else frozenset(permitted_models)
         self.secret_env_names = frozenset(name.upper() for name in secret_env_names) | {
             "OPENROUTER_API_KEY", "OPENAI_API_KEY", "CODEX_API_KEY", "GITHUB_TOKEN", "GH_TOKEN"
         }
@@ -235,7 +238,7 @@ class CodexCliAdapter:
                     process.wait(timeout=5)
 
     def run(self, model, effort, prompt, schema, workspace):
-        permitted = {"gpt-6-luna", "gpt-6-sol"}
+        permitted = {"gpt-6-luna", "gpt-6-sol"} if self.permitted_models is None else set(self.permitted_models)
         if self.astra_explicitly_authorized:
             permitted.add("gpt-6-astra")
         if (not isinstance(model, str) or not isinstance(effort, str)

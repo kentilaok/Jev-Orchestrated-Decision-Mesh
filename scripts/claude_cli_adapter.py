@@ -66,7 +66,8 @@ class ClaudeCliAdapter:
     """Run one schema-bounded worker or checker through the signed-in Claude Code CLI."""
 
     def __init__(self, *, timeout_seconds=300, max_stdout_bytes=2_097_152, max_prompt_bytes=48_000,
-                 max_schema_bytes=65_536, executable="claude", secret_env_names=()):
+                 max_schema_bytes=65_536, executable="claude", secret_env_names=(),
+                 permitted_models=PERMITTED_MODELS):
         limits = (timeout_seconds, max_stdout_bytes, max_prompt_bytes, max_schema_bytes)
         if any(type(v) is not int or v <= 0 for v in limits) or timeout_seconds > 900:
             raise ValueError("invalid_adapter_limits")
@@ -75,6 +76,9 @@ class ClaudeCliAdapter:
         self.timeout_seconds, self.max_stdout_bytes = timeout_seconds, max_stdout_bytes
         self.max_prompt_bytes, self.max_schema_bytes = max_prompt_bytes, max_schema_bytes
         self.executable = executable
+        # Defaults to the CIDM worker catalogue; the operator console passes its
+        # explicit allow-list for bounded account smoke tests.
+        self.permitted_models = frozenset(permitted_models)
         # Claude's own credentials stay; unrelated provider keys never reach the child.
         self.secret_env_names = frozenset(n.upper() for n in secret_env_names) | {
             "OPENROUTER_API_KEY", "OPENAI_API_KEY", "CODEX_API_KEY", "GITHUB_TOKEN", "GH_TOKEN", "TYPESAFE_API_KEY"}
@@ -106,7 +110,7 @@ class ClaudeCliAdapter:
             return process.returncode
 
     def run(self, model, effort, prompt, schema, workspace):
-        if model not in PERMITTED_MODELS or effort not in PERMITTED_EFFORTS:
+        if model not in self.permitted_models or effort not in PERMITTED_EFFORTS:
             raise ClaudeCliError("worker_route_not_permitted")
         if not isinstance(prompt, str) or not prompt.strip():
             raise ClaudeCliError("invalid_prompt")
