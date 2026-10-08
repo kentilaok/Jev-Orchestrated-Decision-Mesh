@@ -110,7 +110,8 @@ def artifact_schema(source_ids):
 
 class NativeTransitionBroker:
     def __init__(self, adapter, judge, config, folder, *, simulation=False,
-                 gate_policy='legacy', arsenal_observer=None, permit_authority=None):
+                 gate_policy='legacy', arsenal_observer=None, permit_authority=None,
+                 evidence_retriever=None):
         require(isinstance(config, RunConfig), 'validated_run_config_required')
         require(gate_policy in ('legacy', 'fused', 'recovery'), 'invalid_native_gate_policy')
         self.adapter, self.judge, self.config = adapter, judge, config
@@ -122,6 +123,12 @@ class NativeTransitionBroker:
         # Optional Arsenal Phase B capability permits; the adapter must expose
         # prepare(basis) so every frontier call names its exact authorization.
         self.permit_authority = permit_authority
+        # Trusted read-only retrieval (MCP plan or local index) for the recovery
+        # policy; it turns retrieve_evidence into new hashed sources plus a fresh
+        # Jev gate instead of a halt.
+        require(evidence_retriever is None or (callable(evidence_retriever) and gate_policy == 'recovery'),
+                'evidence_retriever_requires_recovery_policy')
+        self.evidence_retriever = evidence_retriever
         self._last_dispatch = None
         self._short_basis = None
         self.calls = []
@@ -440,7 +447,11 @@ class NativeTransitionBroker:
                     result['status'] = ('needs_evidence' if decision['choice'] == 'retrieve_evidence'
                                         else 'stopped_by_jev')
                 else:
+                    holder = {}
+                    def live_sources():
+                        return holder['network'].mesh.sources if 'network' in holder else sources
                     def produce(unit, parents, feedback, worker_route):
+                        sources = live_sources()
                         expected = [p['artifact_hash'] for p in parents[-1:]]
                         if unit.id == 'input':
                             return {'text': 'Input and evidence identities preserved.',
@@ -461,7 +472,7 @@ class NativeTransitionBroker:
                         return self._codex('worker', worker_route['model'], worker_route['effort'],
                                            prompt, artifact_schema(sources))
                     def validate(unit, candidate, parents):
-                        return self._validate_candidate(candidate, sources, parents,
+                        return self._validate_candidate(candidate, live_sources(), parents,
                                                         output=unit.id == 'output')
                     def check(state):
                         prompt = packed({'role': 'separate Sol-high checker',
@@ -479,6 +490,7 @@ class NativeTransitionBroker:
                             worker_routes=self.config.worker_routes(),
                             simulation=self.simulation, journal=journal,
                             units=PROJECT_UNITS, deterministic_units={'input'})
+                        holder['network'] = network
                         network_result = network.run()
                     elif self.gate_policy == 'recovery':
                         network = build_recovery_network(
@@ -489,10 +501,14 @@ class NativeTransitionBroker:
                             worker_routes=self.config.worker_routes(),
                             simulation=self.simulation, journal=journal,
                             units=PROJECT_UNITS, deterministic_units={'input'})
+                        holder['network'] = network
                         network_result = RecoverySupervisor(
-                            network,
+                            network, evidence_retriever=self.evidence_retriever,
                             max_recovery_rounds=self.config.max_recovery_rounds,
                         ).run()
+                        if self.evidence_retriever is not None:
+                            result['evidence_receipts'] = copy.deepcopy(
+                                getattr(self.evidence_retriever, 'receipts', None))
                     else:
                         network = CheckedNetwork(
                             goal, sources, self._judge, produce, check, validate,
@@ -502,8 +518,11 @@ class NativeTransitionBroker:
                             worker_routes=self.config.worker_routes(),
                             simulation=self.simulation, journal=journal,
                             units=PROJECT_UNITS, deterministic_units={'input'})
+                        holder['network'] = network
                         network_result = network.run()
                     result.update(network_result)
+                    result['source_hashes'] = self._source_hashes(holder['network'].mesh.sources,
+                                                                  holder['network'].mesh.sources)
                     result['route'] = route
                     if result['status'] == 'complete':
                         try:
@@ -577,6 +596,12 @@ def main():
                         default=Path('~/.jev/arsenal/native-shadow.jsonl').expanduser())
     parser.add_argument('--arsenal-calibration-ledger', type=Path,
                         help='Opt-in append-only shadow calibration; no routing changes')
+    parser.add_argument('--evidence-plan', type=Path,
+                        help='Recovery policy only: bounded read-only MCP calls for retrieve_evidence')
+    parser.add_argument('--mcp-db', type=Path, default=Path('~/.jev/arsenal/mcp.db').expanduser())
+    parser.add_argument('--retrieval-index', type=Path,
+                        help='Recovery policy only: local hybrid index used for retrieve_evidence')
+    parser.add_argument('--retrieval-namespace', default='default')
     parser.add_argument('--skip-route-preflight', action='store_true',
                         help='Do not compare the frozen route catalogue with the account catalogue')
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -662,9 +687,25 @@ def main():
             print(packed({'status': result['status'], 'route': result['route'], 'answer': None,
                           'calls': 0, 'missing_routes': len(coverage['missing'])}))
             return 2
+    require(not (args.evidence_plan and args.retrieval_index), 'choose_one_evidence_retriever')
+    retriever = None
+    if args.evidence_plan:
+        require(args.gate_policy == 'recovery', 'evidence_plan_requires_recovery_policy')
+        from mcp_registry import McpCatalog, McpEvidenceRetriever, discover_servers
+        plan = json.loads(args.evidence_plan.read_text(encoding='utf-8-sig'))
+        require(type(plan) is dict and set(plan) <= {'steps', 'max_calls'}, 'evidence_plan_schema')
+        servers = {spec['name']: spec for spec in discover_servers()}
+        retriever = McpEvidenceRetriever(McpCatalog(args.mcp_db), servers, authority, plan['steps'],
+                                         max_calls=plan.get('max_calls', 4),
+                                         evidence_dir=args.out / 'evidence')
+    elif args.retrieval_index:
+        require(args.gate_policy == 'recovery', 'retrieval_requires_recovery_policy')
+        from retrieval import LocalHybridIndex, RetrievalEvidenceRetriever
+        retriever = RetrievalEvidenceRetriever(LocalHybridIndex(args.retrieval_index), authority,
+                                               namespace=args.retrieval_namespace)
     broker = NativeTransitionBroker(
         PermittedAdapter(provider, authority), judge, config, args.out, gate_policy=args.gate_policy,
-        arsenal_observer=arsenal_observer, permit_authority=authority)
+        arsenal_observer=arsenal_observer, permit_authority=authority, evidence_retriever=retriever)
     result = broker.run(spec)
     result['host'] = args.host
     result['route_coverage'] = coverage if coverage is not None else {'status': 'skipped'}
