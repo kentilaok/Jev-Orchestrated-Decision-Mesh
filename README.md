@@ -229,7 +229,7 @@ Verified Experience Distiller skills now receive conservative candidate `ARSENAL
 
 See [CIDM Arsenal Architecture V1](docs/ARSENAL-V1.md) and [Arsenal Manifest and Skill Admission](docs/ARSENAL-MANIFEST.md).
 
-Matt Pocock's MIT-licensed [Skills for Real Engineers](https://github.com/mattpocock/skills) are registered as a **pinned, curated Arsenal candidate source** (`arsenal/sources/matt-pocock.json`). The accompanying importer previews by default and can stage a selected subset into Hermes without self-admission:
+Matt Pocock's MIT-licensed [Skills for Real Engineers](https://github.com/mattpocock/skills) are registered as a **pinned, curated Arsenal candidate source** (`arsenal/sources/matt-pocock.json`). The accompanying importer previews by default and can stage a selected subset in **quarantine**, outside active Hermes/Claude/Codex skills directories:
 
 ```bash
 python scripts/arsenal_import_matt_pocock.py --source-root ./matt-pocock-skills
@@ -237,7 +237,7 @@ python scripts/arsenal_import_matt_pocock.py --source-root ./matt-pocock-skills
 python scripts/arsenal_import_matt_pocock.py --source-root ./matt-pocock-skills --install
 ```
 
-Read [Matt Pocock Arsenal adoption and pinned setup](docs/MATT-POCOCK-ARSENAL.md) before use. Workflow/router/subagent skills never supersede Jev/CIDM authority.
+Read [Matt Pocock Arsenal adoption and pinned setup](docs/MATT-POCOCK-ARSENAL.md) before use. Candidate import does not activate the skill in Hermes. Workflow/router/subagent skills never supersede Jev/CIDM authority.
 
 Optional CPU semantic ranking remains separate from the required stdlib path:
 
