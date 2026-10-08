@@ -48,6 +48,7 @@ def main(argv=None):
     p.add_argument("--model", required=True)
     p.add_argument("--digest")
     p.add_argument("--learning-ledger", type=Path)
+    p.add_argument("--out", type=Path, help="optional local-only JSON result file; contains SOP context")
     p.add_argument("--parallel", type=int, choices=(1, 2), default=1)
     p.add_argument("--allow-parallel-local", action="store_true", help="opt in to physical GPU parallelism after VRAM guard")
     p.add_argument("--live-local", action="store_true")
@@ -61,7 +62,16 @@ def main(argv=None):
                                 model_digest=args.digest, bug_key=args.bug_key,
                                 parallel=args.parallel, learning_ledger=args.learning_ledger,
                                 parallel_opt_in=args.allow_parallel_local)
-    print(json.dumps(result, indent=2))
+    if args.out is not None:
+        if args.out.exists():
+            raise ValueError("output_file_must_be_new")
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(result, indent=2), encoding="utf-8")
+    print(json.dumps({"status": result["status"], "mode": result["mode"],
+                      "task_snapshot_hash": result["task_snapshot_hash"],
+                      "learning_event_hash": result.get("learning_event_hash"),
+                      "output_file": str(args.out) if args.out else None,
+                      "remote_worker_calls": 0, "jev_calls": 0}, indent=2))
     return 0
 
 
