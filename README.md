@@ -4,11 +4,11 @@
 
 **Training-free AI orchestration · Five-unit checked reference implementation**
 
-**Main contributor and project creator: [Kenneth Vic A. Caber](https://github.com/kentilaok).**
-
 Jev is a model from [TypeSafe AI](https://typesafe.ai/blog/introducing-system-one-models-and-jev); CIDM is an independent orchestration design built around its typed decisions.
 
 CIDM routes data and bounded reasoning tasks through existing models. **Within the five-unit network, Jev is the orchestrator:** it chooses the next operation and receives every completed unit output. It can finish, repair, escalate, retrieve evidence, or request a separate high-effort check when warranted. Any completed check returns to Jev. The one-worker short path ends after Luna-low output passes task-specific validation; it does not claim Jev review.
+
+For the complete architecture, research thesis and future Arsenal V1 build direction, see [CIDM — Complete Thesis](docs/COMPLETE-THESIS.md). Experimental work described there is tracked separately from the released reference implementation.
 
 CIDM is intended for broader projects that need multiple stages, evidence, delegation, or review. Simple standalone yes/no questions and routine one-step tasks do not invoke the skill. When invoked, the host first classifies **each new input with its carried project context**. Broad, multi-step, or uncertain work enters the five-unit Jev network by default. Only a self-contained request that needs one bounded response uses a single **GPT-6 Luna low** worker and then finishes after task-specific validation. A brief follow-up to an active project is classified with that project's context. Sol-high review inside the five-unit graph is optional.
 
@@ -264,3 +264,7 @@ python scripts/arsenal_shadow.py \
 ```
 
 Shadow observations default to `~/.jev/arsenal/shadow.jsonl`. V1 Fast Path execution remains disabled until these predictions are evaluated against real outcomes.
+
+## Authorship and attribution
+
+CIDM's originating architecture and research thesis were created by **[Ken Caber (Kenneth Vic A. Caber)](https://github.com/kentilaok)**. See [Complete Thesis — Authorship and credits](docs/COMPLETE-THESIS.md#authorship-and-credits). Jev, models, third-party tools and skills retain the credit and licences of their respective creators.
