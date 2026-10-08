@@ -191,6 +191,28 @@ class ArsenalCalibrationTests(unittest.TestCase):
         self.assertIsNone(r["reported_tokens"])
         self.assertIsNone(r["reported_cost_usd"])
 
+    def test_hash_chain_detects_editing_a_past_ledger_event(self):
+        self.record("r1")
+        original = self.ledger.read_text(encoding="utf-8")
+        self.assertIn("known-fix", original)
+        self.ledger.write_text(
+            original.replace("known-fix", "unknown-skill", 1), encoding="utf-8"
+        )
+        with self.assertRaisesRegex(CalibrationError, "ledger_event_hash_mismatch"):
+            read_events(self.ledger)
+        with self.assertRaisesRegex(CalibrationError, "ledger_event_hash_mismatch"):
+            evaluate(read_events(self.ledger))
+
+    def test_hash_chain_is_continuous_across_runs(self):
+        self.record("r1")
+        self.record("r2")
+        records = read_events(self.ledger)
+        self.assertEqual(len(records), 6)
+        self.assertIsNone(records[0]["previous_event_hash"])
+        for previous, current in zip(records, records[1:]):
+            self.assertEqual(current["previous_event_hash"], previous["event_hash"])
+        self.assertEqual(evaluate(records)["summary"]["eligible_evaluated"], 2)
+
     def test_invalid_ledger_line_fails_closed(self):
         self.ledger.write_text('{"kind":"unexpected"}\n', encoding="utf-8")
         with self.assertRaisesRegex(CalibrationError, "invalid_ledger_line_1"):
