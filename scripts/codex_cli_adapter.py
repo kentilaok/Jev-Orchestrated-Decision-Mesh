@@ -200,6 +200,8 @@ class CodexCliAdapter:
         self.secret_env_names = frozenset(name.upper() for name in secret_env_names) | {
             "OPENROUTER_API_KEY", "OPENAI_API_KEY", "CODEX_API_KEY", "GITHUB_TOKEN", "GH_TOKEN"
         }
+        # Optional threading.Event set by a provider to cancel an in-flight call.
+        self.cancel_event = None
 
     def _execute(self, argv, workspace, prompt_path, stdout_path, stderr_path):
         deadline = time.monotonic() + self.timeout_seconds
@@ -219,6 +221,8 @@ class CodexCliAdapter:
                         raise CodexCliError("codex_output_limit")
                     if time.monotonic() >= deadline:
                         raise CodexCliError("codex_timeout")
+                    if self.cancel_event is not None and self.cancel_event.is_set():
+                        raise CodexCliError("codex_cancelled")
                     time.sleep(0.05)
                 if (os.fstat(stdout.fileno()).st_size > self.max_stdout_bytes
                         or os.fstat(stderr.fileno()).st_size > self.max_stderr_bytes):

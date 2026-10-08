@@ -78,6 +78,8 @@ class ClaudeCliAdapter:
         # Claude's own credentials stay; unrelated provider keys never reach the child.
         self.secret_env_names = frozenset(n.upper() for n in secret_env_names) | {
             "OPENROUTER_API_KEY", "OPENAI_API_KEY", "CODEX_API_KEY", "GITHUB_TOKEN", "GH_TOKEN", "TYPESAFE_API_KEY"}
+        # Optional threading.Event set by a provider to cancel an in-flight call.
+        self.cancel_event = None
 
     def _execute(self, argv, workspace, prompt_path, stdout_path, stderr_path):
         deadline = time.monotonic() + self.timeout_seconds
@@ -94,6 +96,8 @@ class ClaudeCliAdapter:
                         raise ClaudeCliError("claude_output_limit")
                     if time.monotonic() >= deadline:
                         raise ClaudeCliError("claude_timeout")
+                    if self.cancel_event is not None and self.cancel_event.is_set():
+                        raise ClaudeCliError("claude_cancelled")
                     time.sleep(0.05)
             finally:
                 if process.poll() is None:

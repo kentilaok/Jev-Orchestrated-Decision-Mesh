@@ -110,7 +110,7 @@ def artifact_schema(source_ids):
 
 class NativeTransitionBroker:
     def __init__(self, adapter, judge, config, folder, *, simulation=False,
-                 gate_policy='legacy', arsenal_observer=None):
+                 gate_policy='legacy', arsenal_observer=None, permit_authority=None):
         require(isinstance(config, RunConfig), 'validated_run_config_required')
         require(gate_policy in ('legacy', 'fused', 'recovery'), 'invalid_native_gate_policy')
         self.adapter, self.judge, self.config = adapter, judge, config
@@ -119,6 +119,11 @@ class NativeTransitionBroker:
         require(arsenal_observer is None or callable(arsenal_observer),
                 'invalid_arsenal_observer')
         self.arsenal_observer = arsenal_observer
+        # Optional Arsenal Phase B capability permits; the adapter must expose
+        # prepare(basis) so every frontier call names its exact authorization.
+        self.permit_authority = permit_authority
+        self._last_dispatch = None
+        self._short_basis = None
         self.calls = []
         self.worker_count = 0
         self.checker_count = 0
@@ -195,6 +200,8 @@ class NativeTransitionBroker:
         requested = model.split('/', 1)[-1]   # 'openai/gpt-6-luna' -> 'gpt-6-luna'; 'anthropic/claude-opus-5' -> 'claude-opus-5'
         response = None
         try:
+            if callable(getattr(self.adapter, 'prepare', None)):
+                self.adapter.prepare(self._permit_basis(role))
             response = self.adapter.run(requested, effort, prompt, schema, self.worker_workspace)
             require(type(response) is dict and type(response.get('artifact')) is dict,
                     'native_codex_contract_failure')
@@ -218,6 +225,17 @@ class NativeTransitionBroker:
                            'usage': response.get('usage'), 'status': 'ok',
                            'artifact_hash': artifact_hash})
         return response['artifact']
+
+    def _permit_basis(self, role):
+        """Name the exact authorization for the next frontier call."""
+        if self._short_basis is not None:
+            return copy.deepcopy(self._short_basis)
+        event = self._last_dispatch
+        require(event is not None, 'frontier_call_without_dispatch_event')
+        expected = 'checker' if role == 'checker' else 'producer'
+        require(event.get('worker_id', 'producer') == expected, 'frontier_call_dispatch_role_mismatch')
+        return {'kind': 'cidm_mesh_dispatch', 'event_id': event['id'],
+                'gate_id': event['gate_id'], 'action_hash': event['action_hash']}
 
     def _source_hashes(self, sources, selected):
         return {sid: fingerprint(sources[sid]) for sid in selected}
@@ -359,6 +377,8 @@ class NativeTransitionBroker:
                   'calls': [], 'codex_cost_usd': None, 'training_performed': False,
                   'simulation': self.simulation}
         def journal(event):
+            if event.get('kind') in ('dispatch', 'deferred_dispatch'):
+                self._last_dispatch = copy.deepcopy(event)
             with (self.folder / 'journal.jsonl').open('a', encoding='utf-8') as stream:
                 stream.write(packed(event) + '\n')
         if self.arsenal_observer is not None:
@@ -390,6 +410,9 @@ class NativeTransitionBroker:
                                  'required_parent_hashes': [],
                                  'format': 'Return the requested structured artifact. State unresolved issues.'})
                 short = self.config.short_route()
+                self._short_basis = {'kind': 'host_short_classification',
+                                     'snapshot_hash': normalized['snapshot_hash'],
+                                     'classification_source': normalized['classification']['source']}
                 candidate = self._codex('worker', short['model'], short['effort'], prompt,
                                         artifact_schema(sources))
                 checks = self._validate_candidate(candidate, sources, [], output=True)
@@ -494,6 +517,12 @@ class NativeTransitionBroker:
                             result['native_audit'] = native_audit
                             if not audit_result['valid'] or not native_audit['valid']:
                                 result['status'], result['answer'] = 'audit_failed', None
+                            if self.permit_authority is not None:
+                                from capability_permits import audit_permit_ledger
+                                result['permit_audit'] = audit_permit_ledger(
+                                    self.permit_authority.events(), result.get('events', []))
+                                if not result['permit_audit']['valid']:
+                                    result['status'], result['answer'] = 'audit_failed', None
                         except Exception as error:
                             result['status'], result['answer'] = 'audit_failed', None
                             result['audit_error_type'] = type(error).__name__
@@ -505,6 +534,11 @@ class NativeTransitionBroker:
             result['answer'] = None
             result['error_type'] = type(error).__name__
         finally:
+            if self.permit_authority is not None and 'permit_audit' not in result:
+                from capability_permits import audit_permit_ledger
+                result['permit_audit'] = audit_permit_ledger(
+                    self.permit_authority.events(),
+                    result.get('events') if route != 'short_self_contained' else None)
             if result['status'] != 'complete':
                 result['answer'] = None
             result['calls'] = copy.deepcopy(self.calls)
@@ -543,6 +577,8 @@ def main():
                         default=Path('~/.jev/arsenal/native-shadow.jsonl').expanduser())
     parser.add_argument('--arsenal-calibration-ledger', type=Path,
                         help='Opt-in append-only shadow calibration; no routing changes')
+    parser.add_argument('--skip-route-preflight', action='store_true',
+                        help='Do not compare the frozen route catalogue with the account catalogue')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
@@ -603,16 +639,35 @@ def main():
         if gateway is None:
             gateway = Gateway(args.out, config)
         return gateway.network_judge(phase, options, state)
-    if args.host == 'claude':
-        from claude_cli_adapter import ClaudeCliAdapter
-        adapter = ClaudeCliAdapter()
-    else:
-        from codex_cli_adapter import CodexCliAdapter
-        adapter = CodexCliAdapter(astra_explicitly_authorized=config.astra_explicitly_authorized)
+    from capability_permits import PermitAuthority
+    from frontier_providers import PermittedAdapter, build_provider, route_coverage
+    authority = PermitAuthority(args.out / 'permits.jsonl')
+    options = ({} if args.host == 'claude'
+               else {'astra_explicitly_authorized': config.astra_explicitly_authorized})
+    provider = build_provider(args.host, authority, **options)
+    coverage = None
+    if not args.skip_route_preflight:
+        # Fail closed before any paid call when the account cannot serve the
+        # frozen route catalogue; never substitute a different model.
+        coverage = route_coverage(provider, list(config.worker_routes()),
+                                  checker=(config.checker_model, config.checker_effort))
+        if coverage['status'] in ('partial', 'unavailable'):
+            args.out.mkdir(parents=True)
+            result = {'status': 'route_preflight_failed', 'route': normalized['classification']['scope'],
+                      'gate_policy': args.gate_policy, 'host': args.host, 'answer': None,
+                      'task_hash': normalized['snapshot_hash'], 'route_coverage': coverage,
+                      'calls': [], 'simulation': False, 'training_performed': False}
+            (args.out / 'result.json').write_text(json.dumps(result, indent=2, allow_nan=False),
+                                                  encoding='utf-8')
+            print(packed({'status': result['status'], 'route': result['route'], 'answer': None,
+                          'calls': 0, 'missing_routes': len(coverage['missing'])}))
+            return 2
     broker = NativeTransitionBroker(
-        adapter, judge, config, args.out, gate_policy=args.gate_policy,
-        arsenal_observer=arsenal_observer)
+        PermittedAdapter(provider, authority), judge, config, args.out, gate_policy=args.gate_policy,
+        arsenal_observer=arsenal_observer, permit_authority=authority)
     result = broker.run(spec)
+    result['host'] = args.host
+    result['route_coverage'] = coverage if coverage is not None else {'status': 'skipped'}
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []
     result['jev_provider_events'] = provider_events
     result['jev_api_cost_usd'] = (
