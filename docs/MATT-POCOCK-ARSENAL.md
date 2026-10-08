@@ -152,3 +152,8 @@ A skill may improve a workflow without reducing its frontier cost. Keep both met
 Avoid installing the complete upstream plugin plus editable skills simultaneously (duplicate skill names and redundant context). Do not let `ask-matt`, `implement-spec`, `wayfinder`, or `triage` become parallel global orchestrators. Never track upstream `main` automatically in the trusted skill store; new upstream releases should generate new candidate hashes and fresh evaluation.
 
 **Boundary:** Matt Pocock's skills enrich the **engineering methodology arsenal**. They do not replace Jev, Hermes, validators, the Experience Plane, or the Arsenal owner-admission gate.
+
+
+---
+
+*CIDM architecture and research direction: Ken Caber (Kenneth Vic A. Caber). External projects and skills retain their respective authorship and licences.*
