@@ -494,6 +494,8 @@ class ArsenalRegistry:
             except sqlite3.OperationalError:
                 lexical = []
         if not lexical:
+            count = self.db.execute("SELECT COUNT(*) FROM experience_lessons").fetchone()[0]
+            require(count <= 5000, "fts5_required_for_large_experience_index")
             rows = self.db.execute(
                 "SELECT lesson_id,search_text FROM experience_lessons"
             ).fetchall()
@@ -599,6 +601,8 @@ class ArsenalRegistry:
                 ]
             except sqlite3.OperationalError:
                 pass
+        count = self.db.execute("SELECT COUNT(*) FROM skills").fetchone()[0]
+        require(count <= 5000, "fts5_required_for_large_skill_index")
         rows = self.db.execute("SELECT * FROM skills").fetchall()
         rows.sort(
             key=lambda row: self._lexical_score(task, row["search_text"]),
