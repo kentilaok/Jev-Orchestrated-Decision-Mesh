@@ -36,6 +36,9 @@ class MattPocockImportTests(unittest.TestCase):
         (self.upstream / "LICENSE").write_text(
             "MIT License - upstream copyright notice fixture.", encoding="utf-8"
         )
+        (self.upstream / ".gitignore").write_text(
+            "*.scratch\n", encoding="utf-8"
+        )
         self.git("add", ".")
         self.git("commit", "-qm", "pinned source")
         self.rev = self.git("rev-parse", "HEAD")
@@ -128,6 +131,38 @@ class MattPocockImportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "upstream_checkout_is_dirty"):
             self.stage(install=True)
         self.assertFalse(self.dest.exists())
+
+    def test_untracked_source_file_refuses_import(self):
+        extra = self.upstream / "skills/engineering/diagnosing-bugs/extra.md"
+        extra.write_text("Unexpected additional instructions", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "upstream_checkout_is_dirty"):
+            self.stage(install=True)
+        self.assertFalse(self.dest.exists())
+
+    def test_ignored_source_file_cannot_bypass_revision_check(self):
+        ignored = self.upstream / "skills/engineering/diagnosing-bugs/payload.scratch"
+        ignored.write_text("Unexpected ignored payload", encoding="utf-8")
+        self.assertEqual(self.git("status", "--porcelain"), "")
+        with self.assertRaisesRegex(ValueError, "untracked_or_ignored_skill_file"):
+            self.stage(install=True)
+        self.assertFalse(self.dest.exists())
+
+    def test_actual_curated_catalogue_produces_valid_candidate_manifests(self):
+        source_catalogue = json.loads(
+            (ROOT / "arsenal/sources/matt-pocock.json").read_text(encoding="utf-8")
+        )
+        core_names = [item["name"] for item in selected_skills(source_catalogue, [], False)]
+        self.assertEqual(core_names, [
+            "diagnosing-bugs", "tdd", "codebase-design",
+            "domain-modeling", "writing-for-agents",
+        ])
+        for item in source_catalogue["skills"]:
+            manifest = normalize_manifest(manifest_for(item, source_catalogue))
+            self.assertEqual(manifest["admission"]["status"], "candidate")
+            self.assertFalse(manifest["admission"]["owner_approved"])
+            self.assertTrue(manifest["frontier_required"])
+            self.assertEqual(manifest["operations"], [])
+            self.assertEqual(manifest["validators"], [])
 
     def test_revision_mismatch_refuses_import(self):
         data = dict(self.data, pinned_revision="0" * 40)
