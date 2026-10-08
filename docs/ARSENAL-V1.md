@@ -418,7 +418,7 @@ The RTX 3050 4 GB remains available for UI/normal workstation use rather than be
 
 ## 4. Core V1 components
 
-### 3.1 Jev / CIDM — global authority
+### 4.1 Jev / CIDM — global authority
 
 **Role:** global control plane.
 
@@ -439,7 +439,7 @@ No external framework gains global commit authority.
 
 ---
 
-### 3.2 Hermes — operational runtime
+### 4.2 Hermes — operational runtime
 
 **Role:** execute bounded CIDM-authorized work.
 
@@ -459,7 +459,7 @@ Hermes does **not** own global project fan-out, global budget escalation, or fin
 
 ## 5. Frontier model layer
 
-### 4.1 Claude Code adapter — primary V1 worker
+### 5.1 Claude Code adapter — primary V1 worker
 
 Use Claude Code as the primary engineering frontier worker while it is the user's main model environment.
 
@@ -483,7 +483,7 @@ run(task, project_dir, model, permissions, timeout)
 
 A Claude result is still provisional until CIDM validation and Jev authorization.
 
-### 4.2 Codex / ChatGPT adapter — first-class optional worker
+### 5.2 Codex / ChatGPT adapter — first-class optional worker
 
 Prefer the official ChatGPT-account integration path when practical.
 
@@ -499,7 +499,7 @@ Codex app-server can also be driven using a ChatGPT-plan OAuth access token.
 
 **V1 direction:** evolve the current Codex CLI wrapper toward a proper account-aware Codex/ChatGPT adapter with an account-specific model picker.
 
-### 4.3 Frontier adapter contract
+### 5.3 Frontier adapter contract
 
 All frontier providers should implement the same logical interface:
 
@@ -518,7 +518,7 @@ The adapter must report unknown usage/cost as unknown, never zero.
 
 ## 6. Context plane
 
-### 5.1 LeanCTX — recommended V1 context gateway
+### 6.1 LeanCTX — recommended V1 context gateway
 
 **Decision:** BUILD / integrate first.
 
@@ -546,7 +546,7 @@ Claude Pro/Max OAuth does not support arbitrary custom `ANTHROPIC_BASE_URL` prox
 
 This makes LeanCTX compatible with V1 without interfering with Claude login.
 
-### 5.2 Headroom — V1.x controlled A/B, not default
+### 6.2 Headroom — V1.x controlled A/B, not default
 
 **Decision:** EXPERIMENT after LeanCTX baseline.
 
@@ -572,7 +572,7 @@ Plan:
 4. A/B Headroom separately
 5. choose one primary context transform path per frontier adapter
 
-### 5.3 LLMLingua — defer
+### 6.3 LLMLingua — defer
 
 Useful as a research baseline, but not a V1 default because CIDM often carries exact schemas, hashes, source IDs, errors, and permit data.
 
@@ -690,11 +690,11 @@ Excellent vector-search library, but V1 should not require us to build persisten
 
 ## 9. Routing
 
-### 8.1 Jev remains the authoritative router
+### 9.1 Jev remains the authoritative router
 
 Do not replace CIDM routing with another agent graph.
 
-### 8.2 Semantic Router — optional pre-Jev hint layer
+### 9.2 Semantic Router — optional pre-Jev hint layer
 
 **Decision:** EXPERIMENT, not authority.
 
@@ -729,7 +729,7 @@ V1 should first use the local cognitive substrate (compiled rules + FTS5 + FastE
 
 ## 10. Model gateway
 
-### 9.1 Direct account adapters first
+### 10.1 Direct account adapters first
 
 For the first usable V1:
 
@@ -741,7 +741,7 @@ For the first usable V1:
 
 This keeps subscription semantics explicit and easy to debug.
 
-### 9.2 LiteLLM — optional API-era gateway
+### 10.2 LiteLLM — optional API-era gateway
 
 **Decision:** DEFER from the mandatory path; keep an adapter slot.
 
@@ -772,7 +772,7 @@ Skills are procedures, not authorities.
 
 They must be installed through a governed skill-admission process and enabled by project/task policy.
 
-### 10.1 Superpowers — selectively adopt
+### 11.1 Superpowers — selectively adopt
 
 **Recommended initial skills:**
 
@@ -786,7 +786,7 @@ They must be installed through a governed skill-admission process and enabled by
 
 **Do not** hand global orchestration to its subagent workflow. CIDM remains the project controller.
 
-### 10.2 Karpathy-inspired skills — selectively adopt
+### 11.2 Karpathy-inspired skills — selectively adopt
 
 Treat these as third-party distillations of publicly described practices, not official Karpathy software.
 
@@ -799,7 +799,7 @@ Recommended concepts:
 
 Do not install an always-on routing file that competes with Jev. Convert useful procedures into CIDM/Hermes-scoped skills.
 
-### 10.3 Ponytail — recommended
+### 11.3 Ponytail — recommended
 
 Strong fit for the execution plane because it pushes workers toward:
 
@@ -810,7 +810,7 @@ Strong fit for the execution plane because it pushes workers toward:
 
 Use the implementation/review/audit variants as bounded Hermes methodology skills.
 
-### 10.4 Taste — project-specific
+### 11.4 Taste — project-specific
 
 Useful for web/design/brand work.
 
@@ -818,7 +818,7 @@ Taste's current skills can search/extract design references and grade output aga
 
 Use only for relevant visual/design projects. It is not a generic code-quality authority.
 
-### 10.5 Matt Pocock — Skills for Real Engineers (curated)
+### 11.5 Matt Pocock — Skills for Real Engineers (curated)
 
 **Decision:** ADD a pinned external methodology source, not a second orchestrator.
 
@@ -840,7 +840,7 @@ This intentionally avoids making a GitHub plugin auto-update a trusted procedura
 
 See [Matt Pocock Skills — governed Arsenal source](MATT-POCOCK-ARSENAL.md).
 
-### 10.6 Caveman-style compression — optional
+### 11.6 Caveman-style compression — optional
 
 May help compact internal summaries or handoffs, but readability and exactness are more important in CIDM protocol data.
 
@@ -959,7 +959,7 @@ CIDM controls:
 
 The sandbox never receives commit authority.
 
-### 12.2 Secrets — Infisical or sandbox-native secret proxy
+### 13.2 Secrets — Infisical or sandbox-native secret proxy
 
 **Decision:** ADD before giving frontier agents broad external-service access.
 
@@ -972,7 +972,7 @@ Candidates:
 
 CIDM permits should reference secret capability IDs, not raw secret values.
 
-### 12.3 Browser automation
+### 13.3 Browser automation
 
 **Decision:** ADD in two tiers.
 
@@ -1001,7 +1001,7 @@ Only the latter two should require stronger permits.
 
 ## 14. Observability and evaluation
 
-### 13.1 Phoenix + OpenTelemetry — recommended V1
+### 14.1 Phoenix + OpenTelemetry — recommended V1
 
 **Decision:** BUILD.
 
@@ -1030,7 +1030,7 @@ Phoenix
 
 Trace identifiers should link the two systems.
 
-### 13.2 What every run should measure
+### 14.2 What every run should measure
 
 - task/project ID
 - CIDM protocol version
@@ -1219,7 +1219,9 @@ Jev -> Hermes
 | Codex/ChatGPT adapter | **Core** | frontier/cloud | alternate worker + model switch |
 | MCP capability bus | **Core** | local/remote mix | standard tool boundary |
 | LeanCTX read-path | **Core experiment** | local/lightweight | context/tool-catalog efficiency |
-| SQLite FTS5 + FastEmbed | **Core** | local/lightweight | lexical + semantic skill/experience retrieval |\n| Small ONNX reranker | **Core** | local/lightweight | cheap top-k relevance decisions |\n| Qdrant Cloud | **Core** | managed cloud | durable/scaled hybrid retrieval |
+| SQLite FTS5 + FastEmbed | **Core** | local/lightweight | lexical + semantic skill/experience retrieval |
+| Small ONNX reranker | **Core** | local/lightweight | cheap top-k relevance decisions |
+| Qdrant Cloud | **Core** | managed cloud | durable/scaled hybrid retrieval |
 | Hosted reranker | **Fallback** | cloud API | stronger reranking when local confidence is insufficient |
 | Phoenix + OpenTelemetry | **Core** | cloud/VPS/managed | tracing/evaluation |
 | E2B or Daytona | **Core experiment** | managed cloud | isolated code execution off local machine |
@@ -1234,7 +1236,8 @@ Jev -> Hermes
 | Ponytail | **Approved candidate** | skill only | reduce overengineering |
 | Taste | **Project-specific** | remote MCP | design/brand work |
 | Headroom | **A/B later** | local/lightweight | reversible compression |
-| Skill Compiler + CIDM Fast Path | **Core** | local/lightweight | execute known validated procedures without frontier calls |\n| Semantic Router | **A/B later** | local lib | benchmark against simpler local routing |
+| Skill Compiler + CIDM Fast Path | **Core** | local/lightweight | execute known validated procedures without frontier calls |
+| Semantic Router | **A/B later** | local lib | benchmark against simpler local routing |
 | LiteLLM | **Later** | cloud/VPS | multi-provider API gateway |
 | Temporal | **Later** | cloud/VPS | crash-safe long workflows |
 | DSPy | **Offline later** | cloud/frontier | prompt/program optimisation |
@@ -1372,7 +1375,10 @@ Arsenal V1 is successful if:
 9. verified experience can become governed procedural knowledge;
 10. Phoenix/CIDM traces can explain why a run succeeded, failed, escalated, or stopped;
 11. no new component can independently bypass validators or commit policy;
-12. routine known tasks can resolve skill/tool/experience candidates without a frontier call;\n13. local semantic helpers stay within explicit CPU/RAM budgets;\n14. the system records how many Jev/frontier calls were avoided and why;\n15. every optimisation is benchmarked against a frozen baseline before becoming default.
+12. routine known tasks can resolve skill/tool/experience candidates without a frontier call;
+13. local semantic helpers stay within explicit CPU/RAM budgets;
+14. the system records how many Jev/frontier calls were avoided and why;
+15. every optimisation is benchmarked against a frozen baseline before becoming default.
 
 ---
 
@@ -1395,3 +1401,8 @@ agent -> agent -> orchestrator -> agent -> framework
 ```
 
 The result is intended to be easier to audit, cheaper to evolve, and safer to improve through accumulated verified experience.
+
+
+---
+
+*CIDM architecture and research direction: Ken Caber (Kenneth Vic A. Caber). External projects and skills retain their respective authorship and licences.*
