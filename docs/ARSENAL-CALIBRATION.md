@@ -22,9 +22,11 @@ The append-only JSONL ledger `~/.jev/arsenal/calibration.jsonl` contains three e
 
 A prediction stores task hash, scope, bug key, operation, selected skill and experience, skill/manifest hashes, exact-key evidence, local score, recommendation and candidate flag. It does **not** persist the full task/prompt. Sensitive contents must be protected in the original broker journal, skill store and review evidence.
 
-A runtime stores actual native broker status, whether the run was a simulation, audit evidence flag, call count and per-role counts, and usage if completely reported. Missing token counts/costs remain `null` rather than becoming invented zeroes.
+A runtime stores actual native broker status, whether the run was a simulation, audit evidence flag, compact boolean validator outcomes, a hash of any validator/audit receipts, call count and per-role counts, and usage if completely reported. Missing token counts/costs remain `null` rather than becoming invented zeroes.
 
 A verdict stores the reviewer's ID, an evidence reference, correct skill and experience IDs if any, and whether the particular task was independently judged safe for the proposed deterministic Fast Path.
+
+Each ledger line contains its own SHA-256 hash and the preceding line's hash. Readers fail closed when a hash link breaks. This is **tamper-evident for accidental or partial alteration**, not protection against someone who can rewrite the entire file. For V1 use one ledger writer at a time; concurrent writers are not yet coordinated. Keep the ledger access-controlled and backed up.
 
 **The adjudication CLI does not open or cryptographically verify the evidence reference.** That remains a human/CI review requirement. It does not make subjective labels objective proof. An audit failure or simulated run is excluded from quality scoring even if a reviewer submits a verdict.
 
