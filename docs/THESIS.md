@@ -146,3 +146,87 @@ Primary hypotheses are: (H_1), CIDM has lower total API dollars or fewer Codex c
 ## Limits of inference
 
 Optional review lowers overhead but can miss a defect when executable checks are weak or Jev forwards too early. A requested checker and worker may share errors. Typed output and successful schema validation do not prove a choice correct. Source compression can hide decisive evidence; retrieval is not yet part of the reference runner. Provider rates, model access, cache policy, and ChatGPT credit limits can change. Host-native Codex may spend extra tokens on its own agent runtime, and the broker cannot control private reasoning inside a turn. The verified controller properties depend on trusted code, not on Jev's confidence or the worker's five scores. These are measurable failure modes for the protocol above, not qualifications to an already demonstrated efficiency result.
+
+
+## Recovery-first extension and experience distillation
+
+The original reference controller is deliberately fail-closed: a candidate that fails hard checks cannot forward, and the top-level runner terminates when a unit returns a non-forward outcome. The saved pilot shows why these two concerns must now be separated. In the historical 12-task evaluation, CIDM produced correct answer values for all 12 candidates but released only 7; four of the five withheld candidates passed the frozen value/citation/status rubric. This does not invalidate the integrity rules. It shows that **commit safety and project continuation are different decisions**.
+
+The recovery-first extension therefore preserves every existing forward/commit invariant while adding a supervisory recovery state machine. A failed gate blocks that candidate from advancing, but it does not by itself terminate the project. Local repair or verification exhaustion can trigger a fresh bounded replan of the same unit. A missing-evidence decision can invoke a trusted read-only retrieval adapter and retry with newly hashed source IDs. When an external dependency cannot be satisfied or a bounded recovery budget is exhausted, the system emits a `paused_recoverable` checkpoint containing the committed prefix, active unit, policy version, state hash, reason, and journal cursor. Integrity exceptions remain terminal. An explicit operator abort remains terminal.
+
+This extension is implemented in `scripts/recovery_protocol.py`. It wraps the existing separate-gate `CheckedNetwork` rather than changing the meaning of historical traces. The legacy controller's default two repair attempts and two checker attempts remain unchanged; the implementation now permits experiments to configure those bounds explicitly. The fused controller remains a separate baseline because its deferred permit contract currently encodes the earlier bounded-attempt assumptions and should not be generalized without a new audit.
+
+CIDM also gains an **experience plane**. Every run already produces auditable candidate, decision, validation, and commit events. A Hermes worker or trusted host may additionally record a bounded provisional `recovery_note` describing a stable bug key, symptom, root-cause hypothesis, failed strategy, successful strategy, and verification. The note has no commit authority and remains provisional until the same unit later produces a checked commit. `scripts/experience_distiller.py` converts those events into structured failure/recovery episodes. A model's explanation of a bug is not accepted as durable knowledge. A recovery becomes verified only when a failure for a unit is followed later by a checked commit for that same unit. Verified episodes can be grouped into lessons with provenance to the original run, event IDs, and accepted artifact hashes.
+
+Repeated verified lessons from distinct runs—or a verified lesson explicitly approved by the owner—can be rendered as project-scoped Hermes-compatible `SKILL.md` procedural memory. The project scope is part of the lesson signature and generated skill name; repeated ingestion is deduplicated by experience ID. This is not model-weight training. It is a retrieval and procedure layer intended to reduce repeated investigation and rediscovery. Raw experience remains append-only; provisional lessons remain distinct from promoted skills; automatic promotion rejects unscoped lessons; and current evidence, current validators, current policy, and current Jev permits always override learned procedure.
+
+The resulting architecture has three planes:
+
+```text
+Decision plane:   Jev
+                  scope -> evidence -> budget -> route -> arbitration
+
+Execution plane:  Hermes + frontier worker + tools
+                  skills -> bounded work -> validators
+
+Experience plane: CIDM event ledger
+                  failures -> verified recoveries -> lessons -> Hermes skills
+```
+
+The experience plane has no commit authority. Its purpose is to improve future execution efficiency and capability while keeping the control plane auditable.
+
+This changes the primary stability question. A useful CIDM system should not merely minimize unsafe forwarding. It should also minimize **false terminality**: cases where the current candidate must be rejected but useful project progress remains possible. Future evaluation should therefore report project completion, gate false-negative rate, successful recovery rate, external checkpoints, integrity failures, retry cost, and recurrence of previously solved bugs before and after skill promotion, alongside correctness, release quality, total tokens, API cost, and latency.
+
+The recovery and distillation design is specified in [RECOVERY-AND-DISTILLATION.md](RECOVERY-AND-DISTILLATION.md). It is an implemented experimental extension, not yet evidence of project-scale efficiency or robustness.
+
+
+## Frontier-first capability arsenal
+
+The next build direction is deliberately **frontier-first and thin-client**. CIDM should not require local LLM inference, local fine-tuning, or sustained GPU workloads to become useful. A modest workstation can remain the control node while Claude, Codex/ChatGPT, managed retrieval, hosted reranking, and remote evaluation services perform expensive work.
+
+This leads to a broader architectural rule:
+
+> **Capability expansion should occur horizontally beneath a stable authority boundary, rather than vertically by stacking autonomous orchestrators.**
+
+Jev therefore remains the global decision plane. Hermes remains the operational execution/skill plane. Frontier providers, MCP tools, retrieval systems, context gateways, methodology skills, and durable workflow infrastructure are capabilities that Jev may admit and bound; none of them independently gain commit authority.
+
+The first Arsenal architecture prioritizes:
+
+- Claude Code plus an account-aware Codex/ChatGPT frontier adapter;
+- MCP as the capability bus;
+- LeanCTX as an initial measurable read-path/context/tool-catalog gateway;
+- managed Qdrant hybrid retrieval plus a hosted reranker;
+- Phoenix/OpenTelemetry for observability and evaluation;
+- a governed skill-admission registry;
+- a small reviewed engineering-methodology skill set;
+- the existing experience-distillation layer for verified procedural learning.
+
+Local Qwen/Ajax/Odysseus inference, LangGraph as a core controller, lossy protocol compression, and public-skill auto-installation are explicitly outside V1.
+
+The detailed build order, compatibility constraints, and V1 acceptance criteria are specified in [ARSENAL-V1.md](ARSENAL-V1.md).
+
+
+## Local cognitive substrate and frontier-call avoidance
+
+A frontier model should not be the default mechanism for every classification, lookup, routing decision, or already-known repair. CIDM should first exploit a **local cognitive substrate** composed of deterministic policy, lexical retrieval, small CPU embedding/reranking models, cached experience, compiled skill metadata, static analysis, and hard validators. These components do not need the broad generative capacity of Claude, Codex, or a local LLM.
+
+The intended escalation ladder is:
+
+```text
+deterministic policy / exact signature
+        -> SQLite FTS5/BM25
+        -> local embedding similarity
+        -> small local reranker
+        -> Jev model decision
+        -> frontier worker
+```
+
+Each tier is entered only when the cheaper tier cannot resolve the decision with sufficient confidence and policy coverage.
+
+Hermes skills should therefore have two representations. The human/agent-facing `SKILL.md` remains procedural knowledge, while admission also produces a machine-readable compiled representation containing trigger examples, bug keys, lexical terms, project scope, required capabilities, permissions, validator contract, risk tier, and content hash. The local substrate indexes these records so a known task can often select an already-approved procedure without sending the full skill library to a frontier model.
+
+For low-risk, reversible, pre-authorized procedures with deterministic validators, CIDM may eventually support a **compiled-policy fast path**: a matching approved skill can be executed by Hermes/tools and accepted only after its declared validators pass. This does not bypass CIDM; CIDM itself is executing an already reviewed policy rather than paying for a model to rediscover the same decision. Novel, ambiguous, destructive, externally consequential, or policy-sensitive tasks still escalate to Jev.
+
+This changes the efficiency objective. CIDM should measure not only tokens per call but also **frontier-call avoidance rate**, including why each avoided call was considered safe, which skill/policy resolved it, what validators ran, and whether the outcome later required recovery. A successful experience/skill system should progressively increase the share of routine work resolved below the frontier tier without increasing false commits or negative transfer.
+
+The V1 hardware assumption is therefore **no heavy local generative inference**, not no local intelligence. CPU-first ONNX embedding and small reranking models, lexical search, caches, AST analysis, and deterministic validation are compatible with a modest workstation and are specifically intended to reduce frontier usage. The implementation direction is specified in [ARSENAL-V1.md](ARSENAL-V1.md).

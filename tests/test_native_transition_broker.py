@@ -91,6 +91,45 @@ class FakeJev:
                                         'cost': 0.000001}}
 
 
+class RecoveryJev(FakeJev):
+    def __call__(self, phase, options, state):
+        self.calls.append((phase, copy.deepcopy(options), copy.deepcopy(state)))
+        if phase == 'authorize_unit':
+            choice = 'compute' if 'compute' in options else next(iter(options))
+        elif phase == 'after_worker':
+            if 'forward' in options:
+                choice = 'forward'
+            elif 'repair' in options:
+                choice = 'repair'
+            else:
+                choice = next(iter(options))
+        elif phase == 'after_sol_high':
+            choice = 'forward' if 'forward' in options else 'repair'
+        else:
+            raise AssertionError(phase)
+        return {'choice': choice, 'model': 'typesafe/jev-1.13-20260917',
+                'live': True, 'usage': {'input_tokens': 25, 'output_tokens': 5,
+                                        'cost': 0.000001}}
+
+
+class RecoveringCodex(FakeCodex):
+    def __init__(self):
+        super().__init__()
+        self.unit_attempts = {}
+
+    def run(self, model, effort, prompt, schema, workspace):
+        response = super().run(model, effort, prompt, schema, workspace)
+        payload = json.loads(prompt)
+        if payload.get('role') == 'separate Sol-high checker':
+            return response
+        unit_id = payload.get('unit', {}).get('id')
+        if unit_id:
+            self.unit_attempts[unit_id] = self.unit_attempts.get(unit_id, 0) + 1
+        if unit_id == 'hidden1' and self.unit_attempts[unit_id] <= 2:
+            response['artifact']['data']['source_hashes'] = {'request': 'bad'}
+        return response
+
+
 class FusedJev:
     def __init__(self, *, check_unit=None, stop_unit=None, invalid_phase=None):
         self.calls = []
@@ -172,10 +211,12 @@ class NativeTransitionBrokerTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.folder = Path(temporary.name)
 
-    def broker(self, adapter=None, judge=None, name='run', *, gate_policy='legacy', config=None):
-        return NativeTransitionBroker(adapter or FakeCodex(), judge or FakeJev(),
-                                      config or RunConfig(), self.folder / name,
-                                      gate_policy=gate_policy)
+    def broker(self, adapter=None, judge=None, name='run', *, gate_policy='legacy',
+               config=None, arsenal_observer=None):
+        return NativeTransitionBroker(
+            adapter or FakeCodex(), judge or FakeJev(),
+            config or RunConfig(), self.folder / name,
+            gate_policy=gate_policy, arsenal_observer=arsenal_observer)
 
     def short_spec(self):
         spec = copy.deepcopy(SPEC)
@@ -204,6 +245,65 @@ class NativeTransitionBrokerTests(unittest.TestCase):
         self.assertEqual(result['answer'], 'Supported project result.')
         self.assertEqual(jev.calls[0][2]['remaining_budget']['jev_tokens_remaining'], 50000)
         self.assertEqual(jev.calls[1][2]['remaining_budget']['jev_tokens_remaining'], 49970)
+
+    def test_recovery_policy_replans_failed_unit_and_completes(self):
+        codex, jev = RecoveringCodex(), RecoveryJev()
+        result = self.broker(
+            codex, jev, 'recovery',
+            gate_policy='recovery',
+            config=RunConfig(max_recovery_attempts=2, max_recovery_rounds=1),
+        ).run(SPEC)
+        self.assertEqual((result['status'], result['gate_policy']), ('complete', 'recovery'))
+        self.assertEqual(result['protocol_version'], 'cidm-recovery-first-v1')
+        self.assertEqual(result['recovery_rounds'], {'hidden1': 1})
+        self.assertEqual(codex.unit_attempts['hidden1'], 3)
+        self.assertTrue(result['audit']['valid'])
+        self.assertTrue(result['native_audit']['valid'])
+        self.assertNotIn('project_route', [phase for phase, _, _ in jev.calls])
+        self.assertTrue(any(
+            event['kind'] == 'recovery_replan' and event['unit_id'] == 'hidden1'
+            for event in result['events']
+        ))
+
+    def test_arsenal_shadow_observation_does_not_change_normal_execution(self):
+        observed = []
+        def observer(state):
+            observed.append(copy.deepcopy(state))
+            return {
+                'mode': 'shadow',
+                'recommendation': 'load_skill_then_jev',
+                'selected_skill_id': 'known-fix',
+                'frontier_call_avoided': False,
+                'authority': 'none_shadow_observation_only',
+            }
+        codex, jev = FakeCodex(), FakeJev()
+        result = self.broker(
+            codex, jev, 'arsenal-shadow', arsenal_observer=observer
+        ).run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        self.assertEqual(result['arsenal_shadow']['selected_skill_id'], 'known-fix')
+        self.assertFalse(result['arsenal_shadow']['frontier_call_avoided'])
+        self.assertEqual(len(observed), 1)
+        self.assertEqual(len(codex.calls), 4)
+        self.assertEqual(len(jev.calls), 11)
+        journal = (self.folder / 'arsenal-shadow' / 'journal.jsonl').read_text(
+            encoding='utf-8'
+        )
+        self.assertIn('"kind":"arsenal_shadow"', journal)
+
+    def test_arsenal_shadow_failure_never_blocks_cidm_run(self):
+        def observer(_state):
+            raise RuntimeError('shadow unavailable')
+        result = self.broker(
+            FakeCodex(), FakeJev(), 'arsenal-shadow-error',
+            arsenal_observer=observer,
+        ).run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        self.assertEqual(result['arsenal_shadow']['status'], 'observer_error')
+        self.assertEqual(
+            result['arsenal_shadow']['authority'],
+            'none_shadow_observation_only',
+        )
 
     def test_jev_budget_is_derived_from_receipts_and_exhaustion_makes_no_fake_call(self):
         jev = FakeJev()
