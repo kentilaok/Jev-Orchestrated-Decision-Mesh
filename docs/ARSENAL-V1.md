@@ -834,7 +834,7 @@ Core candidates:
 
 Review-tier candidates include `code-review`, `retro`, `to-spec`, `to-tickets`, `grill-with-docs` and `handoff`. Model-invoked reference methods can be offered as bounded context; upstream user-invoked workflow commands remain explicitly invoked. Restrict upstream routers, full-workflow implementers and parallel subagent workflows: Jev still owns project planning, tool permission and final commit.
 
-`scripts/arsenal_import_matt_pocock.py` can stage selected skills from an exact pinned and clean upstream checkout. Its default mode is read-only preview. With `--install`, it copies selected skill directories plus **candidate-only** `ARSENAL.json` manifests into the Hermes skill folder, without admission or execution.
+`scripts/arsenal_import_matt_pocock.py` can stage selected skills from an exact pinned and clean upstream checkout. Its default mode is read-only preview. With `--install`, it copies selected skill directories plus **candidate-only** `ARSENAL.json` manifests into `~/.jev/arsenal/quarantine/matt-pocock`, never directly into the active Hermes skill folder. Admission and activation are separate controlled steps.
 
 This intentionally avoids making a GitHub plugin auto-update a trusted procedural dependency. All new versions require re-review and measured evaluation, especially where Matt's workflow overlaps Superpowers or Karpathy-derived methods.
 
