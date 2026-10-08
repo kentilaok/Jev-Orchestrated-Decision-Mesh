@@ -109,6 +109,7 @@ def prediction_event(run_id: str, task_hash: str, shadow: dict) -> dict:
         require((lexical.get("fast_path") or {}).get("eligible") is True
                 and local_match.get("exact_bug_key") is True,
                 "missing_fast_path_basis")
+    semantic = shadow.get("semantic") or {}
     return {
         "schema_version": SCHEMA, "kind": "prediction",
         "run_id": run_id, "task_hash": task_hash,
@@ -121,6 +122,8 @@ def prediction_event(run_id: str, task_hash: str, shadow: dict) -> dict:
         "skill_hash": _optional_str((best or {}).get("skill_hash"), "skill_hash"),
         "manifest_hash": _optional_str((best or {}).get("manifest_hash"), "manifest_hash"),
         "lexical_score": score,
+        "semantic_model": _optional_str(semantic.get("embedding_model"), "semantic_model"),
+        "reranker_model": _optional_str(semantic.get("reranker_model"), "reranker_model"),
         "exact_bug_key": bool(local_match.get("exact_bug_key") is True),
         "fast_path_candidate": candidate,
         "frontier_call_avoided": False,
@@ -171,11 +174,29 @@ def runtime_event(run_id: str, result: dict) -> dict:
             and isinstance(audit, dict) and audit.get("valid") is True
             and isinstance(native_audit, dict) and native_audit.get("valid") is True
         )
+    # Persist compact validator results and a digest of receipts, not full
+    # artifact/evidence payloads; the broker journal remains the source of truth.
+    checks = (
+        {key: value for key, value in hard_checks.items()
+         if isinstance(key, str) and type(value) is bool}
+        if isinstance(hard_checks, dict) else {}
+    )
+    receipt = {
+        "hard_checks": hard_checks,
+        "audit": audit,
+        "native_audit": native_audit,
+    }
+    has_receipt = any(value is not None for value in receipt.values())
+    receipt_hash = hash_id(canonical(receipt)) if has_receipt else None
     return {
         "schema_version": SCHEMA, "kind": "runtime",
         "run_id": run_id, "task_hash": task_hash,
         "status": status, "simulation": result["simulation"],
         "audit_verified": audited,
+        "hard_checks": checks,
+        "audit_passed": audit.get("valid") if isinstance(audit, dict) else None,
+        "native_audit_passed": native_audit.get("valid") if isinstance(native_audit, dict) else None,
+        "validator_receipt_hash": receipt_hash,
         "calls_by_role": dict(sorted(by_role.items())),
         "actual_model_calls": len(calls),
         "reported_tokens": known_tokens if complete_tokens else None,
