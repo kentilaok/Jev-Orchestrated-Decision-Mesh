@@ -178,6 +178,18 @@ class MattPocockImportTests(unittest.TestCase):
             self.stage(install=True)
         self.assertFalse(self.dest.exists())
 
+    def test_active_hermes_skills_directory_is_forbidden(self):
+        with self.assertRaisesRegex(
+            ValueError,
+            "cannot_import_directly_into_active_agent_skill_directory",
+        ):
+            import_catalogue(
+                self.upstream,
+                Path.home() / ".hermes" / "skills",
+                self.catalogue,
+                install=False,
+            )
+
     def test_existing_destination_is_not_replaced(self):
         existing = self.dest / "matt-pocock-diagnosing-bugs"
         existing.mkdir(parents=True)
