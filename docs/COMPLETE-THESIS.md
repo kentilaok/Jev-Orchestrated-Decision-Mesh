@@ -17,6 +17,7 @@ The thesis comprises the following documents. Each covers a distinct part of the
 | [Gate fusion](GATE-FUSION.md) | Separate/fused decision boundaries and state-bound permits | Experimental protocol |
 | [Recovery and experience distillation](RECOVERY-AND-DISTILLATION.md) | Bounded recovery, project continuity, verified lessons and Hermes skills | Experimental extension; implementation in PR #2 |
 | [Arsenal V1](ARSENAL-V1.md) | Frontier-efficient system, local cognitive substrate, agents/tools, memory and build phases | Future-build architecture; partial implementation in PR #2 |
+| [Arsenal Phase A2 Calibration](ARSENAL-CALIBRATION.md) | Shadow predictions, native runtime receipts, independent outcome labels and conservative evaluation | Experimental implementation in PR #2; no Fast Path execution |
 | [Arsenal manifest and admission](ARSENAL-MANIFEST.md) | Searchability vs trust, skill manifests, hashes, permissions, explicit admission | Planned governance; partial implementation in PR #2 |
 | [Matt Pocock skills](MATT-POCOCK-ARSENAL.md) | Pinned curated external methodology source, boundaries and quarantine | Candidate source; importer and tests in PR #2 |
 | [Roadmap](ROADMAP.md) | Historical research and rollout roadmap | Supporting context |
