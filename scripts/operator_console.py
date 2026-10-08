@@ -564,7 +564,7 @@ def start_local_continuity_job(payload: dict, config: dict) -> dict:
             "--registry", config["arsenal_db"], "--model", model,
             "--project-scope", scope, "--goal", goal,
             "--learning-ledger", str(run_dir / "student-observations.jsonl"),
-            "--live-local"]
+            "--out", str(run_dir / "result.json"), "--live-local"]
     return JOBS.start(argv, run_dir, {"kind": "local_only_proposals",
                                        "mode": "local_only", "model": model,
                                        "governance": "operator_read_only_no_jev_commit"})
