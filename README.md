@@ -265,6 +265,10 @@ python scripts/arsenal_shadow.py \
 
 Shadow observations default to `~/.jev/arsenal/shadow.jsonl`. V1 Fast Path execution remains disabled until these predictions are evaluated against real outcomes.
 
+Phase A2 adds an **opt-in, append-only calibration ledger**: `scripts/arsenal_calibration.py` records local predictions and observed broker outcomes, then scores only independently reviewed, non-simulated, audited runs. Add `--arsenal-calibration-ledger ~/.jev/arsenal/calibration.jsonl` alongside `--arsenal-shadow` on a native broker run. It never enables a no-frontier execution path.
+
+See [Arsenal A2 calibration and reviewer workflow](docs/ARSENAL-CALIBRATION.md).
+
 ## Authorship and attribution
 
 CIDM's originating architecture and research thesis were created by **[Ken Caber (Kenneth Vic A. Caber)](https://github.com/kentilaok)**. See [Complete Thesis — Authorship and credits](docs/COMPLETE-THESIS.md#authorship-and-credits). Jev, models, third-party tools and skills retain the credit and licences of their respective creators.
