@@ -538,12 +538,16 @@ def main():
     parser.add_argument('--arsenal-reranker-model')
     parser.add_argument('--arsenal-shadow-ledger', type=Path,
                         default=Path('~/.jev/arsenal/native-shadow.jsonl').expanduser())
+    parser.add_argument('--arsenal-calibration-ledger', type=Path,
+                        help='Opt-in append-only shadow calibration; no routing changes')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
     mode.add_argument('--validate-only', action='store_true',
                       help='Validate the bounded input and report its route without model calls')
     args = parser.parse_args()
+    require(not args.arsenal_calibration_ledger or args.arsenal_shadow,
+            'calibration_requires_shadow_observer')
     spec = json.loads(args.task.read_text(encoding='utf-8-sig'))
     from codex_cli_adapter import CodexCliAdapter
     normalized = validate_spec(spec)
@@ -607,6 +611,33 @@ def main():
         if all(type(event.get('usage')) is dict
                and type(event['usage'].get('cost')) in (int, float)
                for event in provider_events) else None)
+    if args.arsenal_calibration_ledger:
+        # The calibration ledger observes completed executions only; it is
+        # intentionally not consulted by Jev, the adapter, or validators.
+        try:
+            from arsenal_calibration import (
+                append_event, hash_id, prediction_event, read_events, runtime_event,
+            )
+            run_id = 'native-' + hash_id(
+                str(args.out.resolve()) + ':' + result['task_hash']
+            )[:24]
+            observation = result.get('arsenal_shadow')
+            prediction = prediction_event(run_id, result['task_hash'], observation)
+            actual = runtime_event(run_id, result)
+            previous = read_events(args.arsenal_calibration_ledger)
+            if any(item['run_id'] == run_id for item in previous):
+                raise ValueError('duplicate_or_partial_calibration_run')
+            append_event(args.arsenal_calibration_ledger, prediction)
+            append_event(args.arsenal_calibration_ledger, actual)
+            result['arsenal_calibration'] = {
+                'status': 'recorded', 'run_id': run_id, 'authority': 'none',
+            }
+        except Exception as error:
+            result['arsenal_calibration'] = {
+                'status': 'record_failed',
+                'error_type': type(error).__name__,
+                'authority': 'none',
+            }
     (args.out / 'result.json').write_text(json.dumps(result, indent=2, allow_nan=False),
                                           encoding='utf-8')
     print(packed({'status': result['status'], 'route': result['route'],
