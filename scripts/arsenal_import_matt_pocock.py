@@ -113,6 +113,9 @@ def import_catalogue(
             "unexpected_catalogue_source")
     root = source_root.expanduser().resolve()
     preflight_source(root, catalogue["pinned_revision"])
+    licence = root / "LICENSE"
+    require(licence.is_file() and 0 < licence.stat().st_size <= 100_000,
+            "upstream_license_missing")
     selected = selected_skills(catalogue, requested or [], include_review)
     planned = []
     dest_root = destination.expanduser().resolve()
@@ -128,6 +131,8 @@ def import_catalogue(
         require(all(path.stat().st_size <= 2_000_000 for path in files), "skill_file_too_large")
         target = dest_root / ("matt-pocock-" + item["name"])
         require(not target.exists(), "destination_skill_already_exists")
+        require(not (src / "UPSTREAM_LICENSE.txt").exists(),
+                "upstream_license_destination_conflict")
         manifest = manifest_for(item, catalogue)
         planned.append((src, target, manifest))
     # All sources/destinations are checked before the first write.
@@ -136,6 +141,7 @@ def import_catalogue(
         dest_root.mkdir(parents=True, exist_ok=True)
         for src, target, manifest in planned:
             shutil.copytree(src, target)
+            shutil.copy2(licence, target / "UPSTREAM_LICENSE.txt")
             (target / "ARSENAL.json").write_text(
                 json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
             )
