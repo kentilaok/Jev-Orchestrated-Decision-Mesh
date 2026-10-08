@@ -242,19 +242,28 @@ def read_events(path: Path) -> list[dict]:
     if not path.exists():
         return []
     events = []
+    previous_hash = None
     with path.open(encoding="utf-8") as stream:
         for line_no, line in enumerate(stream, 1):
             try:
                 event = json.loads(line)
                 _validate_event(event)
+                require(event.get("previous_event_hash") == previous_hash,
+                        "ledger_chain_broken")
+                digest = event.get("event_hash")
+                _hex(digest, "event_hash")
+                unsigned = {key: value for key, value in event.items() if key != "event_hash"}
+                require(hash_id(canonical(unsigned)) == digest,
+                        "ledger_event_hash_mismatch")
             except (ValueError, TypeError) as error:
                 raise CalibrationError(f"invalid_ledger_line_{line_no}:{error}") from error
             events.append(event)
+            previous_hash = digest
     return events
 
 
 def append_event(path: Path, event: dict) -> None:
-    """Append-only by run/kind; conflicting or repeated data requires new run ID."""
+    """Hash-linked append-only by run/kind; single writer required for V1."""
     _validate_event(event)
     path = Path(path).expanduser()
     existing = read_events(path)
@@ -270,6 +279,8 @@ def append_event(path: Path, event: dict) -> None:
     enriched["recorded_at"] = datetime.now(timezone.utc).replace(
         microsecond=0
     ).isoformat()
+    enriched["previous_event_hash"] = existing[-1]["event_hash"] if existing else None
+    enriched["event_hash"] = hash_id(canonical(enriched))
     with path.open("a", encoding="utf-8") as stream:
         stream.write(canonical(enriched) + "\n")
 
