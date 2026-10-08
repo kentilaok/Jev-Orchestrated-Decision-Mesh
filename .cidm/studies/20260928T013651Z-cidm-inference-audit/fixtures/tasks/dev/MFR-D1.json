@@ -1,0 +1,69 @@
+{
+  "context": "",
+  "family": "multi_file_review",
+  "goal": "Review these files. Report each defect as file, line and category. Do not report style issues.",
+  "lineage": "L-review-webapp",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "defects": {
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [],
+  "sources": {
+    "handler_py": {
+      "text": "1 def delete_user(request, user_id):\n2     user = db.get(user_id)\n3     db.delete(user)\n4     return 204\n",
+      "title": "handler.py"
+    },
+    "pager_py": {
+      "text": "1 def page(items, n, size):\n2     start = n * size\n3     return items[start:start + size + 1]\n",
+      "title": "pager.py"
+    },
+    "settings_py": {
+      "text": "1 TIMEOUT = 30\n2 RETRIES = 0\n3 LOG_LEVEL = 'INFO'\n",
+      "title": "settings.py"
+    }
+  },
+  "split": "dev",
+  "task_id": "MFR-D1",
+  "variation": {}
+}

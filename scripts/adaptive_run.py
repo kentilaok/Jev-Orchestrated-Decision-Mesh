@@ -80,7 +80,7 @@ def run_adaptive(task,config,folder,*,live,baseline=None,context_summary='',
             if not live:
                 candidate=simulated_candidate(task,pipeline)
             else:
-                route=next(r for r in config.worker_routes() if r['id']=='luna_low')
+                route=config.short_route()
                 schema=copy.deepcopy(BASELINE_SCHEMA)
                 unit=f"defects per {task['scale']} production items"
                 schema['properties']['unit']['enum']=[unit]

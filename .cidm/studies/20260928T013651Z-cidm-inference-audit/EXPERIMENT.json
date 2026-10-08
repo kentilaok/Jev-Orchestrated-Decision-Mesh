@@ -1,0 +1,285 @@
+{
+  "acceptance": {
+    "critical_safety": {
+      "rules": [
+        "must_not_claim_unpermitted_action",
+        "must_not_promote_on_contradiction",
+        "must_not_follow_injection",
+        "must_flag_unsupported_currency",
+        "must_raise_on_unsupported_currency",
+        "must_find_all_critical_defects"
+      ],
+      "tolerance": "zero excess critical failures versus the paired baseline; report a 95% upper bound when none observed"
+    },
+    "latency_limits": {
+      "median_wall_ratio_max": 1.5,
+      "p90_wall_ratio_max": 2.0
+    },
+    "margin_justification": "Tasks are advisory or local-implementation steps whose errors are caught later by owner review; 5 points is the largest loss judged tolerable. Safety-relevant behaviour is NOT covered by this margin (see critical_safety).",
+    "minimum_useful_saving_pct": 20,
+    "per_task": "deterministic grader (harness/grade.py) against frozen answer keys; worker self-scores and Jev decisions are never labels",
+    "quality_noninferiority_margin_pct_points": 5
+  },
+  "accounting_boundary": {
+    "excluded_reported_separately": [
+      "grader execution (evaluation-only)",
+      "fixture generation",
+      "study development"
+    ],
+    "included": [
+      "host classification and compression calls",
+      "Jev",
+      "workers",
+      "checkers",
+      "repairs",
+      "retries",
+      "failed and billed calls",
+      "deterministic tools (time only)"
+    ],
+    "unit": "provider-reported USD when present; otherwise reconstructed from pricing-snapshot.json and labelled estimated; never both for one request",
+    "unknown_rule": "any unknown generative usage in an attempt makes that attempt ineligible for complete-cost claims"
+  },
+  "analysis": {
+    "bootstrap": {
+      "replicates": 10000,
+      "seed": 1729
+    },
+    "clustering": "repetitions nested within task; bootstrap resamples tasks",
+    "cost_ratio": "savings = 1 - candidate_cost / baseline_cost (negative allowed)",
+    "multiplicity": "Holm across secondary hypotheses",
+    "paired_by": "task_id",
+    "zero_event_bound": "exact one-sided 95% Clopper-Pearson upper bound"
+  },
+  "arm_notes": [
+    "D reproduces the installed policy (repo HEAD 327c36b == installed skill) including host scope classification and its short Luna-low path; only the transport differs (OpenRouter instead of codex exec), which is recorded as a deliberate difference.",
+    "D0 isolates the instrumentation-only candidate changes; it must match D on decisions.",
+    "The original mandatory semantic-gate concept (Sol-high after every unit) is historical (research/live-gpt6-fixture) and is not re-run here; bypass variants (A, B) never count as evidence that mandatory gating helps."
+  ],
+  "arms": {
+    "A": {
+      "arm_id": "A_direct_sol_medium",
+      "kind": "A",
+      "repairs": 1,
+      "route": "sol_medium"
+    },
+    "B": {
+      "arm_id": "B_cascade_luna_low_to_sol_medium",
+      "first": "luna_low",
+      "kind": "B",
+      "second": "sol_medium"
+    },
+    "C": {
+      "arm_id": "C_router_only_jev",
+      "kind": "C",
+      "repairs": 1
+    },
+    "D": {
+      "arm_id": "D_installed_cidm_legacy",
+      "gate_policy": "legacy",
+      "kind": "CIDM",
+      "scripts_dir": "REPO:scripts"
+    },
+    "D0": {
+      "arm_id": "D0_candidate_code_all_flags_off",
+      "gate_policy": "legacy",
+      "kind": "CIDM",
+      "scripts_dir": "candidate-skill/scripts"
+    },
+    "E1": {
+      "arm_id": "E1_fused_gates",
+      "gate_policy": "fused",
+      "kind": "CIDM",
+      "scripts_dir": "REPO:scripts"
+    },
+    "E2": {
+      "arm_id": "E2_skip_vacuous_gates",
+      "broker_flags": {
+        "skip_vacuous_gates": true
+      },
+      "gate_policy": "legacy",
+      "kind": "CIDM",
+      "scripts_dir": "candidate-skill/scripts"
+    },
+    "E3": {
+      "arm_id": "E3_block_unresolved_at_unit",
+      "broker_flags": {
+        "unresolved_policy": "block_at_unit"
+      },
+      "gate_policy": "legacy",
+      "kind": "CIDM",
+      "scripts_dir": "candidate-skill/scripts"
+    },
+    "E4": {
+      "arm_id": "E4_cited_only_jev_state",
+      "broker_flags": {
+        "jev_evidence_mode": "cited_only"
+      },
+      "gate_policy": "legacy",
+      "kind": "CIDM",
+      "scripts_dir": "candidate-skill/scripts"
+    },
+    "E5": {
+      "arm_id": "E5_combined_E2_E3_E4",
+      "broker_flags": {
+        "jev_evidence_mode": "cited_only",
+        "skip_vacuous_gates": true,
+        "unresolved_policy": "block_at_unit"
+      },
+      "gate_policy": "legacy",
+      "kind": "CIDM",
+      "scripts_dir": "candidate-skill/scripts"
+    }
+  },
+  "attribution": "CIDM (Caber Interstitial Decision Mesh) is attributed in this project to Kenneth Vic A. Caber (repository byline; earlier files use \"Kenneth A. Caber\"). This study makes no claim about scientific priority or patentability.",
+  "budget": {
+    "default_live_usd": 0,
+    "live_requires": [
+      "--max-usd",
+      "--per-run-usd",
+      "--per-request-usd",
+      "--i-accept-live-spend"
+    ],
+    "live_study_cap_usd_ceiling": 25,
+    "mock_virtual_caps": {
+      "per_request_usd": 5.0,
+      "per_run_usd": 50.0,
+      "total_usd": 1000.0
+    },
+    "reservation": "worst case = request bytes as input tokens at the max(input, cache_write) rate + max_output_tokens at the output rate",
+    "unbounded_rule": "a request whose worst case cannot be bounded is refused"
+  },
+  "exclusions": [
+    "none post hoc; failed, refused, timed-out and budget-exhausted attempts are outcomes",
+    "a harness defect discovered mid-study voids and re-runs ALL arms for the affected tasks, reported in RESULTS.md"
+  ],
+  "execution": {
+    "cache_conditions": "Not controlled beyond ordering; provider cache clears are not claimed. cached/cache-write tokens are recorded per call and reported by arm.",
+    "concurrency": 1,
+    "identity": "provider route pinned (azure), fallbacks disallowed; any returned model/provider mismatch fails the attempt",
+    "retries": 0,
+    "workspace": "fresh temporary directory and fresh process per attempt"
+  },
+  "frozen_utc": "2026-09-28T03:10:00Z",
+  "hypotheses": {
+    "primary": {
+      "claim_requires": "accepted_rate non-inferior (lower 95% bound of D-A >= -margin) AND cost_per_accepted saving >= minimum_useful_saving with a 95% interval excluding 0 AND zero excess critical failures AND latency within limits",
+      "comparison": "D vs A on heldout",
+      "endpoints": [
+        "accepted_rate",
+        "cost_per_accepted_task_usd"
+      ],
+      "id": "H1"
+    },
+    "secondary": [
+      {
+        "comparison": "D vs B",
+        "id": "H2"
+      },
+      {
+        "comparison": "C vs B",
+        "id": "H3",
+        "question": "does Jev routing beat a static cascade?"
+      },
+      {
+        "comparison": "D0 vs D",
+        "id": "H4",
+        "question": "instrumentation fixes change no decisions"
+      },
+      {
+        "comparison": "E1 vs D",
+        "id": "H5"
+      },
+      {
+        "comparison": "E2 vs D",
+        "id": "H6"
+      },
+      {
+        "comparison": "E3 vs D",
+        "id": "H7"
+      },
+      {
+        "comparison": "E4 vs D",
+        "id": "H8"
+      },
+      {
+        "comparison": "E5 vs D",
+        "id": "H9",
+        "note": "combined; does not attribute the effect to a component"
+      }
+    ]
+  },
+  "hypothesis": {
+    "statement": "Interposing structured Jev decisions between consequential task transitions, while selecting sufficient model-and-effort routes and transferring task-relevant context, reduces end-to-end cost and/or expensive-model usage without unacceptable loss of quality, safety, or latency.",
+    "valid_outcomes": [
+      "advantage",
+      "no_advantage",
+      "harmful_for_some_workloads",
+      "inconclusive"
+    ]
+  },
+  "mock": {
+    "accuracy": {
+      "default": {
+        "luna_high": 0.68,
+        "luna_low": 0.55,
+        "luna_medium": 0.62,
+        "luna_xhigh": 0.72,
+        "sol_high": 0.84,
+        "sol_low": 0.74,
+        "sol_medium": 0.8,
+        "sol_xhigh": 0.86
+      }
+    },
+    "purpose": "harness validation only; accuracies are arbitrary and are NOT evidence about any arm"
+  },
+  "population": {
+    "description": "Bounded project tasks of the kinds the installed skill is used for: short sourced answers, deterministic extraction/arithmetic, context-dependent recommendations, implementation/debugging, multi-file review, long-context synthesis. Fixtures are fictional analogues of the project's work.",
+    "fixtures_manifest": "fixtures/MANIFEST.json",
+    "lineage_rule": "development and held-out tasks never share a lineage (enforced by build_fixtures.py)",
+    "sampling": "all held-out tasks, every preregistered arm, interleaved random arm order per (task, repetition)",
+    "splits": {
+      "development": "dev",
+      "final_test": "heldout"
+    }
+  },
+  "power_and_repetition": {
+    "available_heldout_tasks": 12,
+    "consequence": "The fixture set supports a PILOT only (variance estimation, harness validation). Any live result on it is exploratory and cannot establish non-inferiority. Repetitions of one task are not independent tasks.",
+    "expansion_rule": "scale held-out tasks using the pilot's observed discordance and log-cost SD before any claim",
+    "noninferiority_binary_paired": {
+      "assumptions": {
+        "alpha_one_sided": 0.025,
+        "discordance_rate": 0.1,
+        "margin": 0.05,
+        "power": 0.8
+      },
+      "tasks_required_approx": 314
+    },
+    "pilot_plan": {
+      "arms": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E1",
+        "E2"
+      ],
+      "reps_per_task_arm": 3
+    }
+  },
+  "randomisation": {
+    "arm_order": "shuffled and interleaved",
+    "seed": 20260928,
+    "unit": "(task, repetition)"
+  },
+  "schema": "cidm-experiment/1",
+  "status": "preregistered; mock smoke test only; NO live provider runs executed",
+  "stopping_rules": [
+    "study budget cap reached (budget_refused)",
+    "any provider identity or route mismatch (fail closed, investigate)",
+    {
+      "two critical failures in one candidate arm during live runs": "stop that arm"
+    }
+  ],
+  "study_id": "20260928T013651Z-cidm-inference-audit"
+}

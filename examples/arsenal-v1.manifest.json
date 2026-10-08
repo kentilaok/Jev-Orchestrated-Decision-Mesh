@@ -1,0 +1,324 @@
+{
+  "version": "arsenal-v1-plan",
+  "architecture": "frontier-efficient-thin-client",
+  "authority": {
+    "global_controller": "jev-cidm",
+    "operational_runtime": "hermes",
+    "rule": "capabilities_may_not_commit_without_cidm_authorization"
+  },
+  "constraints": {
+    "local_llm_required": false,
+    "local_training_required": false,
+    "heavy_local_embedding_required": false,
+    "heavy_local_reranking_required": false,
+    "lightweight_local_intelligence": true,
+    "local_cpu_embeddings_allowed": true,
+    "local_small_reranker_allowed": true
+  },
+  "components": [
+    {
+      "id": "jev-cidm",
+      "type": "decision_plane",
+      "status": "core",
+      "location": "local-lightweight",
+      "authority": "global"
+    },
+    {
+      "id": "hermes",
+      "type": "execution_runtime",
+      "status": "core",
+      "location": "local-lightweight",
+      "authority": "bounded-execution"
+    },
+    {
+      "id": "local-cognitive-substrate",
+      "type": "local-decision-support",
+      "status": "core",
+      "location": "local-lightweight",
+      "layers": [
+        "deterministic-policy",
+        "lexical-search",
+        "skill-experience-match",
+        "validators"
+      ],
+      "authority": "hint-and-policy-evaluation"
+    },
+    {
+      "id": "sqlite-fts5",
+      "type": "local-lexical-retrieval",
+      "status": "implemented-core",
+      "location": "local-lightweight",
+      "authority": "ranking-only"
+    },
+    {
+      "id": "skill-compiler",
+      "type": "procedural-knowledge-compiler",
+      "status": "implemented-core",
+      "location": "local-lightweight",
+      "authority": "metadata-only"
+    },
+    {
+      "id": "cidm-fast-path",
+      "type": "compiled-policy-execution",
+      "status": "eligibility-implemented-execution-pending",
+      "location": "local-lightweight",
+      "authority": "cidm-only"
+    },
+    {
+      "id": "arsenal-shadow",
+      "type": "local-routing-observer",
+      "status": "implemented-core-calibration",
+      "location": "local-lightweight",
+      "authority": "observation-only"
+    },
+    {
+      "id": "fastembed-onnx",
+      "type": "local-semantic-retrieval",
+      "status": "implemented-optional",
+      "location": "local-cpu",
+      "authority": "ranking-only"
+    },
+    {
+      "id": "small-onnx-reranker",
+      "type": "local-retrieval-reranker",
+      "status": "implemented-optional",
+      "location": "local-cpu",
+      "authority": "ranking-only"
+    },
+    {
+      "id": "claude-code",
+      "type": "frontier_provider",
+      "status": "core",
+      "location": "cloud-via-native-client",
+      "auth": "native-claude-code-session",
+      "authority": "candidate-only"
+    },
+    {
+      "id": "codex-chatgpt",
+      "type": "frontier_provider",
+      "status": "core",
+      "location": "cloud",
+      "auth": "chatgpt-account-or-native-codex-session",
+      "authority": "candidate-only"
+    },
+    {
+      "id": "mcp",
+      "type": "capability_bus",
+      "status": "core",
+      "location": "mixed",
+      "authority": "tool-interface-only"
+    },
+    {
+      "id": "leanctx",
+      "type": "context_gateway",
+      "status": "core-experiment",
+      "location": "local-lightweight",
+      "mode": "read-path-shadow-first",
+      "authority": "context-transform-only"
+    },
+    {
+      "id": "qdrant-cloud",
+      "type": "retrieval",
+      "status": "core-scaled-retrieval",
+      "location": "managed-cloud",
+      "mode": "durable-hybrid-dense-sparse-after-local-prefilter",
+      "authority": "evidence-candidate-only"
+    },
+    {
+      "id": "hosted-reranker",
+      "type": "retrieval-reranker",
+      "status": "fallback",
+      "location": "cloud",
+      "candidates": [
+        "cohere-rerank-v4",
+        "voyage-rerank-3"
+      ],
+      "authority": "ranking-only"
+    },
+    {
+      "id": "phoenix-opentelemetry",
+      "type": "observability",
+      "status": "core",
+      "location": "managed-or-cloud-vps",
+      "authority": "observation-only"
+    },
+    {
+      "id": "skill-admission-registry",
+      "type": "governance",
+      "status": "implemented-core",
+      "location": "local-sqlite-hash-bound",
+      "authority": "owner-admission-policy"
+    },
+    {
+      "id": "experience-distiller",
+      "type": "learning-plane",
+      "status": "core",
+      "location": "local-lightweight",
+      "authority": "propose-knowledge-only"
+    },
+    {
+      "id": "superpowers-subset",
+      "type": "methodology-skills",
+      "status": "candidate",
+      "skills": [
+        "systematic-debugging",
+        "verification-before-completion",
+        "test-driven-development",
+        "writing-plans",
+        "requesting-code-review",
+        "receiving-code-review",
+        "using-git-worktrees"
+      ],
+      "authority": "procedure-only"
+    },
+    {
+      "id": "karpathy-derived-subset",
+      "type": "methodology-skills",
+      "status": "candidate",
+      "skills": [
+        "task-routing",
+        "context-engineering",
+        "verification",
+        "recurring-error-codification"
+      ],
+      "authority": "procedure-only"
+    },
+    {
+      "id": "ponytail",
+      "type": "methodology-skills",
+      "status": "candidate",
+      "authority": "procedure-only"
+    },
+    {
+      "id": "taste",
+      "type": "design-skill-mcp",
+      "status": "project-specific",
+      "location": "remote-mcp",
+      "authority": "design-evidence-only"
+    },
+    {
+      "id": "headroom",
+      "type": "context-compression",
+      "status": "ab-test-later",
+      "location": "local-lightweight",
+      "authority": "context-transform-only"
+    },
+    {
+      "id": "semantic-router",
+      "type": "route-hint",
+      "status": "ab-test-later",
+      "location": "mixed",
+      "authority": "hint-only"
+    },
+    {
+      "id": "litellm",
+      "type": "model-gateway",
+      "status": "later",
+      "location": "cloud-vps",
+      "authority": "transport-budget-only"
+    },
+    {
+      "id": "temporal",
+      "type": "durable-execution",
+      "status": "later",
+      "location": "cloud-vps-managed",
+      "authority": "durability-only"
+    },
+    {
+      "id": "dspy",
+      "type": "offline-optimizer",
+      "status": "offline-later",
+      "location": "cloud-frontier",
+      "authority": "candidate-policy-only"
+    },
+    {
+      "id": "openclaw",
+      "type": "edge-channel",
+      "status": "later",
+      "authority": "ingress-only"
+    },
+    {
+      "id": "clawhub",
+      "type": "skill-discovery",
+      "status": "discovery-only",
+      "authority": "none"
+    },
+    {
+      "id": "langgraph",
+      "type": "agent-orchestration",
+      "status": "not-core",
+      "authority": "must-not-replace-cidm"
+    },
+    {
+      "id": "llmlingua",
+      "type": "compression",
+      "status": "research-only",
+      "authority": "must-not-transform-protocol-state"
+    },
+    {
+      "id": "chroma",
+      "type": "vector-store",
+      "status": "dev-fallback",
+      "location": "local"
+    },
+    {
+      "id": "faiss",
+      "type": "vector-search-library",
+      "status": "benchmark-only",
+      "location": "local"
+    },
+    {
+      "id": "local-qwen-ajax-odysseus",
+      "type": "local-model-runtime",
+      "status": "deferred",
+      "reason": "v1-does-not-require-heavy-local-inference"
+    },
+    {
+      "id": "remote-sandbox",
+      "type": "sandbox-execution",
+      "status": "core-experiment",
+      "location": "managed-cloud",
+      "candidates": [
+        "e2b",
+        "daytona"
+      ],
+      "authority": "execution-only"
+    },
+    {
+      "id": "secrets-proxy",
+      "type": "secret-governance",
+      "status": "core-experiment",
+      "location": "managed-or-self-hosted",
+      "candidates": [
+        "infisical",
+        "sandbox-native-secret-proxy"
+      ],
+      "authority": "credential-use-only"
+    },
+    {
+      "id": "playwright",
+      "type": "browser-automation",
+      "status": "core-tool",
+      "location": "local-or-cloud",
+      "modes": [
+        "cli-skills",
+        "mcp"
+      ],
+      "authority": "browser-actions-under-permit"
+    },
+    {
+      "id": "browserbase-stagehand",
+      "type": "cloud-browser-automation",
+      "status": "project-specific",
+      "location": "managed-cloud",
+      "authority": "browser-actions-under-permit"
+    },
+    {
+      "id": "promptfoo",
+      "type": "security-evaluation",
+      "status": "offline-eval-candidate",
+      "location": "local-controller-plus-frontier-provider",
+      "authority": "evaluation-only"
+    }
+  ]
+}

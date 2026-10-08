@@ -1,0 +1,14 @@
+{
+  "frontier_provider": "claude",
+  "providers": {
+    "claude": {"enabled": true, "model": "claude-sonnet-5-5"},
+    "codex": {"enabled": true, "model": "default"}
+  },
+  "skills_source": "~/.hermes/skills",
+  "project_directory": ".",
+  "runs_directory": "runs",
+  "execution_mode": "preview",
+  "gate_policy": "recovery",
+  "decision_policy": "jev-managed",
+  "evidence_policy": "required"
+}

@@ -1,0 +1,23 @@
+{
+  "version": 3,
+  "default_provider": "claude",
+  "providers": [
+    {
+      "id": "claude",
+      "label": "Claude Code",
+      "enabled": true,
+      "auth": "local subscription or CLI session",
+      "models": ["claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-1", "claude-haiku-5-5"],
+      "catalogue": "presets_unverified"
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "enabled": true,
+      "auth": "local ChatGPT/Codex CLI session",
+      "models": [],
+      "catalogue": "account_derived (codex debug models)"
+    }
+  ],
+  "note": "Convenience presets only. Account catalogues and each provider's own model picker are authoritative; the console surfaces errors rather than silently substituting a model."
+}

@@ -1,0 +1,14 @@
+{
+  "answer": {
+    "per_second": 9.0
+  },
+  "citation_mode": "superset_required",
+  "critical": [],
+  "required_citations": [
+    "chunk-000",
+    "chunk-001",
+    "chunk-002"
+  ],
+  "status": "complete",
+  "tolerance": 0.005
+}

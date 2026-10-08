@@ -1,0 +1,11 @@
+{
+  "answer": {
+    "total_kg": 25.479
+  },
+  "critical": [],
+  "required_citations": [
+    "shipments"
+  ],
+  "status": "complete",
+  "tolerance": 0.0005
+}

@@ -17,7 +17,14 @@ import time
 
 
 class CodexCliError(RuntimeError):
-    """A bounded worker call could not be accepted by the broker."""
+    """A bounded worker call could not be accepted by the broker.
+
+    `usage` carries counters the child already reported before it was rejected
+    (None when the stream ended before turn.completed); `ran` is True once a
+    child process was launched, so the caller can mark the attempt as consumed.
+    """
+    usage = None
+    ran = False
 
 
 _ITEM_TYPES = frozenset({"agent_message", "reasoning"})
@@ -173,7 +180,7 @@ class CodexCliAdapter:
                  max_stderr_bytes=65_536, max_prompt_bytes=24_000,
                  max_schema_bytes=65_536, max_events=256,
                  astra_explicitly_authorized=False, executable="codex",
-                 secret_env_names=()):
+                 secret_env_names=(), permitted_models=None):
         limits = (timeout_seconds, max_stdout_bytes, max_stderr_bytes,
                   max_prompt_bytes, max_schema_bytes, max_events)
         if (any(type(v) is not int or v <= 0 for v in limits)
@@ -197,9 +204,14 @@ class CodexCliAdapter:
         self.max_events = max_events
         self.astra_explicitly_authorized = astra_explicitly_authorized
         self.executable = executable
+        # None keeps the CIDM GPT-6 catalogue; an explicit set is used by the
+        # operator console for bounded smoke tests of account-listed models.
+        self.permitted_models = None if permitted_models is None else frozenset(permitted_models)
         self.secret_env_names = frozenset(name.upper() for name in secret_env_names) | {
             "OPENROUTER_API_KEY", "OPENAI_API_KEY", "CODEX_API_KEY", "GITHUB_TOKEN", "GH_TOKEN"
         }
+        # Optional threading.Event set by a provider to cancel an in-flight call.
+        self.cancel_event = None
 
     def _execute(self, argv, workspace, prompt_path, stdout_path, stderr_path):
         deadline = time.monotonic() + self.timeout_seconds
@@ -219,6 +231,8 @@ class CodexCliAdapter:
                         raise CodexCliError("codex_output_limit")
                     if time.monotonic() >= deadline:
                         raise CodexCliError("codex_timeout")
+                    if self.cancel_event is not None and self.cancel_event.is_set():
+                        raise CodexCliError("codex_cancelled")
                     time.sleep(0.05)
                 if (os.fstat(stdout.fileno()).st_size > self.max_stdout_bytes
                         or os.fstat(stderr.fileno()).st_size > self.max_stderr_bytes):
@@ -231,7 +245,7 @@ class CodexCliAdapter:
                     process.wait(timeout=5)
 
     def run(self, model, effort, prompt, schema, workspace):
-        permitted = {"gpt-6-luna", "gpt-6-sol"}
+        permitted = {"gpt-6-luna", "gpt-6-sol"} if self.permitted_models is None else set(self.permitted_models)
         if self.astra_explicitly_authorized:
             permitted.add("gpt-6-astra")
         if (not isinstance(model, str) or not isinstance(effort, str)
@@ -278,8 +292,19 @@ class CodexCliAdapter:
                     "-s", "read-only", "-m", model,
                     "-c", f"model_reasoning_effort={effort}",
                     "-C", str(root), "--output-schema", str(schema_path), "-"]
-            self._execute(argv, root, prompt_path, stdout_path, stderr_path)
+            try:
+                self._execute(argv, root, prompt_path, stdout_path, stderr_path)
+            except CodexCliError as exc:
+                exc.ran = exc.ran or str(exc) != "codex_cli_unavailable"
+                raise
             raw = stdout_path.read_bytes()
+        try:
+            return self._parse(raw, model, effort, schema)
+        except CodexCliError as exc:
+            exc.ran = True
+            raise
+
+    def _parse(self, raw, model, effort, schema):
         if len(raw) > self.max_stdout_bytes:
             raise CodexCliError("codex_output_limit")
         try:
@@ -338,9 +363,13 @@ class CodexCliAdapter:
             summaries.append({"type": kind})
         if phase != "complete":
             raise CodexCliError("missing_turn_completed")
-        artifact = _strict_json(artifact_text)
-        if not isinstance(artifact, dict) or not _matches(schema, artifact):
-            raise CodexCliError("artifact_schema_mismatch")
+        try:
+            artifact = _strict_json(artifact_text)
+            if not isinstance(artifact, dict) or not _matches(schema, artifact):
+                raise CodexCliError("artifact_schema_mismatch")
+        except CodexCliError as exc:
+            exc.usage = usage   # the child completed and reported usage before rejection
+            raise
         reported_match = reported_model is not None and reported_effort is not None
         return {"artifact": artifact, "usage": usage,
                 "requested_model": model, "requested_effort": effort,

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "example-safe-inspection",
+  "type": "tool-skill",
+  "version": 1,
+  "description": "Example low-risk read-only inspection skill for the CIDM Arsenal registry.",
+  "project_scope": [
+    "example-project"
+  ],
+  "triggers": {
+    "bug_keys": [
+      "example.read_only_inspection"
+    ],
+    "phrases": [
+      "inspect the known project state without changing files"
+    ],
+    "keywords": [
+      "inspect",
+      "read only"
+    ]
+  },
+  "permissions": {
+    "read_files": true,
+    "write_files": false,
+    "network": false
+  },
+  "risk": "low",
+  "frontier_required": false,
+  "validators": [
+    "read_only_receipt_valid"
+  ],
+  "operations": [
+    "inspect_project"
+  ],
+  "admission": {
+    "status": "candidate",
+    "owner_approved": false
+  },
+  "source": {
+    "kind": "repository-example"
+  }
+}

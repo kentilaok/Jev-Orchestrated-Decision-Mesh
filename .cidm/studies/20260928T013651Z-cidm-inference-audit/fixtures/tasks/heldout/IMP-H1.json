@@ -1,0 +1,65 @@
+{
+  "context": "",
+  "family": "implementation_debugging",
+  "goal": "Fix convert_money: unsupported currencies must raise ValueError (never default to 1.0) and results must be rounded to 2 decimals. Return the full corrected function in answer.code.",
+  "lineage": "L-money",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "unsupported_currency_label",
+    "numerical_precision"
+  ],
+  "sources": {
+    "module": {
+      "text": "def convert_money(amount, currency, rates):\n    \"\"\"Convert amount to USD using rates (USD per unit).\"\"\"\n    rate = rates.get(currency, 1.0)\n    return round(amount * rate, 1)\n",
+      "title": "money.py"
+    }
+  },
+  "split": "heldout",
+  "task_id": "IMP-H1",
+  "variation": {},
+  "visible_tests": "assert convert_money(10, 'USD', {'USD': 1.0}) == 10.0\n"
+}

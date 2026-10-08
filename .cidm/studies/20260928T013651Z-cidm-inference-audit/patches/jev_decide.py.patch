@@ -1,0 +1,74 @@
+--- a/scripts/jev_decide.py
++++ b/scripts/jev_decide.py
+@@ -6,6 +6,7 @@
+ No retries, redirects, endpoint overrides, model fallback, or key persistence.
+ """
+ import argparse
++import datetime
+ import getpass
+ import hashlib
+ import http.client
+@@ -207,8 +208,15 @@
+     return decode_json(raw), round((time.monotonic() - started) * 1000, 3)
+ 
+ 
+-def write_result(path, result):
++def utc_now():
++    return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
++
++
++def write_result(path, result, *, allow_overwrite=False):
++    """Write one receipt. Receipts are append-only evidence: an existing file is never replaced."""
+     encoded = json.dumps(result, ensure_ascii=True, indent=2, allow_nan=False) + "\n"
++    if path.exists() and not allow_overwrite:
++        raise FileExistsError("receipt_exists")
+     temp = None
+     try:
+         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+@@ -229,11 +237,14 @@
+     parser.add_argument("--dry-run", action="store_true", help="validate offline; no key or network needed")
+     parser.add_argument("--key-stdin", action="store_true", help="read transient key from stdin (hidden prompt in a terminal)")
+     parser.add_argument("--timeout", type=float, default=30, help="network timeout seconds, 1-120 (default 30)")
++    parser.add_argument("--allow-overwrite", action="store_true",
++                        help="replace an existing --out receipt (default refuses, preserving evidence)")
+     args = parser.parse_args(argv)
+     result = {"status": "failed", "provider": args.provider}
+     safe_output = False
+     try:
+         require(args.request.resolve() != args.out.resolve(), "output_must_differ_from_request")
++        require(args.allow_overwrite or not args.out.exists(), "receipt_exists_refusing_overwrite")
+         safe_output = True
+         require(number(args.timeout, 1, 120), "invalid_timeout")
+         with args.request.open("rb") as stream:
+@@ -249,12 +260,17 @@
+             result["status"] = "dry_run"
+         else:
+             key = (getpass.getpass("API key: ") if sys.stdin.isatty() else sys.stdin.readline(4098).strip()) if args.key_stdin else os.environ.get(ENDPOINTS[args.provider][1], "")
+-            response, latency = call_api(args.provider, body, key, args.timeout)
++            result["started_at"] = utc_now()
++            try:
++                response, latency = call_api(args.provider, body, key, args.timeout)
++            finally:
++                result["ended_at"] = utc_now()
+             del key
+             result["latency_ms"] = latency
+             require(isinstance(response, dict), "invalid_response")
+             result.update(returned_model=response.get("model") if isinstance(response.get("model"), str) else None,
+-                          upstream_provider=response.get("provider") if isinstance(response.get("provider"), str) else None)
++                          upstream_provider=response.get("provider") if isinstance(response.get("provider"), str) else None,
++                          provider_request_id=response.get("id") if isinstance(response.get("id"), str) else None)
+             result["usage"] = validate_usage(response)
+             result["usage_raw"] = response.get("usage")
+             counters = validate_response(response, request, result["warnings"])
+@@ -263,9 +279,9 @@
+         result["error"] = {"code": error.code, "http_status": error.status}
+     except (OSError, ValueError, UnicodeError, RecursionError):
+         result["error"] = {"code": "local_io_or_json_error", "http_status": None}
+-    if safe_output:
++    if safe_output and not (result.get("error") or {}).get("code") == "receipt_exists_refusing_overwrite":
+         try:
+-            write_result(args.out, result)
++            write_result(args.out, result, allow_overwrite=args.allow_overwrite)
+         except (OSError, ValueError, TypeError):
+             result = {"status": "failed", "error": {"code": "output_write_failed", "http_status": None}}
+     print(json.dumps({k: result[k] for k in ("status", "error") if k in result}))

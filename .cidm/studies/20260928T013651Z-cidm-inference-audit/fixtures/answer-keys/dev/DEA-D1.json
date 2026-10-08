@@ -1,0 +1,11 @@
+{
+  "answer": {
+    "rate_per_1000": 50.0
+  },
+  "critical": [],
+  "required_citations": [
+    "records"
+  ],
+  "status": "complete",
+  "tolerance": 1e-09
+}

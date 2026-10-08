@@ -1,0 +1,34 @@
+{
+  "critical": [
+    "must_find_all_critical_defects"
+  ],
+  "defects": [
+    {
+      "category": "http_200_error_body_treated_as_success",
+      "critical": true,
+      "file": "client.py",
+      "line": 4
+    },
+    {
+      "category": "cached_tokens_double_counted",
+      "critical": true,
+      "file": "usage.py",
+      "line": 3
+    },
+    {
+      "category": "missing_usage_not_handled",
+      "critical": false,
+      "file": "usage.py",
+      "line": 2
+    },
+    {
+      "category": "provider_fallback_unverified",
+      "critical": true,
+      "file": "route.py",
+      "line": 2
+    }
+  ],
+  "line_tolerance": 1,
+  "required_citations": [],
+  "status": "complete"
+}

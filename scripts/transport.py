@@ -5,6 +5,7 @@ DecisionAdapter and GenerativeAdapter describe extension boundaries. Only this
 OpenRouter Gateway is implemented; declaring a Protocol does not register another
 provider. Never put credentials in configuration, requests, or result manifests.
 """
+import datetime
 import http.client
 import json
 import math
@@ -44,6 +45,10 @@ CHECK_SCHEMA = {
     "required": ["verdict", "failed_criteria", "reason", "missing_evidence"],
     "additionalProperties": False,
 }
+
+
+def _utc_now():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
 def _counter(value):
@@ -191,14 +196,18 @@ class Gateway:
                  "reasoning_effort": payload.get("reasoning", {}).get("effort"),
                  "usage": {"input_tokens": None, "output_tokens": None, "total_tokens": None,
                            "total_tokens_source": None, "cached_input_tokens": None, "reasoning_tokens": None, "cost": None},
-                 "usage_raw": None, "latency_ms": None,
+                 "usage_raw": None, "latency_ms": None, "provider_request_id": None,
+                 "started_at": None, "ended_at": None,
                  "usage_semantics": {"cached_input_tokens": "subset_of_input_tokens",
                                      "reasoning_tokens": "subset_of_output_tokens"}}
         self._write(name + ".request.json", payload)
         started, response = time.monotonic(), None
+        event["started_at"] = _utc_now()
         try:
             response = self._request(role, payload, data)
             require(isinstance(response, dict), "invalid_api_response")
+            if isinstance(response.get("id"), str):
+                event["provider_request_id"] = self._safe(response["id"])[:200]
             event["usage"], event["usage_raw"] = self._usage(response, role)
             event["returned_model"], event["provider"] = self._safe(response.get("model")), self._safe(response.get("provider"))
             if response.get("error"):
@@ -234,6 +243,7 @@ class Gateway:
             event.setdefault("error", {"code": "contract_or_usage_error"})
         finally:
             event["latency_ms"] = round((time.monotonic() - started) * 1000, 3)
+            event["ended_at"] = _utc_now()
             cost = event["usage"]["cost"]
             if cost is not None:
                 self.spent += cost
@@ -251,6 +261,8 @@ class Gateway:
 
     def ask(self, role, instructions, state, schema=None, worker_route=None, followup_required=False):
         require(role in ("worker", "checker"), "invalid_generative_role")
+        # Claude workers run through Claude Code (claude_cli_adapter), never this API route.
+        require(self.config.worker_family == "gpt6", "claude_family_runs_through_claude_code_only")
         require(role == "worker" or worker_route is None, "checker_cannot_use_worker_route")
         if role == "checker" and schema is None:
             schema = CHECK_SCHEMA

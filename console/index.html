@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jev Operator Console</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#e8ecf4;background:#0a0d12;
+--panel:#11161f;--line:#202938;--muted:#8d98a9;--accent:#8ea2ff;--good:#55c890;--warn:#e6b450;--bad:#ef6f6c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% -10%,#19213d 0,transparent 31rem),#0a0d12}
+.shell{min-height:100vh;display:grid;grid-template-columns:230px 1fr}
+.sidebar{padding:24px 18px;border-right:1px solid var(--line);background:#080b10e8;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:11px;align-items:center;margin-bottom:28px}.brand strong,.brand span{display:block}.brand span{font-size:12px;color:var(--muted);margin-top:3px}
+.logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#8ea2ff,#ad8cff);color:#09101b}
+.sidebar nav{display:grid;gap:6px}.nav{border:0;background:transparent;color:#aeb8c7;text-align:left;padding:10px 12px;border-radius:9px;font-size:14px;cursor:pointer}
+.nav:hover,.nav.active{background:#151d29;color:#fff}.nav:focus-visible,.button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sidebar-foot{margin-top:auto;color:var(--muted);font-size:12px;display:flex;gap:8px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:#596273;flex:none}.dot.good{background:var(--good)}.dot.warn{background:var(--warn)}
+main{padding:28px 34px 52px;max-width:1500px;width:100%;margin:auto}
+.topbar{display:flex;justify-content:space-between;gap:24px;align-items:center;margin-bottom:24px}
+.eyebrow{font-size:11px;letter-spacing:.16em;color:#7e8ca2;margin:0 0 7px;text-transform:uppercase}.topbar h1,.panel h2{margin:0}.topbar h1{font-size:28px}
+.view{display:none}.view.active{display:block}.grid{display:grid;gap:18px}.two{grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr)}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.panel{background:linear-gradient(180deg,#141a24f5,#0e131bf5);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 18px 55px #0003;margin-bottom:18px;min-width:0}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}.panel h2{font-size:18px}.panel h3{margin:0 0 8px;font-size:15px}
+.pill,.chip{font-size:11px;border:1px solid #33405a;background:#182135;padding:4px 8px;border-radius:999px;color:#bcc8df;white-space:nowrap}
+.chip.good{border-color:#2f6b52;background:#12291f;color:#8be0b4}.chip.warn{border-color:#6b5a2f;background:#2a2412;color:#f1cf86}.chip.bad{border-color:#6b2f33;background:#2a1214;color:#f3a2a0}
+.muted,.helper{color:var(--muted)}.helper{font-size:12px;line-height:1.55}.lead{color:#b9c2cf;line-height:1.55}
+.button{border:1px solid #334158;border-radius:9px;padding:9px 12px;font-weight:650;cursor:pointer;font:inherit;font-size:13px}
+.primary{border-color:#778af0;background:#7386ef;color:#07101f}.secondary{background:#141b26;color:#dce3ed}.danger{background:#2a1214;border-color:#6b2f33;color:#f3a2a0}
+.button:hover{filter:brightness(1.08)}.button:disabled{opacity:.5;cursor:not-allowed}
+label{display:grid;gap:7px;color:#aeb7c4;font-size:12px;margin-bottom:14px}
+textarea,input,select{width:100%;border:1px solid #2a3548;background:#0c1119;color:#eef3fa;border-radius:9px;padding:10px 11px;outline:none;font:inherit;font-size:13px}
+textarea:focus,input:focus,select:focus{border-color:#7184e8;box-shadow:0 0 0 3px #7184e819}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 12px}.actions,.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.check{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:#cdd5e2;margin:4px 0 14px}.check input{width:auto;margin-top:2px}
+.route{display:grid;grid-template-columns:repeat(6,minmax(70px,1fr));gap:8px;margin:12px 0 18px}
+.route-node{border:1px solid #2d3748;background:#0d131c;border-radius:11px;padding:10px 9px;min-height:86px}.route-node strong,.route-node span{display:block}
+.route-node strong{font-size:13px}.route-node span{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.35}
+.output{min-height:140px;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:break-word;border:1px solid #202a39;background:#090d13;border-radius:10px;padding:13px;color:#c5ceda;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}
+.card{padding:15px;border:1px solid var(--line);border-radius:13px;background:#0f151e;min-width:0}.card .row{justify-content:space-between}
+.card p{color:var(--muted);font-size:12px;line-height:1.45;margin:9px 0 0}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:8px 8px;border-bottom:1px solid #1d2533;vertical-align:top}
+th{color:#8d98a9;font-weight:600;font-size:11px;letter-spacing:.04em;text-transform:uppercase}td code{font-size:11px}
+.table-wrap{overflow:auto;max-height:520px}.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:12px}.kv dt{color:var(--muted)}.kv dd{margin:0}
+.skill-row{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;border:1px solid #263043;border-radius:11px;padding:12px 13px;background:#0d131b;margin-bottom:9px}
+.skill-row strong,.skill-row span{display:block}.skill-row span{font-size:12px;color:var(--muted);margin-top:4px}
+.switch{position:relative;width:42px;height:23px;border-radius:99px;border:0;background:#394152;cursor:pointer}.switch:after{content:"";position:absolute;width:17px;height:17px;border-radius:50%;background:#fff;left:3px;top:3px;transition:.18s}
+.switch.on{background:#7386ef}.switch.on:after{left:22px}.switch.unknown{opacity:.4}
+.source{display:grid;grid-template-columns:1fr 2fr auto;gap:8px;margin-bottom:8px}
+.arch{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1fr;gap:8px;align-items:center;margin:22px 0}
+.arch div.node{border:1px solid #303b4d;border-radius:12px;padding:14px;text-align:center;background:#0c121a;font-weight:700}.arch span{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:6px}
+.arch .accent{border-color:#6c7bd4;background:#151d36}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c8d0ff}
+.empty{color:var(--muted);font-size:13px;padding:10px 0}
+@media(max-width:1100px){.shell{grid-template-columns:1fr}.sidebar{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--line)}.sidebar nav{grid-template-columns:repeat(4,1fr)}
+.two,.three{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr 1fr}.route{grid-template-columns:repeat(3,1fr)}main{padding:22px}.arch{grid-template-columns:1fr}.arch>div:nth-child(even){transform:rotate(90deg);justify-self:center}}
+@media(max-width:650px){.topbar{align-items:flex-start;flex-direction:column}.sidebar nav{grid-template-columns:1fr 1fr}.form-grid,.source{grid-template-columns:1fr}.route{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">J</div><div><strong>Jev Console</strong><span>CIDM control plane</span></div></div>
+  <nav aria-label="Console sections">
+    <button class="nav active" data-view="operate">Operate</button>
+    <button class="nav" data-view="providers">Providers</button>
+    <button class="nav" data-view="arsenal">Arsenal</button>
+    <button class="nav" data-view="mcp">MCP catalogue</button>
+    <button class="nav" data-view="runs">Runs &amp; recovery</button>
+    <button class="nav" data-view="skills">Hermes skills</button>
+    <button class="nav" data-view="architecture">Architecture</button>
+  </nav>
+  <div class="sidebar-foot"><span class="dot" id="runtimeDot"></span><span id="runtimeText">Checking runtime…</span></div>
+</aside>
+<main>
+<header class="topbar">
+  <div><p class="eyebrow">Jev-Orchestrated Decision Mesh</p><h1 id="viewTitle">Operate</h1></div>
+  <button class="button secondary" id="refreshBtn">Refresh</button>
+</header>
+
+<section class="view active" id="view-operate">
+  <div class="grid two">
+    <article class="panel">
+      <div class="panel-head"><div><p class="eyebrow">Task</p><h2>Dispatch a bounded objective</h2></div><span class="pill" id="modePill">Preview</span></div>
+      <label>Goal (≤ 1,200 characters)<textarea id="taskInput" rows="6" maxlength="1200" placeholder="Describe the goal, constraints, evidence required, and what done means."></textarea></label>
+      <label>Accepted project context (≤ 1,200)<textarea id="contextInput" rows="3" maxlength="1200" placeholder="Only context the project has already accepted. Non-empty context marks an active project (five units)."></textarea></label>
+      <div id="sourceList"></div>
+      <div class="row" style="margin-bottom:14px"><button class="button secondary" id="addSource">Add source excerpt</button><span class="helper">Up to six excerpts of ≤ 1,200 characters each. Excerpts are evidence, not instructions.</span></div>
+      <div class="form-grid">
+        <label>Execution mode<select id="executionMode">
+          <option value="preview">Preview route (no calls)</option>
+          <option value="frontier-direct">Bounded smoke test (one tool-free call)</option>
+          <option value="cidm-broker">CIDM broker (live Jev + workers)</option></select></label>
+        <label>Frontier provider<select id="providerSelect"></select></label>
+        <label>Model (smoke test)<select id="modelSelect"></select></label>
+        <label>Gate policy (broker)<select id="gatePolicy"><option value="recovery">Recovery-first</option><option value="legacy">Separate gates</option><option value="fused">Fused gates</option></select></label>
+        <label>Effort (smoke test)<select id="effortSelect"><option>low</option><option>medium</option><option>high</option><option>xhigh</option></select></label>
+      </div>
+      <label class="check" id="spendRow" hidden><input type="checkbox" id="confirmSpend"><span>I understand a live CIDM run makes separately billed Jev API calls (OpenRouter) and uses the selected provider's plan, within the configured caps.</span></label>
+      <div class="actions"><button class="button secondary" id="previewBtn">Preview route</button><button class="button secondary" id="validateBtn">Validate request</button><button class="button primary" id="runBtn">Run</button></div>
+    </article>
+    <article class="panel">
+      <div class="panel-head"><div><p class="eyebrow">Live route</p><h2>Decision mesh</h2></div><span id="routeStatus" class="chip">Idle</span></div>
+      <div class="route" id="routeVisual"></div>
+      <div class="output" id="runOutput" aria-live="polite">No run yet.</div>
+    </article>
+  </div>
+</section>
+
+<section class="view" id="view-providers">
+  <article class="panel">
+    <div class="panel-head"><div><p class="eyebrow">Frontier adapter contract</p><h2>Accounts, catalogues and route coverage</h2></div>
+      <div class="row"><button class="button secondary" id="refreshProviders">Re-check accounts</button><button class="button secondary" id="useCodexModels">Use Codex account models</button></div></div>
+    <p class="lead">Each CLI uses its own supported sign-in; the console never reads tokens or cookies. Codex models come from the account catalogue. Claude Code has no non-interactive catalogue, so its presets stay <em>unverified</em>. A live broker run fails closed before any paid call when coverage is partial or unavailable.</p>
+    <div class="grid three" id="providerCards"><div class="empty">Loading…</div></div>
+  </article>
+</section>
+
+<section class="view" id="view-arsenal">
+  <div class="grid two">
+    <article class="panel"><div class="panel-head"><div><p class="eyebrow">Skill registry</p><h2>Admitted and candidate skills</h2></div><span class="chip" id="lessonCount">0 lessons</span></div>
+      <div class="table-wrap" id="skillTable"><div class="empty">No Arsenal database yet. Run <code>python scripts/arsenal_registry.py scan --skills-dir ~/.hermes/skills</code>.</div></div></article>
+    <article class="panel"><div class="panel-head"><div><p class="eyebrow">Calibration &amp; Fast Path</p><h2>Evidence before automation</h2></div><span class="chip warn">Fast Path off by default</span></div>
+      <div id="calibrationPanel" class="helper">No calibration ledger yet.</div></article>
+  </div>
+</section>
+
+<section class="view" id="view-mcp">
+  <div class="grid two">
+    <article class="panel"><div class="panel-head"><div><p class="eyebrow">Configured servers</p><h2>MCP capability bus</h2></div></div>
+      <p class="helper">Read from Claude Code, Codex and project configs. Nothing starts until you refresh a server. Environment values are never shown.</p>
+      <div id="mcpServers"><div class="empty">Loading…</div></div></article>
+    <article class="panel"><div class="panel-head"><div><p class="eyebrow">Catalogue search</p><h2>Compact tool cards</h2></div></div>
+      <div class="row" style="margin-bottom:12px"><input id="mcpQuery" placeholder="e.g. read script source"><button class="button primary" id="mcpSearch">Search</button></div>
+      <div id="mcpResults" class="helper">Search returns short cards instead of every schema, and reports the bytes kept out of the prompt.</div></article>
+  </div>
+</section>
+
+<section class="view" id="view-runs">
+  <article class="panel"><div class="panel-head"><div><p class="eyebrow">Run ledger</p><h2>Runs, checkpoints and telemetry</h2></div><span class="chip" id="runsRoot"></span></div>
+    <div class="table-wrap" id="runsTable"><div class="empty">No runs yet.</div></div></article>
+  <article class="panel"><div class="panel-head"><div><p class="eyebrow">Selected run</p><h2 id="runDetailTitle">Telemetry summary</h2></div></div><div class="output" id="runDetail">Select a run.</div></article>
+</section>
+
+<section class="view" id="view-skills">
+  <article class="panel"><div class="panel-head"><div><p class="eyebrow">Hermes skill source</p><h2>Skills workspace</h2></div><span class="chip" id="hermesChip">Hermes</span></div>
+    <p class="lead">One folder per skill with a <code>SKILL.md</code>. The default source is <code>~/.hermes/skills</code>. Toggles go through Hermes' own dashboard API (<code>hermes dashboard --no-open</code>) and fail closed when it is unreachable.</p>
+    <div class="row"><input id="skillsSource" style="flex:1"><button class="button secondary" id="saveSkillsSource">Use folder</button><button class="button primary" id="openSkillsFolder">Open folder</button></div></article>
+  <article class="panel"><div class="panel-head"><div><p class="eyebrow">Capabilities</p><h2>Enable or disable skills</h2></div></div><div id="skillsList"></div></article>
+</section>
+
+<section class="view" id="view-architecture">
+  <article class="panel"><p class="eyebrow">Control boundary</p><h2>One authority, many governed capabilities</h2>
+    <div class="arch"><div class="node accent">Jev<span>scope · permits · budget · recovery</span></div><div>→</div><div class="node">Hermes<span>skills · local procedure</span></div><div>→</div><div class="node">Frontier<span>Claude Code · Codex</span></div><div>→</div><div class="node">Validators<span>tests · sources · audits</span></div><div>→</div><div class="node accent">Jev<span>forward · repair · retrieve · stop</span></div></div>
+    <p class="helper">Every frontier call, MCP call, sandbox action and Fast Path execution consumes a single-use capability permit that names its Jev decision or owner-admitted policy. Local matching, scores and skills are evidence and context, never authority.</p></article>
+</section>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=(v='')=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+let state=null,providers=null,pollTimer=null;
+async function api(path,opt={}){
+  const post=opt.method==='POST';
+  const r=await fetch(path,{...opt,headers:post?{'Content-Type':'application/json','X-CIDM-Console':'1'}:{}});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.error||d.message||('HTTP '+r.status));
+  return d;
+}
+const post=(path,body)=>api(path,{method:'POST',body:JSON.stringify(body||{})});
+function out(v){$('runOutput').textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}
+function chip(text,tone){return '<span class="chip '+(tone||'')+'">'+esc(text)+'</span>'}
+function tone(s){return ({complete:'good',covered:'good','signed-in':'good',ok:'good',paused_recoverable:'warn',partial:'warn',unverified:'warn',running:'warn'})[s]||(/fail|unavailable|stopped|error/.test(s||'')?'bad':'')}
+function route(r=[]){return r.map(x=>'<div class="route-node"><strong>'+esc(x.actor)+'</strong><span>'+esc(x.detail)+'</span></div>').join('')}
+
+// ---- operate
+function fillModels(p){const c=state.config.providers[p]||{models:[]};$('modelSelect').innerHTML=(c.models||[]).map(m=>'<option '+(m===c.model?'selected':'')+'>'+esc(m)+'</option>').join('')}
+function renderProviderSelect(){const cur=state.config.frontier_provider;$('providerSelect').innerHTML=Object.keys(state.config.providers).map(p=>'<option value="'+p+'" '+(p===cur?'selected':'')+'>'+(p==='claude'?'Claude Code':'Codex')+'</option>').join('');fillModels(cur)}
+function sources(){return [...document.querySelectorAll('.source')].map(row=>({title:row.querySelector('[data-title]').value,text:row.querySelector('[data-text]').value})).filter(s=>s.text.trim())}
+function addSource(title='',text=''){if(document.querySelectorAll('.source').length>=6)return;const row=document.createElement('div');row.className='source';row.innerHTML='<input data-title placeholder="Title" maxlength="120"><textarea data-text rows="2" maxlength="1200" placeholder="Excerpt"></textarea><button class="button secondary" aria-label="Remove source">✕</button>';row.querySelector('[data-title]').value=title;row.querySelector('[data-text]').value=text;row.querySelector('button').onclick=()=>row.remove();$('sourceList').appendChild(row)}
+function payload(){return{task:$('taskInput').value,context:$('contextInput').value,sources:sources(),execution_mode:$('executionMode').value,provider:$('providerSelect').value,model:$('modelSelect').value,effort:$('effortSelect').value,gate_policy:$('gatePolicy').value,confirm_live_spend:$('confirmSpend').checked}}
+function syncMode(){const m=$('executionMode').value;$('spendRow').hidden=m!=='cidm-broker';$('modePill').textContent={preview:'Preview','frontier-direct':'Smoke test','cidm-broker':'Live CIDM'}[m];$('runBtn').textContent=m==='cidm-broker'?'Start live run':'Run'}
+async function preview(){try{const d=await post('/api/route/preview',payload());$('routeVisual').innerHTML=route(d.route);$('routeStatus').outerHTML='<span id="routeStatus" class="chip">'+esc(d.provider+' · '+d.model)+'</span>';out(d.note)}catch(e){out(e.message)}}
+async function validate(){try{out(await post('/api/broker/validate',payload()))}catch(e){out(e.message)}}
+function setStatus(text){$('routeStatus').outerHTML='<span id="routeStatus" class="chip '+tone(text)+'">'+esc(text)+'</span>'}
+async function run(){
+  const p=payload();if(!p.task.trim()){out('Enter a goal first.');return}
+  if(p.execution_mode==='cidm-broker'&&!p.confirm_live_spend){out('Tick the spend confirmation to start a live CIDM run.');return}
+  try{setStatus('running');const d=await post('/api/run',p);
+    if(d.job_id){out('Live broker job '+d.job_id+' started in runs/'+d.run+'. Polling…');poll(d.job_id)}
+    else{if(d.route)$('routeVisual').innerHTML=route(d.route);setStatus(d.status||'done');out(d.output?d.output+(d.unresolved&&d.unresolved.length?'\n\nUnresolved:\n- '+d.unresolved.join('\n- '):'')+'\n\n'+(d.note||''):d)}
+  }catch(e){setStatus('failed');out(e.message)}
+}
+function poll(id){clearTimeout(pollTimer);const tick=async()=>{try{const s=await api('/api/jobs/'+id);
+  const lines=['Job '+s.job_id+' · '+(s.running?'running':'exit '+s.exit_code)+' · '+s.elapsed_seconds+'s'];
+  if(s.journal_tail.length)lines.push('','Journal tail:',...s.journal_tail.map(e=>'  '+[e.id,e.kind,e.phase,e.unit_id,e.choice].filter(Boolean).join(' · ')));
+  if(s.result)lines.push('','Result:',JSON.stringify(s.result,null,2));else if(!s.running)lines.push('','Log:',s.log_tail);
+  out(lines.join('\n'));setStatus(s.running?'running':(s.result?s.result.status:'exit '+s.exit_code));if(s.running)pollTimer=setTimeout(tick,2000);else loadRuns()}catch(e){out(e.message)}};tick()}
+
+// ---- providers
+function providerCard(name,p){
+  const st=p.status||{},cov=p.cidm_route_coverage||{},models=(p.models&&p.models.models)||[];
+  const login=st.installed===false?'not installed':st.logged_in?'signed-in':'not signed in';
+  return '<div class="card"><div class="row"><h3>'+(name==='claude'?'Claude Code':'Codex')+'</h3>'+chip(login,tone(login))+'</div>'+
+  '<dl class="kv"><dt>Billing</dt><dd>'+esc(st.billing||'unknown')+(st.subscription_type?' · '+esc(st.subscription_type):'')+'</dd>'+
+  '<dt>Catalogue</dt><dd>'+esc((p.models&&p.models.source)||'—')+(p.models&&p.models.account_derived?' '+chip('account-derived','good'):' '+chip('presets','warn'))+'</dd>'+
+  '<dt>CIDM routes</dt><dd>'+chip(cov.status||'unknown',tone(cov.status))+' '+esc((cov.required||0)-(cov.missing||[]).length)+'/'+esc(cov.required||0)+'</dd></dl>'+
+  ((st.warnings||[]).map(w=>'<p>⚠ '+esc(w)+'</p>').join(''))+
+  ((cov.missing||[]).length?'<p>Missing: '+cov.missing.slice(0,9).map(m=>'<code>'+esc(m.model+' '+m.effort)+'</code>').join(', ')+'</p>':'')+
+  '<p>Models: '+(models.filter(m=>m.visibility!=='hide').map(m=>'<code>'+esc(m.slug)+'</code>').join(', ')||'—')+'</p>'+
+  '<div class="row" style="margin-top:12px"><button class="button secondary" data-login="'+name+'">Sign in</button><button class="button '+(state.config.frontier_provider===name?'primary':'secondary')+'" data-use="'+name+'">'+(state.config.frontier_provider===name?'Selected':'Use provider')+'</button></div></div>'}
+async function loadProviders(refresh){$('providerCards').innerHTML='<div class="empty">Checking accounts…</div>';try{providers=await api('/api/providers'+(refresh?'?refresh=1':''));
+  const jev=providers.jev;$('providerCards').innerHTML=providerCard('claude',providers.claude)+providerCard('codex',providers.codex)+
+  '<div class="card"><div class="row"><h3>Jev (TypeSafe)</h3>'+chip(jev.api_key_present?'key present':'no key',jev.api_key_present?'good':'bad')+'</div><dl class="kv"><dt>Model</dt><dd><code>'+esc(jev.model)+'</code></dd><dt>Route</dt><dd>OpenRouter API</dd></dl><p>'+esc(jev.detail)+'</p></div>';
+  document.querySelectorAll('[data-login]').forEach(b=>b.onclick=async()=>{const d=await post('/api/provider/login',{provider:b.dataset.login});alert((d.launched?'':'Run manually: '+d.command+'\n\n')+d.guidance)});
+  document.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>save({frontier_provider:b.dataset.use}));
+  const ready=providers.claude.status.logged_in||providers.codex.status.logged_in;$('runtimeDot').className='dot '+(ready&&jev.api_key_present?'good':'warn');$('runtimeText').textContent=ready?(jev.api_key_present?'Frontier + Jev ready':'Frontier ready · Jev key missing'):'Preview mode available'
+}catch(e){$('providerCards').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
+
+// ---- arsenal
+async function loadArsenal(){try{const a=await api('/api/arsenal');$('lessonCount').textContent=a.lessons+' verified lessons';
+  $('skillTable').innerHTML=a.skills.length?'<table><thead><tr><th>Skill</th><th>Scope</th><th>Admitted</th><th>Risk</th><th>Frontier</th><th>Validators</th></tr></thead><tbody>'+a.skills.map(s=>'<tr><td><strong>'+esc(s.skill_id)+'</strong><br><span class="muted">v'+esc(s.version)+'</span></td><td>'+esc(s.project_scope.join(', '))+'</td><td>'+chip(s.admitted?'admitted':'candidate',s.admitted?'good':'')+'</td><td>'+esc(s.risk)+'</td><td>'+(s.frontier_required?'required':'not required')+'</td><td>'+esc(s.validators.join(', ')||'—')+'</td></tr>').join('')+'</tbody></table>':$('skillTable').innerHTML;
+  const c=a.calibration,t=a.thresholds,f=a.fast_path;let html='';
+  if(c&&c.summary){const m=c.metrics;html+='<h3>Calibration (reviewed real runs only)</h3><dl class="kv"><dt>Evaluated</dt><dd>'+c.summary.eligible_evaluated+' of '+c.summary.runs+' runs</dd><dt>Skill accuracy</dt><dd>'+(m.skill_selection_accuracy??'—')+'</dd><dt>Fast Path precision</dt><dd>'+(m.fast_path_precision??'—')+'</dd><dt>Negative transfer</dt><dd>'+(m.negative_transfer_rate??'—')+'</dd></dl>'}
+  else if(c&&c.error)html+='<p>Ledger error: '+esc(c.error)+'</p>';
+  if(t)html+='<h3 style="margin-top:14px">Owner threshold (n ≥ 30, Wilson ≥ 0.95)</h3><p>'+chip(t.meets_operator_threshold?'meets bar':'not met',t.meets_operator_threshold?'good':'warn')+' '+esc((t.reasons||[]).join(', '))+'</p><p class="helper">A report never enables Fast Path; an owner policy must cite its hash.</p>';
+  if(f)html+='<h3 style="margin-top:14px">Executed Fast Path</h3><dl class="kv"><dt>Attempts</dt><dd>'+f.attempts+'</dd><dt>Frontier calls avoided</dt><dd>'+f.frontier_calls_avoided+'</dd><dt>Escalated to Jev</dt><dd>'+f.escalated_to_jev+'</dd></dl>';
+  $('calibrationPanel').innerHTML=html||'No calibration ledger or Fast Path ledger yet. Shadow mode (<code>--arsenal-shadow</code>) records predictions without changing routing.'
+}catch(e){$('calibrationPanel').textContent=e.message}}
+
+// ---- mcp
+async function loadMcp(q){try{const m=await api('/api/mcp'+(q?'?q='+encodeURIComponent(q):''));
+  const stats={};(m.catalogue.servers||[]).forEach(s=>stats[s.name]=s);
+  $('mcpServers').innerHTML=m.servers.length?'<table><thead><tr><th>Server</th><th>Transport</th><th>Source</th><th>Tools</th><th></th></tr></thead><tbody>'+m.servers.map(s=>'<tr><td><strong>'+esc(s.name)+'</strong>'+(s.env_keys.length?'<br><span class="muted">env: '+esc(s.env_keys.slice(0,4).join(', '))+(s.env_keys.length>4?'…':'')+'</span>':'')+'</td><td>'+esc(s.transport)+'</td><td>'+esc(s.source)+'</td><td>'+(stats[s.name]?stats[s.name].tool_count:'—')+'</td><td><button class="button secondary" data-refresh="'+esc(s.name)+'">Refresh</button></td></tr>').join('')+'</tbody></table>':'<div class="empty">No MCP servers configured.</div>';
+  document.querySelectorAll('[data-refresh]').forEach(b=>b.onclick=async()=>{if(!confirm('Start the configured MCP server "'+b.dataset.refresh+'" to list its tools? It runs the command from your config.'))return;b.disabled=true;try{const r=await post('/api/mcp/refresh',{server:b.dataset.refresh,confirm_start_server:true});alert('Catalogued '+r.tools+' tools: '+JSON.stringify(r.by_access))}catch(e){alert(e.message)}loadMcp()});
+  if(m.search){const s=m.search,b=s.context_budget;$('mcpResults').innerHTML=(s.cards.length?s.cards.map(c=>'<div class="card" style="margin-bottom:8px"><div class="row"><strong>'+esc(c.server+' · '+c.tool)+'</strong>'+chip(c.access_class,c.access_class==='read'?'good':c.access_class==='unknown'?'warn':'bad')+'</div><p>'+esc(c.summary)+'</p><p>Required: '+esc(c.required_args.join(', ')||'none')+' · '+esc(c.access_basis)+'</p></div>').join(''):'<div class="empty">No matching tools.</div>')+'<p class="helper">Returned '+b.returned_bytes+' bytes instead of the '+b.full_catalogue_bytes+'-byte catalogue ('+b.full_catalogue_tools+' tools).</p>'}
+}catch(e){$('mcpServers').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
+
+// ---- runs
+async function loadRuns(){try{const r=await api('/api/runs');$('runsRoot').textContent=r.root;
+  $('runsTable').innerHTML=r.runs.length?'<table><thead><tr><th>Run</th><th>Status</th><th>Route</th><th>Units</th><th>Calls</th><th></th></tr></thead><tbody>'+r.runs.map(x=>'<tr><td><strong>'+esc(x.name)+'</strong><br><span class="muted">'+new Date(x.modified*1000).toLocaleString()+(x.resumed_from?' · resumed':'')+'</span></td><td>'+chip(x.status||'—',tone(x.status))+(x.checkpoint?'<br><span class="muted">checkpoint at '+esc(x.active_unit)+' ('+esc(x.recovery_kind)+')</span>':'')+'</td><td>'+esc([x.route,x.gate_policy,x.host].filter(Boolean).join(' · ')||'—')+(x.simulation?' '+chip('simulation'):'')+'</td><td>'+esc((x.committed||[]).length)+'/5</td><td>'+esc(x.calls??'—')+'</td><td class="row"><button class="button secondary" data-tel="'+esc(x.name)+'">Summary</button><a class="button secondary" href="/api/runs/'+encodeURIComponent(x.name)+'/otlp" download="'+esc(x.name)+'.otlp.json">OTLP</a>'+(x.checkpoint?'<button class="button primary" data-resume="'+esc(x.name)+'">Resume</button>':'')+'</td></tr>').join('')+'</tbody></table>':'<div class="empty">No runs yet in '+esc(r.root)+'.</div>';
+  document.querySelectorAll('[data-tel]').forEach(b=>b.onclick=async()=>{$('runDetailTitle').textContent='Telemetry summary · '+b.dataset.tel;try{$('runDetail').textContent=JSON.stringify(await api('/api/runs/'+encodeURIComponent(b.dataset.tel)+'/telemetry'),null,2)}catch(e){$('runDetail').textContent=e.message}});
+  document.querySelectorAll('[data-resume]').forEach(b=>b.onclick=async()=>{const operator=prompt('Operator id for the resume record:');if(!operator)return;
+    const reset=confirm('Grant the paused unit a fresh replan budget? (Cancel = keep the current budget)');
+    if(!confirm('Resuming makes live Jev API calls and uses provider plan usage. Continue?'))return;
+    try{const d=await post('/api/runs/'+encodeURIComponent(b.dataset.resume)+'/resume',{operator,reset_recovery_rounds:reset,confirm_live_spend:true});document.querySelector('[data-view=operate]').click();out('Resume job '+d.job_id+' started.');poll(d.job_id)}catch(e){alert(e.message)}})
+}catch(e){$('runsTable').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
+
+// ---- skills
+function renderSkills(){$('skillsSource').value=state.config.skills_source||'';const h=state.runtime.hermes;$('hermesChip').outerHTML='<span class="chip '+(h.dashboard_reachable?'good':'warn')+'" id="hermesChip">'+(h.dashboard_reachable?'dashboard live':h.installed?'installed':'not installed')+'</span>';
+  if(!state.skills.length){$('skillsList').innerHTML='<div class="empty">No skills found in the source folder.</div>';return}
+  $('skillsList').innerHTML=state.skills.map(s=>'<div class="skill-row"><div><strong>'+esc(s.name)+'</strong><span>'+esc(s.description||s.path||'Hermes skill')+'</span></div><button class="switch '+(s.enabled===true?'on ':'')+(s.enabled===null?'unknown':'')+'" role="switch" aria-checked="'+(s.enabled===true)+'" aria-label="Toggle '+esc(s.name)+'" data-skill="'+esc(s.name)+'" data-enabled="'+(s.enabled===true?'1':'0')+'"></button></div>').join('');
+  document.querySelectorAll('[data-skill]').forEach(b=>b.onclick=async()=>{try{await post('/api/skills/toggle',{name:b.dataset.skill,enabled:b.dataset.enabled!=='1'});await refresh()}catch(e){alert(e.message)}})}
+
+async function save(p){await post('/api/config',p);await refresh();if(providers)loadProviders(false)}
+async function refresh(){state=await api('/api/state');$('executionMode').value=state.config.execution_mode||'preview';$('gatePolicy').value=state.config.gate_policy||'recovery';renderProviderSelect();renderSkills();syncMode()}
+const titles={operate:'Operate',providers:'Providers',arsenal:'Arsenal',mcp:'MCP catalogue',runs:'Runs & recovery',skills:'Hermes skills',architecture:'Architecture'};
+const loaders={providers:()=>loadProviders(false),arsenal:loadArsenal,mcp:()=>loadMcp(),runs:loadRuns};
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav,.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('view-'+b.dataset.view).classList.add('active');$('viewTitle').textContent=titles[b.dataset.view];(loaders[b.dataset.view]||(()=>{}))()});
+$('providerSelect').onchange=e=>fillModels(e.target.value);$('executionMode').onchange=syncMode;
+$('previewBtn').onclick=preview;$('validateBtn').onclick=validate;$('runBtn').onclick=run;$('addSource').onclick=()=>addSource();
+$('refreshBtn').onclick=()=>{refresh();const v=document.querySelector('.nav.active').dataset.view;if(v==='providers')loadProviders(true);else (loaders[v]||(()=>{}))()};
+$('refreshProviders').onclick=()=>loadProviders(true);
+$('useCodexModels').onclick=async()=>{try{await post('/api/providers/models',{});await refresh();loadProviders(false)}catch(e){alert(e.message)}};
+$('mcpSearch').onclick=()=>loadMcp($('mcpQuery').value.trim());$('mcpQuery').onkeydown=e=>{if(e.key==='Enter')loadMcp(e.target.value.trim())};
+$('saveSkillsSource').onclick=()=>save({skills_source:$('skillsSource').value});
+$('openSkillsFolder').onclick=async()=>{try{await post('/api/skills/open',{path:$('skillsSource').value})}catch(e){alert(e.message)}};
+refresh().then(()=>{preview();loadProviders(false)}).catch(e=>out(e.message));
+</script>
+</body>
+</html>

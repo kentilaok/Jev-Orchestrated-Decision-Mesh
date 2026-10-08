@@ -1,0 +1,13 @@
+bundle,record_kind,calls,io_tokens,unknown_token_calls,charge_usd_provider_reported,known_charge_partial_usd,unknown_charge_calls,sum_api_latency_s,jev_calls,jev_tokens,jev_charge,worker_calls,worker_tokens,worker_charge,checker_calls,checker_tokens,checker_charge,quality_outcome,source
+mandatory_checked,live_evaluation,23,36663,0,0.012201078,0.012201078,0,36.311,15,31700,0.001298178,3,1925,0.0003549,5,3038,0.010548,final value/scope/citation checks passed,reconciliation/events.reconstructed.jsonl
+mandatory_single_sol,live_evaluation,1,431,0,0.001726,0.001726,0,4.297,,,,1,431,0.001726,,,,passed,reconciliation/events.reconstructed.jsonl
+conditional_first,live_evaluation,13,25651,0,0.00312019,0.00312019,0,13.468,10,23812,0.00097209,3,1839,0.0021481,,,,passed,reconciliation/events.reconstructed.jsonl
+conditional_hardened,live_evaluation,13,25510,0,0.006413654,0.006413654,0,13.499,10,23752,0.000969654,3,1758,0.005444,,,,passed,reconciliation/events.reconstructed.jsonl
+fast_exit_initial,live_development_attempt,1,889,0,3.423e-05,3.423e-05,0,1.078,1,889,3.423e-05,,,,,,,passed,reconciliation/events.reconstructed.jsonl
+fast_exit_compact,live_development_attempt,1,716,0,2.6964e-05,2.6964e-05,0,0.656,1,716,2.6964e-05,,,,,,,passed,reconciliation/events.reconstructed.jsonl
+mandatory_attempt_A_provider_filtered,live_development_attempt,3,,1,,9.3534e-05,1,1.297,2,2289,9.3534e-05,,,,1,,,failed (checker HTTP 404; no unit committed),reconciliation/events.reconstructed.jsonl
+mandatory_attempt_B_jev_stop,live_development_attempt,7,9966,0,0.002400746,0.002400746,0,13.281,5,8760,0.000357546,1,644,0.0001112,1,562,0.001932,stopped by Jev after unit 1,reconciliation/events.reconstructed.jsonl
+baseline_attempt_A_schema_mismatch,live_development_attempt,1,454,0,0.002172,0.002172,0,3.953,,,,1,454,0.002172,,,,correct value; failed strict unit string,reconciliation/events.reconstructed.jsonl
+historical_eval_arm_A,live_evaluation,12,34942,0,0.25523625,0.25523625,0,42.217,,,,12,34942,0.25523625,,,,released passing 9/12,reconciliation/events.reconstructed.jsonl
+historical_eval_arm_B,live_evaluation,40,131388,0,0.230692994,0.230692994,0,68.689,26,106358,0.004225494,14,25030,0.2264675,,,,released passing 7/12,reconciliation/events.reconstructed.jsonl
+historical_development,live_development_attempt,8,16602,0,0.042355456,0.042355456,0,16.343,4,11077,0.000435456,4,5525,0.04192,,,,development tasks,reconciliation/events.reconstructed.jsonl

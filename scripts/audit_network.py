@@ -8,7 +8,9 @@ from checked_network import UNITS
 
 def audit(result, folder=None):
     issues=[]; seen={}; used=set(); post_checks=0; post_workers=0; commits=0
-    conditional=result.get('protocol_version')=='cidm-conditional-review-v3'
+    conditional=result.get('protocol_version') in (
+        'cidm-conditional-review-v3', 'cidm-recovery-first-v1'
+    )
     for event in result.get('events',[]):
         if event['id'] in seen: issues.append('duplicate_event')
         if event['kind']=='dispatch':
