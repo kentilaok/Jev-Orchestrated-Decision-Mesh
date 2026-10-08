@@ -17,6 +17,7 @@ The thesis comprises the following documents. Each covers a distinct part of the
 | [Gate fusion](GATE-FUSION.md) | Separate/fused decision boundaries and state-bound permits | Experimental protocol |
 | [Recovery and experience distillation](RECOVERY-AND-DISTILLATION.md) | Bounded recovery, project continuity, verified lessons and Hermes skills | Experimental extension; implemented, including checkpoint resume |
 | [Arsenal V1](ARSENAL-V1.md) | Frontier-efficient system, local cognitive substrate, agents/tools, memory and build phases | Architecture; code-only parts of every phase implemented |
+| [Handoff — 8 October 2026](HANDOFF-2026-10-08.md) | What was integrated and built, verification, local setup, next steps | Session handoff |
 | [Arsenal V1 — implementation guide](ARSENAL-V1-BUILD.md) | Permits, frontier providers, Fast Path, MCP catalogue, retrieval, sandbox, browser, telemetry, resume | Offline-tested implementation; no live efficiency result |
 | [Arsenal Phase A2 Calibration](ARSENAL-CALIBRATION.md) | Shadow predictions, native runtime receipts, independent outcome labels and conservative evaluation | Experimental implementation; threshold reports never enable execution |
 | [Arsenal manifest and admission](ARSENAL-MANIFEST.md) | Searchability vs trust, skill manifests, hashes, permissions, explicit admission | Implemented governance; Fast Path needs an owner policy |
