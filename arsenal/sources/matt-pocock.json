@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "source_id": "matt-pocock-real-engineers",
+  "title": "Matt Pocock — Skills for Real Engineers",
+  "upstream": "https://github.com/mattpocock/skills",
+  "pinned_revision": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
+  "license": "MIT",
+  "adoption": "curated-candidates",
+  "security_note": "Catalogue only. Imports are inert, unadmitted candidate manifests. Jev controls tools, subagents, issue writes, tests and commits.",
+  "default_scope": [
+    "global"
+  ],
+  "skill_source_base": "skills",
+  "skills": [
+    {
+      "name": "diagnosing-bugs",
+      "upstream_path": "skills/engineering/diagnosing-bugs",
+      "invocation": "model",
+      "priority": "core",
+      "purpose": "Failure-driven debugging: reproducer, hypothesis, instrumentation, repair and regression validation."
+    },
+    {
+      "name": "tdd",
+      "upstream_path": "skills/engineering/tdd",
+      "invocation": "model",
+      "priority": "core",
+      "purpose": "Public-seam red/green/refactor testing; aligns with CIDM hard validators."
+    },
+    {
+      "name": "codebase-design",
+      "upstream_path": "skills/engineering/codebase-design",
+      "invocation": "model",
+      "priority": "core",
+      "purpose": "Deep modules, small interfaces and tested architecture seams; use as engineering method."
+    },
+    {
+      "name": "domain-modeling",
+      "upstream_path": "skills/engineering/domain-modeling",
+      "invocation": "model",
+      "priority": "core",
+      "purpose": "Glossary/ADR and domain vocabulary; share compact durable knowledge across runs."
+    },
+    {
+      "name": "writing-for-agents",
+      "upstream_path": "skills/productivity/writing-for-agents",
+      "invocation": "model",
+      "priority": "core",
+      "purpose": "Compact high-signal instructions and context pointers to reduce token waste."
+    },
+    {
+      "name": "code-review",
+      "upstream_path": "skills/engineering/code-review",
+      "invocation": "model",
+      "priority": "review",
+      "purpose": "Two-axis standards/spec review; subagent fan-out only under Jev authorization."
+    },
+    {
+      "name": "retro",
+      "upstream_path": "skills/engineering/retro",
+      "invocation": "user",
+      "priority": "review",
+      "purpose": "Turn session failure/overhead into candidate improvements for CIDM experience plane."
+    },
+    {
+      "name": "grill-with-docs",
+      "upstream_path": "skills/engineering/grill-with-docs",
+      "invocation": "user",
+      "priority": "review",
+      "purpose": "Clarify ambiguity and preserve domain glossary/ADRs; explicit user request only."
+    },
+    {
+      "name": "to-spec",
+      "upstream_path": "skills/engineering/to-spec",
+      "invocation": "user",
+      "priority": "review",
+      "purpose": "Convert accepted conversation into issue/spec; external write requires Jev permit."
+    },
+    {
+      "name": "to-tickets",
+      "upstream_path": "skills/engineering/to-tickets",
+      "invocation": "user",
+      "priority": "review",
+      "purpose": "Break approved plan into traceable tickets with dependency edges; Jev approves fan-out."
+    },
+    {
+      "name": "improve-codebase-architecture",
+      "upstream_path": "skills/engineering/improve-codebase-architecture",
+      "invocation": "user",
+      "priority": "review",
+      "purpose": "Survey deeper-module opportunities; visual report is recommendation, not authority."
+    },
+    {
+      "name": "pr",
+      "upstream_path": "skills/engineering/pr",
+      "invocation": "model",
+      "priority": "review",
+      "purpose": "Compact evidence-based PR summary and blast-radius note."
+    },
+    {
+      "name": "handoff",
+      "upstream_path": "skills/productivity/handoff",
+      "invocation": "user",
+      "priority": "review",
+      "purpose": "Compact project-state handoff for long sessions; no commit authority."
+    },
+    {
+      "name": "implement",
+      "upstream_path": "skills/engineering/implement",
+      "invocation": "user",
+      "priority": "restricted",
+      "purpose": "High-level workflow overlaps Hermes/CIDM; no autonomous commits or controller replacement."
+    },
+    {
+      "name": "implement-spec",
+      "upstream_path": "skills/engineering/implement-spec",
+      "invocation": "user",
+      "priority": "restricted",
+      "purpose": "Parallel subagent/task-graph workflow overlaps Jev: review-only until explicitly adapted."
+    },
+    {
+      "name": "ask-matt",
+      "upstream_path": "skills/engineering/ask-matt",
+      "invocation": "user",
+      "priority": "restricted",
+      "purpose": "Upstream skill router conflicts with CIDM routing; not auto-loaded."
+    },
+    {
+      "name": "wayfinder",
+      "upstream_path": "skills/engineering/wayfinder",
+      "invocation": "user",
+      "priority": "restricted",
+      "purpose": "Issue-tracker decision-map orchestration reserved for explicitly authorised project workflows."
+    },
+    {
+      "name": "triage",
+      "upstream_path": "skills/engineering/triage",
+      "invocation": "user",
+      "priority": "restricted",
+      "purpose": "Issue tracker state mutation; external write permission needed."
+    }
+  ]
+}
