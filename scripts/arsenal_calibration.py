@@ -385,6 +385,8 @@ def evaluate(events: list[dict]) -> dict:
     return {
         "schema_version": SCHEMA, "mode": "calibration_only",
         "authority": "none_shadow_evaluation_only",
+        "fast_path_enablement_allowed": False,
+        "promotion_ready": False,
         "summary": counts,
         "metrics": {
             "skill_selection_accuracy": round(counts["selected_skill_correct"] / evaluated_count, 6)
