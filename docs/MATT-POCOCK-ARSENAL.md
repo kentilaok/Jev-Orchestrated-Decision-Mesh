@@ -83,7 +83,7 @@ python scripts/arsenal_import_matt_pocock.py \
 The importer:
 
 1. requires the **exact pinned upstream commit** and a clean tracked checkout;
-2. copies only the requested allowlisted skill subdirectories and their bundled references;
+2. copies only the requested allowlisted skill subdirectories, their bundled references, and the upstream MIT licence notice (`UPSTREAM_LICENSE.txt`);
 3. refuses symlinks, path escapes, existing destinations, and oversized packages;
 4. creates conservative `ARSENAL.json` manifests with denied permissions;
 5. never executes skill code, installs packages, changes model sessions, or calls external services;
