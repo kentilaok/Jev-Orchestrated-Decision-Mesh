@@ -64,7 +64,7 @@ The default endpoint is `http://127.0.0.1:9119` (`HERMES_DASHBOARD_URL` override
 | Variable | Purpose |
 |---|---|
 | `JEV_OPERATOR_STATE` | Console state JSON path |
-| `HERMES_HOME` | Hermes home and default skill source |
+| `HERMES_HOME` | Hermes home and default skill source (unset: `~/.hermes`, else `%LOCALAPPDATA%\hermes`) |
 | `HERMES_DASHBOARD_URL` | Hermes dashboard API URL |
 | `OPENROUTER_API_KEY` | Jev calls for live CIDM runs (read by the broker, never shown) |
 | `CODEX_HOME` | Location of Codex's model catalogue cache |

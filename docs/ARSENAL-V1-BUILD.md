@@ -154,12 +154,26 @@ Every pre-checkpoint Jev gate is marked spent. Added evidence (new IDs only) and
 
 See [Operator Console](OPERATOR-CONSOLE.md). It exposes all of the above read-only, plus three explicit actions: a bounded smoke test, a live broker run with spend confirmation, and resume.
 
+## Hermes and local tool setup
+
+`scripts/hermes_paths.py` finds Hermes at `HERMES_HOME`, then `~/.hermes`, then `%LOCALAPPDATA%\hermes` (the Windows installer location). CIDM-managed skills live in a separate folder, `~/.jev/hermes-skills`, which Hermes loads read-only through `skills.external_dirs`:
+
+```bash
+python scripts/install_hermes_skill.py            # wrapper skill + external_dirs entry (config.yaml backed up)
+python scripts/arsenal_registry.py scan --skills-dir "$LOCALAPPDATA/hermes/skills"
+pip install -r requirements-arsenal-semantic.txt  # optional FastEmbed CPU layer
+python scripts/arsenal_semantic.py build --model BAAI/bge-small-en-v1.5
+pip install playwright==1.62.0 && python -m playwright install chromium   # optional browser tier
+```
+
+The wrapper is regenerated from the repository's `SKILL.md`; edit the repository copy and re-run the installer. The Matt Pocock importer refuses every active skill root, including the Hermes home, `~/.jev/hermes-skills`, and Claude Code, Codex and `~/.agents` skill folders.
+
 ## Not built (needs accounts, downloads, or an owner decision)
 
 - **LeanCTX and Headroom** context gateways: external tools. The MCP catalogue's compact search is the in-repo measurement point.
 - **Managed services:** a provisioned Qdrant Cloud collection, a hosted reranker key, a running Phoenix instance, and an E2B or Daytona sandbox. Adapters exist for Qdrant and the rerankers; each runs only when configured.
-- **Hermes runtime integration:** Hermes was not installed on the build machine. The console talks to Hermes' dashboard API when it runs; a Hermes dispatch adapter remains future work.
-- **Methodology skill import:** the Matt Pocock importer needs a pinned upstream checkout, which is a download the owner should approve.
+- **Hermes dispatch adapter:** Hermes loads the CIDM skill and the console talks to Hermes' dashboard API, but running Hermes procedures *inside* a permit-bound CIDM unit remains future work.
+- **Methodology skill activation:** the Matt Pocock core skills can be staged in quarantine from the pinned checkout; copying a reviewed skill into an active skill folder and hash-admitting it remain owner decisions.
 - **Temporal, LiteLLM, Semantic Router, DSPy:** deferred by the V1 plan.
 - **The audit study's default-off policy variants** (skip vacuous gates, cited-only evidence, block-at-unit unresolved): hypotheses for live testing, not applied.
 

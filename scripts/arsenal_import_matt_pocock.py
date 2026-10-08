@@ -124,14 +124,8 @@ def import_catalogue(
     require("LICENSE" in tracked, "upstream_license_not_tracked")
     planned = []
     dest_root = destination.expanduser().resolve()
-    home = Path.home()
-    active_roots = [
-        home / ".hermes" / "skills",
-        home / ".claude" / "skills",
-        home / ".codex" / "skills",
-    ]
-    if os.environ.get("HERMES_HOME"):
-        active_roots.append(Path(os.environ["HERMES_HOME"]).expanduser() / "skills")
+    from hermes_paths import active_skill_roots
+    active_roots = active_skill_roots()
     require(
         all(not dest_root.is_relative_to(path.resolve()) for path in active_roots),
         "cannot_import_directly_into_active_agent_skill_directory",

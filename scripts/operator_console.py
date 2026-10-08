@@ -38,7 +38,8 @@ SCRIPTS = REPO_ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 CONSOLE_DIR = REPO_ROOT / "console"
 DEFAULT_STATE_PATH = Path(os.environ.get("JEV_OPERATOR_STATE", "~/.jev/operator-console.json")).expanduser()
-DEFAULT_HERMES_SKILLS = Path(os.environ.get("HERMES_HOME", "~/.hermes")).expanduser() / "skills"
+from hermes_paths import CIDM_EXTERNAL_SKILLS, hermes_executable, hermes_home  # noqa: E402
+DEFAULT_HERMES_SKILLS = hermes_home() / "skills"
 DEFAULT_HERMES_DASHBOARD = os.environ.get("HERMES_DASHBOARD_URL", "http://127.0.0.1:9119")
 LOOPBACK = {"127.0.0.1", "localhost", "::1"}
 
@@ -132,7 +133,9 @@ def executable_status(name: str) -> dict:
 
 
 def hermes_status(config: dict) -> dict:
-    base = executable_status("hermes")
+    path = hermes_executable()
+    base = {"installed": bool(path), "path": path, "home": str(hermes_home()),
+            "cidm_external_skills": str(CIDM_EXTERNAL_SKILLS)}
     dashboard = config.get("hermes_dashboard_url") or DEFAULT_HERMES_DASHBOARD
     api_ok = False
     try:
@@ -210,7 +213,8 @@ def local_skills(config: dict) -> list[dict]:
     if not source.is_dir():
         return []
     results = []
-    for skill_file in sorted(source.glob("*/SKILL.md")):
+    # Hermes nests bundled skills one category deep (skills/<category>/<name>/SKILL.md).
+    for skill_file in sorted({*source.glob("*/SKILL.md"), *source.glob("*/*/SKILL.md")}):
         meta = parse_skill_metadata(skill_file)
         results.append({**meta, "path": str(skill_file.parent), "enabled": None, "source": "folder"})
     return results
