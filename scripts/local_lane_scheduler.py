@@ -12,12 +12,15 @@ from capability_permits import PermitAuthority, audit_permit_ledger
 from frontier_providers import _request_scope
 from ollama_provider import OllamaLocalProvider, READONLY_SCHEMA
 from split_context_dispatch import lane_prompt
+from local_resource_governor import enforce_parallel_limit
 
 
 def run_lanes(packages, *, model, model_digest=None, max_parallel=1,
-              provider_factory=None, authority=None, context_tokens=4096):
+              provider_factory=None, authority=None, context_tokens=4096,
+              parallel_opt_in=False, gpu_free_mib=None):
     if type(max_parallel) is not int or max_parallel not in (1, 2):
         raise ValueError("parallel_limit_must_be_1_or_2")
+    enforce_parallel_limit(max_parallel, consent=parallel_opt_in, free_mib=gpu_free_mib)
     if not isinstance(packages, dict) or "A" not in packages or "B" not in packages:
         raise ValueError("two_lane_packages_required")
     prepared = [(lane, packages[lane]) for lane in ("A", "B")
