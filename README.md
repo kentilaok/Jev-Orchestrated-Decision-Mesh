@@ -273,7 +273,14 @@ See [Arsenal A2 calibration and reviewer workflow](docs/ARSENAL-CALIBRATION.md).
 
 ## Arsenal V1 build
 
-**Proposed V1.x local continuity:** the [split-context Qwen architecture decisions](docs/LOCAL-CONTINUITY-SPLIT-CONTEXT-DECISIONS.md) and [phased implementation plan](docs/LOCAL-CONTINUITY-SPLIT-CONTEXT-IMPLEMENTATION-PLAN.md) specify four manual/fallback modes, separate complementary SOP/skill retrieval for two student lanes, independent evaluation, reviewed learning, and memory-aware scheduling. **Documents only:** local-model provider, switch, scheduler and split-context execution are **not implemented** on this branch.
+**Experimental V1.x local Qwen continuity:** see [decisions](docs/LOCAL-CONTINUITY-SPLIT-CONTEXT-DECISIONS.md) and [implementation plan](docs/LOCAL-CONTINUITY-SPLIT-CONTEXT-IMPLEMENTATION-PLAN.md). Staged **prototype code** now includes loopback Ollama local-only proposals, distinct owner-admitted SOP/lesson context lanes for A/B, a bounded serial/optional parallel scheduler, an opt-in concurrent frontier teacher shadow CLI, a comparison/observation ledger, a separate Operator Console `Qwen local` panel (local-only executable), quota fallback **policy only**, and bounded semantic shortlisting. **Not production accepted:** actual Jev/Hermes decision integration, automatic quota-to-checkpoint failover, audited correctness and green CI are still outstanding. Start with the [Stage 1–6 handoff index](docs/HANDOFF-LOCAL-CONTINUITY-STAGE-6.md).
+
+```bash
+python -m unittest discover -s tests -p 'test_local_qwen*.py' -v   # offline fixtures, not a live acceptance
+python scripts/local_qwen_run.py --model YOUR_OLLAMA_TAG --prompt 'Fictional test'   # preview, no calls
+python scripts/local_continuity_pipeline.py --model YOUR_OLLAMA_TAG --project-scope demo --goal 'Fictional test'   # preview
+python scripts/operator_console.py   # see the Qwen local tab
+```
 
 **Release status — preproduction / experimental.** The current integration branch is not a production-accepted V1. Local offline tests were reported passing, but GitHub Actions is failing before executing steps and no live end-to-end Jev + frontier + Hermes workflow has been validated. The Hermes dispatch adapter and task-specific correctness gates are still open. **Do not merge or deploy as production until the [Production Requirements and Release Handoff](docs/PRODUCTION-REQUIREMENTS-HANDOFF-2026-10-08.md) acceptance gates pass.**
 
