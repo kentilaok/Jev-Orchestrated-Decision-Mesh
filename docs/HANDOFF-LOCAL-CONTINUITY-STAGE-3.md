@@ -23,4 +23,13 @@ py -3.11 scripts/local_continuity_pipeline.py --live-local --goal 'Diagnose a fi
 
 The prototype's `--live-local` still does **not** integrate into a Jev native-broker decision or certify task truth. Never use output to automatically change external systems. Comparison records are **not** a source for the production SOP index until independently reviewed.
 
+**Added opt-in executable teacher/student shadow (Stage 3 extension):** `scripts/dual_shadow_runner.py` runs the local A/B proposals and a tool-free Claude/Codex worker at the same time, on the same frozen task, with separate permit records and no cross-branch draft/context leakage. It requires explicit `--live-dual --approve-frontier-spend` and a real installed teacher model. The result is **withheld_unverified**, not a Jev acceptance. `tests/test_local_qwen_dual_shadow.py` uses fake providers to test a wrong teacher and a bounded permit.
+
+```powershell
+# Preview: NO models called
+py -3.11 scripts/dual_shadow_runner.py --goal 'Fictional task' --project-scope demo --local-model YOUR_OLLAMA_TAG --teacher-provider claude --teacher-model YOUR_CLAUDE_MODEL
+# Only after checking account identity, models and plan billing:
+py -3.11 scripts/dual_shadow_runner.py --live-dual --approve-frontier-spend --goal 'Fictional task' --project-scope demo --local-model YOUR_OLLAMA_TAG --teacher-provider claude --teacher-model YOUR_CLAUDE_MODEL --out runs/dual-shadow-test.json
+```
+
 **Next stage:** quota-classified fallback policy, guarded Console integration and proper resume semantics.
