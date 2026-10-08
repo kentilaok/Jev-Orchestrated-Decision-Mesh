@@ -14,7 +14,9 @@ from atomic_mesh import MeshError, fingerprint, packed, require
 from checked_network import CheckedNetwork, Unit, blind
 from config import RunConfig
 from fused_checked_network import FusedCheckedNetwork
-from recovery_protocol import RecoverySupervisor, build_recovery_network
+from recovery_protocol import (
+    RecoverySupervisor, build_recovery_network, checkpoint_bundle, restore_supervisor,
+)
 from transport import CHECK_SCHEMA, Gateway
 
 
@@ -366,9 +368,27 @@ class NativeTransitionBroker:
                 'prior_units_resolved': not prior_unresolved if output else True,
                 'output_has_no_unresolved': not data['unresolved'] if output else True}
 
-    def run(self, spec):
+    def run(self, spec, resume=None):
+        """Run one request; `resume` continues a persisted recovery checkpoint.
+
+        resume = {'bundle': <checkpoint.json>, 'additional_sources': {...} | None,
+                  'reset_active_unit_rounds': bool, 'operator': str | None}
+        """
         normalized = validate_spec(spec)
         require(not self.folder.exists(), 'output_directory_must_be_new')
+        if resume is not None:
+            require(self.gate_policy == 'recovery', 'resume_requires_recovery_policy')
+            host = (resume.get('bundle') or {}).get('host') or {}
+            require(host.get('task_hash') == normalized['snapshot_hash'], 'resume_task_mismatch')
+            require(host.get('config_policy_hash') == self.config.policy_hash, 'resume_config_mismatch')
+            carried = copy.deepcopy(host.get('calls') or [])
+            require(all(type(call) is dict and call.get('status') == 'ok' for call in carried),
+                    'resume_carried_calls_invalid')
+            for call in carried:
+                call['carried_from_checkpoint'] = True
+            self.calls = carried
+            self.worker_count = sum(call['role'] == 'worker' for call in carried)
+            self.checker_count = sum(call['role'] == 'checker' for call in carried)
         self.folder.mkdir(parents=True)
         self.worker_workspace = self.folder / 'codex-workspace'
         self.worker_workspace.mkdir()
@@ -493,19 +513,40 @@ class NativeTransitionBroker:
                         holder['network'] = network
                         network_result = network.run()
                     elif self.gate_policy == 'recovery':
-                        network = build_recovery_network(
-                            goal, sources, self._judge, produce, check, validate,
-                            policy=self.config.to_dict(),
-                            checker_identity={'model': self.config.checker_model,
-                                              'effort': self.config.checker_effort},
-                            worker_routes=self.config.worker_routes(),
-                            simulation=self.simulation, journal=journal,
-                            units=PROJECT_UNITS, deterministic_units={'input'})
+                        if resume is not None:
+                            supervisor = restore_supervisor(
+                                resume['bundle'], self._judge, produce, check, validate,
+                                units=PROJECT_UNITS, journal=journal,
+                                evidence_retriever=self.evidence_retriever,
+                                max_recovery_rounds=self.config.max_recovery_rounds,
+                                additional_sources=resume.get('additional_sources'),
+                                reset_active_unit_rounds=resume.get('reset_active_unit_rounds', False),
+                                operator=resume.get('operator'))
+                            network = supervisor.network
+                            result['resumed_from'] = resume['bundle']['bundle_hash']
+                        else:
+                            network = build_recovery_network(
+                                goal, sources, self._judge, produce, check, validate,
+                                policy=self.config.to_dict(),
+                                checker_identity={'model': self.config.checker_model,
+                                                  'effort': self.config.checker_effort},
+                                worker_routes=self.config.worker_routes(),
+                                simulation=self.simulation, journal=journal,
+                                units=PROJECT_UNITS, deterministic_units={'input'})
+                            supervisor = RecoverySupervisor(
+                                network, evidence_retriever=self.evidence_retriever,
+                                max_recovery_rounds=self.config.max_recovery_rounds)
                         holder['network'] = network
-                        network_result = RecoverySupervisor(
-                            network, evidence_retriever=self.evidence_retriever,
-                            max_recovery_rounds=self.config.max_recovery_rounds,
-                        ).run()
+                        network_result = supervisor.run()
+                        if network_result['status'] == 'paused_recoverable':
+                            bundle = checkpoint_bundle(supervisor, host={
+                                'task_hash': normalized['snapshot_hash'], 'gate_policy': 'recovery',
+                                'config_policy_hash': self.config.policy_hash,
+                                'calls': copy.deepcopy(self.calls)})
+                            path = self.folder / 'checkpoint.json'
+                            path.write_text(json.dumps(bundle, indent=2, allow_nan=False), encoding='utf-8')
+                            result['checkpoint_bundle'] = {'path': str(path),
+                                                           'bundle_hash': bundle['bundle_hash']}
                         if self.evidence_retriever is not None:
                             result['evidence_receipts'] = copy.deepcopy(
                                 getattr(self.evidence_retriever, 'receipts', None))
@@ -602,6 +643,13 @@ def main():
     parser.add_argument('--retrieval-index', type=Path,
                         help='Recovery policy only: local hybrid index used for retrieve_evidence')
     parser.add_argument('--retrieval-namespace', default='default')
+    parser.add_argument('--resume', type=Path,
+                        help='Recovery policy only: continue from a checkpoint.json written by a paused run')
+    parser.add_argument('--resume-sources', type=Path,
+                        help='JSON object of new sources {id: {title, text}} that satisfy the pause')
+    parser.add_argument('--reset-recovery-rounds', action='store_true',
+                        help='Grant the paused unit a fresh replan budget (operator action)')
+    parser.add_argument('--operator', help='Operator id recorded for resume actions')
     parser.add_argument('--skip-route-preflight', action='store_true',
                         help='Do not compare the frozen route catalogue with the account catalogue')
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -706,7 +754,14 @@ def main():
     broker = NativeTransitionBroker(
         PermittedAdapter(provider, authority), judge, config, args.out, gate_policy=args.gate_policy,
         arsenal_observer=arsenal_observer, permit_authority=authority, evidence_retriever=retriever)
-    result = broker.run(spec)
+    resume = None
+    if args.resume:
+        require(args.gate_policy == 'recovery', 'resume_requires_recovery_policy')
+        resume = {'bundle': json.loads(args.resume.read_text(encoding='utf-8')),
+                  'additional_sources': (json.loads(args.resume_sources.read_text(encoding='utf-8-sig'))
+                                         if args.resume_sources else None),
+                  'reset_active_unit_rounds': args.reset_recovery_rounds, 'operator': args.operator}
+    result = broker.run(spec, resume=resume)
     result['host'] = args.host
     result['route_coverage'] = coverage if coverage is not None else {'status': 'skipped'}
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []

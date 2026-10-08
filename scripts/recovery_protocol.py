@@ -309,3 +309,100 @@ class RecoverySupervisor:
         except Exception as error:
             self._event("halt", error=type(error).__name__ + ": " + str(error))
             return self._result("failed", error=str(error))
+
+
+# ---------------------------------------------------------------- persistence
+
+BUNDLE_SCHEMA = 1
+
+
+def checkpoint_bundle(supervisor: "RecoverySupervisor", *, host: dict | None = None) -> dict:
+    """Serialize a paused run so a new process can resume it.
+
+    The bundle is a state record, not a permit. Its hash binds every field;
+    restore verifies the policy, sources, committed artifacts, and the mesh
+    state hash recorded in the checkpoint before any further Jev gate.
+    """
+    require(supervisor.checkpoint is not None, "no_checkpoint_to_persist")
+    network, mesh = supervisor.network, supervisor.network.mesh
+    body = {
+        "schema_version": BUNDLE_SCHEMA, "kind": "cidm_recovery_bundle",
+        "checkpoint": supervisor.checkpoint.to_dict(),
+        "goal": mesh.goal, "constraints": copy.deepcopy(mesh.constraints),
+        "sources": copy.deepcopy(mesh.sources), "source_hashes": copy.deepcopy(mesh.source_hashes),
+        "policy": copy.deepcopy(network.policy), "policy_version": network.policy_version,
+        "unit_ids": [unit.id for unit in network.units],
+        "deterministic_units": sorted(network.deterministic_units),
+        "checker_identity": copy.deepcopy(network.checker_identity),
+        "committed": copy.deepcopy(network.committed), "checks": copy.deepcopy(network.checks),
+        "recovery_feedback": copy.deepcopy(getattr(network, "recovery_feedback", None)),
+        "recovery_rounds": copy.deepcopy(supervisor.recovery_rounds),
+        "mesh": {"version": mesh.version, "accepted": copy.deepcopy(mesh.accepted),
+                 "last_issue": copy.deepcopy(mesh.last_issue),
+                 "pending_verification": copy.deepcopy(mesh.pending_verification),
+                 "invalidated": sorted(mesh.invalidated), "stalled": copy.deepcopy(mesh.stalled),
+                 "simulation": mesh.simulation, "events": copy.deepcopy(mesh.events)},
+        "host": copy.deepcopy(host or {}),
+    }
+    return {**body, "bundle_hash": fingerprint(body)}
+
+
+def restore_supervisor(bundle: dict, judge, producer, checker, validator, *, units=None, journal=None,
+                       evidence_retriever=None, max_recovery_rounds: int = 2, abort_requested=None,
+                       additional_sources: dict | None = None, reset_active_unit_rounds: bool = False,
+                       operator: str | None = None) -> "RecoverySupervisor":
+    """Rebuild a paused recovery run in this process and return its supervisor.
+
+    `additional_sources` (new IDs only) satisfies a missing-evidence pause;
+    `reset_active_unit_rounds` grants the active unit a fresh replan budget.
+    Both are explicit operator actions and are journaled with the operator id.
+    """
+    from checked_network import UNITS
+    require(isinstance(bundle, dict) and bundle.get("kind") == "cidm_recovery_bundle"
+            and bundle.get("schema_version") == BUNDLE_SCHEMA, "invalid_recovery_bundle")
+    body = {k: v for k, v in bundle.items() if k != "bundle_hash"}
+    require(fingerprint(body) == bundle.get("bundle_hash"), "recovery_bundle_hash_mismatch")
+    checkpoint = bundle["checkpoint"]
+    require(checkpoint.get("status") == "paused_recoverable", "bundle_not_resumable")
+    units = UNITS if units is None else units
+    require([unit.id for unit in units] == bundle["unit_ids"], "resume_unit_topology_mismatch")
+    network = build_recovery_network(
+        bundle["goal"], copy.deepcopy(bundle["sources"]), judge, producer, checker, validator,
+        policy=copy.deepcopy(bundle["policy"]), checker_identity=copy.deepcopy(bundle["checker_identity"]),
+        simulation=bundle["mesh"]["simulation"], journal=journal, units=units,
+        deterministic_units=set(bundle["deterministic_units"]), abort_requested=abort_requested)
+    require(network.policy_version == bundle["policy_version"], "resume_policy_version_mismatch")
+    mesh = network.mesh
+    require(mesh.source_hashes == bundle["source_hashes"], "resume_source_hash_mismatch")
+    mesh.constraints = copy.deepcopy(bundle["constraints"])
+    saved = bundle["mesh"]
+    mesh.version = saved["version"]
+    mesh.accepted = copy.deepcopy(saved["accepted"])
+    mesh.last_issue = copy.deepcopy(saved["last_issue"])
+    mesh.pending_verification = copy.deepcopy(saved["pending_verification"])
+    mesh.invalidated = set(saved["invalidated"])
+    mesh.stalled = copy.deepcopy(saved["stalled"])
+    mesh.events = copy.deepcopy(saved["events"])
+    # Every pre-checkpoint Jev gate is spent: none may authorize new work.
+    mesh._issued_gates = {e["id"] for e in mesh.events if e.get("kind") == "jev_decision"}
+    network.committed = copy.deepcopy(bundle["committed"])
+    network.checks = copy.deepcopy(bundle["checks"])
+    network.recovery_feedback = copy.deepcopy(bundle["recovery_feedback"])
+    network.integrity()
+    require([p["id"] for p in network.committed] == list(checkpoint["completed_units"]),
+            "resume_committed_prefix_mismatch")
+    require(mesh.state_hash() == checkpoint["mesh_state_hash"], "resume_state_hash_mismatch")
+    supervisor = RecoverySupervisor(network, evidence_retriever=evidence_retriever,
+                                    max_recovery_rounds=max_recovery_rounds)
+    supervisor.recovery_rounds = copy.deepcopy(bundle["recovery_rounds"])
+    mesh.record("recovery_resumed", checkpoint_id=checkpoint["checkpoint_id"],
+                bundle_hash=bundle["bundle_hash"], active_unit=checkpoint["active_unit"],
+                operator=operator, reset_active_unit_rounds=reset_active_unit_rounds,
+                additional_source_ids=sorted(additional_sources or {}))
+    if reset_active_unit_rounds:
+        require(isinstance(operator, str) and operator.strip(), "operator_required_for_budget_reset")
+        supervisor.recovery_rounds[checkpoint["active_unit"]] = 0
+    if additional_sources:
+        require(isinstance(operator, str) and operator.strip(), "operator_required_for_added_evidence")
+        supervisor._append_evidence(additional_sources, unit_id=checkpoint["active_unit"])
+    return supervisor
