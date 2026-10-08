@@ -17,12 +17,13 @@ from student_learning_ledger import StudentLearningLedger
 
 def run_local_pipeline(*, registry_path, goal, project_scope, model, model_digest=None,
                        bug_key=None, acceptance=None, parallel=1, learning_ledger=None,
-                       provider_factory=None):
+                       provider_factory=None, parallel_opt_in=False):
     task = frozen_task(goal, project_scope=project_scope, acceptance=acceptance)
     with ArsenalRegistry(Path(registry_path)) as registry:
         packages = build_split_context(registry, task, bug_key=bug_key)
     execution = run_lanes(packages, model=model, model_digest=model_digest,
-                          max_parallel=parallel, provider_factory=provider_factory)
+                          max_parallel=parallel, provider_factory=provider_factory,
+                          parallel_opt_in=parallel_opt_in)
     comparison = compare_candidates(execution["results"])
     result = {"status": "withheld_pending_independent_validation",
               "task_snapshot_hash": task["snapshot_hash"], "authority": "not_jev_authorised",
@@ -48,6 +49,7 @@ def main(argv=None):
     p.add_argument("--digest")
     p.add_argument("--learning-ledger", type=Path)
     p.add_argument("--parallel", type=int, choices=(1, 2), default=1)
+    p.add_argument("--allow-parallel-local", action="store_true", help="opt in to physical GPU parallelism after VRAM guard")
     p.add_argument("--live-local", action="store_true")
     args = p.parse_args(argv)
     if not args.live_local:
@@ -57,7 +59,8 @@ def main(argv=None):
     result = run_local_pipeline(registry_path=args.registry, goal=args.goal,
                                 project_scope=args.project_scope, model=args.model,
                                 model_digest=args.digest, bug_key=args.bug_key,
-                                parallel=args.parallel, learning_ledger=args.learning_ledger)
+                                parallel=args.parallel, learning_ledger=args.learning_ledger,
+                                parallel_opt_in=args.allow_parallel_local)
     print(json.dumps(result, indent=2))
     return 0
 
