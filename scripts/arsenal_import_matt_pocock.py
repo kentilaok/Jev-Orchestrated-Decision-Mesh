@@ -35,9 +35,9 @@ def preflight_source(root: Path, pinned_revision: str) -> None:
     require(bool(PIN_RE.fullmatch(pinned_revision)), "invalid_upstream_revision")
     require(git_output(root, "rev-parse", "HEAD") == pinned_revision,
             "upstream_revision_mismatch")
-    # Untracked build output is not imported, but changed tracked sources
-    # would defeat pinning and are therefore rejected.
-    require(git_output(root, "status", "--porcelain", "--untracked-files=no") == "",
+    # Reject changed or untracked files; ignored files are further filtered
+    # by git ls-files below so only committed source content can be staged.
+    require(git_output(root, "status", "--porcelain", "--untracked-files=all") == "",
             "upstream_checkout_is_dirty")
 
 
@@ -117,6 +117,10 @@ def import_catalogue(
     require(licence.is_file() and 0 < licence.stat().st_size <= 100_000,
             "upstream_license_missing")
     selected = selected_skills(catalogue, requested or [], include_review)
+    tracked = set(
+        git_output(root, "ls-files", "--cached", "-z").split("\0")
+    )
+    require("LICENSE" in tracked, "upstream_license_not_tracked")
     planned = []
     dest_root = destination.expanduser().resolve()
     for item in selected:
@@ -129,6 +133,10 @@ def import_catalogue(
         require(len(files) <= 250, "skill_file_count_limit")
         require(not any(path.is_symlink() for path in src.rglob("*")), "skill_symlink_forbidden")
         require(all(path.stat().st_size <= 2_000_000 for path in files), "skill_file_too_large")
+        require(all(path.relative_to(root).as_posix() in tracked for path in files),
+                "untracked_or_ignored_skill_file")
+        require(not (src / "ARSENAL.json").exists(),
+                "upstream_arsenal_manifest_conflict")
         target = dest_root / ("matt-pocock-" + item["name"])
         require(not target.exists(), "destination_skill_already_exists")
         require(not (src / "UPSTREAM_LICENSE.txt").exists(),
