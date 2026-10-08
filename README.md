@@ -273,6 +273,8 @@ See [Arsenal A2 calibration and reviewer workflow](docs/ARSENAL-CALIBRATION.md).
 
 ## Arsenal V1 build
 
+**Release status — preproduction / experimental.** The current integration branch is not a production-accepted V1. Local offline tests were reported passing, but GitHub Actions is failing before executing steps and no live end-to-end Jev + frontier + Hermes workflow has been validated. The Hermes dispatch adapter and task-specific correctness gates are still open. **Do not merge or deploy as production until the [Production Requirements and Release Handoff](docs/PRODUCTION-REQUIREMENTS-HANDOFF-2026-10-08.md) acceptance gates pass.**
+
 The code-only parts of every Arsenal V1 phase are built behind one rule: a tool can suggest a route, but only Jev or an owner-admitted compiled policy can authorize a state transition. Every frontier, MCP, sandbox, browser and Fast Path action consumes a single-use capability permit that names its authorization.
 
 ```bash
