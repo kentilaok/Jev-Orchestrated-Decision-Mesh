@@ -3,7 +3,7 @@
 **Caber Interstitial Decision Mesh (CIDM): a Jev-mediated, training-free decision graph with conditional review**
 
 **Architecture and research thesis, 23 September 2026**
-**Creator and main contributor:** Kenneth Vic A. Caber
+**Architecture creator and thesis author:** Ken Caber (Kenneth Vic A. Caber)
 
 ## Abstract
 
