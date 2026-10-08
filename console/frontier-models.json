@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "default_provider": "claude",
+  "providers": [
+    {
+      "id": "claude",
+      "label": "Claude Code",
+      "enabled": true,
+      "auth": "local subscription or CLI session",
+      "models": ["default", "claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-1"]
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "enabled": true,
+      "auth": "local ChatGPT/Codex CLI session",
+      "models": ["default", "gpt-6.1-sol", "gpt-6-sol", "gpt-6-luna"]
+    }
+  ],
+  "note": "Convenience presets only. Provider/account model availability is authoritative; the console must surface errors rather than silently substitute."
+}

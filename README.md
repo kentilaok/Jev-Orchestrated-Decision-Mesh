@@ -269,6 +269,16 @@ Phase A2 adds an **opt-in, append-only calibration ledger**: `scripts/arsenal_ca
 
 See [Arsenal A2 calibration and reviewer workflow](docs/ARSENAL-CALIBRATION.md).
 
+## Operator Console (experimental)
+
+A local browser control surface is available on the `feature/operator-console-claude-frontier` line of development. It keeps **Jev as the global control plane**, uses **Hermes for reusable skills/procedures**, and defaults the frontier worker to **Claude Code** while exposing **Codex** as an optional locally authenticated provider.
+
+```bash
+python scripts/operator_console.py
+```
+
+The console includes a dedicated Hermes skill-source folder with enable/disable controls (through Hermes' own local dashboard API), Claude/Codex account readiness, and a model picker. Preview mode is the default and does not fake a live Jev call. See [Operator Console](docs/OPERATOR-CONSOLE.md).
+
 ## Authorship and attribution
 
 CIDM's originating architecture and research thesis were created by **[Ken Caber (Kenneth Vic A. Caber)](https://github.com/kentilaok)**. See [Complete Thesis — Authorship and credits](docs/COMPLETE-THESIS.md#authorship-and-credits). Jev, models, third-party tools and skills retain the credit and licences of their respective creators.
