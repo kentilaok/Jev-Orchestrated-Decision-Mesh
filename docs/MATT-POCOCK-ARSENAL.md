@@ -58,15 +58,15 @@ Preview the Core set without copying anything:
 ```bash
 python scripts/arsenal_import_matt_pocock.py \
   --source-root ./matt-pocock-skills \
-  --dest ~/.hermes/skills
+  --dest ~/.jev/arsenal/quarantine/matt-pocock
 ```
 
-Stage only the Core set (no execution or admission):
+Stage only the Core set to **quarantine** (no execution or admission):
 
 ```bash
 python scripts/arsenal_import_matt_pocock.py \
   --source-root ./matt-pocock-skills \
-  --dest ~/.hermes/skills \
+  --dest ~/.jev/arsenal/quarantine/matt-pocock \
   --install
 ```
 
@@ -75,7 +75,7 @@ To explicitly select a Review skill:
 ```bash
 python scripts/arsenal_import_matt_pocock.py \
   --source-root ./matt-pocock-skills \
-  --dest ~/.hermes/skills \
+  --dest ~/.jev/arsenal/quarantine/matt-pocock \
   --skill retro \
   --install
 ```
@@ -89,12 +89,17 @@ The importer:
 5. never executes skill code, installs packages, changes model sessions, or calls external services;
 6. never grants owner admission.
 
-After staging, index the selected skills:
+After staging, index the quarantined candidates without exposing them to an active Hermes session:
 
 ```bash
-python scripts/arsenal_registry.py scan --skills-dir ~/.hermes/skills
+python scripts/arsenal_registry.py scan \
+  --skills-dir ~/.jev/arsenal/quarantine/matt-pocock
 python scripts/arsenal_registry.py list
 ```
+
+**Do not place quarantined files directly into an active agent skills directory.** The importer rejects the default Hermes, Claude Code, and Codex skill directories, including a configured `HERMES_HOME/skills`.
+
+After reviewing a skill and its manifest, source, scripts, permissions and tests, an operator may explicitly hash-admit that exact copy using `arsenal_registry.py admit --skill-id ...`. The separate activation/copy into Hermes should be handled by a controlled, owner-approved deployment process. Quarantined candidates have **no execution authority**; the importer deliberately does not provide an automatic activate command.
 
 Discovered skills can provide **relevant procedural context** to a frontier worker, but CIDM must continue to apply existing permissions, evidence requirements, validators and Jev decisions.
 
