@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -123,6 +124,18 @@ def import_catalogue(
     require("LICENSE" in tracked, "upstream_license_not_tracked")
     planned = []
     dest_root = destination.expanduser().resolve()
+    home = Path.home()
+    active_roots = [
+        home / ".hermes" / "skills",
+        home / ".claude" / "skills",
+        home / ".codex" / "skills",
+    ]
+    if os.environ.get("HERMES_HOME"):
+        active_roots.append(Path(os.environ["HERMES_HOME"]).expanduser() / "skills")
+    require(
+        all(not dest_root.is_relative_to(path.resolve()) for path in active_roots),
+        "cannot_import_directly_into_active_agent_skill_directory",
+    )
     for item in selected:
         rel = Path(item["upstream_path"])
         require(not rel.is_absolute() and ".." not in rel.parts, "unsafe_upstream_path")
@@ -170,7 +183,11 @@ def import_catalogue(
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", required=True, type=Path)
-    parser.add_argument("--dest", type=Path, default=Path("~/.hermes/skills"))
+    parser.add_argument(
+        "--dest", type=Path,
+        default=Path("~/.jev/arsenal/quarantine/matt-pocock"),
+        help="Candidate quarantine folder, never an active agent skills directory",
+    )
     parser.add_argument(
         "--catalogue", type=Path,
         default=Path(__file__).resolve().parents[1] / "arsenal/sources/matt-pocock.json",
