@@ -186,6 +186,13 @@ class ArsenalCalibrationTests(unittest.TestCase):
         self.assertEqual(scored["summary"]["excluded_missing_evidence"], 1)
         self.assertEqual(scored["summary"]["eligible_evaluated"], 0)
 
+    def test_validator_receipt_hash_preserved_without_raw_payload(self):
+        r = runtime_event("r1", result())
+        self.assertTrue(r["audit_verified"])
+        self.assertEqual(r["hard_checks"], {"native_shape": True})
+        self.assertEqual(len(r["validator_receipt_hash"]), 64)
+        self.assertNotIn("answer", r)
+
     def test_missing_provider_usage_stays_unknown_not_zero(self):
         r = runtime_event("r1", result(missing_usage=True))
         self.assertIsNone(r["reported_tokens"])
