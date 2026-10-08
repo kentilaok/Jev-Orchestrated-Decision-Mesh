@@ -46,7 +46,12 @@ class DiscoveryTests(unittest.TestCase):
             (home / '.codex' / 'config.toml').write_text(
                 '[mcp_servers.studio]\ncommand = "cmd.exe"\nargs = ["/c", "mcp.bat"]\n', encoding='utf-8')
             servers = {s['name']: s for s in discover_servers(project_dir=project, home=home)}
-        self.assertEqual(set(servers), {'docs', 'remote', 'local', 'studio'})
+        try:
+            import tomllib  # noqa: F401  (Python 3.11+; 3.10 skips Codex TOML configs)
+            expected = {'docs', 'remote', 'local', 'studio'}
+        except ModuleNotFoundError:
+            expected = {'docs', 'remote', 'local'}
+        self.assertEqual(set(servers), expected)
         self.assertEqual(servers['remote']['transport'], 'http')
         public = json.dumps([public_spec(s) for s in servers.values()])
         self.assertNotIn('secret-value', public)

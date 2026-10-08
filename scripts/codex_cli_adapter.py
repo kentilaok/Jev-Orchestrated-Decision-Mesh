@@ -17,7 +17,14 @@ import time
 
 
 class CodexCliError(RuntimeError):
-    """A bounded worker call could not be accepted by the broker."""
+    """A bounded worker call could not be accepted by the broker.
+
+    `usage` carries counters the child already reported before it was rejected
+    (None when the stream ended before turn.completed); `ran` is True once a
+    child process was launched, so the caller can mark the attempt as consumed.
+    """
+    usage = None
+    ran = False
 
 
 _ITEM_TYPES = frozenset({"agent_message", "reasoning"})
@@ -285,8 +292,19 @@ class CodexCliAdapter:
                     "-s", "read-only", "-m", model,
                     "-c", f"model_reasoning_effort={effort}",
                     "-C", str(root), "--output-schema", str(schema_path), "-"]
-            self._execute(argv, root, prompt_path, stdout_path, stderr_path)
+            try:
+                self._execute(argv, root, prompt_path, stdout_path, stderr_path)
+            except CodexCliError as exc:
+                exc.ran = exc.ran or str(exc) != "codex_cli_unavailable"
+                raise
             raw = stdout_path.read_bytes()
+        try:
+            return self._parse(raw, model, effort, schema)
+        except CodexCliError as exc:
+            exc.ran = True
+            raise
+
+    def _parse(self, raw, model, effort, schema):
         if len(raw) > self.max_stdout_bytes:
             raise CodexCliError("codex_output_limit")
         try:
@@ -345,9 +363,13 @@ class CodexCliAdapter:
             summaries.append({"type": kind})
         if phase != "complete":
             raise CodexCliError("missing_turn_completed")
-        artifact = _strict_json(artifact_text)
-        if not isinstance(artifact, dict) or not _matches(schema, artifact):
-            raise CodexCliError("artifact_schema_mismatch")
+        try:
+            artifact = _strict_json(artifact_text)
+            if not isinstance(artifact, dict) or not _matches(schema, artifact):
+                raise CodexCliError("artifact_schema_mismatch")
+        except CodexCliError as exc:
+            exc.usage = usage   # the child completed and reported usage before rejection
+            raise
         reported_match = reported_model is not None and reported_effort is not None
         return {"artifact": artifact, "usage": usage,
                 "requested_model": model, "requested_effort": effort,

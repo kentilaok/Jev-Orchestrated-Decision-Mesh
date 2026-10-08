@@ -222,10 +222,15 @@ class NativeTransitionBroker:
                     'native_codex_reported_identity_mismatch')
             artifact_hash = fingerprint(response['artifact'])
         except Exception as error:
+            # Keep usage a child reported before rejection (audit D-06); unknown stays unknown.
+            usage = (response.get('usage') if type(response) is dict
+                     else getattr(error, 'usage', None))
             self.calls.append({'role': role, 'requested_model': requested,
                                'requested_effort': effort, 'status': 'failed',
-                               'error_type': type(error).__name__,
-                               'usage': response.get('usage') if type(response) is dict else None})
+                               'error_type': type(error).__name__, 'usage': usage,
+                               'usage_status': ('reported_before_rejection' if usage is not None
+                                                else 'unknown_child_ran' if getattr(error, 'ran', True)
+                                                else 'not_launched')})
             raise MeshError('native_codex_call_failed') from None
         self.calls.append({'role': role, 'requested_model': requested,
                            'requested_effort': effort, 'actual_model': response.get('actual_model'),
@@ -603,6 +608,19 @@ class NativeTransitionBroker:
                 result['answer'] = None
             result['calls'] = copy.deepcopy(self.calls)
             result['primary_agent_tokens'] = None
+            frontier = [c for c in self.calls if c['role'] in ('worker', 'checker')]
+            known = [c for c in frontier if type(c.get('usage')) is dict
+                     and type(c['usage'].get('input_tokens')) is int
+                     and type(c['usage'].get('output_tokens')) is int]
+            complete = len(known) == len(frontier)
+            result['accounting'] = {
+                'jev_calls': sum(c['role'] == 'jev' for c in self.calls),
+                'frontier_child_calls': len(frontier),
+                'frontier_calls_usage_unknown': len(frontier) - len(known),
+                'frontier_input_tokens': sum(c['usage']['input_tokens'] for c in known) if complete else None,
+                'frontier_output_tokens': sum(c['usage']['output_tokens'] for c in known) if complete else None,
+                'primary_agent_usage': 'unmetered',
+                'complete_system_accounting': False}
             result['jev_api_cost_usd'] = (sum(call['usage']['cost'] for call in self.calls
                                               if call['role'] == 'jev' and type(call.get('usage')) is dict
                                               and type(call['usage'].get('cost')) in (int, float))
