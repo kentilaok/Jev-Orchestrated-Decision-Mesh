@@ -63,6 +63,9 @@ DEFAULT_CONFIG = {
     "decision_policy": "jev-managed",
     "evidence_policy": "required",
     "depth": "balanced",
+    "local_continuity": {"worker_mode": "frontier_only", "model": "",
+                         "project_scope": "demo", "fallback_enabled": False,
+                         "max_parallel": 1},
 }
 
 
@@ -528,6 +531,45 @@ def build_request(payload: dict) -> dict:
             "unresolved_stages": [], "classification": None}
 
 
+def local_continuity_preview(payload: dict, config: dict) -> dict:
+    from local_continuity_policy import decide_worker_mode
+    settings = config.get("local_continuity") or {}
+    mode = payload.get("worker_mode") or settings.get("worker_mode", "frontier_only")
+    return {"status": "preview_only", "policy": decide_worker_mode(
+        mode=mode, authority_mode="limited_local_continuity",
+        fallback_enabled=settings.get("fallback_enabled") is True),
+        "runtime_status": "local_only_worker_available_in_prototype; dual_and_auto_not_wired",
+        "jev_authorised": False}
+
+
+def start_local_continuity_job(payload: dict, config: dict) -> dict:
+    # Only local-only mode is executable from the console in this stage.
+    if payload.get("worker_mode") != "local_only":
+        raise ValueError("only local_only mode is implemented for local console execution")
+    if payload.get("confirm_local_execution") is not True:
+        raise ValueError("confirm_local_execution_required")
+    model = str(payload.get("local_model") or "").strip()
+    scope = str(payload.get("project_scope") or "").strip()
+    goal = str(payload.get("task") or "").strip()
+    if not model or len(model) > 120 or not re.fullmatch(r"[A-Za-z0-9_.:/+-]+", model):
+        raise ValueError("valid installed local model tag required")
+    if not scope or not re.fullmatch(r"[A-Za-z0-9._-]{1,80}", scope):
+        raise ValueError("valid project scope required")
+    if not goal or len(goal) > 1200:
+        raise ValueError("goal must contain 1-1200 characters")
+    run_dir = _runs_root(config) / ("local-only-%s-%s" % (
+        time.strftime("%Y%m%dT%H%M%S"), uuid.uuid4().hex[:6]))
+    run_dir.mkdir(parents=True)
+    argv = [sys.executable, str(SCRIPTS / "local_continuity_pipeline.py"),
+            "--registry", config["arsenal_db"], "--model", model,
+            "--project-scope", scope, "--goal", goal,
+            "--learning-ledger", str(run_dir / "student-observations.jsonl"),
+            "--out", str(run_dir / "result.json"), "--live-local"]
+    return JOBS.start(argv, run_dir, {"kind": "local_only_proposals",
+                                       "mode": "local_only", "model": model,
+                                       "governance": "operator_read_only_no_jev_commit"})
+
+
 def broker_argv(task_path: Path, out_dir: Path, provider: str, gate_policy: str, *, live: bool,
                 resume: Path | None = None, operator: str | None = None, reset_rounds: bool = False) -> list[str]:
     if provider not in ("claude", "codex") or gate_policy not in ("legacy", "fused", "recovery"):
@@ -673,6 +715,15 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_json({"skills": merged_skills(config), "source": config["skills_source"]})
             elif path == "/api/providers":
                 self.send_json(provider_overview(refresh=query.get("refresh") == ["1"]))
+            elif path == "/api/local/models":
+                from ollama_provider import LocalOllamaTransport
+                try:
+                    names = LocalOllamaTransport(timeout=3).request("/api/tags").get("models", [])
+                    self.send_json({"available": True,
+                                    "models": [{"name": m.get("name"), "digest": m.get("digest")}
+                                               for m in names if isinstance(m, dict)]})
+                except Exception:
+                    self.send_json({"available": False, "models": []})
             elif path == "/api/arsenal":
                 self.send_json(arsenal_overview(config))
             elif path == "/api/mcp":
@@ -742,6 +793,10 @@ class Handler(SimpleHTTPRequestHandler):
                         providers["codex"]["model"] = codex[0]
                 self.send_json({"config": self.store.save({**config, "providers": providers}),
                                 "providers": overview})
+            elif path == "/api/local/preview":
+                self.send_json(local_continuity_preview(payload, config))
+            elif path == "/api/local/run":
+                self.send_json(start_local_continuity_job(payload, config), HTTPStatus.ACCEPTED)
             elif path == "/api/route/preview":
                 self.send_json(route_preview(payload, config))
             elif path == "/api/run":

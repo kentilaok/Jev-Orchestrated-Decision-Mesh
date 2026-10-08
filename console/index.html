@@ -63,6 +63,7 @@ th{color:#8d98a9;font-weight:600;font-size:11px;letter-spacing:.04em;text-transf
   <nav aria-label="Console sections">
     <button class="nav active" data-view="operate">Operate</button>
     <button class="nav" data-view="providers">Providers</button>
+    <button class="nav" data-view="local-continuity">Qwen local</button>
     <button class="nav" data-view="arsenal">Arsenal</button>
     <button class="nav" data-view="mcp">MCP catalogue</button>
     <button class="nav" data-view="runs">Runs &amp; recovery</button>
@@ -104,6 +105,30 @@ th{color:#8d98a9;font-weight:600;font-size:11px;letter-spacing:.04em;text-transf
       <div class="output" id="runOutput" aria-live="polite">No run yet.</div>
     </article>
   </div>
+</section>
+
+<section class="view" id="view-local-continuity">
+  <article class="panel">
+    <div class="panel-head"><div><p class="eyebrow">Experimental local continuity</p>
+      <h2>Qwen local workers and independent SOP context lanes</h2></div><span class="chip warn">Read-only proposals</span></div>
+    <p class="helper">Agent A retrieves directly relevant admitted SOPs. Agent B retrieves different complementary review skills and lessons. Two separate contexts, one Qwen model. By default inference is serial to protect 4 GB GPUs. Results are unverified and never committed automatically.</p>
+    <div class="form-grid">
+      <label>Worker mode<select id="continuityMode">
+        <option value="frontier_only">Frontier only</option>
+        <option value="local_only">Local only (prototype executable)</option>
+        <option value="dual_shadow">Student + teacher (not connected yet)</option>
+        <option value="auto_fallback">Automatic fallback (not connected yet)</option>
+      </select></label>
+      <label>Local Ollama model<select id="continuityModel"><option value="">Checking installed models…</option></select></label>
+      <label>Arsenal project scope<input id="continuityScope" value="demo" maxlength="80"></label>
+    </div>
+    <label>Task for local-only read-only proposal<textarea id="continuityTask" rows="4" maxlength="1200" placeholder="Give a small fictional task and acceptance requirements"></textarea></label>
+    <p class="helper">The model must be installed in Ollama. Local-only proposals do not call Claude, Codex or Jev; they do not provide an authoritative checked project result. Automatic fallback and dual frontier execution are specified but disabled pending trusted provider error classification and Jev/Hermes integration.</p>
+    <div class="actions"><button class="button secondary" id="continuityRefresh">Refresh local models</button>
+      <button class="button secondary" id="continuityPreview">Preview local policy</button>
+      <button class="button primary" id="continuityRun">Run local-only prototype</button></div>
+    <pre class="output" id="continuityOutput" aria-live="polite">Not started.</pre>
+  </article>
 </section>
 
 <section class="view" id="view-providers">
@@ -253,8 +278,30 @@ function renderSkills(){$('skillsSource').value=state.config.skills_source||'';c
 
 async function save(p){await post('/api/config',p);await refresh();if(providers)loadProviders(false)}
 async function refresh(){state=await api('/api/state');$('executionMode').value=state.config.execution_mode||'preview';$('gatePolicy').value=state.config.gate_policy||'recovery';renderProviderSelect();renderSkills();syncMode()}
-const titles={operate:'Operate',providers:'Providers',arsenal:'Arsenal',mcp:'MCP catalogue',runs:'Runs & recovery',skills:'Hermes skills',architecture:'Architecture'};
-const loaders={providers:()=>loadProviders(false),arsenal:loadArsenal,mcp:()=>loadMcp(),runs:loadRuns};
+async function refreshLocalModels(){
+  try{const d=await api('/api/local/models');
+    const options=d.models||[];
+    $('continuityModel').innerHTML=options.length?options.map(m=>'<option value="'+esc(m.name)+'">'+esc(m.name)+'</option>').join(''):'<option value="">Ollama model not found</option>';
+    if(!d.available)$('continuityOutput').textContent='Ollama not reachable on 127.0.0.1:11434';
+  }catch(e){$('continuityOutput').textContent=e.message}
+}
+function localParams(){return{worker_mode:$('continuityMode').value,local_model:$('continuityModel').value,
+  project_scope:$('continuityScope').value,task:$('continuityTask').value,confirm_local_execution:true}}
+$('continuityRefresh').onclick=refreshLocalModels;
+$('continuityPreview').onclick=async()=>{try{$('continuityOutput').textContent=
+  JSON.stringify(await post('/api/local/preview',localParams()),null,2)}
+  catch(e){$('continuityOutput').textContent=e.message}};
+$('continuityRun').onclick=async()=>{
+  const p=localParams();
+  if(p.worker_mode!=='local_only'){$('continuityOutput').textContent='This mode is not executable yet. Select Local only.';return}
+  if(!confirm('Run only local Qwen proposals? No Jev arbitration or automatic file writes will occur.'))return;
+  try{const d=await post('/api/local/run',p);
+    $('continuityOutput').textContent='Local job '+d.job_id+' submitted. View Runs for details.';
+    document.querySelector('[data-view="runs"]').click();
+  }catch(e){$('continuityOutput').textContent=e.message}
+};
+const titles={operate:'Operate',providers:'Providers','local-continuity':'Qwen local',arsenal:'Arsenal',mcp:'MCP catalogue',runs:'Runs & recovery',skills:'Hermes skills',architecture:'Architecture'};
+const loaders={providers:()=>loadProviders(false),'local-continuity':refreshLocalModels,arsenal:loadArsenal,mcp:()=>loadMcp(),runs:loadRuns};
 document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav,.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('view-'+b.dataset.view).classList.add('active');$('viewTitle').textContent=titles[b.dataset.view];(loaders[b.dataset.view]||(()=>{}))()});
 $('providerSelect').onchange=e=>fillModels(e.target.value);$('executionMode').onchange=syncMode;
 $('previewBtn').onclick=preview;$('validateBtn').onclick=validate;$('runBtn').onclick=run;$('addSource').onclick=()=>addSource();
