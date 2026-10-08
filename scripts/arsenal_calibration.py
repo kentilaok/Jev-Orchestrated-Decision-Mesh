@@ -25,6 +25,8 @@ RECOMMENDATIONS = {
     "load_experience_then_jev", "jev_only",
 }
 HEX64 = set("0123456789abcdef")
+# Recommendations that put a local skill or lesson into the worker's context.
+CONTEXT_LOADING = {"fast_path_candidate", "load_skill_then_jev", "load_experience_then_jev"}
 
 
 class CalibrationError(ValueError):
@@ -326,6 +328,7 @@ def evaluate(events: list[dict]) -> dict:
         "fast_path_false_negative": 0, "fast_path_true_negative": 0,
         "observed_frontier_calls": 0,
         "hypothetically_avoidable_calls": 0,
+        "context_loaded": 0, "negative_transfer": 0,
     }
     evaluated = []
     errors = []
@@ -360,6 +363,15 @@ def evaluate(events: list[dict]) -> dict:
             "fast_path_true_negative"
         )
         counts[confusion] += 1
+        # Negative transfer: local matching put a skill or lesson in context
+        # that the independent reviewer says was not the right one.
+        loaded = p["recommendation"] in CONTEXT_LOADING
+        misleading = loaded and (
+            (p.get("selected_skill_id") is not None and not skill_correct)
+            or (p["recommendation"] == "load_experience_then_jev" and not experience_correct)
+        )
+        counts["context_loaded"] += int(loaded)
+        counts["negative_transfer"] += int(misleading)
         calls = r["actual_model_calls"]
         counts["observed_frontier_calls"] += calls
         hypothetical = int(predicted and actual and calls > 0)
@@ -370,6 +382,7 @@ def evaluate(events: list[dict]) -> dict:
             "selected_skill_correct": skill_correct,
             "selected_experience_correct": experience_correct,
             "fast_path_outcome": confusion,
+            "negative_transfer": misleading,
             "reported_tokens": r.get("reported_tokens"),
             "reported_cost_usd": r.get("reported_cost_usd"),
             "evidence_ref": v["evidence_ref"],
@@ -397,6 +410,8 @@ def evaluate(events: list[dict]) -> dict:
             "fast_path_recall": round(tp / recall_denom, 6) if recall_denom else None,
             "fast_path_false_positive_rate_among_predictions": round(fp / denom, 6)
             if denom else None,
+            "negative_transfer_rate": round(counts["negative_transfer"] / counts["context_loaded"], 6)
+            if counts["context_loaded"] else None,
         },
         "estimated_token_savings": None,
         "realized_frontier_calls_avoided": 0,
@@ -409,6 +424,58 @@ def evaluate(events: list[dict]) -> dict:
         "evaluated": evaluated,
         "excluded_or_invalid_records": errors,
     }
+
+
+def wilson_lower_bound(successes: int, trials: int, z: float = 1.959964) -> float | None:
+    """Lower bound of the Wilson score interval; None without trials."""
+    require(type(successes) is int and type(trials) is int and 0 <= successes <= trials,
+            "invalid_wilson_counts")
+    if trials == 0:
+        return None
+    phat = successes / trials
+    centre = phat + z * z / (2 * trials)
+    margin = z * math.sqrt(phat * (1 - phat) / trials + z * z / (4 * trials * trials))
+    return max(0.0, (centre - margin) / (1 + z * z / trials))
+
+
+def threshold_report(events: list[dict], *, min_reviewed: int,
+                     min_precision_lower_bound: float) -> dict:
+    """Owner-threshold check for a future Fast Path policy. Never enables anything.
+
+    Requires enough independently reviewed Fast Path predictions, a Wilson lower
+    bound on precision at or above the owner's bar, and zero false positives (a
+    false positive would have executed the wrong or an unsafe procedure).
+    """
+    require(type(min_reviewed) is int and 1 <= min_reviewed <= 100_000, "invalid_min_reviewed")
+    require(type(min_precision_lower_bound) in (int, float)
+            and 0 < min_precision_lower_bound <= 1, "invalid_precision_bar")
+    scored = evaluate(events)
+    summary = scored["summary"]
+    tp, fp = summary["fast_path_true_positive"], summary["fast_path_false_positive"]
+    reviewed = tp + fp
+    lower = wilson_lower_bound(tp, reviewed)
+    reasons = []
+    if reviewed < min_reviewed:
+        reasons.append("insufficient_reviewed_fast_path_predictions")
+    if lower is None or lower < min_precision_lower_bound:
+        reasons.append("precision_lower_bound_below_owner_bar")
+    if fp:
+        reasons.append("critical_false_positive_observed")
+    body = {
+        "schema_version": SCHEMA, "kind": "fast_path_threshold_report",
+        "ledger_head": events[-1].get("event_hash") if events else None,
+        "ledger_events": len(events),
+        "min_reviewed": min_reviewed, "min_precision_lower_bound": min_precision_lower_bound,
+        "reviewed_fast_path_predictions": reviewed,
+        "true_positive": tp, "false_positive": fp,
+        "precision": round(tp / reviewed, 6) if reviewed else None,
+        "precision_wilson_lower_bound": round(lower, 6) if lower is not None else None,
+        "negative_transfer_rate": scored["metrics"]["negative_transfer_rate"],
+        "meets_operator_threshold": not reasons, "reasons": reasons,
+        # A report is evidence for the owner, not an activation switch.
+        "fast_path_enablement_allowed": False,
+    }
+    return {**body, "report_hash": hash_id(canonical(body))}
 
 
 def main(argv=None) -> int:
@@ -430,6 +497,9 @@ def main(argv=None) -> int:
     label.add_argument("--fast-path-safe", choices=("yes", "no"), required=True)
 
     sub.add_parser("evaluate", help="Read-only quality scoring; no model calls")
+    thresholds = sub.add_parser("thresholds", help="Owner-threshold report for a Fast Path policy")
+    thresholds.add_argument("--min-reviewed", type=int, default=30)
+    thresholds.add_argument("--min-precision-lower-bound", type=float, default=0.95)
     args = parser.parse_args(argv)
     path = args.ledger.expanduser()
     if args.command == "capture":
@@ -458,6 +528,9 @@ def main(argv=None) -> int:
         )
         append_event(path, v)
         output = {"recorded": ["verdict"], "run_id": args.run_id}
+    elif args.command == "thresholds":
+        output = threshold_report(read_events(path), min_reviewed=args.min_reviewed,
+                                  min_precision_lower_bound=args.min_precision_lower_bound)
     else:
         output = evaluate(read_events(path))
     print(json.dumps(output, indent=2, sort_keys=True, allow_nan=False))
