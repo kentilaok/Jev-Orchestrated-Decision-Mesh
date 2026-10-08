@@ -1,0 +1,71 @@
+{
+  "context": "",
+  "family": "short_sourced_answer",
+  "goal": "How many days are EU application logs retained? Cite the governing source.",
+  "lineage": "L-retention",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "days": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "stale_evidence"
+  ],
+  "sources": {
+    "policy-eu-2025": {
+      "text": "EU region: logs are retained for 60 days.",
+      "title": "EU logging policy (2025-06-01, superseded)"
+    },
+    "policy-eu-2026": {
+      "text": "This version supersedes the 2025 policy. EU region: application logs are retained for 30 days. Audit logs are not covered by this policy.",
+      "title": "EU logging policy (2026-04-15)"
+    },
+    "policy-us": {
+      "text": "US region: application logs are retained for 90 days.",
+      "title": "US logging policy (2026-03-01)"
+    }
+  },
+  "split": "dev",
+  "task_id": "SSA-D1",
+  "variation": {}
+}

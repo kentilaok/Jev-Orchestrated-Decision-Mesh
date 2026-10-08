@@ -44,7 +44,8 @@ class CheckedNetwork:
         self.policy=copy.deepcopy(policy or {"version":"training-free-v1"})
         self.policy['review_policy']='jev_conditional_sol_high_v3'
         astra_allowed=self.policy.get('astra_explicitly_authorized') is True
-        expected_routes=RunConfig(astra_explicitly_authorized=astra_allowed).worker_routes()
+        expected_routes=RunConfig(astra_explicitly_authorized=astra_allowed,
+                                  worker_family=self.policy.get('worker_family','gpt6')).worker_routes()
         self.worker_routes=copy.deepcopy(worker_routes if worker_routes is not None else expected_routes)
         require(self.worker_routes==expected_routes, 'worker_route_catalog_mismatch')
         self.policy['worker_routes']=self.worker_routes

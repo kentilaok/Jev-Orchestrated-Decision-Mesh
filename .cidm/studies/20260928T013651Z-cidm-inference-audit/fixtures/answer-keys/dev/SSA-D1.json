@@ -1,0 +1,13 @@
+{
+  "answer": {
+    "days": 30
+  },
+  "critical": [],
+  "forbidden_citations_as_sole_support": [
+    "policy-eu-2025"
+  ],
+  "required_citations": [
+    "policy-eu-2026"
+  ],
+  "status": "complete"
+}

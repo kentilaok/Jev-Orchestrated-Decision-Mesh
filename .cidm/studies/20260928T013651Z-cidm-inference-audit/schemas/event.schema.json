@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cidm-audit/event/1",
+  "title": "CIDM audit event",
+  "description": "One append-only record per model call, Jev decision or deterministic tool run. Cached and cache-write tokens are subsets of input_tokens; reasoning_tokens is a subset of output_tokens. provider_reported_cost and reconstructed_cost are never summed for one request.",
+  "type": "object",
+  "required": [
+    "run_id",
+    "task_id",
+    "task_family",
+    "arm_id",
+    "repetition_id",
+    "policy_version",
+    "event_id",
+    "parent_event_id",
+    "provider_request_id",
+    "record_kind",
+    "source_record",
+    "actor",
+    "purpose",
+    "status",
+    "billing_status",
+    "requested_model",
+    "returned_model",
+    "returned_provider",
+    "requested_effort",
+    "confirmed_effort",
+    "input_tokens",
+    "cached_input_tokens",
+    "cache_write_tokens",
+    "output_tokens",
+    "reasoning_tokens",
+    "provider_total_tokens",
+    "provider_reported_cost",
+    "reconstructed_cost",
+    "currency",
+    "pricing_source_date",
+    "started_at",
+    "ended_at",
+    "api_duration_ms",
+    "retry_of",
+    "fallback_status",
+    "source_hash",
+    "prompt_hash",
+    "result_hash",
+    "gate_phase",
+    "gate_action",
+    "gate_options",
+    "authorised_next_operation",
+    "acceptance_test_result",
+    "missing",
+    "provenance",
+    "usage_raw",
+    "notes"
+  ],
+  "properties": {
+    "run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task_family": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "arm_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "repetition_id": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "policy_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parent_event_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_request_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "record_kind": {
+      "enum": [
+        "live_evaluation",
+        "live_development_attempt",
+        "replay",
+        "mock",
+        "simulation",
+        "estimate",
+        null
+      ]
+    },
+    "source_record": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actor": {
+      "enum": [
+        "host",
+        "jev",
+        "worker",
+        "checker",
+        "compressor",
+        "retriever",
+        "tool",
+        "evaluator",
+        "harness",
+        null
+      ]
+    },
+    "purpose": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "failed",
+        "cancelled",
+        "timeout",
+        "rejected_after_completion",
+        "unknown",
+        null
+      ]
+    },
+    "billing_status": {
+      "enum": [
+        "billed",
+        "unbilled",
+        "unknown",
+        null
+      ]
+    },
+    "requested_model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "returned_model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "returned_provider": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requested_effort": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confirmed_effort": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "input_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "cached_input_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "cache_write_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "output_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "reasoning_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "provider_total_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "provider_reported_cost": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "reconstructed_cost": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pricing_source_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "started_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ended_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "api_duration_ms": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "retry_of": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fallback_status": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "prompt_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "result_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gate_phase": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gate_action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gate_options": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "authorised_next_operation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "acceptance_test_result": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "missing": {
+      "type": "object",
+      "description": "field -> reason for every null field",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "provider_reported",
+          "directly_observed",
+          "derived",
+          "estimated",
+          "unavailable"
+        ]
+      }
+    },
+    "usage_raw": {
+      "description": "provider usage object preserved verbatim (schema varies by provider)"
+    },
+    "notes": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

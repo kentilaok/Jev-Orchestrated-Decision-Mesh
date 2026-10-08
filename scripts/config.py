@@ -12,6 +12,19 @@ import math
 import re
 
 
+# Worker families. GPT-6 routes run through Codex or OpenRouter; Claude routes run only
+# through Claude Code (interactive subagents or the headless `claude -p` broker adapter).
+FAMILIES = {
+    "gpt6": {"tiers": {"luna": "openai/gpt-6-luna", "sol": "openai/gpt-6-sol"},
+             "checker": ("openai/gpt-6-sol", "high"), "short": ("openai/gpt-6-luna", "low")},
+    "claude": {"tiers": {"sonnet": "anthropic/claude-sonnet-5", "opus": "anthropic/claude-opus-5"},
+               "checker": ("anthropic/claude-opus-5", "high"), "short": ("anthropic/claude-sonnet-5", "low")},
+}
+EFFORTS = ("low", "medium", "high", "xhigh")
+TIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family["tiers"].items()}
+TIER_OF_MODEL["openai/gpt-6-astra"] = "astra"
+
+
 def _require(condition, code):
     if not condition:
         raise ValueError(code)
@@ -32,6 +45,7 @@ class RunConfig:
     checker_model: str = "openai/gpt-6-sol"
     checker_effort: str = "high"
     astra_explicitly_authorized: bool = False
+    worker_family: str = "gpt6"
     jev_model: str = "typesafe/jev-1.13"
     provider_route: str = "azure"
     provider_name: str = "Azure"
@@ -62,14 +76,29 @@ class RunConfig:
     checker_output_usd_per_million: float = 10.0
     jev_input_usd_per_million: float = 0.05
     jev_output_usd_per_million: float = 0.05
+    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.
+    worker_sonnet_input_usd_per_million: float = 2.0
+    worker_sonnet_output_usd_per_million: float = 10.0
+    worker_opus_input_usd_per_million: float = 5.0
+    worker_opus_output_usd_per_million: float = 25.0
 
     def __post_init__(self):
         _require(type(self.astra_explicitly_authorized) is bool, "astra_authorization_must_be_boolean")
-        allowed = {"openai/gpt-6-luna", "openai/gpt-6-sol"}
+        _require(self.worker_family in FAMILIES, "unknown_worker_family")
+        family = FAMILIES[self.worker_family]
+        if self.worker_family == "claude":
+            _require(not self.astra_explicitly_authorized, "astra_is_gpt6_only")
+            # Untouched GPT-6 defaults are replaced by the Claude family defaults.
+            if self.worker_model == "openai/gpt-6-sol":
+                object.__setattr__(self, "worker_model", family["tiers"]["sonnet"])
+            if self.checker_model == "openai/gpt-6-sol":
+                object.__setattr__(self, "checker_model", family["checker"][0])
+        allowed = set(family["tiers"].values())
         if self.astra_explicitly_authorized:
             allowed.add("openai/gpt-6-astra")
         _require(self.worker_model in allowed, "worker_model_not_permitted")
-        _require(self.checker_model == "openai/gpt-6-sol", "checker_must_be_gpt_6_sol")
+        _require(self.checker_model == family["checker"][0],
+                 "checker_must_be_gpt_6_sol" if self.worker_family == "gpt6" else "checker_must_be_claude_opus")
         _require(self.worker_effort in ("low", "medium", "high", "xhigh"), "invalid_worker_effort")
         _require(self.worker_model != "openai/gpt-6-astra" or self.worker_effort == "low", "astra_worker_low_only")
         _require(self.checker_effort == "high", "checker_effort_must_be_high")
@@ -111,7 +140,8 @@ class RunConfig:
             for direction in ("input", "output"):
                 name = role + "_" + direction + "_usd_per_million"
                 _require(_number(getattr(self, name), positive=True), "invalid_" + name)
-        for family, minimum_input, minimum_output in (("luna", 0.10, 0.50), ("astra", 10, 50)):
+        for family, minimum_input, minimum_output in (("luna", 0.10, 0.50), ("astra", 10, 50),
+                                                      ("sonnet", 2.0, 10.0), ("opus", 5.0, 25.0)):
             for direction, minimum in (("input", minimum_input), ("output", minimum_output)):
                 name = "worker_" + family + "_" + direction + "_usd_per_million"
                 _require(_number(getattr(self, name), positive=True), "invalid_" + name)
@@ -140,11 +170,16 @@ class RunConfig:
         return hashlib.sha256(encoded).hexdigest()
 
     def worker_routes(self):
-        routes = tuple({"id": family + "_" + effort, "model": "openai/gpt-6-" + family,
-                        "effort": effort} for family in ("luna", "sol")
-                       for effort in ("low", "medium", "high", "xhigh"))
+        tiers = FAMILIES[self.worker_family]["tiers"]
+        routes = tuple({"id": tier + "_" + effort, "model": model, "effort": effort}
+                       for tier, model in tiers.items() for effort in EFFORTS)
         return routes + (({"id": "astra_low", "model": "openai/gpt-6-astra", "effort": "low"},)
                          if self.astra_explicitly_authorized else ())
+
+    def short_route(self):
+        """The single-worker route for an explicitly self-contained request."""
+        model, effort = FAMILIES[self.worker_family]["short"]
+        return next(r for r in self.worker_routes() if r["model"] == model and r["effort"] == effort)
 
     def worker_route_allowed(self, model, effort):
         return any(route["model"] == model and route["effort"] == effort for route in self.worker_routes())
@@ -171,10 +206,15 @@ class RunConfig:
             selected = self.worker_model if model is None else model
             _require(any(route["model"] == selected for route in self.worker_routes()),
                      "worker_model_not_permitted")
-            family = selected.removeprefix("openai/gpt-6-")
-            prefix = "worker_" + family + "_" if family != "sol" else "worker_"
         else:
             _require(model is None or model == getattr(self, role + "_model"), "reservation_model_mismatch")
-            prefix = role + "_"
+            selected = None if role == "jev" else self.checker_model
+        if selected is None:
+            prefix = "jev_"
+        elif role == "checker" and self.worker_family == "gpt6":
+            prefix = "checker_"
+        else:
+            tier = TIER_OF_MODEL[selected]
+            prefix = "worker_" if tier == "sol" else "worker_" + tier + "_"
         return (request_bytes * getattr(self, prefix + "input_usd_per_million")
                 + self.max_output_tokens * getattr(self, prefix + "output_usd_per_million")) / 1_000_000

@@ -1,0 +1,74 @@
+{
+  "context": "",
+  "family": "short_sourced_answer",
+  "goal": "What is the refund window in days for team plans? Cite the governing source.",
+  "lineage": "L-refund-team",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "days": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "negation",
+    "exception"
+  ],
+  "sources": {
+    "pricing": {
+      "text": "Prices exclude tax. Discounts do not change refund eligibility.",
+      "title": "Pricing page"
+    },
+    "refund-general": {
+      "text": "Refunds are available within 14 days for all plans, except as stated in plan-specific terms.",
+      "title": "Refund rules (2026-02-01)"
+    },
+    "refund-team": {
+      "text": "Team plans may be refunded within 21 days. This extended window does not apply to starter plans.",
+      "title": "Team plan terms (2026-05-10)"
+    }
+  },
+  "split": "heldout",
+  "task_id": "SSA-H2",
+  "variation": {
+    "evidence_position": "end"
+  }
+}

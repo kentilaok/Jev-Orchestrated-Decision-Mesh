@@ -1,0 +1,90 @@
+--- a/scripts/native_transition_broker.py
++++ b/scripts/native_transition_broker.py
+@@ -109,9 +109,17 @@
+ 
+ class NativeTransitionBroker:
+     def __init__(self, adapter, judge, config, folder, *, simulation=False,
+-                 gate_policy='legacy'):
++                 gate_policy='legacy', skip_vacuous_gates=False, jev_evidence_mode='full',
++                 unresolved_policy='legacy'):
+         require(isinstance(config, RunConfig), 'validated_run_config_required')
+         require(gate_policy in ('legacy', 'fused'), 'invalid_native_gate_policy')
++        # Candidate flags; defaults reproduce the installed behaviour exactly.
++        require(type(skip_vacuous_gates) is bool and (not skip_vacuous_gates or gate_policy == 'legacy'),
++                'skip_vacuous_gates_requires_legacy_policy')
++        require(jev_evidence_mode in ('full', 'cited_only'), 'invalid_jev_evidence_mode')
++        require(unresolved_policy in ('legacy', 'block_at_unit'), 'invalid_unresolved_policy')
++        self.skip_vacuous_gates, self.jev_evidence_mode = skip_vacuous_gates, jev_evidence_mode
++        self.unresolved_policy = unresolved_policy
+         self.adapter, self.judge, self.config = adapter, judge, config
+         self.folder, self.simulation = Path(folder), simulation
+         self.gate_policy = gate_policy
+@@ -202,10 +210,15 @@
+                     'native_codex_reported_identity_mismatch')
+             artifact_hash = fingerprint(response['artifact'])
+         except Exception as error:
++            usage = (response.get('usage') if type(response) is dict
++                     else getattr(error, 'usage', None))
+             self.calls.append({'role': role, 'requested_model': requested,
+                                'requested_effort': effort, 'status': 'failed',
+                                'error_type': type(error).__name__,
+-                               'usage': response.get('usage') if type(response) is dict else None})
++                               'usage': usage,
++                               'usage_status': ('reported_before_rejection' if usage is not None
++                                                else 'unknown_child_ran' if getattr(error, 'ran', True)
++                                                else 'not_launched')})
+             raise MeshError('native_codex_call_failed') from None
+         self.calls.append({'role': role, 'requested_model': requested,
+                            'requested_effort': effort, 'actual_model': response.get('actual_model'),
+@@ -329,11 +342,16 @@
+             return {'native_shape': False}
+         prior_unresolved = (any(packet['artifact']['data'].get('unresolved', [])
+                                 for packet in parents) if output else False)
+-        return {'native_shape': True,
+-                'source_hashes_match': data['source_hashes'] == self._source_hashes(sources, sources),
+-                'parent_hashes_match': data['parent_hashes'] == expected_parents,
+-                'prior_units_resolved': not prior_unresolved if output else True,
+-                'output_has_no_unresolved': not data['unresolved'] if output else True}
++        checks = {'native_shape': True,
++                  'source_hashes_match': data['source_hashes'] == self._source_hashes(sources, sources),
++                  'parent_hashes_match': data['parent_hashes'] == expected_parents,
++                  'prior_units_resolved': not prior_unresolved if output else True,
++                  'output_has_no_unresolved': not data['unresolved'] if output else True}
++        if self.unresolved_policy == 'block_at_unit' and not output:
++            # Fail at the unit that disclosed the issue, while repair can still address it,
++            # instead of committing it and making the output unreleasable later.
++            checks['unit_has_no_unresolved'] = not data['unresolved']
++        return checks
+ 
+     def run(self, spec):
+         normalized = validate_spec(spec)
+@@ -427,7 +445,9 @@
+                                                                'effort': self.config.checker_effort},
+                                              worker_routes=self.config.worker_routes(),
+                                              simulation=self.simulation, journal=journal,
+-                                             units=PROJECT_UNITS, deterministic_units={'input'})
++                                             units=PROJECT_UNITS, deterministic_units={'input'},
++                                             skip_vacuous_gates=self.skip_vacuous_gates,
++                                             jev_evidence_mode=self.jev_evidence_mode)
+                     network_result = network.run()
+                     result.update(network_result)
+                     result['route'] = route
+@@ -458,6 +478,18 @@
+                 result['answer'] = None
+             result['calls'] = copy.deepcopy(self.calls)
+             result['primary_agent_tokens'] = None
++            codex = [c for c in self.calls if c['role'] in ('worker', 'checker')]
++            known = [c for c in codex if type(c.get('usage')) is dict
++                     and type(c['usage'].get('input_tokens')) is int and type(c['usage'].get('output_tokens')) is int]
++            result['accounting'] = {
++                'jev_calls': sum(c['role'] == 'jev' for c in self.calls),
++                'codex_child_calls': len(codex), 'codex_calls_usage_unknown': len(codex) - len(known),
++                'codex_input_tokens': sum(c['usage']['input_tokens'] for c in known) if len(known) == len(codex) else None,
++                'codex_output_tokens': sum(c['usage']['output_tokens'] for c in known) if len(known) == len(codex) else None,
++                'primary_agent_usage': 'unmetered',
++                'complete_system_accounting': False,
++                'flags': {'gate_policy': self.gate_policy, 'skip_vacuous_gates': self.skip_vacuous_gates,
++                          'jev_evidence_mode': self.jev_evidence_mode, 'unresolved_policy': self.unresolved_policy}}
+             result['jev_api_cost_usd'] = (sum(call['usage']['cost'] for call in self.calls
+                                               if call['role'] == 'jev' and type(call.get('usage')) is dict
+                                               and type(call['usage'].get('cost')) in (int, float))

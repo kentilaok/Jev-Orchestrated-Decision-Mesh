@@ -1,0 +1,62 @@
+{
+  "context": "",
+  "family": "implementation_debugging",
+  "goal": "Fix parse_duration so it supports h, m and s units and returns seconds. Return the full corrected function in answer.code.",
+  "lineage": "L-duration",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [],
+  "sources": {
+    "module": {
+      "text": "def parse_duration(text):\n    total = 0\n    number = ''\n    for ch in text:\n        if ch.isdigit():\n            number += ch\n        elif ch == 'h':\n            total += int(number) * 60\n            number = ''\n        elif ch == 'm':\n            total += int(number)\n            number = ''\n    return total * 60\n",
+      "title": "duration.py"
+    }
+  },
+  "split": "dev",
+  "task_id": "IMP-D1",
+  "variation": {},
+  "visible_tests": "assert parse_duration('1h') == 3600\nassert parse_duration('2m') == 120\n"
+}

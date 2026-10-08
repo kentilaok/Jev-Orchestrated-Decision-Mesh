@@ -1,0 +1,183 @@
+{
+  "confidence_formula_test": {
+    "H1_(k*peak-1)/(k-1)": {
+      "n": 63,
+      "max_abs_error": 0.0175,
+      "mean_abs_error": 0.005877,
+      "within_0.011": 59
+    },
+    "H2_1-entropy/ln(k)": {
+      "n": 63,
+      "max_abs_error": 0.32504,
+      "mean_abs_error": 0.140456,
+      "within_0.011": 4
+    },
+    "H3_peak_minus_second": {
+      "n": 63,
+      "max_abs_error": 0.41,
+      "mean_abs_error": 0.08,
+      "within_0.011": 31
+    },
+    "choice_not_argmax": [],
+    "option_count_distribution": {
+      "2": 23,
+      "3": 14,
+      "5": 9,
+      "6": 8,
+      "9": 9
+    }
+  },
+  "gate_summary": {
+    "mandatory_checked": {
+      "jev_gates": 15,
+      "jev_tokens": 31700,
+      "jev_cost": 0.001298178,
+      "vacuous_gates(<=1 nonterminal option)": 7,
+      "vacuous_gate_tokens": 11133,
+      "gates_governing_deterministic_units": 6,
+      "deterministic_unit_gate_tokens": 9247,
+      "deterministic_unit_gate_token_share_of_jev": 0.2917,
+      "choices": {
+        "check": 5,
+        "compute": 2,
+        "forward": 5,
+        "luna_low": 3
+      },
+      "min_p_choice": 0.51,
+      "any_stop_or_repair_or_check_chosen": true
+    },
+    "conditional_first": {
+      "jev_gates": 10,
+      "jev_tokens": 23812,
+      "jev_cost": 0.00097209,
+      "vacuous_gates(<=1 nonterminal option)": 2,
+      "vacuous_gate_tokens": 2643,
+      "gates_governing_deterministic_units": 4,
+      "deterministic_unit_gate_tokens": 6328,
+      "deterministic_unit_gate_token_share_of_jev": 0.2657,
+      "choices": {
+        "compute": 2,
+        "forward": 5,
+        "luna_low": 2,
+        "sol_low": 1
+      },
+      "min_p_choice": 0.5,
+      "any_stop_or_repair_or_check_chosen": false
+    },
+    "conditional_hardened": {
+      "jev_gates": 10,
+      "jev_tokens": 23752,
+      "jev_cost": 0.000969654,
+      "vacuous_gates(<=1 nonterminal option)": 2,
+      "vacuous_gate_tokens": 2640,
+      "gates_governing_deterministic_units": 4,
+      "deterministic_unit_gate_tokens": 6323,
+      "deterministic_unit_gate_token_share_of_jev": 0.2662,
+      "choices": {
+        "compute": 2,
+        "forward": 5,
+        "sol_low": 3
+      },
+      "min_p_choice": 0.5,
+      "any_stop_or_repair_or_check_chosen": false
+    }
+  },
+  "identical_request_consistency": {
+    "7307abe502be46cf": {
+      "n": 2,
+      "same_choice": true,
+      "same_probabilities": false,
+      "same_usage": true,
+      "records": [
+        "research/live-gpt6-optional-fixture/call-1",
+        "research/live-gpt6-optional-final/call-1"
+      ]
+    },
+    "befac69afbbc7238": {
+      "n": 2,
+      "same_choice": true,
+      "same_probabilities": false,
+      "same_usage": true,
+      "records": [
+        "research/live-gpt6-optional-fixture/call-2",
+        "research/live-gpt6-optional-final/call-2"
+      ]
+    },
+    "de665a00d45a27bc": {
+      "n": 2,
+      "same_choice": false,
+      "same_probabilities": false,
+      "same_usage": false,
+      "records": [
+        "research/live-gpt6-optional-fixture/call-3",
+        "research/live-gpt6-optional-final/call-3"
+      ]
+    }
+  },
+  "jev_worker_route_choices": [
+    {
+      "bundle": "mandatory_checked",
+      "unit": "hidden1",
+      "choice": "luna_low",
+      "p_choice": 0.59,
+      "options": 9
+    },
+    {
+      "bundle": "mandatory_checked",
+      "unit": "hidden3",
+      "choice": "luna_low",
+      "p_choice": 0.51,
+      "options": 9
+    },
+    {
+      "bundle": "mandatory_checked",
+      "unit": "output",
+      "choice": "luna_low",
+      "p_choice": 0.52,
+      "options": 9
+    },
+    {
+      "bundle": "conditional_first",
+      "unit": "hidden1",
+      "choice": "luna_low",
+      "p_choice": 0.55,
+      "options": 9
+    },
+    {
+      "bundle": "conditional_first",
+      "unit": "hidden3",
+      "choice": "sol_low",
+      "p_choice": 0.56,
+      "options": 9
+    },
+    {
+      "bundle": "conditional_first",
+      "unit": "output",
+      "choice": "luna_low",
+      "p_choice": 0.5,
+      "options": 9
+    },
+    {
+      "bundle": "conditional_hardened",
+      "unit": "hidden1",
+      "choice": "sol_low",
+      "p_choice": 0.5,
+      "options": 9
+    },
+    {
+      "bundle": "conditional_hardened",
+      "unit": "hidden3",
+      "choice": "sol_low",
+      "p_choice": 0.51,
+      "options": 9
+    },
+    {
+      "bundle": "conditional_hardened",
+      "unit": "output",
+      "choice": "sol_low",
+      "p_choice": 0.5700000000000001,
+      "options": 9
+    }
+  ],
+  "n_choice_answers": 63
+}

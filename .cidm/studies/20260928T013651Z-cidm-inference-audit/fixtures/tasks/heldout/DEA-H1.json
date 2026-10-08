@@ -1,0 +1,75 @@
+{
+  "context": "",
+  "family": "deterministic_extraction_arithmetic",
+  "goal": "Compute cost per conversion in USD for live campaigns only, rounded to 2 decimals, using only the supplied FX table. List campaigns that could not be converted.",
+  "lineage": "L-cpa",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "cpa_usd": {
+            "type": "number"
+          },
+          "unconverted_campaigns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "unsupported_currency_label",
+    "numerical_precision",
+    "exclusion"
+  ],
+  "sources": {
+    "campaigns": {
+      "text": "[{\"campaign\": \"C1\", \"type\": \"live\", \"currency\": \"USD\", \"cost\": 1500.0, \"conversions\": 60}, {\"campaign\": \"C2\", \"type\": \"live\", \"currency\": \"GBP\", \"cost\": 700.0, \"conversions\": 20}, {\"campaign\": \"C3\", \"type\": \"test\", \"currency\": \"USD\", \"cost\": 300.0, \"conversions\": 30}, {\"campaign\": \"C4\", \"type\": \"live\", \"currency\": \"ZZZ\", \"cost\": 90.0, \"conversions\": 3}, {\"campaign\": \"C5\", \"type\": \"live\", \"currency\": \"USD\", \"cost\": 50.0, \"conversions\": 0}]",
+      "title": "Campaign export"
+    },
+    "fx": {
+      "text": "{\"USD\": 1.0, \"GBP\": 1.27}",
+      "title": "FX table (USD per unit)"
+    }
+  },
+  "split": "heldout",
+  "task_id": "DEA-H1",
+  "variation": {}
+}

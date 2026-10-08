@@ -1,0 +1,70 @@
+--- a/scripts/checked_network.py
++++ b/scripts/checked_network.py
+@@ -35,13 +35,18 @@
+ class CheckedNetwork:
+     def __init__(self, goal, sources, judge, producer, checker, validator, *,
+                  policy=None, checker_identity=None, worker_routes=None, simulation=False, journal=None, units=UNITS,
+-                 deterministic_units=None):
++                 deterministic_units=None, skip_vacuous_gates=False, jev_evidence_mode='full'):
+         require(len(units)==5 and [u.id for u in units]==[u.id for u in UNITS], 'expected_five_sequential_units')
+         self.units=units; self.producer=producer; self.checker=checker; self.validator=validator
+         self.deterministic_units=frozenset(('input','hidden2') if deterministic_units is None else deterministic_units)
+         require(self.deterministic_units <= {u.id for u in units}, 'unknown_deterministic_unit')
+         self.policy=copy.deepcopy(policy or {"version":"training-free-v1"})
+         self.policy['review_policy']='jev_conditional_sol_high_v3'
++        require(type(skip_vacuous_gates) is bool and jev_evidence_mode in ('full','cited_only'),'invalid_candidate_flags')
++        self.skip_vacuous_gates=skip_vacuous_gates; self.jev_evidence_mode=jev_evidence_mode
++        if skip_vacuous_gates or jev_evidence_mode!='full':
++            # Flags change the protocol, so they are part of the frozen policy hash.
++            self.policy['candidate_flags']={'skip_vacuous_gates':skip_vacuous_gates,'jev_evidence_mode':jev_evidence_mode}
+         astra_allowed=self.policy.get('astra_explicitly_authorized') is True
+         expected_routes=RunConfig(astra_explicitly_authorized=astra_allowed).worker_routes()
+         self.worker_routes=copy.deepcopy(worker_routes if worker_routes is not None else expected_routes)
+@@ -61,7 +66,13 @@
+ 
+     def state(self, unit, candidate=None, checks=None, checker_result=None):
+         self.integrity()
+-        state=self.mesh.context(list(self.mesh.sources))
++        if self.jev_evidence_mode=='cited_only' and isinstance(candidate,dict) and isinstance(candidate.get('source_ids'),list):
++            cited=[s for s in candidate['source_ids'] if s in self.mesh.sources]
++            state=self.mesh.context(cited)
++            state['evidence_omitted']=[{'id':sid,'hash':self.mesh.source_hashes[sid],'retrieve':'retrieve_evidence'}
++                                       for sid in self.mesh.sources if sid not in cited]
++        else:
++            state=self.mesh.context(list(self.mesh.sources))
+         state['unit']={'id':unit.id,'name':unit.name,'objective':unit.objective}
+         state['parents']=[{'id':p['id'],'artifact_hash':p['artifact_hash']} for p in self.committed[-1:]]
+         state['completion']={'completed_units':[p['id'] for p in self.committed],
+@@ -150,7 +161,11 @@
+                 for route in self.worker_routes[min_route_rank:]:
+                     options[route['id']]={'worker_id':'producer','action':{**base_action,'worker_route':route},
+                                           'description':'Run only this unit with '+route['model']+' at '+route['effort']+' effort.'}
+-            choice,gate=self.mesh.gate('authorize_unit',options,state)
++            if self.skip_vacuous_gates and unit.id in self.deterministic_units:
++                choice,gate=self.mesh.policy_gate('authorize_unit',options,state,'compute',
++                                                  'deterministic unit: fixed code on frozen inputs; only alternative is stop')
++            else:
++                choice,gate=self.mesh.gate('authorize_unit',options,state)
+             if choice=='stop': return 'stopped_by_jev'
+             action=options[choice]['action']
+             self.active_route=copy.deepcopy(action['worker_route'])
+@@ -188,7 +203,12 @@
+                 route_rank=self.worker_routes.index(self.active_route)
+                 if route_rank+1<len(self.worker_routes):
+                     options['escalate']={'description':'Retry this unit using a higher resource worker route; no current candidate is accepted.'}
+-            choice,gate=self.mesh.gate('after_worker',options,post_state)
++            if (self.skip_vacuous_gates and unit.id in self.deterministic_units and 'forward' in options
++                    and all(checks.values())):
++                choice,gate=self.mesh.policy_gate('after_worker',options,post_state,'forward',
++                                                  'deterministic result passed every hard check')
++            else:
++                choice,gate=self.mesh.gate('after_worker',options,post_state)
+             self.mesh.record('post_worker_decision',unit_id=unit.id,choice=choice,gate_id=gate,
+                              candidate_hash=candidate_hash,hard_checks=checks)
+             if choice=='forward':
+@@ -270,4 +290,5 @@
+             self.mesh.record('halt',error=error.code if hasattr(error,'code') else type(error).__name__+': '+str(error))
+         return {'status':status,'answer':self.final,'protocol_version':'cidm-conditional-review-v3',
+                 'policy_version':self.policy_version,
++                'policy_flags':{'skip_vacuous_gates':self.skip_vacuous_gates,'jev_evidence_mode':self.jev_evidence_mode},
+                 'simulation':self.mesh.simulation,'committed':self.committed,'checks':self.checks,'events':self.mesh.events}

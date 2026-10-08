@@ -251,6 +251,8 @@ class Gateway:
 
     def ask(self, role, instructions, state, schema=None, worker_route=None, followup_required=False):
         require(role in ("worker", "checker"), "invalid_generative_role")
+        # Claude workers run through Claude Code (claude_cli_adapter), never this API route.
+        require(self.config.worker_family == "gpt6", "claude_family_runs_through_claude_code_only")
         require(role == "worker" or worker_route is None, "checker_cannot_use_worker_route")
         if role == "checker" and schema is None:
             schema = CHECK_SCHEMA

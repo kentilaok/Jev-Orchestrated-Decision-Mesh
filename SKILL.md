@@ -1,6 +1,6 @@
 ---
 name: caber-interstitial-decision-mesh
-description: "Orchestrate broad, multi-stage projects with CIDM's default five-unit Jev network; use one GPT-6 Luna-low worker only for a self-contained short request. Classify every new input with its carried context. Sol-high review is optional. Do not invoke for simple standalone questions unless explicitly requested."
+description: "Orchestrate broad, multi-stage projects with CIDM's default five-unit Jev network in Codex (GPT-6 Luna/Sol workers) or Claude Code (Claude Sonnet/Opus workers); use one low-cost worker (Luna low or Sonnet low) only for a self-contained short request. Classify every new input with its carried context. High-effort review (Sol high or Opus high) is optional. Do not invoke for simple standalone questions unless explicitly requested."
 ---
 
 # Jev-Orchestrated Decision Mesh
@@ -14,6 +14,10 @@ Main contributor and project creator: **Kenneth Vic A. Caber**. CIDM applies lay
 Use CIDM for a broad project that has meaningful stages, several evidence sources or agents, and acceptance checks that benefit from routing and review. Answer simple standalone yes/no questions and routine one-step tasks directly; do not invoke this skill merely to classify them. When CIDM is invoked, first classify **each new user input together with the carried project context**. A short follow-up to a continuing project is not automatically a short task. Record the input, relevant accepted context, reason for the classification, and selected path. If the input plus context is broad, multi-step, or uncertain, enter the five-unit network by default. Only a self-contained request that can be completed and validated in one bounded response takes the short path: one **GPT-6 Luna low** worker, task-specific validation, then finish. Classify the next user input afresh, using its carried context. If the user explicitly requests a CIDM demonstration or evaluation on a small fixture, label it as a demonstration rather than a recommended deployment route.
 
 If the project lives behind an available MCP server or connector, run a **bounded read-only evidence preflight before the first Jev decision**. An initial lack of hierarchy, scripts, runtime output, or other inspectable facts is a reason to inspect, not a reason to stop. Use the connected server's read-only discovery tools, record the target identity and exact tool receipts, then send Jev a concise source-linked evidence packet. This preflight does not authorize edits or a model worker. See [MCP evidence acquisition](docs/MCP-EVIDENCE.md).
+
+## Choose the host and worker family
+
+CIDM runs with one worker family per run. **Codex** hosts use GPT-6 Luna/Sol (`worker_family: "gpt6"`, the default). **Claude Code** hosts use Claude Sonnet/Opus (`worker_family: "claude"`): the route catalogue becomes `sonnet_*` and `opus_*` at `low` through `xhigh`, the short path is one **Sonnet low** worker, and the optional high-effort checker (option id `check_sol_high`) is **Opus high**. Everything else in this skill applies unchanged; read "GPT-6 Luna/Sol" as "Claude Sonnet/Opus" on Claude Code. Jev is the same separate decision service on both hosts. Do not mix families in one run. See [Claude Code](docs/CLAUDE-CODE.md) for the subagents and the `--host claude` broker.
 
 ## Choose the execution route
 
@@ -71,6 +75,8 @@ python <skill>/scripts/network_run.py --live --config <skill>/examples/config.op
 python <skill>/scripts/native_transition_broker.py --validate-only --task <skill>/examples/native-project.request.json
 python <skill>/scripts/native_transition_broker.py --live --task <skill>/examples/native-project.request.json --out <new-run-dir>
 python <skill>/scripts/native_transition_broker.py --live --gate-policy fused --task <skill>/examples/native-project.request.json --out <new-run-dir>
+python <skill>/scripts/native_transition_broker.py --validate-only --host claude --task <skill>/examples/native-project.request.json
+python <skill>/scripts/native_transition_broker.py --live --host claude --task <skill>/examples/native-project.request.json --out <new-run-dir>
 python -m unittest discover -s <skill>/tests -v
 ```
 

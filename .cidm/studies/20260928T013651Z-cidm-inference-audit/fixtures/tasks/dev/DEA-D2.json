@@ -1,0 +1,73 @@
+{
+  "context": "",
+  "family": "deterministic_extraction_arithmetic",
+  "goal": "Total the advertising spend in USD using only the supplied FX table. Report any row that cannot be converted.",
+  "lineage": "L-spend-usd",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "total_usd": {
+            "type": "number"
+          },
+          "unconverted_markets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [
+    "unsupported_currency_label"
+  ],
+  "sources": {
+    "fx": {
+      "text": "{\"USD\": 1.0, \"EUR\": 1.08}",
+      "title": "FX table (USD per unit)"
+    },
+    "spend": {
+      "text": "[{\"market\": \"US\", \"currency\": \"USD\", \"spend\": 1200.0}, {\"market\": \"DE\", \"currency\": \"EUR\", \"spend\": 800.0}, {\"market\": \"XX\", \"currency\": \"XBT\", \"spend\": 0.05}]",
+      "title": "Spend export"
+    }
+  },
+  "split": "dev",
+  "task_id": "DEA-D2",
+  "variation": {}
+}

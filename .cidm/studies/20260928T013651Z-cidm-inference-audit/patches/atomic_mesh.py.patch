@@ -1,0 +1,24 @@
+--- a/scripts/atomic_mesh.py
++++ b/scripts/atomic_mesh.py
+@@ -130,8 +130,20 @@
+                           state=state, decision=decision)
+         return decision['choice'], eid
+ 
++    def policy_gate(self, phase, options, state, choice, reason):
++        """A recorded, non-Jev authorization used only by explicitly flagged policies.
++
++        It is never labelled as a Jev decision; audits count it separately.
++        """
++        require(choice in options and isinstance(reason, str) and reason, 'invalid_policy_gate')
++        before = self.state_hash()
++        eid = self.record('policy_decision', phase=phase, options=options, state_hash=before, state=state,
++                          decision={'choice': choice, 'live': False, 'model': 'policy', 'reason': reason})
++        return choice, eid
++
+     def permit(self, worker_id, action, gate_id):
+-        require(gate_id in {e['id'] for e in self.events if e['kind']=='jev_decision'}, 'missing_gate')
++        require(gate_id in {e['id'] for e in self.events if e['kind'] in ('jev_decision', 'policy_decision')},
++                'missing_gate')
+         event = next(e for e in self.events if e['id']==gate_id)
+         require(gate_id not in self._issued_gates and event['state_hash']==self.state_hash(), 'gate_already_used_or_stale')
+         chosen = event['decision']['choice']
