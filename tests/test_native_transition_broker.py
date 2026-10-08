@@ -12,6 +12,9 @@ from atomic_mesh import MeshError, fingerprint
 from codex_cli_adapter import CodexCliAdapter
 from config import RunConfig
 from native_transition_broker import NativeTransitionBroker, validate_spec
+from arsenal_calibration import (
+    append_event, evaluate, prediction_event, read_events, runtime_event, verdict_event,
+)
 
 
 SPEC = {
@@ -290,6 +293,47 @@ class NativeTransitionBrokerTests(unittest.TestCase):
             encoding='utf-8'
         )
         self.assertIn('"kind":"arsenal_shadow"', journal)
+
+    def test_calibration_links_native_broker_result_to_review_without_route_change(self):
+        def observer(_state):
+            return {
+                'mode': 'shadow',
+                'recommendation': 'jev_only',
+                'selected_skill_id': None,
+                'selected_experience_id': None,
+                'fast_path_candidate': False,
+                'frontier_call_avoided': False,
+                'fused_candidates': [],
+                'lexical': {'matches': []},
+                'authority': 'none_shadow_observation_only',
+            }
+        codex, jev = FakeCodex(), FakeJev()
+        result = self.broker(
+            codex, jev, 'calibration-observed',
+            arsenal_observer=observer,
+        ).run(SPEC)
+        self.assertEqual(result['status'], 'complete')
+        self.assertEqual(len(codex.calls), 4)
+        self.assertEqual(len(jev.calls), 11)
+        run_id = 'calibration-1'
+        ledger = self.folder / 'calibration.jsonl'
+        append_event(ledger, prediction_event(
+            run_id, result['task_hash'], result['arsenal_shadow'],
+        ))
+        receipt = runtime_event(run_id, result)
+        self.assertTrue(receipt['audit_verified'])
+        self.assertEqual(receipt['actual_model_calls'], len(result['calls']))
+        append_event(ledger, receipt)
+        append_event(ledger, verdict_event(
+            run_id, result['task_hash'], evidence_ref='run-receipts.json:sha256:abcd',
+            expected_skill_id=None, expected_experience_id=None,
+            fast_path_safe=False, reviewer='independent-operator',
+        ))
+        summary = evaluate(read_events(ledger))
+        self.assertEqual(summary['summary']['eligible_evaluated'], 1)
+        self.assertEqual(summary['summary']['fast_path_true_negative'], 1)
+        self.assertEqual(summary['realized_frontier_calls_avoided'], 0)
+        self.assertIsNone(summary['estimated_token_savings'])
 
     def test_arsenal_shadow_failure_never_blocks_cidm_run(self):
         def observer(_state):
