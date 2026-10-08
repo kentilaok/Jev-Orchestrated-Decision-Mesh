@@ -77,8 +77,15 @@ python <skill>/scripts/native_transition_broker.py --live --task <skill>/example
 python <skill>/scripts/native_transition_broker.py --live --gate-policy fused --task <skill>/examples/native-project.request.json --out <new-run-dir>
 python <skill>/scripts/native_transition_broker.py --validate-only --host claude --task <skill>/examples/native-project.request.json
 python <skill>/scripts/native_transition_broker.py --live --host claude --task <skill>/examples/native-project.request.json --out <new-run-dir>
+python <skill>/scripts/native_transition_broker.py --live --gate-policy recovery --task <request.json> --evidence-plan <plan.json> --out <new-run-dir>
+python <skill>/scripts/native_transition_broker.py --live --gate-policy recovery --task <request.json> --resume <old-run-dir>/checkpoint.json --operator <id> --out <new-run-dir>
+python <skill>/scripts/frontier_providers.py coverage --provider codex
+python <skill>/scripts/mcp_registry.py search --query <intent> --access read
+python <skill>/scripts/telemetry.py <run-dir>/result.json --summary
 python -m unittest discover -s <skill>/tests -v
 ```
+
+Live native runs check the account's model catalogue against the frozen route catalogue first and stop with `route_preflight_failed` instead of substituting a model. Every worker and checker call consumes a single-use `frontier.run` permit naming its exact Jev-authorized dispatch; the permit ledger must audit cleanly before release. Under the recovery policy, a bounded read-only MCP plan or local index can answer `retrieve_evidence`, and a paused run resumes from its hash-verified `checkpoint.json`. See [Arsenal V1 — implementation guide](docs/ARSENAL-V1-BUILD.md).
 
 The OpenRouter runner reads `OPENROUTER_API_KEY`. Inspect limits and model/provider availability first. Omit `--classification` for the conservative five-unit default; for the short fixture, create an exact task-and-context-bound assertion as shown in [execution routes](docs/EXECUTION-ROUTES.md#scope-classification-before-the-bounded-api-fixture). The runner checks the assertion's hash, not whether the host classified the work correctly. Offline mode is a labeled simulation, not a Jev or Sol evaluation. The API example handles a bounded production-record calculation; its `context_summary` participates in classification and the Jev entry state, while the five-unit demo itself consumes the structured task and original records. The native broker handles limited project text and source excerpts with structural, source, and predecessor checks; it does not validate semantic project success. Its `--live` command requires a Codex CLI sign-in and separately billed Jev API access. See [connectors](docs/CONNECTORS.md) and [validation](docs/VALIDATION.md).
 

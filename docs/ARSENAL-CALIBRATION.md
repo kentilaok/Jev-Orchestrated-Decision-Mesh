@@ -2,7 +2,16 @@
 
 **Project/thesis:** Caber Interstitial Decision Mesh (CIDM), by **Ken Caber (Kenneth Vic A. Caber)**.
 
-**Status:** experimental implementation on recovery/Arsenal PR #2. This is **evaluation**, not a Fast Path executor.
+**Status:** experimental implementation. This is **evaluation**, not a Fast Path executor. The separate executor (`scripts/arsenal_fastpath.py`) stays disabled unless an owner policy cites an accepted threshold report; see [the implementation guide](ARSENAL-V1-BUILD.md#fast-path-phase-a-items-1417).
+
+Threshold report (never enables execution):
+
+```bash
+python scripts/arsenal_calibration.py --ledger ~/.jev/arsenal/calibration.jsonl thresholds \
+  --min-reviewed 30 --min-precision-lower-bound 0.95
+```
+
+`evaluate` also reports `negative_transfer`: a loaded skill or lesson that the independent reviewer says was not the right one.
 
 The design question is not "Can a local embedding match something?" It is:
 

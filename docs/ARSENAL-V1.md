@@ -1253,6 +1253,21 @@ Jev -> Hermes
 
 ## 21. Recommended implementation order
 
+### Build status (October 2026)
+
+The integrated main line implements the code-only parts of every phase below; [Arsenal V1 — implementation guide](ARSENAL-V1-BUILD.md) documents each component, its commands and its limits. All of it is offline-tested; none of it has a matched live efficiency or quality result.
+
+| Phase | Built | Still open |
+|---|---|---|
+| A | Registry, compiler, admission, shadow, calibration (A2); Fast Path bound to owner policy, permits and validator receipts (14); negative-transfer metric (16); hash-bound Wilson threshold report (17) | Real reviewed observations to score shadow predictions (15); calibrated thresholds from that data |
+| B | `FrontierProvider` contract (14); Claude Code default (15); account-derived Codex catalogue and route-coverage preflight (16); console provider health (17); a `frontier.run` permit on every broker call (18) | Claude model discovery (no non-interactive catalogue); a Sign-in-with-ChatGPT app-server adapter |
+| C | MCP capability registry and compact catalogue search with bytes-avoided measurement (19, 21, 22); permit-bound read-only evidence retrieval for recovery runs | LeanCTX integration and token-level context measurement (20) |
+| D | Local hybrid index with namespace/access filters, RRF, local-first rerank with hosted fallback, Qdrant REST adapter, chunk IDs and hashes (24–27) | A provisioned Qdrant collection and hosted reranker keys (23) |
+| E | Importer and quarantine (unchanged) | Owner-approved import of the reviewed methodology set; per-run skill hash recording (28–30) |
+| F | `SandboxProvider` with a Docker provider, secret references, egress `none`, strong artifact import (31, 32); browser permit classes (33) | A managed sandbox (E2B/Daytona); allowlist egress; Browserbase (34) |
+| G | Journal-to-OpenTelemetry export for Phoenix (35); run summaries | A running Phoenix and frozen evaluation datasets (36–41) |
+| H | Persistent checkpoint reconstruction and operator-attributed resume (42) | Temporal, Headroom, Semantic Router, LiteLLM evaluations (43–46) |
+
 ### Phase A — local cognitive substrate
 
 **Implemented in the current experimental branch:**
@@ -1272,13 +1287,13 @@ Jev -> Hermes
 11. Shadow JSONL records for would-be Fast Path decisions.
 12. Native transition-broker Shadow observer with failure isolation and no authority.
 
-**Still required before Phase A is complete:**
+**Remaining Phase A items and their status:**
 
-13. Experience-summary indexing beyond promoted skills.
-14. Bind eligible operations to real CIDM permits and validator receipts.
-15. Score Shadow predictions against eventual Jev/frontier/validator outcomes.
-16. Negative-transfer measurement when a local match later fails.
-17. Establish calibrated promotion thresholds before enabling any non-exact Fast Path class.
+13. Experience-summary indexing beyond promoted skills — verified lessons are indexed directly (`index-lessons`).
+14. Bind eligible operations to real CIDM permits and validator receipts — **built** (`scripts/arsenal_fastpath.py`); disabled unless an owner policy pins exact hashes.
+15. Score Shadow predictions against eventual Jev/frontier/validator outcomes — tooling built (A2); needs real reviewed runs.
+16. Negative-transfer measurement when a local match later fails — **built** (`negative_transfer` in calibration `evaluate`).
+17. Establish calibrated promotion thresholds before enabling any non-exact Fast Path class — threshold report **built** (`thresholds`); the thresholds themselves need real data, and V1 Fast Path still requires an exact bug key.
 
 ### Phase A2 — calibration and independent outcome review (experimental)
 

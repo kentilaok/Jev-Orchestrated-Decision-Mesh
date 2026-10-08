@@ -159,7 +159,7 @@ Installation locations can vary by Codex setup. Keep credentials in the environm
 python -m unittest discover -s tests -v
 ```
 
-Tests run offline without credentials. They cover gate ordering, immutable policy, one-use permissions, rejection/repair behavior, checker isolation, explicit Jev decisions, model-specific budget reservation, configuration, and transport accounting. [Validation scope](docs/VALIDATION.md) includes the test counts and saved live evidence.
+Tests run offline without credentials. They cover gate ordering, immutable policy, one-use permissions, rejection/repair behavior, checker isolation, explicit Jev decisions, model-specific budget reservation, configuration, transport accounting, and the Arsenal V1 components (capability permits, frontier providers, Fast Path, MCP catalogue, retrieval, sandbox, browser classes, telemetry, checkpoint resume, and the console's request guards). A real Docker smoke test is opt-in with `CIDM_RUN_DOCKER_TESTS=1`. [Validation scope](docs/VALIDATION.md) includes the test counts and saved live evidence.
 
 ## Current scope
 
@@ -170,6 +170,7 @@ Tests run offline without credentials. They cover gate ordering, immutable polic
 - Separate decision and reasoning connector interfaces; OpenRouter is the bundled implementation.
 - Local journals and provider usage accounting, including failed attempts and unknown counters.
 - Jev-token, worker-token, orchestration-ratio, call-cap, and matched-baseline cost metrics with unknown values kept explicit.
+- Arsenal V1 building blocks, offline-tested: capability permits, Claude Code/Codex provider contract with route preflight, owner-policy Fast Path, MCP catalogue and evidence retrieval, hybrid retrieval, Docker sandbox, browser permit classes, OpenTelemetry export, and checkpoint resume. See [Arsenal V1 — implementation guide](docs/ARSENAL-V1-BUILD.md).
 
 The executable demo is a structured-record calculation. [Extension boundaries](docs/ROADMAP.md) identify task adapters and retrieval outside this implementation. [Routing economics](docs/ROUTING-ECONOMICS.md) and [orchestration budgets](docs/ORCHESTRATION-BUDGETS.md) separate measured results, budget controls, and the premium-website forecast. More gates and checkers can increase tokens and latency.
 
@@ -270,15 +271,30 @@ Phase A2 adds an **opt-in, append-only calibration ledger**: `scripts/arsenal_ca
 
 See [Arsenal A2 calibration and reviewer workflow](docs/ARSENAL-CALIBRATION.md).
 
-## Operator Console (experimental)
+## Arsenal V1 build
 
-A local browser control surface is available on the `feature/operator-console-claude-frontier` line of development. It keeps **Jev as the global control plane**, uses **Hermes for reusable skills/procedures**, and defaults the frontier worker to **Claude Code** while exposing **Codex** as an optional locally authenticated provider.
+The code-only parts of every Arsenal V1 phase are built behind one rule: a tool can suggest a route, but only Jev or an owner-admitted compiled policy can authorize a state transition. Every frontier, MCP, sandbox, browser and Fast Path action consumes a single-use capability permit that names its authorization.
+
+```bash
+python scripts/frontier_providers.py coverage --provider codex     # account catalogue vs CIDM routes
+python scripts/mcp_registry.py servers                              # configured MCP servers; starts nothing
+python scripts/retrieval.py ingest --namespace project --root docs
+python scripts/telemetry.py runs/<run>/result.json --summary
+python scripts/native_transition_broker.py --live --gate-policy recovery \
+  --task examples/native-project.request.json --out runs/native-recovery-001
+```
+
+Live native runs now fail closed before any paid call when the provider account cannot serve the frozen route catalogue, write a permit ledger that must audit cleanly before release, and, under the recovery policy, can turn `retrieve_evidence` into a bounded read-only MCP or index query and resume a paused run from `checkpoint.json`. See [Arsenal V1 — implementation guide](docs/ARSENAL-V1-BUILD.md).
+
+## Operator Console
+
+A local, loopback-only control surface. It keeps **Jev as the global control plane**, uses **Hermes for reusable skills/procedures**, and defaults the frontier worker to **Claude Code** while exposing **Codex** with its account-derived model catalogue.
 
 ```bash
 python scripts/operator_console.py
 ```
 
-The console includes a dedicated Hermes skill-source folder with enable/disable controls (through Hermes' own local dashboard API), Claude/Codex account readiness, and a model picker. Preview mode is the default and does not fake a live Jev call. See [Operator Console](docs/OPERATOR-CONSOLE.md).
+Views cover provider accounts and CIDM route coverage, the Arsenal (skills, lessons, calibration, Fast Path), the MCP catalogue, runs with checkpoints, telemetry and resume, and Hermes skill toggles through Hermes' own dashboard API. Preview is the default; a bounded smoke test and a live CIDM broker run are explicit actions, the latter behind a spend confirmation. See [Operator Console](docs/OPERATOR-CONSOLE.md).
 
 ## Authorship and attribution
 

@@ -2,7 +2,7 @@
 
 This document is the canonical entry point for the Caber Interstitial Decision Mesh (CIDM) research thesis and its version-one Arsenal design. The thesis is deliberately published as **repository documentation**, not as the GitHub repository description.
 
-**Document status:** architecture and research direction. Some supporting implementations are experimental and remain on [PR #2](https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh/pull/2), not the default branch. A documented capability does not imply it is deployed, benchmarked, enabled, owner-admitted or available in the current release.
+**Document status:** architecture and research direction. The recovery, Arsenal and Operator Console work from PRs #1 and #2 is integrated with the reference implementation, and the code-only parts of every Arsenal V1 phase are built and offline-tested; see [Arsenal V1 — implementation guide](ARSENAL-V1-BUILD.md). A documented capability does not imply it is deployed, benchmarked, enabled, owner-admitted or measured.
 
 ## The complete thesis
 
@@ -15,11 +15,13 @@ The thesis comprises the following documents. Each covers a distinct part of the
 | [Execution routes](EXECUTION-ROUTES.md) | Classification, short path and project-scale reasoning | Reference design |
 | [Orchestration budgets](ORCHESTRATION-BUDGETS.md) | Resource accounting, model escalation and bounded decisions | Research and control design |
 | [Gate fusion](GATE-FUSION.md) | Separate/fused decision boundaries and state-bound permits | Experimental protocol |
-| [Recovery and experience distillation](RECOVERY-AND-DISTILLATION.md) | Bounded recovery, project continuity, verified lessons and Hermes skills | Experimental extension; implementation in PR #2 |
-| [Arsenal V1](ARSENAL-V1.md) | Frontier-efficient system, local cognitive substrate, agents/tools, memory and build phases | Future-build architecture; partial implementation in PR #2 |
-| [Arsenal Phase A2 Calibration](ARSENAL-CALIBRATION.md) | Shadow predictions, native runtime receipts, independent outcome labels and conservative evaluation | Experimental implementation in PR #2; no Fast Path execution |
-| [Arsenal manifest and admission](ARSENAL-MANIFEST.md) | Searchability vs trust, skill manifests, hashes, permissions, explicit admission | Planned governance; partial implementation in PR #2 |
-| [Matt Pocock skills](MATT-POCOCK-ARSENAL.md) | Pinned curated external methodology source, boundaries and quarantine | Candidate source; importer and tests in PR #2 |
+| [Recovery and experience distillation](RECOVERY-AND-DISTILLATION.md) | Bounded recovery, project continuity, verified lessons and Hermes skills | Experimental extension; implemented, including checkpoint resume |
+| [Arsenal V1](ARSENAL-V1.md) | Frontier-efficient system, local cognitive substrate, agents/tools, memory and build phases | Architecture; code-only parts of every phase implemented |
+| [Arsenal V1 — implementation guide](ARSENAL-V1-BUILD.md) | Permits, frontier providers, Fast Path, MCP catalogue, retrieval, sandbox, browser, telemetry, resume | Offline-tested implementation; no live efficiency result |
+| [Arsenal Phase A2 Calibration](ARSENAL-CALIBRATION.md) | Shadow predictions, native runtime receipts, independent outcome labels and conservative evaluation | Experimental implementation; threshold reports never enable execution |
+| [Arsenal manifest and admission](ARSENAL-MANIFEST.md) | Searchability vs trust, skill manifests, hashes, permissions, explicit admission | Implemented governance; Fast Path needs an owner policy |
+| [Matt Pocock skills](MATT-POCOCK-ARSENAL.md) | Pinned curated external methodology source, boundaries and quarantine | Candidate source; importer and tests implemented |
+| [Operator Console](OPERATOR-CONSOLE.md) | Local control surface for providers, Arsenal, MCP, runs and recovery | Implemented; loopback only |
 | [Roadmap](ROADMAP.md) | Historical research and rollout roadmap | Supporting context |
 | [Benchmarks](BENCHMARKS.md) | Reported benchmark setup and measurement context | Historical evidence; do not infer deployment-wide performance |
 | [Routing economics](ROUTING-ECONOMICS.md) | Relative model/orchestration costs and hypothesis tests | Research context |
@@ -109,14 +111,14 @@ Local matching is ranking evidence, not permission to act. Verification and the 
 
 | Stage | Goal | Implementation note |
 |---|---|---|
-| Recovery / experience | Allow recoverable failed units to continue safely; distill verified repair episodes | Experimental code in PR #2 |
-| Arsenal A | SQLite/FTS5 registry, Skill Compiler, local matching, admission, CPU semantic option and experience retrieval | Partial implementation in PR #2 |
-| Arsenal A2 | Shadow-calibration ledger and frozen evaluation against actual Jev/frontier outcomes | Next proposed milestone |
-| Arsenal B | Frontier-provider adapters, model discovery and account-aware provider selection | Planned; existing adapter work is separate |
-| Arsenal C | MCP capability catalogue and context-efficiency experiments | Planned |
-| Arsenal D | Managed or local/managed hybrid knowledge retrieval and hosted fallback | Planned |
+| Recovery / experience | Allow recoverable failed units to continue safely; distill verified repair episodes | Implemented, with persistent checkpoint resume |
+| Arsenal A | SQLite/FTS5 registry, Skill Compiler, local matching, admission, CPU semantic option and experience retrieval | Implemented; Fast Path bound to owner policy, permits and validator receipts |
+| Arsenal A2 | Shadow-calibration ledger and frozen evaluation against actual Jev/frontier outcomes | Tooling implemented; needs real reviewed runs |
+| Arsenal B | Frontier-provider adapters, model discovery and account-aware provider selection | Implemented (Claude Code, Codex account catalogue, route preflight, permits) |
+| Arsenal C | MCP capability catalogue and context-efficiency experiments | Catalogue, compact search and permit-bound evidence retrieval implemented; LeanCTX open |
+| Arsenal D | Managed or local/managed hybrid knowledge retrieval and hosted fallback | Local hybrid index and Qdrant/reranker adapters implemented; managed services not provisioned |
 | Arsenal E | Evaluated methodology skills (Superpowers, Karpathy-inspired methods, Ponytail, Matt Pocock) | Candidate curation, not auto-activation |
-| Arsenal F–H | Remote sandboxes, browser automation, telemetry/evals, durable checkpoints and production hardening | Planned / dependent on measured need |
+| Arsenal F–H | Remote sandboxes, browser automation, telemetry/evals, durable checkpoints and production hardening | Docker sandbox, browser permit classes, OTLP export and resume implemented; managed services and evaluations open |
 
 Do not claim lower token use, saved costs, improved pass rates or safe frontier-call avoidance until a matching frozen dataset and measured results support those claims.
 

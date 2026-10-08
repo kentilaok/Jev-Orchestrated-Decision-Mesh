@@ -101,6 +101,8 @@ They are safety ceilings, not optimization targets. A larger value can increase 
 
 ## Evidence recovery
 
+Two trusted read-only callbacks ship with the repository: `McpEvidenceRetriever` (a bounded plan of read-class MCP calls, `--evidence-plan`) and `RetrievalEvidenceRetriever` (the local hybrid index, `--retrieval-index`). Both consume permits with a `cidm_recovery_evidence` basis and return new hashed sources.
+
 A recovery evidence callback receives a bounded packet containing:
 
 - goal
@@ -273,8 +275,8 @@ A recovery policy is an improvement only if it raises useful completion without 
 
 ## Next implementation milestones
 
-1. Add persistent reconstruction/resume of a checkpoint across process restarts.
-2. Give the Operator Console a recovery/checkpoint view and experience-learning view.
+1. ~~Add persistent reconstruction/resume of a checkpoint across process restarts.~~ Implemented: paused runs write a hash-bound `checkpoint.json`; `--resume` verifies it and continues (see [implementation guide](ARSENAL-V1-BUILD.md#checkpoint-resume-phase-h)).
+2. ~~Give the Operator Console a recovery/checkpoint view and experience-learning view.~~ Implemented: Runs & recovery and Arsenal views.
 3. Connect Hermes' skill enable/disable UI to distilled-skill provenance.
 4. Add project-profile policy for controlled sharing of explicitly generic lessons across project-scoped skill namespaces.
 5. Add negative-transfer telemetry when a skill is loaded but a different recovery succeeds.

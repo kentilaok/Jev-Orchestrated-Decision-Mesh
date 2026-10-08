@@ -11,6 +11,8 @@
 - One-use approvals, source/artifact identities, immutable run policy, and Jev decisions after every unit output and every requested checker return.
 - A structured-record reference task, role/token budgets, per-run orchestration metrics, offline tests, and usage/journal auditing.
 
+- Arsenal V1 code-only phases: single-use capability permits on every frontier, MCP, sandbox, browser and Fast Path action; a frontier-provider contract with account-derived Codex models and a fail-closed route preflight; an owner-policy Fast Path bound to validator receipts; an MCP catalogue with permit-bound evidence retrieval for recovery runs; a local hybrid retrieval plane; a Docker sandbox with secret references; browser permit classes; OpenTelemetry export; persistent checkpoint resume; and a hardened Operator Console. See [the implementation guide](ARSENAL-V1-BUILD.md).
+
 ## Next practical work
 
 1. Build domain-specific project validators and evidence adapters beyond structural, source, and predecessor checks.
