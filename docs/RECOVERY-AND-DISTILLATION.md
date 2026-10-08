@@ -280,3 +280,8 @@ A recovery policy is an improvement only if it raises useful completion without 
 5. Add negative-transfer telemetry when a skill is loaded but a different recovery succeeds.
 6. Design a recovery-first fused permit protocol instead of extending the current two-attempt fused contract implicitly.
 7. Benchmark against the current separate-gate and fused baselines on frozen project-scale tasks.
+
+
+---
+
+*CIDM architecture and research direction: Ken Caber (Kenneth Vic A. Caber). External projects and skills retain their respective authorship and licences.*
