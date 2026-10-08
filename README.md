@@ -132,6 +132,14 @@ To study the revised decision density, use `--gate-policy fused` and a different
 python scripts/native_transition_broker.py --live --gate-policy fused --task examples/native-project.request.json --out runs/native-fused-001
 ```
 
+To run the recovery-first separate-gate controller, use `--gate-policy recovery`. Failed candidates still cannot forward, but exhausted local repair/verification can trigger a bounded fresh replan instead of ending the whole project. Missing evidence becomes a recoverable checkpoint unless a host retrieval adapter is supplied.
+
+```bash
+python scripts/native_transition_broker.py --live --gate-policy recovery --task examples/native-project.request.json --out runs/native-recovery-001
+```
+
+Recovery limits are explicit configuration fields: `max_recovery_attempts` (default 2), `max_verification_attempts` (default 2), and `max_recovery_rounds` (default 2).
+
 The broker limits the goal, carried context, and source excerpts; its generic checks validate structure and reference integrity, not whether a project answer is correct. It records Codex usage when the CLI reports it, but leaves Codex plan dollar cost and ordinary primary-agent tokens unknown. No live project-level savings have been measured for this route.
 
 ## Use as a Codex skill
@@ -169,6 +177,97 @@ The executable demo is a structured-record calculation. [Extension boundaries](d
 **Kenneth Vic A. Caber** is the main contributor and creator of the CIDM concept and skill project. Development used AI coding assistance. The architecture builds on existing ideas in model routing, modular computation, verification, and context management; this attribution is not a claim to have invented those broader fields.
 
 See the [technical thesis](docs/THESIS.md), [research context](docs/RESEARCH-CONTEXT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [CITATION.cff](CITATION.cff). Code and documentation are released under the [MIT license](LICENSE).
+
+
+## Recovery-first CIDM
+
+An experimental recovery layer now separates **candidate rejection** from **project termination**.
+
+`scripts/recovery_protocol.py` supervises the existing separate-gate `CheckedNetwork` without weakening its commit rules. Local repair/verification exhaustion can replan the same unit, missing evidence can be supplied by a trusted retrieval callback, and unresolved external dependencies become `paused_recoverable` checkpoints rather than generic terminal failures.
+
+CIDM run history can also be distilled into verified procedural lessons:
+
+```bash
+python scripts/experience_distiller.py \
+  --scan-dir research \
+  --project-scope cidm-research \
+  --lessons ~/.jev/experience/lessons.json \
+  --arsenal-db ~/.jev/arsenal/arsenal.db \
+  --skills-dir ~/.hermes/skills
+```
+
+Only a failure followed by a later checked commit for the same unit counts as a verified recovery. Skills require repeated verified observations from distinct runs by default, or explicit owner approval of a verified lesson. Automatic promotion is project-scoped to reduce cross-project contamination. This is procedural/context memory for Hermes, not model-weight training.
+
+See [Recovery-first CIDM and Experience Distillation](docs/RECOVERY-AND-DISTILLATION.md).
+
+
+## Arsenal V1 direction
+
+The next architecture milestone is a **frontier-efficient capability arsenal**. The local machine does not need a heavy generative model: CIDM should first reuse deterministic policy, approved skills, verified experience, lexical retrieval, lightweight semantic helpers, caches, and validators before escalating to Jev or Claude/Codex.
+
+The first local substrate is now implemented in `scripts/arsenal_registry.py`. It compiles Hermes `SKILL.md` files, reads optional `ARSENAL.json` manifests, indexes skill/bug/trigger knowledge in SQLite FTS5, and reports whether a matched skill is eligible for a future CIDM Fast Path.
+
+```bash
+python scripts/arsenal_registry.py scan --skills-dir ~/.hermes/skills
+python scripts/arsenal_registry.py match \
+  --task "Protected content is visible while signed out" \
+  --project-scope wordpress \
+  --bug-key wordpress.memberpress.logged_out_visibility \
+  --operation inspect_content
+```
+
+Discoverability does not grant execution authority. Owner admission is stored separately in the local Arsenal database and bound to the exact skill + manifest hashes:
+
+```bash
+python scripts/arsenal_registry.py admit --skill-id some-reviewed-skill
+python scripts/arsenal_registry.py revoke --skill-id some-reviewed-skill
+```
+
+If either file changes, the recorded admission no longer matches that version.
+
+Verified Experience Distiller skills now receive conservative candidate `ARSENAL.json` files automatically, so learned procedures become searchable without self-authorizing a no-frontier action. Verified distilled lessons can also be indexed directly in Arsenal before skill promotion; these experience matches are context-only and always continue to Jev/frontier unless a separately reviewed skill is later admitted.
+
+See [CIDM Arsenal Architecture V1](docs/ARSENAL-V1.md) and [Arsenal Manifest and Skill Admission](docs/ARSENAL-MANIFEST.md).
+
+Matt Pocock's MIT-licensed [Skills for Real Engineers](https://github.com/mattpocock/skills) are registered as a **pinned, curated Arsenal candidate source** (`arsenal/sources/matt-pocock.json`). The accompanying importer previews by default and can stage a selected subset in **quarantine**, outside active Hermes/Claude/Codex skills directories:
+
+```bash
+python scripts/arsenal_import_matt_pocock.py --source-root ./matt-pocock-skills
+# After verifying the exact pinned checkout and reviewing the dry-run:
+python scripts/arsenal_import_matt_pocock.py --source-root ./matt-pocock-skills --install
+```
+
+Read [Matt Pocock Arsenal adoption and pinned setup](docs/MATT-POCOCK-ARSENAL.md) before use. Candidate import does not activate the skill in Hermes. Workflow/router/subagent skills never supersede Jev/CIDM authority.
+
+Optional CPU semantic ranking remains separate from the required stdlib path:
+
+```bash
+pip install -r requirements-arsenal-semantic.txt
+
+python scripts/arsenal_semantic.py build \
+  --model BAAI/bge-small-en-v1.5
+
+python scripts/arsenal_semantic.py query \
+  --task "Protected content remains visible while logged out" \
+  --model BAAI/bge-small-en-v1.5 \
+  --reranker-model Xenova/ms-marco-MiniLM-L-6-v2
+```
+
+For calibration, run the local router in Shadow Mode. It fuses registry and optional semantic evidence but **does not bypass Jev or a frontier worker**:
+
+```bash
+python scripts/arsenal_shadow.py \
+  --task "Protected content remains visible while logged out" \
+  --project-scope wordpress \
+  --bug-key wordpress.memberpress.logged_out_visibility \
+  --operation inspect_content
+```
+
+Shadow observations default to `~/.jev/arsenal/shadow.jsonl`. V1 Fast Path execution remains disabled until these predictions are evaluated against real outcomes.
+
+Phase A2 adds an **opt-in, append-only calibration ledger**: `scripts/arsenal_calibration.py` records local predictions and observed broker outcomes, then scores only independently reviewed, non-simulated, audited runs. Add `--arsenal-calibration-ledger ~/.jev/arsenal/calibration.jsonl` alongside `--arsenal-shadow` on a native broker run. It never enables a no-frontier execution path.
+
+See [Arsenal A2 calibration and reviewer workflow](docs/ARSENAL-CALIBRATION.md).
 
 ## Authorship and attribution
 

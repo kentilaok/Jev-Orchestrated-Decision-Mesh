@@ -1280,6 +1280,21 @@ Jev -> Hermes
 16. Negative-transfer measurement when a local match later fails.
 17. Establish calibrated promotion thresholds before enabling any non-exact Fast Path class.
 
+### Phase A2 — calibration and independent outcome review (experimental)
+
+The first shadow-calibration implementation lives in `scripts/arsenal_calibration.py` and `docs/ARSENAL-CALIBRATION.md`.
+
+- Native broker opt-in `--arsenal-calibration-ledger` records an **unchanged-before-execution** shadow prediction and a separate real-run summary.
+- Appended predictions, runtime facts and operator-review verdicts bind to the same run ID and input snapshot hash.
+- Prompt text is not duplicated in the calibration ledger; source evidence remains in its owning broker/CI journal.
+- A reviewed outcome must cite evidence and a reviewer identity. The current tool stores those assertions but does not independently retrieve or cryptographically verify the evidence.
+- Simulated, unaudited or unlabelled runs are excluded from quality scores.
+- Counterfactual token savings are deliberately unknown; no model calls are actually avoided by shadow instrumentation.
+- Skills and experience matches remain context until separately admitted; automatic Fast Path execution remains disabled.
+- Next: execute regression suite in CI, collect frozen real-task observations, and calibrate safety thresholds before considering any executable Fast Path.
+
+See [Arsenal Phase A2 Calibration](ARSENAL-CALIBRATION.md).
+
 ### Phase B — frontier adapter safety
 
 14. Finalize the `FrontierProvider` adapter contract.

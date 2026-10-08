@@ -14,6 +14,7 @@ from atomic_mesh import MeshError, fingerprint, packed, require
 from checked_network import CheckedNetwork, Unit, blind
 from config import RunConfig
 from fused_checked_network import FusedCheckedNetwork
+from recovery_protocol import RecoverySupervisor, build_recovery_network
 from transport import CHECK_SCHEMA, Gateway
 
 
@@ -109,12 +110,15 @@ def artifact_schema(source_ids):
 
 class NativeTransitionBroker:
     def __init__(self, adapter, judge, config, folder, *, simulation=False,
-                 gate_policy='legacy'):
+                 gate_policy='legacy', arsenal_observer=None):
         require(isinstance(config, RunConfig), 'validated_run_config_required')
-        require(gate_policy in ('legacy', 'fused'), 'invalid_native_gate_policy')
+        require(gate_policy in ('legacy', 'fused', 'recovery'), 'invalid_native_gate_policy')
         self.adapter, self.judge, self.config = adapter, judge, config
         self.folder, self.simulation = Path(folder), simulation
         self.gate_policy = gate_policy
+        require(arsenal_observer is None or callable(arsenal_observer),
+                'invalid_arsenal_observer')
+        self.arsenal_observer = arsenal_observer
         self.calls = []
         self.worker_count = 0
         self.checker_count = 0
@@ -224,7 +228,9 @@ class NativeTransitionBroker:
         events = network_result.get('events', [])
         calls = self.calls
         fused = network_result.get('protocol_version') == 'cidm-fused-review-v1'
-        entry_phase = 'authorize_first_unit' if fused else 'project_route'
+        recovery = network_result.get('protocol_version') == 'cidm-recovery-first-v1'
+        entry_phase = ('authorize_first_unit' if fused else
+                       'authorize_unit' if recovery else 'project_route')
         if not calls or calls[0].get('role') != 'jev' or calls[0].get('phase') != entry_phase:
             issues.append('missing_entry_jev')
         if any(call.get('status') != 'ok' for call in calls):
@@ -240,13 +246,13 @@ class NativeTransitionBroker:
                 issues.append('native_return_without_jev_' + call['role'])
         decision_events = [event for event in events if event['kind'] == 'jev_decision']
         jev_calls = [call for call in calls if call['role'] == 'jev']
-        network_jev_calls = jev_calls if fused else jev_calls[1:]
+        network_jev_calls = jev_calls if (fused or recovery) else jev_calls[1:]
         for call, event in zip(network_jev_calls, decision_events):
             if (call.get('phase') != event.get('phase')
                     or call.get('choice') != event.get('decision', {}).get('choice')):
                 issues.append('jev_call_event_binding_mismatch')
-        if not fused and jev_calls and (jev_calls[0].get('choice') !=
-                                       network_result.get('entry_decision', {}).get('choice')):
+        if not (fused or recovery) and jev_calls and (jev_calls[0].get('choice') !=
+                                                     network_result.get('entry_decision', {}).get('choice')):
             issues.append('entry_jev_choice_mismatch')
         decisions = len(decision_events)
         requested_workers = sum(
@@ -286,7 +292,7 @@ class NativeTransitionBroker:
                     or returned.get('unit_id') != unit_id
                     or call.get('artifact_hash') != fingerprint(returned.get('value'))):
                 issues.append('native_call_event_binding_mismatch')
-        if sum(call['role'] == 'jev' for call in calls) != decisions + (0 if fused else 1):
+        if sum(call['role'] == 'jev' for call in calls) != decisions + (0 if (fused or recovery) else 1):
             issues.append('jev_call_event_mismatch')
         if sum(call['role'] == 'worker' for call in calls) != requested_workers:
             issues.append('worker_call_event_mismatch')
@@ -355,6 +361,27 @@ class NativeTransitionBroker:
         def journal(event):
             with (self.folder / 'journal.jsonl').open('a', encoding='utf-8') as stream:
                 stream.write(packed(event) + '\n')
+        if self.arsenal_observer is not None:
+            try:
+                observation = self.arsenal_observer({
+                    'goal': goal,
+                    'context_hash': fingerprint(context),
+                    'source_ids': list(sources),
+                    'classification': copy.deepcopy(normalized['classification']),
+                    'task_hash': normalized['snapshot_hash'],
+                })
+                require(type(observation) is dict, 'invalid_arsenal_observation')
+                result['arsenal_shadow'] = copy.deepcopy(observation)
+                journal({'kind': 'arsenal_shadow', 'observation': observation})
+            except Exception as error:
+                result['arsenal_shadow'] = {
+                    'mode': 'shadow',
+                    'status': 'observer_error',
+                    'error_type': type(error).__name__,
+                    'authority': 'none_shadow_observation_only',
+                }
+                journal({'kind': 'arsenal_shadow_error',
+                         'error_type': type(error).__name__})
         try:
             if route == 'short_self_contained':
                 prompt = packed({'objective': 'Answer this one bounded request using only supplied evidence.',
@@ -419,16 +446,39 @@ class NativeTransitionBroker:
                                                    'Judge the local unit, not entire project completion.'})
                         return self._codex('checker', self.config.checker_model,
                                            self.config.checker_effort, prompt, CHECK_SCHEMA)
-                    network_class = (FusedCheckedNetwork if self.gate_policy == 'fused'
-                                     else CheckedNetwork)
-                    network = network_class(goal, sources, self._judge, produce, check, validate,
-                                             policy=self.config.to_dict(),
-                                             checker_identity={'model': self.config.checker_model,
-                                                               'effort': self.config.checker_effort},
-                                             worker_routes=self.config.worker_routes(),
-                                             simulation=self.simulation, journal=journal,
-                                             units=PROJECT_UNITS, deterministic_units={'input'})
-                    network_result = network.run()
+                    if self.gate_policy == 'fused':
+                        network = FusedCheckedNetwork(
+                            goal, sources, self._judge, produce, check, validate,
+                            policy=self.config.to_dict(),
+                            checker_identity={'model': self.config.checker_model,
+                                              'effort': self.config.checker_effort},
+                            worker_routes=self.config.worker_routes(),
+                            simulation=self.simulation, journal=journal,
+                            units=PROJECT_UNITS, deterministic_units={'input'})
+                        network_result = network.run()
+                    elif self.gate_policy == 'recovery':
+                        network = build_recovery_network(
+                            goal, sources, self._judge, produce, check, validate,
+                            policy=self.config.to_dict(),
+                            checker_identity={'model': self.config.checker_model,
+                                              'effort': self.config.checker_effort},
+                            worker_routes=self.config.worker_routes(),
+                            simulation=self.simulation, journal=journal,
+                            units=PROJECT_UNITS, deterministic_units={'input'})
+                        network_result = RecoverySupervisor(
+                            network,
+                            max_recovery_rounds=self.config.max_recovery_rounds,
+                        ).run()
+                    else:
+                        network = CheckedNetwork(
+                            goal, sources, self._judge, produce, check, validate,
+                            policy=self.config.to_dict(),
+                            checker_identity={'model': self.config.checker_model,
+                                              'effort': self.config.checker_effort},
+                            worker_routes=self.config.worker_routes(),
+                            simulation=self.simulation, journal=journal,
+                            units=PROJECT_UNITS, deterministic_units={'input'})
+                        network_result = network.run()
                     result.update(network_result)
                     result['route'] = route
                     if result['status'] == 'complete':
@@ -475,23 +525,69 @@ def main():
                         help='JSON goal, accepted context, sources, and fresh classification')
     parser.add_argument('--out', type=Path)
     parser.add_argument('--config', type=Path)
-    parser.add_argument('--gate-policy', choices=('legacy', 'fused'), default='legacy',
-                        help='Use the optional fused Jev gate protocol for broad requests')
+    parser.add_argument('--gate-policy', choices=('legacy', 'fused', 'recovery'), default='legacy',
+                        help='Choose legacy, fused, or recovery-first Jev gate policy for broad requests')
+    parser.add_argument('--arsenal-shadow', action='store_true',
+                        help='Record local Arsenal routing evidence without changing execution')
+    parser.add_argument('--arsenal-db', type=Path,
+                        default=Path('~/.jev/arsenal/arsenal.db').expanduser())
+    parser.add_argument('--arsenal-project-scope')
+    parser.add_argument('--arsenal-bug-key')
+    parser.add_argument('--arsenal-operation')
+    parser.add_argument('--arsenal-semantic-model')
+    parser.add_argument('--arsenal-reranker-model')
+    parser.add_argument('--arsenal-shadow-ledger', type=Path,
+                        default=Path('~/.jev/arsenal/native-shadow.jsonl').expanduser())
+    parser.add_argument('--arsenal-calibration-ledger', type=Path,
+                        help='Opt-in append-only shadow calibration; no routing changes')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
     mode.add_argument('--validate-only', action='store_true',
                       help='Validate the bounded input and report its route without model calls')
     args = parser.parse_args()
+    require(not args.arsenal_calibration_ledger or args.arsenal_shadow,
+            'calibration_requires_shadow_observer')
     spec = json.loads(args.task.read_text(encoding='utf-8-sig'))
     from codex_cli_adapter import CodexCliAdapter
     normalized = validate_spec(spec)
+    arsenal_observer = None
+    if args.arsenal_shadow:
+        from arsenal_shadow import append_ledger, run_shadow
+        def arsenal_observer(state):
+            observation = run_shadow(
+                args.arsenal_db,
+                state['goal'],
+                project_scope=args.arsenal_project_scope,
+                bug_key=args.arsenal_bug_key,
+                operation=args.arsenal_operation,
+                semantic_model=args.arsenal_semantic_model,
+                reranker_model=args.arsenal_reranker_model,
+            )
+            append_ledger(args.arsenal_shadow_ledger, observation)
+            return observation
     if args.validate_only:
-        print(packed({'route': normalized['classification']['scope'],
-                      'gate_policy': args.gate_policy,
-                      'snapshot_hash': normalized['snapshot_hash'],
-                      'source_ids': list(normalized['sources']),
-                      'model_calls': 0}))
+        output = {'route': normalized['classification']['scope'],
+                  'gate_policy': args.gate_policy,
+                  'snapshot_hash': normalized['snapshot_hash'],
+                  'source_ids': list(normalized['sources']),
+                  'model_calls': 0}
+        if arsenal_observer is not None:
+            try:
+                output['arsenal_shadow'] = arsenal_observer({
+                    'goal': normalized['goal'],
+                    'context_hash': fingerprint(normalized['context']),
+                    'source_ids': list(normalized['sources']),
+                    'classification': copy.deepcopy(normalized['classification']),
+                    'task_hash': normalized['snapshot_hash'],
+                })
+            except Exception as error:
+                output['arsenal_shadow'] = {
+                    'mode': 'shadow', 'status': 'observer_error',
+                    'error_type': type(error).__name__,
+                    'authority': 'none_shadow_observation_only',
+                }
+        print(packed(output))
         return 0
     require(args.out is not None, 'output_directory_required_for_live_run')
     config = RunConfig.from_dict(json.loads(args.config.read_text(encoding='utf-8-sig'))
@@ -505,7 +601,8 @@ def main():
         return gateway.network_judge(phase, options, state)
     broker = NativeTransitionBroker(
         CodexCliAdapter(astra_explicitly_authorized=config.astra_explicitly_authorized),
-        judge, config, args.out, gate_policy=args.gate_policy)
+        judge, config, args.out, gate_policy=args.gate_policy,
+        arsenal_observer=arsenal_observer)
     result = broker.run(spec)
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []
     result['jev_provider_events'] = provider_events
@@ -514,6 +611,33 @@ def main():
         if all(type(event.get('usage')) is dict
                and type(event['usage'].get('cost')) in (int, float)
                for event in provider_events) else None)
+    if args.arsenal_calibration_ledger:
+        # The calibration ledger observes completed executions only; it is
+        # intentionally not consulted by Jev, the adapter, or validators.
+        try:
+            from arsenal_calibration import (
+                append_event, hash_id, prediction_event, read_events, runtime_event,
+            )
+            run_id = 'native-' + hash_id(
+                str(args.out.resolve()) + ':' + result['task_hash']
+            )[:24]
+            observation = result.get('arsenal_shadow')
+            prediction = prediction_event(run_id, result['task_hash'], observation)
+            actual = runtime_event(run_id, result)
+            previous = read_events(args.arsenal_calibration_ledger)
+            if any(item['run_id'] == run_id for item in previous):
+                raise ValueError('duplicate_or_partial_calibration_run')
+            append_event(args.arsenal_calibration_ledger, prediction)
+            append_event(args.arsenal_calibration_ledger, actual)
+            result['arsenal_calibration'] = {
+                'status': 'recorded', 'run_id': run_id, 'authority': 'none',
+            }
+        except Exception as error:
+            result['arsenal_calibration'] = {
+                'status': 'record_failed',
+                'error_type': type(error).__name__,
+                'authority': 'none',
+            }
     (args.out / 'result.json').write_text(json.dumps(result, indent=2, allow_nan=False),
                                           encoding='utf-8')
     print(packed({'status': result['status'], 'route': result['route'],
