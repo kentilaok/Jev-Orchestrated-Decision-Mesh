@@ -134,6 +134,8 @@ class ArsenalCalibrationTests(unittest.TestCase):
         self.assertEqual(scored["summary"]["hypothetically_avoidable_calls"], 1)
         self.assertEqual(scored["metrics"]["fast_path_precision"], 1.0)
         self.assertEqual(scored["realized_frontier_calls_avoided"], 0)
+        self.assertFalse(scored["fast_path_enablement_allowed"])
+        self.assertFalse(scored["promotion_ready"])
         self.assertIsNone(scored["estimated_token_savings"])
 
     def test_wrong_skill_prediction_is_unsafe_even_if_other_skill_was_safe(self):
