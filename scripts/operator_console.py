@@ -65,6 +65,9 @@ DEFAULT_CONFIG = {
     "decision_policy": "jev-managed",
     "evidence_policy": "required",
     "depth": "balanced",
+    "trusted_mcp_servers": [],
+    "content_policy": "off",
+    "require_action_approval": False,
 }
 
 
@@ -77,9 +80,43 @@ def _merge_config(raw: dict | None) -> dict:
             for provider, provider_cfg in value.items():
                 if provider in data["providers"] and isinstance(provider_cfg, dict):
                     data["providers"][provider].update(provider_cfg)
+        elif key == "content_policy":
+            if value not in ("off", "audit", "wrap"):
+                raise ValueError("content_policy must be 'off', 'audit', or 'wrap'")
+            data[key] = value
+        elif key == "require_action_approval":
+            if not isinstance(value, bool):
+                raise ValueError("require_action_approval must be a boolean")
+            data[key] = value
+        elif key == "trusted_mcp_servers":
+            if not isinstance(value, list):
+                raise ValueError("trusted_mcp_servers must be a list of strings")
+            if not all(isinstance(x, str) and x for x in value):
+                raise ValueError("trusted_mcp_servers entries must be non-empty strings")
+            data[key] = list(value)
         elif key in data:
             data[key] = value
     return data
+
+
+def list_approvals(config: dict) -> dict:
+    """Return pending/decided approval records under runs/approvals/."""
+    folder = Path(config["runs_directory"]) / "approvals"
+    pending, decided = [], []
+    if not folder.is_dir():
+        return {"pending": pending, "decided": decided}
+    for path in folder.glob("*.json"):
+        if path.suffix == ".tmp":
+            continue
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        bucket = pending if record.get("status") == "pending" else decided
+        bucket.append(record)
+    pending.sort(key=lambda r: r.get("created", 0))
+    decided.sort(key=lambda r: r.get("decided_at", r.get("created", 0)))
+    return {"pending": pending, "decided": decided}
 
 
 class StateStore:
@@ -1058,6 +1095,8 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_json(run_telemetry(config, path.split("/")[3], otlp=True))
             elif path.startswith("/api/jobs/"):
                 self.send_json(JOBS.status(path.split("/")[3]))
+            elif path == "/api/approvals":
+                self.send_json(list_approvals(config))
             elif path.startswith("/api/"):
                 self.send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
             else:
