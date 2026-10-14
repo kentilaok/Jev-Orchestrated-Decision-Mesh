@@ -278,8 +278,21 @@ def client_for(spec: dict, *, timeout: float = 30):
 
 # ---------------------------------------------------------------- catalogue
 
-def classify(server: str, tool: dict) -> tuple[str, str]:
-    """Return (access_class, basis). Unknown never defaults to read."""
+def classify(server: str, tool: dict, *, trusted_servers=None) -> tuple[str, str]:
+    """Return (access_class, basis). Unknown never defaults to read.
+
+    `trusted_servers` is an opt-in trust gate (P0-05): when supplied, servers
+    not in the set have their 'read'-via-annotation inference demoted to
+    'unknown' because a malicious server could lie about `readOnlyHint`.
+    Destructive-hint claims are kept — a lying server can only *restrict*
+    capability by over-reporting destructiveness, so trusting that direction
+    is safe. Builtin profiles (reviewed at merge time) are owner-vetted and
+    classify ahead of the trust gate. Owner overrides from
+    `McpCatalog.set_access` still win in `McpCatalog.access`.
+
+    When `trusted_servers is None` (default), the legacy trust-the-server
+    posture is preserved for backward compatibility with existing callers.
+    """
     name = tool.get("name", "")
     for key, profile in PROFILES.items():
         if key in server.lower():
@@ -291,6 +304,8 @@ def classify(server: str, tool: dict) -> tuple[str, str]:
     if hints.get("destructiveHint") is True or hints.get("readOnlyHint") is False:
         return "mutate", "server_annotations"
     if hints.get("readOnlyHint") is True and hints.get("openWorldHint") is not True:
+        if trusted_servers is not None and server not in trusted_servers:
+            return "unknown", "untrusted_server_readonly_hint_ignored"
         return "read", "server_annotations"
     return "unknown", "unclassified"
 
@@ -330,7 +345,7 @@ class McpCatalog:
     def __exit__(self, *_):
         self.db.close()
 
-    def ingest(self, spec: dict, tools: list[dict]) -> dict:
+    def ingest(self, spec: dict, tools: list[dict], *, trusted_servers=None) -> dict:
         require(isinstance(tools, list) and len(tools) <= 2000, "mcp_tool_list_too_large")
         rows = []
         for tool in tools:
@@ -338,7 +353,7 @@ class McpCatalog:
             if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z0-9_.:/-]{1,128}", name):
                 continue
             schema = tool.get("inputSchema") if isinstance(tool.get("inputSchema"), dict) else {}
-            access, basis = classify(spec["name"], tool)
+            access, basis = classify(spec["name"], tool, trusted_servers=trusted_servers)
             rows.append((spec["name"], name, str(tool.get("title") or "")[:200],
                          str(tool.get("description") or "")[:4000], canonical(schema), digest(schema),
                          canonical(tool.get("annotations") or {}), access, basis,
