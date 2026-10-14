@@ -259,6 +259,174 @@ class StreamingTests(unittest.TestCase):
             self.assertEqual(response["object"], "chat.completion")
 
 
+class StrongPermitApprovalTests(unittest.TestCase):
+    """Slice 4: strong requests (destructive/high-spend) emit an approval URL and
+    create a pending approval record. The GET /approve/<token> page shows the
+    request; POST /api/approvals/<token> flips the status."""
+
+    def _cfg(self, root: Path):
+        return console._merge_config({"runs_directory": str(root / "runs")})
+
+    def test_classifier_flags_destructive_keywords(self):
+        self.assertEqual(console._classify_strength("delete the production table", ""), "strong")
+        self.assertEqual(console._classify_strength("drop database users", ""), "strong")
+        self.assertEqual(console._classify_strength("deploy to prod", ""), "strong")
+        self.assertEqual(console._classify_strength("spend $500 on ads", ""), "strong")
+
+    def test_classifier_leaves_benign_requests_as_normal(self):
+        self.assertEqual(console._classify_strength("summarise this document", ""), "normal")
+        self.assertEqual(console._classify_strength("plan the slice", "no context"), "normal")
+
+    def test_classifier_respects_explicit_opt_in(self):
+        self.assertEqual(
+            console._classify_strength("read a file", "", explicit_strong=True), "strong")
+
+    def test_strong_request_creates_pending_approval_record(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            response = console.chat_completions(
+                {"model": "cidm-jev",
+                 "messages": [{"role": "user", "content": "delete all logs from prod"}]}, cfg)
+            self.assertEqual(response["cidm"]["status"], "pending_approval")
+            token = response["cidm"]["approval_token"]
+            self.assertTrue(token and isinstance(token, str) and len(token) >= 16)
+            path = Path(cfg["runs_directory"]) / "approvals" / (token + ".json")
+            self.assertTrue(path.is_file())
+            record = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(record["status"], "pending")
+            self.assertIn("delete all logs", record["goal"])
+            self.assertIn(record["thread_id"], response["cidm"]["thread_id"])
+
+    def test_strong_response_contains_approval_url(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            response = console.chat_completions(
+                {"model": "cidm-jev",
+                 "messages": [{"role": "user", "content": "drop the users table"}]}, cfg)
+            content = response["choices"][0]["message"]["content"]
+            token = response["cidm"]["approval_token"]
+            self.assertIn("http://127.0.0.1:8765/approve/" + token, content)
+            self.assertIn("Approval required", content)
+
+    def test_strong_stream_closes_with_pending_marker(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            events = list(console.chat_completions_stream(
+                {"model": "cidm-jev",
+                 "messages": [{"role": "user", "content": "deploy latest to prod"}]}, cfg))
+            self.assertEqual(events[-1], "data: [DONE]\n\n")
+            # The closing chunk before [DONE] should carry a pending_approval signal.
+            closing = json.loads(events[-2][len("data: "):].rstrip("\n"))
+            self.assertEqual(closing["cidm"]["status"], "pending_approval")
+            self.assertTrue(closing["cidm"]["approval_token"])
+
+    def test_record_approval_decision_updates_status(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            response = console.chat_completions(
+                {"model": "cidm-jev",
+                 "messages": [{"role": "user", "content": "delete the stale runs"}]}, cfg)
+            token = response["cidm"]["approval_token"]
+            record = console._record_approval_decision(token, cfg, decision="approve",
+                                                       operator="ken@local")
+            self.assertEqual(record["status"], "approved")
+            self.assertEqual(record["operator"], "ken@local")
+
+    def test_record_approval_decision_rejects_unknown_token(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            with self.assertRaises(ValueError):
+                console._record_approval_decision("nope-nope", cfg, decision="approve",
+                                                  operator="ken@local")
+
+
+class StrongPermitHttpTests(unittest.TestCase):
+    """Slice 4 HTTP side: GET /approve/<token> renders a page; POST /api/approvals/<token>
+    flips the status (operator action, loopback + Console-CSRF guarded)."""
+
+    API_KEY = "test-key-slice4"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        root = Path(cls.temp.name)
+        (root / "runs").mkdir()
+        state = console.StateStore(root / "state.json")
+        state.save({"runs_directory": str(root / "runs"), "arsenal_db": str(root / "none.db"),
+                    "calibration_ledger": str(root / "none.jsonl"), "mcp_db": str(root / "mcp.db"),
+                    "skills_source": str(root / "skills"), "project_directory": str(root),
+                    "hermes_dashboard_url": "http://127.0.0.1:9"})
+        console.Handler.store = state
+        cls._prior = os.environ.get("CIDM_API_KEY")
+        os.environ["CIDM_API_KEY"] = cls.API_KEY
+        cls.server = ThreadingHTTPServer(("127.0.0.1", 0), console.Handler)
+        console.Handler.port = cls.server.server_address[1]
+        cls.port = cls.server.server_address[1]
+        threading.Thread(target=cls.server.serve_forever, daemon=True).start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.server.shutdown()
+        cls.server.server_close()
+        cls.temp.cleanup()
+        if cls._prior is None:
+            os.environ.pop("CIDM_API_KEY", None)
+        else:
+            os.environ["CIDM_API_KEY"] = cls._prior
+
+    def _request(self, method, path, body=None, headers=None):
+        connection = HTTPConnection("127.0.0.1", self.port, timeout=15)
+        hdrs = {"Host": "127.0.0.1:%d" % self.port}
+        if body is not None:
+            hdrs["Content-Type"] = "application/json"
+        hdrs.update(headers or {})
+        connection.request(method, path, body=(json.dumps(body) if body is not None else None),
+                           headers=hdrs)
+        response = connection.getresponse()
+        data = response.read()
+        connection.close()
+        return response, data
+
+    def _create_pending_token(self):
+        connection = HTTPConnection("127.0.0.1", self.port, timeout=15)
+        connection.request("POST", "/v1/chat/completions",
+                           body=json.dumps({"model": "cidm-jev",
+                                            "messages": [{"role": "user", "content": "drop prod"}]}),
+                           headers={"Host": "127.0.0.1:%d" % self.port,
+                                    "Content-Type": "application/json",
+                                    "Authorization": "Bearer " + self.API_KEY})
+        response = connection.getresponse()
+        body = json.loads(response.read())
+        connection.close()
+        return body["cidm"]["approval_token"]
+
+    def test_approve_page_returns_html_for_known_token(self):
+        token = self._create_pending_token()
+        response, data = self._request("GET", "/approve/" + token)
+        self.assertEqual(response.status, 200)
+        self.assertIn("text/html", response.headers.get("Content-Type", ""))
+        self.assertIn(token.encode(), data)
+
+    def test_approve_page_404_for_unknown_token(self):
+        response, _ = self._request("GET", "/approve/does-not-exist")
+        self.assertEqual(response.status, 404)
+
+    def test_approvals_post_requires_console_csrf_header(self):
+        token = self._create_pending_token()
+        response, _ = self._request("POST", "/api/approvals/" + token,
+                                    body={"decision": "approve", "operator": "ken"})
+        self.assertEqual(response.status, 403)
+
+    def test_approvals_post_approves_and_persists_status(self):
+        token = self._create_pending_token()
+        response, data = self._request("POST", "/api/approvals/" + token,
+                                       body={"decision": "approve", "operator": "ken"},
+                                       headers={"X-CIDM-Console": "1"})
+        self.assertEqual(response.status, 200)
+        record = json.loads(data)
+        self.assertEqual(record["status"], "approved")
+
+
 class ChatCompletionsHttpTests(unittest.TestCase):
     """End-to-end HTTP tests: Hermes-shaped request → OpenAI response via the real Handler."""
 

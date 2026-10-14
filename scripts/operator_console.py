@@ -578,6 +578,83 @@ def validate_broker_request(payload: dict, config: dict) -> dict:
 
 CHAT_MODELS = ("cidm-jev",)
 
+STRONG_KEYWORDS = (
+    "delete", "drop ", "destroy", "wipe", "remove", "truncate",
+    "deploy", "prod", "production",
+    "spend", "charge", "purchase", "pay",
+    "rm -rf", "force-push", "force push",
+)
+
+
+def _classify_strength(goal: str, context: str, *, explicit_strong: bool = False) -> str:
+    """Return 'strong' if the request looks like it would mutate production or
+    spend money above the implicit cap; 'normal' otherwise. Deliberately
+    conservative: a false positive forces an explicit approval (safe), a false
+    negative loses the gate. The explicit_strong flag always wins."""
+    if explicit_strong:
+        return "strong"
+    haystack = (" " + str(goal).lower() + " " + str(context).lower() + " ")
+    for word in STRONG_KEYWORDS:
+        if word in haystack:
+            return "strong"
+    return "normal"
+
+
+_APPROVAL_LOCKS: dict[str, threading.Lock] = {}
+_APPROVAL_LOCKS_GUARD = threading.Lock()
+
+
+def _approval_lock(token: str) -> threading.Lock:
+    with _APPROVAL_LOCKS_GUARD:
+        lock = _APPROVAL_LOCKS.get(token)
+        if lock is None:
+            lock = threading.Lock()
+            _APPROVAL_LOCKS[token] = lock
+        return lock
+
+
+def _approvals_dir(config: dict) -> Path:
+    path = Path(config["runs_directory"]) / "approvals"
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def _create_approval_token(config: dict, thread_id: str, goal: str,
+                           provider: str, gate_policy: str) -> str:
+    token = uuid.uuid4().hex
+    record = {"token": token, "status": "pending", "created": int(time.time()),
+              "thread_id": thread_id, "goal": goal[:400],
+              "provider": provider, "gate_policy": gate_policy}
+    target = _approvals_dir(config) / (token + ".json")
+    tmp = target.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(record, indent=2), encoding="utf-8")
+    os.replace(tmp, target)
+    return token
+
+
+def _record_approval_decision(token: str, config: dict, *, decision: str,
+                              operator: str) -> dict:
+    if decision not in ("approve", "reject"):
+        raise ValueError("decision must be 'approve' or 'reject'")
+    if not operator or not operator.strip():
+        raise ValueError("operator id is required")
+    target = _approvals_dir(config) / (token + ".json")
+    with _approval_lock(token):
+        if not target.is_file():
+            raise ValueError("unknown approval token")
+        record = json.loads(target.read_text(encoding="utf-8"))
+        record["status"] = "approved" if decision == "approve" else "rejected"
+        record["operator"] = operator.strip()
+        record["decided_at"] = int(time.time())
+        tmp = target.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(record, indent=2), encoding="utf-8")
+        os.replace(tmp, target)
+        return record
+
+
+def _approval_url(token: str) -> str:
+    return "http://127.0.0.1:8765/approve/" + token
+
 
 def _first_user_content(messages: list) -> str:
     """Return the content of the first user message with non-empty content, or ''."""
@@ -694,17 +771,45 @@ def _prepare_chat_run(payload: dict, config: dict) -> dict:
     thread_id = _derive_thread_id(payload["messages"])
     journal, turn = _record_thread_turn(thread_id, config, goal,
                                         broker_payload["provider"], broker_payload["gate_policy"])
-    summary_lines = [
-        "[CIDM validate] Request accepted; no model calls were made.",
-        "Thread: %s (turn journal: %s)" % (thread_id, journal.name),
-        "Provider: %s" % broker_payload["provider"],
-        "Gate policy: %s" % broker_payload["gate_policy"],
-        "Route hint: %s" % route_hint,
-        "Goal: %s" % goal[:400],
-    ]
+    strength = _classify_strength(goal, context,
+                                  explicit_strong=bool(payload.get("cidm_strong")))
+    approval_token = None
+    if strength == "strong":
+        approval_token = _create_approval_token(config, thread_id, goal,
+                                                broker_payload["provider"],
+                                                broker_payload["gate_policy"])
+        summary_lines = [
+            "[CIDM] Approval required before this request can proceed.",
+            "Thread: %s (turn %d)" % (thread_id, turn),
+            "Classification: strong (keyword or opt-in)",
+            "Goal: %s" % goal[:400],
+            "",
+            "Approve or reject in the Operator Console:",
+            _approval_url(approval_token),
+        ]
+    else:
+        summary_lines = [
+            "[CIDM validate] Request accepted; no model calls were made.",
+            "Thread: %s (turn journal: %s)" % (thread_id, journal.name),
+            "Provider: %s" % broker_payload["provider"],
+            "Gate policy: %s" % broker_payload["gate_policy"],
+            "Route hint: %s" % route_hint,
+            "Goal: %s" % goal[:400],
+        ]
     return {"model": model, "goal": goal, "broker_payload": broker_payload,
             "route_hint": route_hint, "thread_id": thread_id, "turn": turn,
+            "strength": strength, "approval_token": approval_token,
             "final_content": "\n".join(summary_lines)}
+
+
+def _cidm_envelope(prep: dict) -> dict:
+    body = {"thread_id": prep["thread_id"], "turn": prep["turn"],
+            "status": "pending_approval" if prep["strength"] == "strong" else "ok",
+            "mode": "validate"}
+    if prep["approval_token"]:
+        body["approval_token"] = prep["approval_token"]
+        body["approval_url"] = _approval_url(prep["approval_token"])
+    return body
 
 
 def chat_completions(payload: dict, config: dict) -> dict:
@@ -719,7 +824,7 @@ def chat_completions(payload: dict, config: dict) -> dict:
         "choices": [{"index": 0, "message": {"role": "assistant", "content": prep["final_content"]},
                      "finish_reason": "stop"}],
         "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
-        "cidm": {"thread_id": prep["thread_id"], "mode": "validate", "turn": prep["turn"]},
+        "cidm": _cidm_envelope(prep),
     }
 
 
@@ -739,18 +844,23 @@ def chat_completions_stream(payload: dict, config: dict):
     stream_id = "chatcmpl-" + uuid.uuid4().hex[:24]
     created = int(time.time())
 
+    envelope = _cidm_envelope(prep)
+
     def chunk(delta: dict, finish: str | None = None) -> dict:
         return {"id": stream_id, "object": "chat.completion.chunk", "created": created,
                 "model": prep["model"],
                 "choices": [{"index": 0, "delta": delta, "finish_reason": finish}],
-                "cidm": {"thread_id": prep["thread_id"], "mode": "validate", "turn": prep["turn"]}}
+                "cidm": envelope}
 
     yield _sse(chunk({"role": "assistant"}))
     yield _sse(chunk({"content": "[CIDM] starting (thread %s, turn %d)\n" % (
         prep["thread_id"], prep["turn"])}))
-    yield _sse(chunk({"content": "[CIDM] validating request against gate policy '%s'...\n" %
-                      prep["broker_payload"]["gate_policy"]}))
-    yield _sse(chunk({"content": "[CIDM] plan ready (route hint: %s)\n\n" % prep["route_hint"]}))
+    if prep["strength"] == "strong":
+        yield _sse(chunk({"content": "[CIDM] classified as STRONG; approval required\n"}))
+    else:
+        yield _sse(chunk({"content": "[CIDM] validating request against gate policy '%s'...\n" %
+                          prep["broker_payload"]["gate_policy"]}))
+        yield _sse(chunk({"content": "[CIDM] plan ready (route hint: %s)\n\n" % prep["route_hint"]}))
     yield _sse(chunk({"content": prep["final_content"]}))
     yield _sse(chunk({}, finish="stop"))
     yield "data: [DONE]\n\n"
@@ -880,6 +990,15 @@ class Handler(SimpleHTTPRequestHandler):
             return False
         return True
 
+    def _send_html(self, html: str, status=HTTPStatus.OK):
+        raw = html.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(raw)))
+        self.end_headers()
+        self.wfile.write(raw)
+
     def do_GET(self):
         if not self._guard(post=False):
             return
@@ -888,6 +1007,33 @@ class Handler(SimpleHTTPRequestHandler):
         query = urlparse.parse_qs(parsed.query)
         path = parsed.path
         try:
+            if path.startswith("/approve/"):
+                token = path[len("/approve/"):].strip("/")
+                target = _approvals_dir(config) / (token + ".json")
+                if not token or not target.is_file():
+                    self._send_html("<h1>Approval not found</h1>", HTTPStatus.NOT_FOUND)
+                    return
+                record = json.loads(target.read_text(encoding="utf-8"))
+                # Minimal, self-contained page. The actual approve/reject POST
+                # uses /api/approvals/<token> and the Operator Console form.
+                safe_goal = (record.get("goal") or "").replace("<", "&lt;").replace(">", "&gt;")
+                html = (
+                    "<!doctype html><html><head><meta charset='utf-8'>"
+                    "<title>CIDM approval " + token[:8] + "</title></head>"
+                    "<body style='font-family:system-ui;margin:2em;max-width:40em'>"
+                    "<h1>CIDM Strong-Permit Approval</h1>"
+                    "<p><b>Token:</b> " + token + "</p>"
+                    "<p><b>Status:</b> " + record["status"] + "</p>"
+                    "<p><b>Thread:</b> " + record["thread_id"] + "</p>"
+                    "<p><b>Provider:</b> " + record["provider"] + "</p>"
+                    "<p><b>Gate policy:</b> " + record["gate_policy"] + "</p>"
+                    "<p><b>Goal:</b></p><pre>" + safe_goal + "</pre>"
+                    "<p>Open the Operator Console, confirm the request, and POST to "
+                    "<code>/api/approvals/" + token + "</code> with "
+                    "<code>{&quot;decision&quot;:&quot;approve&quot;,&quot;operator&quot;:&quot;you&quot;}</code>.</p>"
+                    "</body></html>")
+                self._send_html(html)
+                return
             if path == "/api/state":
                 self.send_json({"config": config, "runtime": {"hermes": hermes_status(config)},
                                 "skills": merged_skills(config)})
@@ -1001,6 +1147,12 @@ class Handler(SimpleHTTPRequestHandler):
                 if payload.get("confirm_start_server") is not True:
                     raise ValueError("refreshing starts the configured MCP server process; confirm_start_server is required")
                 self.send_json(mcp_refresh(config, str(payload.get("server") or "")))
+            elif path.startswith("/api/approvals/"):
+                token = path[len("/api/approvals/"):].strip("/")
+                decision = str(payload.get("decision") or "").strip()
+                operator = str(payload.get("operator") or "").strip()
+                self.send_json(_record_approval_decision(token, config,
+                                                         decision=decision, operator=operator))
             else:
                 self.send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
         except (ValueError, json.JSONDecodeError) as exc:
