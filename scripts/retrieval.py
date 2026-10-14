@@ -424,10 +424,14 @@ class RetrievalEvidenceRetriever:
     """RecoverySupervisor evidence callback over the local hybrid index."""
 
     def __init__(self, index: LocalHybridIndex, authority: PermitAuthority, *, namespace: str = "default",
-                 k: int = 2, max_calls: int = 3, access_groups=None, **search_options):
+                 k: int = 2, max_calls: int = 3, access_groups=None,
+                 content_policy: str = "off", **search_options):
         require(1 <= k <= 4 and 1 <= max_calls <= 8, "invalid_retrieval_bounds")
+        if content_policy not in ("off", "audit", "wrap"):
+            raise ValueError("content_policy must be 'off', 'audit', or 'wrap'")
         self.index, self.authority, self.namespace, self.k = index, authority, namespace, k
         self.max_calls, self.access_groups, self.options = max_calls, access_groups, search_options
+        self.content_policy = content_policy
         self.receipts: list[dict] = []
 
     def __call__(self, packet: dict) -> dict | None:
