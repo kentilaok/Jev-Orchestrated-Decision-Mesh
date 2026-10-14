@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
+import html as html_mod
 import json
 import os
 from pathlib import Path
@@ -575,6 +577,301 @@ def validate_broker_request(payload: dict, config: dict) -> dict:
     return {"validated": json.loads(proc.stdout.strip().splitlines()[-1]), "request": request}
 
 
+CHAT_MODELS = ("cidm-jev",)
+
+STRONG_KEYWORDS = (
+    "delete", "drop ", "destroy", "wipe", "remove", "truncate",
+    "update ", "alter", "shutdown", "revoke", "rotate", "grant",
+    "deploy", "prod", "production", "merge to main", "force-push", "force push",
+    "spend", "charge", "purchase", "pay", "rm -rf",
+)
+
+
+def _classify_strength(goal: str, context: str, *, explicit_strong: bool = False) -> str:
+    """Return 'strong' if the request looks like it would mutate production or
+    spend money above the implicit cap; 'normal' otherwise. Deliberately
+    conservative: a false positive forces an explicit approval (safe), a false
+    negative loses the gate. The explicit_strong flag always wins."""
+    if explicit_strong:
+        return "strong"
+    haystack = (" " + str(goal).lower() + " " + str(context).lower() + " ")
+    for word in STRONG_KEYWORDS:
+        if word in haystack:
+            return "strong"
+    return "normal"
+
+
+_APPROVAL_LOCKS: dict[str, threading.Lock] = {}
+_APPROVAL_LOCKS_GUARD = threading.Lock()
+
+
+def _approval_lock(token: str) -> threading.Lock:
+    with _APPROVAL_LOCKS_GUARD:
+        lock = _APPROVAL_LOCKS.get(token)
+        if lock is None:
+            lock = threading.Lock()
+            _APPROVAL_LOCKS[token] = lock
+        return lock
+
+
+def _approvals_dir(config: dict) -> Path:
+    path = Path(config["runs_directory"]) / "approvals"
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def _create_approval_token(config: dict, thread_id: str, goal: str,
+                           provider: str, gate_policy: str) -> str:
+    token = uuid.uuid4().hex
+    record = {"token": token, "status": "pending", "created": int(time.time()),
+              "thread_id": thread_id, "goal": goal[:400],
+              "provider": provider, "gate_policy": gate_policy}
+    target = _approvals_dir(config) / (token + ".json")
+    tmp = target.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(record, indent=2), encoding="utf-8")
+    os.replace(tmp, target)
+    return token
+
+
+def _record_approval_decision(token: str, config: dict, *, decision: str,
+                              operator: str) -> dict:
+    """Operator decision on a pending approval. Once decided, further
+    transitions are refused (one-shot gate). Replace the token for a new
+    request rather than re-deciding an old one."""
+    if decision not in ("approve", "reject"):
+        raise ValueError("decision must be 'approve' or 'reject'")
+    if not operator or not operator.strip():
+        raise ValueError("operator id is required")
+    target = _approvals_dir(config) / (token + ".json")
+    with _approval_lock(token):
+        if not target.is_file():
+            raise ValueError("unknown approval token")
+        record = json.loads(target.read_text(encoding="utf-8"))
+        if record["status"] != "pending":
+            raise ValueError("approval already " + record["status"] + "; token is one-shot")
+        record["status"] = "approved" if decision == "approve" else "rejected"
+        record["operator"] = operator.strip()
+        record["decided_at"] = int(time.time())
+        tmp = target.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(record, indent=2), encoding="utf-8")
+        os.replace(tmp, target)
+        return record
+
+
+def _approval_url(token: str) -> str:
+    return "http://127.0.0.1:8765/approve/" + token
+
+
+def _first_user_content(messages: list) -> str:
+    """Return the content of the first user message with non-empty content, or ''."""
+    if not isinstance(messages, list):
+        return ""
+    for item in messages:
+        if isinstance(item, dict) and item.get("role") == "user":
+            content = str(item.get("content") or "").strip()
+            if content:
+                return content
+    return ""
+
+
+def _derive_thread_id(messages: list) -> str:
+    """Stable 16-hex thread id derived from the first user message.
+
+    OpenAI chat.completions is stateless; Hermes replays the full message array
+    each turn. Hashing the first user message gives us a continuity key that
+    survives follow-up turns within the same thread. Edge case: if Hermes
+    compacts the context and drops the original first user message, the thread
+    id will change — documented in HANDOFF-HERMES-DISPATCH-SLICE-1.md.
+    """
+    seed = _first_user_content(messages).encode("utf-8")
+    return hashlib.sha256(seed).hexdigest()[:16]
+
+
+_THREAD_LOCKS: dict[str, threading.Lock] = {}
+_THREAD_LOCKS_GUARD = threading.Lock()
+
+
+def _thread_lock(thread_id: str) -> threading.Lock:
+    with _THREAD_LOCKS_GUARD:
+        lock = _THREAD_LOCKS.get(thread_id)
+        if lock is None:
+            lock = threading.Lock()
+            _THREAD_LOCKS[thread_id] = lock
+        return lock
+
+
+def _record_thread_turn(thread_id: str, config: dict, goal: str, provider: str,
+                        gate_policy: str) -> tuple[Path, int]:
+    """Append this turn to the thread journal; return (path, new_turn_count).
+
+    Concurrency: serialised by a per-thread lock so two in-flight requests on
+    the same thread_id cannot clobber each other's turns. The write is atomic:
+    we write to a sibling '.tmp' file then os.replace onto the journal path,
+    so a crash mid-write leaves the previous journal intact.
+    """
+    threads_dir = Path(config["runs_directory"]) / "threads"
+    threads_dir.mkdir(parents=True, exist_ok=True)
+    journal = threads_dir / (thread_id + ".json")
+    with _thread_lock(thread_id):
+        if journal.is_file():
+            data = json.loads(journal.read_text(encoding="utf-8"))
+        else:
+            data = {"thread_id": thread_id, "created": int(time.time()), "turns": []}
+        data["turns"].append({"ts": int(time.time()), "goal": goal[:400],
+                              "provider": provider, "gate_policy": gate_policy})
+        data["last_turn"] = data["turns"][-1]["ts"]
+        tmp = journal.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        os.replace(tmp, journal)
+        return journal, len(data["turns"])
+
+
+def _messages_to_task(messages: list) -> tuple[str, str]:
+    """Collapse OpenAI chat messages into (goal, context) for the CIDM broker.
+
+    Last user message becomes the goal; everything before it (any role) is joined
+    as context. Both are hard-capped at 1200 chars to match build_request limits.
+    """
+    if not isinstance(messages, list) or not messages:
+        raise ValueError("messages must be a non-empty list")
+    last_user_idx = None
+    for idx in range(len(messages) - 1, -1, -1):
+        item = messages[idx]
+        if isinstance(item, dict) and item.get("role") == "user" and str(item.get("content") or "").strip():
+            last_user_idx = idx
+            break
+    if last_user_idx is None:
+        raise ValueError("messages must contain at least one user message with content")
+    goal = str(messages[last_user_idx]["content"]).strip()[:1200]
+    prior = messages[:last_user_idx]
+    context_lines = []
+    for item in prior:
+        if not isinstance(item, dict):
+            continue
+        role = str(item.get("role") or "").strip()
+        content = str(item.get("content") or "").strip()
+        if not role or not content:
+            continue
+        context_lines.append("%s: %s" % (role, content))
+    context = "\n".join(context_lines)[:1200]
+    return goal, context
+
+
+def _prepare_chat_run(payload: dict, config: dict) -> dict:
+    """Validate payload and run the shared broker handshake. Returns the data
+    both chat_completions() and chat_completions_stream() need to shape output."""
+    if not isinstance(payload, dict):
+        raise ValueError("JSON object required")
+    model = str(payload.get("model") or "").strip()
+    if model not in CHAT_MODELS:
+        raise ValueError("unknown model: %r (expected one of %s)" % (model, ", ".join(CHAT_MODELS)))
+    if "messages" not in payload:
+        raise ValueError("messages field is required")
+    goal, context = _messages_to_task(payload["messages"])
+    broker_payload = {"task": goal, "context": context,
+                      "provider": payload.get("provider") or config["frontier_provider"],
+                      "gate_policy": payload.get("gate_policy") or config.get("gate_policy", "recovery")}
+    validated = validate_broker_request(broker_payload, config)
+    plan = validated.get("validated") or {}
+    route_hint = plan.get("route") or plan.get("gate_policy") or broker_payload["gate_policy"]
+    thread_id = _derive_thread_id(payload["messages"])
+    journal, turn = _record_thread_turn(thread_id, config, goal,
+                                        broker_payload["provider"], broker_payload["gate_policy"])
+    strength = _classify_strength(goal, context,
+                                  explicit_strong=bool(payload.get("cidm_strong")))
+    approval_token = None
+    if strength == "strong":
+        approval_token = _create_approval_token(config, thread_id, goal,
+                                                broker_payload["provider"],
+                                                broker_payload["gate_policy"])
+        summary_lines = [
+            "[CIDM] Approval required before this request can proceed.",
+            "Thread: %s (turn %d)" % (thread_id, turn),
+            "Classification: strong (keyword or opt-in)",
+            "Goal: %s" % goal[:400],
+            "",
+            "Approve or reject in the Operator Console:",
+            _approval_url(approval_token),
+        ]
+    else:
+        summary_lines = [
+            "[CIDM validate] Request accepted; no model calls were made.",
+            "Thread: %s (turn journal: %s)" % (thread_id, journal.name),
+            "Provider: %s" % broker_payload["provider"],
+            "Gate policy: %s" % broker_payload["gate_policy"],
+            "Route hint: %s" % route_hint,
+            "Goal: %s" % goal[:400],
+        ]
+    return {"model": model, "goal": goal, "broker_payload": broker_payload,
+            "route_hint": route_hint, "thread_id": thread_id, "turn": turn,
+            "strength": strength, "approval_token": approval_token,
+            "final_content": "\n".join(summary_lines)}
+
+
+def _cidm_envelope(prep: dict) -> dict:
+    body = {"thread_id": prep["thread_id"], "turn": prep["turn"],
+            "status": "pending_approval" if prep["strength"] == "strong" else "ok",
+            "mode": "validate"}
+    if prep["approval_token"]:
+        body["approval_token"] = prep["approval_token"]
+        body["approval_url"] = _approval_url(prep["approval_token"])
+    return body
+
+
+def chat_completions(payload: dict, config: dict) -> dict:
+    """OpenAI-compatible non-streaming handler. See _prepare_chat_run docstring."""
+    prep = _prepare_chat_run(payload, config)
+    now = int(time.time())
+    return {
+        "id": "chatcmpl-" + uuid.uuid4().hex[:24],
+        "object": "chat.completion",
+        "created": now,
+        "model": prep["model"],
+        "choices": [{"index": 0, "message": {"role": "assistant", "content": prep["final_content"]},
+                     "finish_reason": "stop"}],
+        "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+        "cidm": _cidm_envelope(prep),
+    }
+
+
+def _sse(chunk: dict) -> str:
+    return "data: " + json.dumps(chunk) + "\n\n"
+
+
+def chat_completions_stream(payload: dict, config: dict):
+    """OpenAI-compatible streaming handler.
+
+    Emits a sequence of chat.completion.chunk events ending with a
+    finish_reason=stop chunk and a [DONE] sentinel. Status chunks ("[CIDM]
+    starting", "[CIDM] validating request", "[CIDM] plan ready") appear
+    before the final content so Hermes shows progress while the broker runs.
+    """
+    prep = _prepare_chat_run(payload, config)
+    stream_id = "chatcmpl-" + uuid.uuid4().hex[:24]
+    created = int(time.time())
+
+    envelope = _cidm_envelope(prep)
+
+    def chunk(delta: dict, finish: str | None = None) -> dict:
+        return {"id": stream_id, "object": "chat.completion.chunk", "created": created,
+                "model": prep["model"],
+                "choices": [{"index": 0, "delta": delta, "finish_reason": finish}],
+                "cidm": envelope}
+
+    yield _sse(chunk({"role": "assistant"}))
+    yield _sse(chunk({"content": "[CIDM] starting (thread %s, turn %d)\n" % (
+        prep["thread_id"], prep["turn"])}))
+    if prep["strength"] == "strong":
+        yield _sse(chunk({"content": "[CIDM] classified as STRONG; approval required\n"}))
+    else:
+        yield _sse(chunk({"content": "[CIDM] validating request against gate policy '%s'...\n" %
+                          prep["broker_payload"]["gate_policy"]}))
+        yield _sse(chunk({"content": "[CIDM] plan ready (route hint: %s)\n\n" % prep["route_hint"]}))
+    yield _sse(chunk({"content": prep["final_content"]}))
+    yield _sse(chunk({}, finish="stop"))
+    yield "data: [DONE]\n\n"
+
+
 def start_resume_job(name: str, payload: dict, config: dict) -> dict:
     if payload.get("confirm_live_spend") is not True:
         raise ValueError("resuming spends Jev API credits and provider plan usage; confirm_live_spend is required")
@@ -636,6 +933,19 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(raw)
 
+    def _send_sse(self, generator):
+        """Stream SSE events to the client. Each item from the generator is a
+        pre-formatted 'data: ...\\n\\n' string. Flushes after each event so
+        Hermes receives status updates in real time."""
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", "text/event-stream; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Accel-Buffering", "no")
+        self.end_headers()
+        for event in generator:
+            self.wfile.write(event.encode("utf-8"))
+            self.wfile.flush()
+
     def read_json(self):
         size = int(self.headers.get("Content-Length") or 0)
         if size > 2_000_000:
@@ -658,6 +968,43 @@ class Handler(SimpleHTTPRequestHandler):
                 return False
         return True
 
+    def _openai_guard(self) -> bool:
+        """OpenAI-compat endpoint guard: loopback + Bearer <CIDM_API_KEY>.
+
+        Hermes (and other OpenAI-shape clients) do not send the X-CIDM-Console
+        browser-CSRF header. Instead we require Authorization: Bearer <token>
+        matched against CIDM_API_KEY in the server's environment.
+        """
+        if not host_allowed(self.headers.get("Host"), self.port):
+            self.send_json({"error": "host not allowed"}, HTTPStatus.FORBIDDEN)
+            return False
+        if "application/json" not in (self.headers.get("Content-Type") or ""):
+            self.send_json({"error": "JSON content type required"}, HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
+            return False
+        expected = os.environ.get("CIDM_API_KEY", "").strip()
+        if not expected:
+            self.send_json({"error": {"message": "CIDM_API_KEY not configured on server", "type": "auth_error"}},
+                           HTTPStatus.UNAUTHORIZED)
+            return False
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json({"error": {"message": "missing Authorization: Bearer header", "type": "auth_error"}},
+                           HTTPStatus.UNAUTHORIZED)
+            return False
+        if auth[len("Bearer "):].strip() != expected:
+            self.send_json({"error": {"message": "invalid API key", "type": "auth_error"}}, HTTPStatus.UNAUTHORIZED)
+            return False
+        return True
+
+    def _send_html(self, html: str, status=HTTPStatus.OK):
+        raw = html.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(raw)))
+        self.end_headers()
+        self.wfile.write(raw)
+
     def do_GET(self):
         if not self._guard(post=False):
             return
@@ -666,6 +1013,31 @@ class Handler(SimpleHTTPRequestHandler):
         query = urlparse.parse_qs(parsed.query)
         path = parsed.path
         try:
+            if path.startswith("/approve/"):
+                token = path[len("/approve/"):].strip("/")
+                target = _approvals_dir(config) / (token + ".json")
+                if not token or not target.is_file():
+                    self._send_html("<h1>Approval not found</h1>", HTTPStatus.NOT_FOUND)
+                    return
+                record = json.loads(target.read_text(encoding="utf-8"))
+                esc = html_mod.escape
+                html = (
+                    "<!doctype html><html><head><meta charset='utf-8'>"
+                    "<title>CIDM approval " + esc(token[:8]) + "</title></head>"
+                    "<body style='font-family:system-ui;margin:2em;max-width:40em'>"
+                    "<h1>CIDM Strong-Permit Approval</h1>"
+                    "<p><b>Token:</b> " + esc(token) + "</p>"
+                    "<p><b>Status:</b> " + esc(record["status"]) + "</p>"
+                    "<p><b>Thread:</b> " + esc(record["thread_id"]) + "</p>"
+                    "<p><b>Provider:</b> " + esc(record["provider"]) + "</p>"
+                    "<p><b>Gate policy:</b> " + esc(record["gate_policy"]) + "</p>"
+                    "<p><b>Goal:</b></p><pre>" + esc(record.get("goal") or "") + "</pre>"
+                    "<p>Open the Operator Console, confirm the request, and POST to "
+                    "<code>/api/approvals/" + esc(token) + "</code> with "
+                    "<code>{\"decision\":\"approve\",\"operator\":\"you\"}</code>.</p>"
+                    "</body></html>")
+                self._send_html(html)
+                return
             if path == "/api/state":
                 self.send_json({"config": config, "runtime": {"hermes": hermes_status(config)},
                                 "skills": merged_skills(config)})
@@ -696,6 +1068,23 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json({"error": type(exc).__name__ + ": " + str(exc)[:300]}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def do_POST(self):
+        if self.path == "/v1/chat/completions":
+            if not self._openai_guard():
+                return
+            try:
+                payload = self.read_json()
+                config = self.store.load()
+                if payload.get("stream") is True:
+                    self._send_sse(chat_completions_stream(payload, config))
+                else:
+                    self.send_json(chat_completions(payload, config))
+            except ValueError as exc:
+                self.send_json({"error": {"message": str(exc), "type": "invalid_request_error"}},
+                               HTTPStatus.BAD_REQUEST)
+            except Exception as exc:
+                self.send_json({"error": {"message": type(exc).__name__ + ": " + str(exc)[:300],
+                                          "type": "server_error"}}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            return
         if not self._guard(post=True):
             return
         try:
@@ -762,6 +1151,12 @@ class Handler(SimpleHTTPRequestHandler):
                 if payload.get("confirm_start_server") is not True:
                     raise ValueError("refreshing starts the configured MCP server process; confirm_start_server is required")
                 self.send_json(mcp_refresh(config, str(payload.get("server") or "")))
+            elif path.startswith("/api/approvals/"):
+                token = path[len("/api/approvals/"):].strip("/")
+                decision = str(payload.get("decision") or "").strip()
+                operator = str(payload.get("operator") or "").strip()
+                self.send_json(_record_approval_decision(token, config,
+                                                         decision=decision, operator=operator))
             else:
                 self.send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
         except (ValueError, json.JSONDecodeError) as exc:
