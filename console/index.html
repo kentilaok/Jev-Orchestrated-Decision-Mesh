@@ -67,6 +67,7 @@ th{color:#8d98a9;font-weight:600;font-size:11px;letter-spacing:.04em;text-transf
     <button class="nav" data-view="mcp">MCP catalogue</button>
     <button class="nav" data-view="runs">Runs &amp; recovery</button>
     <button class="nav" data-view="skills">Hermes skills</button>
+    <button class="nav" data-view="security">Security</button>
     <button class="nav" data-view="architecture">Architecture</button>
   </nav>
   <div class="sidebar-foot"><span class="dot" id="runtimeDot"></span><span id="runtimeText">Checking runtime…</span></div>
@@ -146,6 +147,32 @@ th{color:#8d98a9;font-weight:600;font-size:11px;letter-spacing:.04em;text-transf
     <p class="lead">One folder per skill with a <code>SKILL.md</code>. The default source is <code>~/.hermes/skills</code>. Toggles go through Hermes' own dashboard API (<code>hermes dashboard --no-open</code>) and fail closed when it is unreachable.</p>
     <div class="row"><input id="skillsSource" style="flex:1"><button class="button secondary" id="saveSkillsSource">Use folder</button><button class="button primary" id="openSkillsFolder">Open folder</button></div></article>
   <article class="panel"><div class="panel-head"><div><p class="eyebrow">Capabilities</p><h2>Enable or disable skills</h2></div></div><div id="skillsList"></div></article>
+</section>
+
+<section class="view" id="view-security">
+  <article class="panel"><div class="panel-head"><div><p class="eyebrow">P0-05 knobs</p><h2>Untrusted-tool defences</h2></div></div>
+    <p class="helper">These three settings reach every MCP call and retrieval chunk. Default is untrusted-by-default: an MCP server has to be named here before its <code>readOnlyHint</code> is believed. Content policy wraps or audits externally-sourced text; the action gate refuses non-reversible calls without an owner-bound approval.</p>
+    <div class="row" style="margin-top:12px;flex-wrap:wrap;gap:16px">
+      <label style="flex:1;min-width:220px">Content policy
+        <select id="contentPolicy">
+          <option value="off">off (no sanitiser)</option>
+          <option value="audit">audit (record markers)</option>
+          <option value="wrap">wrap (DATA markers)</option>
+        </select>
+      </label>
+      <label style="min-width:220px;align-self:end">
+        <input type="checkbox" id="requireActionApproval"> Require action-bound approval
+      </label>
+    </div>
+    <label style="display:block;margin-top:12px">Trusted MCP servers (comma or newline separated)
+      <textarea id="trustedMcpServers" rows="3" style="width:100%;font-family:monospace" placeholder="github&#10;filesystem"></textarea>
+    </label>
+    <div class="row" style="margin-top:12px"><button class="button primary" id="saveSecurity">Save</button></div>
+  </article>
+  <article class="panel"><div class="panel-head"><div><p class="eyebrow">Pending approvals</p><h2>Strong-permit queue</h2></div></div>
+    <div id="pendingApprovals"><div class="empty">Loading…</div></div></article>
+  <article class="panel"><div class="panel-head"><div><p class="eyebrow">Decided approvals</p><h2>Audit trail</h2></div></div>
+    <div id="decidedApprovals"><div class="empty">No decided approvals.</div></div></article>
 </section>
 
 <section class="view" id="view-architecture">
@@ -253,8 +280,27 @@ function renderSkills(){$('skillsSource').value=state.config.skills_source||'';c
 
 async function save(p){await post('/api/config',p);await refresh();if(providers)loadProviders(false)}
 async function refresh(){state=await api('/api/state');$('executionMode').value=state.config.execution_mode||'preview';$('gatePolicy').value=state.config.gate_policy||'recovery';renderProviderSelect();renderSkills();syncMode()}
-const titles={operate:'Operate',providers:'Providers',arsenal:'Arsenal',mcp:'MCP catalogue',runs:'Runs & recovery',skills:'Hermes skills',architecture:'Architecture'};
-const loaders={providers:()=>loadProviders(false),arsenal:loadArsenal,mcp:()=>loadMcp(),runs:loadRuns};
+const titles={operate:'Operate',providers:'Providers',arsenal:'Arsenal',mcp:'MCP catalogue',runs:'Runs & recovery',skills:'Hermes skills',security:'Security',architecture:'Architecture'};
+const loaders={providers:()=>loadProviders(false),arsenal:loadArsenal,mcp:()=>loadMcp(),runs:loadRuns,security:loadSecurity};
+
+// ---- security (P0-05)
+async function loadSecurity(){try{
+  const s=state&&state.config?state.config:(await api('/api/state')).config;
+  $('contentPolicy').value=s.content_policy||'off';
+  $('requireActionApproval').checked=!!s.require_action_approval;
+  $('trustedMcpServers').value=(s.trusted_mcp_servers||[]).join('\n');
+  const a=await api('/api/approvals');
+  const row=r=>'<div class="card" style="margin-bottom:8px"><div class="row"><strong>'+esc(r.token.slice(0,10))+'…</strong>'+chip(r.status,r.status==='approved'?'good':r.status==='rejected'?'bad':'warn')+'</div><p class="muted">thread '+esc(r.thread_id)+' · '+esc(r.provider||'')+' · '+esc(r.gate_policy||'')+'</p><p>'+esc(r.goal||'')+'</p>'+(r.status==='pending'?'<div class="row"><button class="button primary" data-approve="'+esc(r.token)+'">Approve</button><button class="button secondary" data-reject="'+esc(r.token)+'">Reject</button></div>':'<p class="muted">decided by '+esc(r.operator||'—')+'</p>')+'</div>';
+  $('pendingApprovals').innerHTML=a.pending.length?a.pending.map(row).join(''):'<div class="empty">No pending approvals.</div>';
+  $('decidedApprovals').innerHTML=a.decided.length?a.decided.map(row).join(''):'<div class="empty">No decided approvals.</div>';
+  document.querySelectorAll('[data-approve],[data-reject]').forEach(b=>b.onclick=async()=>{
+    const token=b.dataset.approve||b.dataset.reject;
+    const decision=b.dataset.approve?'approve':'reject';
+    const operator=prompt('Operator id for the decision record:');
+    if(!operator)return;
+    try{await post('/api/approvals/'+encodeURIComponent(token),{decision,operator});loadSecurity()}catch(e){alert(e.message)}
+  });
+}catch(e){$('pendingApprovals').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
 document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav,.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('view-'+b.dataset.view).classList.add('active');$('viewTitle').textContent=titles[b.dataset.view];(loaders[b.dataset.view]||(()=>{}))()});
 $('providerSelect').onchange=e=>fillModels(e.target.value);$('executionMode').onchange=syncMode;
 $('previewBtn').onclick=preview;$('validateBtn').onclick=validate;$('runBtn').onclick=run;$('addSource').onclick=()=>addSource();
@@ -263,6 +309,11 @@ $('refreshProviders').onclick=()=>loadProviders(true);
 $('useCodexModels').onclick=async()=>{try{await post('/api/providers/models',{});await refresh();loadProviders(false)}catch(e){alert(e.message)}};
 $('mcpSearch').onclick=()=>loadMcp($('mcpQuery').value.trim());$('mcpQuery').onkeydown=e=>{if(e.key==='Enter')loadMcp(e.target.value.trim())};
 $('saveSkillsSource').onclick=()=>save({skills_source:$('skillsSource').value});
+$('saveSecurity').onclick=async()=>{try{
+  const trusted=$('trustedMcpServers').value.split(/[,\n]/).map(s=>s.trim()).filter(Boolean);
+  await save({content_policy:$('contentPolicy').value,require_action_approval:$('requireActionApproval').checked,trusted_mcp_servers:trusted});
+  loadSecurity();
+}catch(e){alert(e.message)}};
 $('openSkillsFolder').onclick=async()=>{try{await post('/api/skills/open',{path:$('skillsSource').value})}catch(e){alert(e.message)}};
 refresh().then(()=>{preview();loadProviders(false)}).catch(e=>out(e.message));
 </script>
