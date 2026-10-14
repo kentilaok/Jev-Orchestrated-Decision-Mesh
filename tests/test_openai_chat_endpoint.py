@@ -149,6 +149,30 @@ class ThreadBindingTests(unittest.TestCase):
             self.assertEqual(data["turns"][0]["goal"], "Design the adapter")
             self.assertEqual(data["turns"][1]["goal"], "Now show the slice plan")
 
+    def test_concurrent_same_thread_calls_do_not_corrupt_journal(self):
+        """Reviewer finding: _record_thread_turn had a read-modify-write race.
+        Fire 20 concurrent calls on the same thread_id and assert exactly 20
+        turns land in the journal and the JSON is parseable at the end."""
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            msgs = [{"role": "user", "content": "race test"}]
+
+            def hit():
+                console.chat_completions({"model": "cidm-jev", "messages": msgs}, cfg)
+
+            threads = [threading.Thread(target=hit) for _ in range(20)]
+            for t in threads:
+                t.start()
+            for t in threads:
+                t.join()
+
+            thread_id = console._derive_thread_id(msgs)
+            journal_path = Path(cfg["runs_directory"]) / "threads" / (thread_id + ".json")
+            data = json.loads(journal_path.read_text(encoding="utf-8"))
+            self.assertEqual(len(data["turns"]), 20)
+            # Verify no leftover tmp file
+            self.assertFalse(journal_path.with_suffix(".json.tmp").exists())
+
     def test_different_threads_write_different_journals(self):
         with tempfile.TemporaryDirectory() as td:
             cfg = self._cfg(Path(td))

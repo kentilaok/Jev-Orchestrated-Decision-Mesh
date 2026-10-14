@@ -604,21 +604,43 @@ def _derive_thread_id(messages: list) -> str:
     return hashlib.sha256(seed).hexdigest()[:16]
 
 
+_THREAD_LOCKS: dict[str, threading.Lock] = {}
+_THREAD_LOCKS_GUARD = threading.Lock()
+
+
+def _thread_lock(thread_id: str) -> threading.Lock:
+    with _THREAD_LOCKS_GUARD:
+        lock = _THREAD_LOCKS.get(thread_id)
+        if lock is None:
+            lock = threading.Lock()
+            _THREAD_LOCKS[thread_id] = lock
+        return lock
+
+
 def _record_thread_turn(thread_id: str, config: dict, goal: str, provider: str,
-                        gate_policy: str) -> Path:
-    """Append this turn to the thread journal at runs/threads/{thread_id}.json."""
+                        gate_policy: str) -> tuple[Path, int]:
+    """Append this turn to the thread journal; return (path, new_turn_count).
+
+    Concurrency: serialised by a per-thread lock so two in-flight requests on
+    the same thread_id cannot clobber each other's turns. The write is atomic:
+    we write to a sibling '.tmp' file then os.replace onto the journal path,
+    so a crash mid-write leaves the previous journal intact.
+    """
     threads_dir = Path(config["runs_directory"]) / "threads"
     threads_dir.mkdir(parents=True, exist_ok=True)
     journal = threads_dir / (thread_id + ".json")
-    if journal.is_file():
-        data = json.loads(journal.read_text(encoding="utf-8"))
-    else:
-        data = {"thread_id": thread_id, "created": int(time.time()), "turns": []}
-    data["turns"].append({"ts": int(time.time()), "goal": goal[:400],
-                          "provider": provider, "gate_policy": gate_policy})
-    data["last_turn"] = data["turns"][-1]["ts"]
-    journal.write_text(json.dumps(data, indent=2), encoding="utf-8")
-    return journal
+    with _thread_lock(thread_id):
+        if journal.is_file():
+            data = json.loads(journal.read_text(encoding="utf-8"))
+        else:
+            data = {"thread_id": thread_id, "created": int(time.time()), "turns": []}
+        data["turns"].append({"ts": int(time.time()), "goal": goal[:400],
+                              "provider": provider, "gate_policy": gate_policy})
+        data["last_turn"] = data["turns"][-1]["ts"]
+        tmp = journal.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        os.replace(tmp, journal)
+        return journal, len(data["turns"])
 
 
 def _messages_to_task(messages: list) -> tuple[str, str]:
@@ -670,9 +692,8 @@ def _prepare_chat_run(payload: dict, config: dict) -> dict:
     plan = validated.get("validated") or {}
     route_hint = plan.get("route") or plan.get("gate_policy") or broker_payload["gate_policy"]
     thread_id = _derive_thread_id(payload["messages"])
-    journal = _record_thread_turn(thread_id, config, goal,
-                                  broker_payload["provider"], broker_payload["gate_policy"])
-    turn = len(json.loads(journal.read_text(encoding="utf-8"))["turns"])
+    journal, turn = _record_thread_turn(thread_id, config, goal,
+                                        broker_payload["provider"], broker_payload["gate_policy"])
     summary_lines = [
         "[CIDM validate] Request accepted; no model calls were made.",
         "Thread: %s (turn journal: %s)" % (thread_id, journal.name),
