@@ -2,11 +2,14 @@
 
 import importlib.util
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 import unittest
+
+HAS_GIT = shutil.which("git") is not None
 
 ROOT = Path(__file__).resolve().parents[1]
 PC_PATH = ROOT / "scripts" / "postconditions.py"
@@ -65,6 +68,7 @@ class TestsExitZeroTests(unittest.TestCase):
         self.assertEqual(result.status, "fail")
 
 
+@unittest.skipUnless(HAS_GIT, "git is required for files_changed_match_declared")
 class FilesChangedMatchDeclaredTests(unittest.TestCase):
     def _init_repo(self, td):
         _run(["git", "init", "-q", "-b", "main"], cwd=td)
@@ -144,9 +148,11 @@ class NoConcealedUnresolvedTests(unittest.TestCase):
         self.assertEqual(result.status, "fail")
         self.assertIn("TODO", result.evidence["markers_found"][0])
 
-    def test_fail_also_on_fixme_and_unresolved_markers(self):
+    def test_fail_also_on_fixme_and_unresolved_and_xxx_markers(self):
+        """Markers are detected case-insensitively (slice-2 QA finding: XXX
+        was previously case-sensitive while the others were not)."""
         check = coding.no_concealed_unresolved()
-        for marker in ("FIXME: hack", "UNRESOLVED: see later"):
+        for marker in ("FIXME: hack", "UNRESOLVED: see later", "xxx broken", "XXX broken"):
             with tempfile.TemporaryDirectory() as td:
                 result = check.evaluator({"output": marker, "unresolved_stages": []}, Path(td))
             self.assertEqual(result.status, "fail", marker)

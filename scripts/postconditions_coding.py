@@ -24,10 +24,12 @@ import sys
 from pathlib import Path
 
 _PC_PATH = Path(__file__).resolve().parent / "postconditions.py"
-_pc_spec = importlib.util.spec_from_file_location("postconditions", _PC_PATH)
-_pc = importlib.util.module_from_spec(_pc_spec)
-sys.modules.setdefault("postconditions", _pc)
-_pc_spec.loader.exec_module(_pc)
+_pc = sys.modules.get("postconditions")
+if _pc is None:
+    _pc_spec = importlib.util.spec_from_file_location("postconditions", _PC_PATH)
+    _pc = importlib.util.module_from_spec(_pc_spec)
+    sys.modules["postconditions"] = _pc
+    _pc_spec.loader.exec_module(_pc)
 
 PostconditionCheck = _pc.PostconditionCheck
 PostconditionResult = _pc.PostconditionResult
@@ -38,7 +40,7 @@ _UNRESOLVED_PATTERNS = (
     (re.compile(r"\bTODO\b", re.IGNORECASE), "TODO"),
     (re.compile(r"\bFIXME\b", re.IGNORECASE), "FIXME"),
     (re.compile(r"\bUNRESOLVED\b", re.IGNORECASE), "UNRESOLVED"),
-    (re.compile(r"\bXXX\b"), "XXX"),
+    (re.compile(r"\bXXX\b", re.IGNORECASE), "XXX"),
 )
 
 

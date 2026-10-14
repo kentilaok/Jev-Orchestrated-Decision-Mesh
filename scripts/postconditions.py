@@ -104,9 +104,10 @@ def run_checks(checks: Iterable[PostconditionCheck], *, candidate: dict,
     for check in checks:
         try:
             raw = check.evaluator(candidate, workspace)
-            if not isinstance(raw, PostconditionResult):
-                raise TypeError("evaluator must return PostconditionResult, got "
-                                + type(raw).__name__)
+            # Duck-type: evaluators from a differently-loaded postconditions
+            # module (e.g. test discovery via importlib) still have the right
+            # attributes but will fail `isinstance`. Rebuild from the three
+            # fields we need; PostconditionResult.__post_init__ validates.
             result = PostconditionResult(status=raw.status, evidence=raw.evidence,
                                          reasoning=raw.reasoning, name=check.name)
         except Exception as exc:
