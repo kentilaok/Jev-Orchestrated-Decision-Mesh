@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -578,6 +579,48 @@ def validate_broker_request(payload: dict, config: dict) -> dict:
 CHAT_MODELS = ("cidm-jev",)
 
 
+def _first_user_content(messages: list) -> str:
+    """Return the content of the first user message with non-empty content, or ''."""
+    if not isinstance(messages, list):
+        return ""
+    for item in messages:
+        if isinstance(item, dict) and item.get("role") == "user":
+            content = str(item.get("content") or "").strip()
+            if content:
+                return content
+    return ""
+
+
+def _derive_thread_id(messages: list) -> str:
+    """Stable 16-hex thread id derived from the first user message.
+
+    OpenAI chat.completions is stateless; Hermes replays the full message array
+    each turn. Hashing the first user message gives us a continuity key that
+    survives follow-up turns within the same thread. Edge case: if Hermes
+    compacts the context and drops the original first user message, the thread
+    id will change — documented in HANDOFF-HERMES-DISPATCH-SLICE-1.md.
+    """
+    seed = _first_user_content(messages).encode("utf-8")
+    return hashlib.sha256(seed).hexdigest()[:16]
+
+
+def _record_thread_turn(thread_id: str, config: dict, goal: str, provider: str,
+                        gate_policy: str) -> Path:
+    """Append this turn to the thread journal at runs/threads/{thread_id}.json."""
+    threads_dir = Path(config["runs_directory"]) / "threads"
+    threads_dir.mkdir(parents=True, exist_ok=True)
+    journal = threads_dir / (thread_id + ".json")
+    if journal.is_file():
+        data = json.loads(journal.read_text(encoding="utf-8"))
+    else:
+        data = {"thread_id": thread_id, "created": int(time.time()), "turns": []}
+    data["turns"].append({"ts": int(time.time()), "goal": goal[:400],
+                          "provider": provider, "gate_policy": gate_policy})
+    data["last_turn"] = data["turns"][-1]["ts"]
+    journal.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    return journal
+
+
 def _messages_to_task(messages: list) -> tuple[str, str]:
     """Collapse OpenAI chat messages into (goal, context) for the CIDM broker.
 
@@ -630,8 +673,12 @@ def chat_completions(payload: dict, config: dict) -> dict:
     validated = validate_broker_request(broker_payload, config)
     plan = validated.get("validated") or {}
     route_hint = plan.get("route") or plan.get("gate_policy") or broker_payload["gate_policy"]
+    thread_id = _derive_thread_id(payload["messages"])
+    journal = _record_thread_turn(thread_id, config, goal,
+                                  broker_payload["provider"], broker_payload["gate_policy"])
     summary_lines = [
         "[CIDM validate] Request accepted; no model calls were made.",
+        "Thread: %s (turn journal: %s)" % (thread_id, journal.name),
         "Provider: %s" % broker_payload["provider"],
         "Gate policy: %s" % broker_payload["gate_policy"],
         "Route hint: %s" % route_hint,
@@ -650,6 +697,8 @@ def chat_completions(payload: dict, config: dict) -> dict:
             "finish_reason": "stop",
         }],
         "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+        "cidm": {"thread_id": thread_id, "mode": "validate", "turn": len(
+            json.loads(journal.read_text(encoding="utf-8"))["turns"])},
     }
 
 

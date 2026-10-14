@@ -96,6 +96,71 @@ class ChatCompletionsEndpointTests(unittest.TestCase):
         )
 
 
+class ThreadBindingTests(unittest.TestCase):
+    """Slice 2: same Hermes thread (same first user message) -> same thread_id and journal."""
+
+    def _cfg(self, root: Path):
+        return console._merge_config({"runs_directory": str(root / "runs")})
+
+    def test_same_first_user_message_yields_stable_thread_id(self):
+        msgs_a = [{"role": "user", "content": "Plan the refactor"}]
+        msgs_b = [{"role": "user", "content": "Plan the refactor"},
+                  {"role": "assistant", "content": "..."},
+                  {"role": "user", "content": "Now estimate cost"}]
+        self.assertEqual(console._derive_thread_id(msgs_a), console._derive_thread_id(msgs_b))
+
+    def test_different_first_user_message_yields_different_thread_id(self):
+        msgs_a = [{"role": "user", "content": "Plan the refactor"}]
+        msgs_b = [{"role": "user", "content": "Write a haiku"}]
+        self.assertNotEqual(console._derive_thread_id(msgs_a), console._derive_thread_id(msgs_b))
+
+    def test_system_prompt_does_not_change_thread_id(self):
+        msgs_a = [{"role": "user", "content": "Hi"}]
+        msgs_b = [{"role": "system", "content": "You are helpful"},
+                  {"role": "user", "content": "Hi"}]
+        self.assertEqual(console._derive_thread_id(msgs_a), console._derive_thread_id(msgs_b))
+
+    def test_chat_completions_includes_thread_id_in_response(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            response = console.chat_completions(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "x"}]}, cfg)
+            self.assertIn("cidm", response)
+            self.assertIn("thread_id", response["cidm"])
+            self.assertEqual(response["cidm"]["thread_id"],
+                             console._derive_thread_id([{"role": "user", "content": "x"}]))
+
+    def test_journal_is_appended_across_same_thread_calls(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            msgs_first = [{"role": "user", "content": "Design the adapter"}]
+            msgs_follow = [{"role": "user", "content": "Design the adapter"},
+                           {"role": "assistant", "content": "[CIDM validate] ..."},
+                           {"role": "user", "content": "Now show the slice plan"}]
+            r1 = console.chat_completions({"model": "cidm-jev", "messages": msgs_first}, cfg)
+            r2 = console.chat_completions({"model": "cidm-jev", "messages": msgs_follow}, cfg)
+            self.assertEqual(r1["cidm"]["thread_id"], r2["cidm"]["thread_id"])
+
+            journal_path = Path(cfg["runs_directory"]) / "threads" / (r1["cidm"]["thread_id"] + ".json")
+            self.assertTrue(journal_path.is_file())
+            data = json.loads(journal_path.read_text(encoding="utf-8"))
+            self.assertEqual(data["thread_id"], r1["cidm"]["thread_id"])
+            self.assertEqual(len(data["turns"]), 2)
+            self.assertEqual(data["turns"][0]["goal"], "Design the adapter")
+            self.assertEqual(data["turns"][1]["goal"], "Now show the slice plan")
+
+    def test_different_threads_write_different_journals(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            r1 = console.chat_completions(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "A"}]}, cfg)
+            r2 = console.chat_completions(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "B"}]}, cfg)
+            self.assertNotEqual(r1["cidm"]["thread_id"], r2["cidm"]["thread_id"])
+            threads_dir = Path(cfg["runs_directory"]) / "threads"
+            self.assertEqual(len(list(threads_dir.glob("*.json"))), 2)
+
+
 class ChatCompletionsHttpTests(unittest.TestCase):
     """End-to-end HTTP tests: Hermes-shaped request → OpenAI response via the real Handler."""
 
