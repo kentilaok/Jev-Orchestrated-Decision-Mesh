@@ -484,7 +484,9 @@ def permit_scope(server: str, tool: str, arguments: dict, access_class: str, sch
 def call_tool(catalog: McpCatalog, spec: dict, tool: str, arguments: dict, permit_id: str,
               authority: PermitAuthority, *, client_factory: Callable = client_for,
               evidence_dir: Path | None = None,
-              content_policy: str = "off") -> dict:
+              content_policy: str = "off",
+              require_action_approval: bool = False,
+              approval: dict | None = None) -> dict:
     """One permit-bound tools/call; returns an evidence receipt and a bounded source.
 
     content_policy (P0-05 call-site integration):
@@ -496,10 +498,23 @@ def call_tool(catalog: McpCatalog, spec: dict, tool: str, arguments: dict, permi
                   consumers see the string as inert data, not authority.
                   Markers are also recorded in receipt['injection_markers']
                   for audit.
+
+    require_action_approval + approval (P0-05 dispatch gate):
+        When `require_action_approval=True`, consult the action_reversibility
+        gate before the client is invoked. A non-reversible tool without an
+        action-bound approval raises `NonReversibleActionError` and no
+        external effect fires. On pass, the reversibility info lands on
+        `receipt['action_reversibility']`.
     """
     if content_policy not in ("off", "audit", "wrap"):
         raise ValueError("content_policy must be 'off', 'audit', or 'wrap'")
     card = catalog.describe(spec["name"], tool)
+    reversibility_info = None
+    if require_action_approval:
+        import importlib as _importlib
+        ar = _importlib.import_module("action_reversibility")
+        reversibility_info = ar.require_approval(tool, card.get("annotations") or {},
+                                                 approval=approval)
     access = card["access_class"]
     require(access != "blocked", "mcp_tool_blocked_by_owner")
     capability = "mcp.read" if access == "read" else "mcp.mutate"
@@ -509,6 +524,8 @@ def call_tool(catalog: McpCatalog, spec: dict, tool: str, arguments: dict, permi
     receipt: dict[str, Any] = {"server": spec["name"], "tool": tool, "access_class": access,
                                "arguments_hash": scope["arguments_hash"], "permit_id": permit_id,
                                "status": "failed", "result_hash": None, "bytes": 0, "truncated": False}
+    if reversibility_info is not None:
+        receipt["action_reversibility"] = reversibility_info
     try:
         with client_factory(spec) as client:
             client.initialize()
