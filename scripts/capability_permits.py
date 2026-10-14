@@ -168,7 +168,7 @@ class PermitAuthority:
         failure vocabulary when inspecting a crashed run.
         """
         try:
-            events = self.ledger.events() if False else self.ledger.read()
+            events = self.ledger.read()
         except PermitError:
             raise
         except Exception as exc:
