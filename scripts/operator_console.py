@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import html as html_mod
 import json
 import os
 from pathlib import Path
@@ -580,9 +581,9 @@ CHAT_MODELS = ("cidm-jev",)
 
 STRONG_KEYWORDS = (
     "delete", "drop ", "destroy", "wipe", "remove", "truncate",
-    "deploy", "prod", "production",
-    "spend", "charge", "purchase", "pay",
-    "rm -rf", "force-push", "force push",
+    "update ", "alter", "shutdown", "revoke", "rotate", "grant",
+    "deploy", "prod", "production", "merge to main", "force-push", "force push",
+    "spend", "charge", "purchase", "pay", "rm -rf",
 )
 
 
@@ -634,6 +635,9 @@ def _create_approval_token(config: dict, thread_id: str, goal: str,
 
 def _record_approval_decision(token: str, config: dict, *, decision: str,
                               operator: str) -> dict:
+    """Operator decision on a pending approval. Once decided, further
+    transitions are refused (one-shot gate). Replace the token for a new
+    request rather than re-deciding an old one."""
     if decision not in ("approve", "reject"):
         raise ValueError("decision must be 'approve' or 'reject'")
     if not operator or not operator.strip():
@@ -643,6 +647,8 @@ def _record_approval_decision(token: str, config: dict, *, decision: str,
         if not target.is_file():
             raise ValueError("unknown approval token")
         record = json.loads(target.read_text(encoding="utf-8"))
+        if record["status"] != "pending":
+            raise ValueError("approval already " + record["status"] + "; token is one-shot")
         record["status"] = "approved" if decision == "approve" else "rejected"
         record["operator"] = operator.strip()
         record["decided_at"] = int(time.time())
@@ -1014,23 +1020,21 @@ class Handler(SimpleHTTPRequestHandler):
                     self._send_html("<h1>Approval not found</h1>", HTTPStatus.NOT_FOUND)
                     return
                 record = json.loads(target.read_text(encoding="utf-8"))
-                # Minimal, self-contained page. The actual approve/reject POST
-                # uses /api/approvals/<token> and the Operator Console form.
-                safe_goal = (record.get("goal") or "").replace("<", "&lt;").replace(">", "&gt;")
+                esc = html_mod.escape
                 html = (
                     "<!doctype html><html><head><meta charset='utf-8'>"
-                    "<title>CIDM approval " + token[:8] + "</title></head>"
+                    "<title>CIDM approval " + esc(token[:8]) + "</title></head>"
                     "<body style='font-family:system-ui;margin:2em;max-width:40em'>"
                     "<h1>CIDM Strong-Permit Approval</h1>"
-                    "<p><b>Token:</b> " + token + "</p>"
-                    "<p><b>Status:</b> " + record["status"] + "</p>"
-                    "<p><b>Thread:</b> " + record["thread_id"] + "</p>"
-                    "<p><b>Provider:</b> " + record["provider"] + "</p>"
-                    "<p><b>Gate policy:</b> " + record["gate_policy"] + "</p>"
-                    "<p><b>Goal:</b></p><pre>" + safe_goal + "</pre>"
+                    "<p><b>Token:</b> " + esc(token) + "</p>"
+                    "<p><b>Status:</b> " + esc(record["status"]) + "</p>"
+                    "<p><b>Thread:</b> " + esc(record["thread_id"]) + "</p>"
+                    "<p><b>Provider:</b> " + esc(record["provider"]) + "</p>"
+                    "<p><b>Gate policy:</b> " + esc(record["gate_policy"]) + "</p>"
+                    "<p><b>Goal:</b></p><pre>" + esc(record.get("goal") or "") + "</pre>"
                     "<p>Open the Operator Console, confirm the request, and POST to "
-                    "<code>/api/approvals/" + token + "</code> with "
-                    "<code>{&quot;decision&quot;:&quot;approve&quot;,&quot;operator&quot;:&quot;you&quot;}</code>.</p>"
+                    "<code>/api/approvals/" + esc(token) + "</code> with "
+                    "<code>{\"decision\":\"approve\",\"operator\":\"you\"}</code>.</p>"
                     "</body></html>")
                 self._send_html(html)
                 return

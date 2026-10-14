@@ -332,6 +332,24 @@ class StrongPermitApprovalTests(unittest.TestCase):
             self.assertEqual(record["status"], "approved")
             self.assertEqual(record["operator"], "ken@local")
 
+    def test_approval_token_is_one_shot(self):
+        """QA finding: a decided token must not be re-approved by a second call."""
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            response = console.chat_completions(
+                {"model": "cidm-jev",
+                 "messages": [{"role": "user", "content": "delete stale runs"}]}, cfg)
+            token = response["cidm"]["approval_token"]
+            console._record_approval_decision(token, cfg, decision="approve", operator="ken")
+            with self.assertRaises(ValueError):
+                console._record_approval_decision(token, cfg, decision="approve", operator="ken")
+
+    def test_expanded_strong_keywords(self):
+        """QA finding: coverage for destructive verbs beyond the initial set."""
+        for word in ("shutdown the fleet", "revoke the key", "rotate credentials",
+                     "grant admin to bob", "alter the users table", "update prod rows"):
+            self.assertEqual(console._classify_strength(word, ""), "strong", word)
+
     def test_record_approval_decision_rejects_unknown_token(self):
         with tempfile.TemporaryDirectory() as td:
             cfg = self._cfg(Path(td))
