@@ -204,6 +204,8 @@ class LocalHybridIndex:
             except sqlite3.OperationalError:
                 rows = []
         else:
+            count = self.db.execute("SELECT COUNT(*) FROM chunks WHERE namespace=?", (namespace,)).fetchone()[0]
+            require(count <= 5000, "fts5_required_for_large_lexical_index")
             rows = [r for r in self.db.execute("SELECT * FROM chunks WHERE namespace=?", (namespace,))
                     if any(t in r["text"].lower() for t in terms)]
         return [r["chunk_id"] for r in rows if self._visible(r, access_groups)][:k]
@@ -237,6 +239,28 @@ class LocalHybridIndex:
                          if self._visible(r, access_groups)), key=lambda x: -x[0])
         return [r["chunk_id"] for _, r in scored[:k]]
 
+    def dense_shortlist(self, namespace: str, query: str, ids: list[str], *,
+                        model_id: str, embedder: Callable, k: int = 30, access_groups=None) -> list[str]:
+        """Score only a bounded indexed FTS candidate set, never all vectors.
+
+        Accuracy tradeoff: semantic-only material absent from lexical shortlist
+        cannot be recalled. Use a separately indexed ANN/Qdrant search when the
+        recall benchmark shows this is inadequate.
+        """
+        require(isinstance(ids, list) and len(ids) <= 120, "dense_shortlist_limit")
+        if not ids:
+            return []
+        marks = ",".join("?" for _ in ids)
+        vector = embedder([query], "query")[0]
+        rows = self.db.execute(
+            "SELECT c.*, v.vector FROM chunks c JOIN vectors v ON v.chunk_id=c.chunk_id "
+            "WHERE c.namespace=? AND v.model_id=? AND v.content_hash=c.content_hash "
+            "AND c.chunk_id IN (" + marks + ")",
+            (namespace, model_id, *ids)).fetchall()
+        scored = sorted(((_cosine(vector, json.loads(r["vector"])), r) for r in rows
+                         if self._visible(r, access_groups)), key=lambda x: -x[0])
+        return [r["chunk_id"] for _, r in scored[:k]]
+
     def get(self, chunk_id: str) -> dict:
         row = self.db.execute("SELECT * FROM chunks WHERE chunk_id=?", (chunk_id,)).fetchone()
         require(row is not None, "unknown_chunk")
@@ -246,12 +270,16 @@ class LocalHybridIndex:
 
     def search(self, namespace: str, query: str, *, k: int = 8, dense_model: str | None = None,
                embedder: Callable | None = None, reranker=None, access_groups=None,
-               candidates: int = 30) -> dict:
+               candidates: int = 30, bounded_dense: bool = True) -> dict:
         require(isinstance(query, str) and query.strip() and 1 <= k <= 50, "invalid_retrieval_query")
         rankings = {"lexical": self.lexical(namespace, query, k=candidates, access_groups=access_groups)}
         if dense_model and embedder:
-            rankings["dense"] = self.dense(namespace, query, model_id=dense_model, embedder=embedder,
-                                           k=candidates, access_groups=access_groups)
+            rankings["dense"] = (self.dense_shortlist(
+                namespace, query, rankings["lexical"], model_id=dense_model,
+                embedder=embedder, k=candidates, access_groups=access_groups)
+                if bounded_dense else self.dense(
+                    namespace, query, model_id=dense_model, embedder=embedder,
+                    k=candidates, access_groups=access_groups))
         fused = rrf(rankings)[:candidates]
         results = []
         for chunk_id, score, ranks in fused:
@@ -268,6 +296,7 @@ class LocalHybridIndex:
                 results[index]["scores"]["rerank_position"] = position
             results = [results[index] for index, _ in order]
         return {"namespace": namespace, "query_hash": digest(query), "rankings_used": sorted(rankings),
+                "dense_strategy": "bounded_lexical_shortlist" if bounded_dense else "full_namespace_legacy",
                 "reranker": rerank_info, "results": results[:k],
                 "authority": "ranking_evidence_only"}
 
