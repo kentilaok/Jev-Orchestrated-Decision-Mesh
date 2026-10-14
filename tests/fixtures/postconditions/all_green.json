@@ -1,0 +1,21 @@
+{
+  "name": "all_green",
+  "description": "Control: schema-valid candidate with no concealed unresolved markers.",
+  "broker_candidate": {
+    "text": "Refactor complete. Build and tests pass.",
+    "data": {
+      "summary": "ok",
+      "claims": ["refactor complete", "tests pass"],
+      "unresolved": [],
+      "parent_hashes": [],
+      "source_hashes": []
+    },
+    "source_ids": ["s1"],
+    "five_scores": [4, 4, 4, 4, 4],
+    "self_probability": 0.85
+  },
+  "declared_files": [],
+  "checks": ["no_concealed_unresolved"],
+  "expected_decision": "release",
+  "expected_failed": []
+}

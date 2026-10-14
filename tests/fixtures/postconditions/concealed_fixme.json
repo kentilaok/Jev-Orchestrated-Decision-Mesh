@@ -1,0 +1,21 @@
+{
+  "name": "concealed_fixme",
+  "description": "Candidate conceals a FIXME marker without declaring an unresolved stage.",
+  "broker_candidate": {
+    "text": "Resolved the auth bug. FIXME: audit log entries are off by one.",
+    "data": {
+      "summary": "auth bug fixed",
+      "claims": ["auth fixed"],
+      "unresolved": [],
+      "parent_hashes": [],
+      "source_hashes": []
+    },
+    "source_ids": ["s1"],
+    "five_scores": [3, 4, 4, 3, 3],
+    "self_probability": 0.75
+  },
+  "declared_files": [],
+  "checks": ["no_concealed_unresolved"],
+  "expected_decision": "withhold",
+  "expected_failed": ["no_concealed_unresolved"]
+}

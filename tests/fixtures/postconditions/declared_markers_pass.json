@@ -1,0 +1,21 @@
+{
+  "name": "declared_markers_pass",
+  "description": "Markers in the output are permitted when the candidate declares at least one unresolved_stage. Mirrors a transparent handoff where the worker is honest about remaining work.",
+  "broker_candidate": {
+    "text": "Primary feature shipped. TODO: implement the opt-in telemetry path.",
+    "data": {
+      "summary": "feature partially shipped",
+      "claims": ["primary feature shipped"],
+      "unresolved": ["opt-in telemetry path"],
+      "parent_hashes": [],
+      "source_hashes": []
+    },
+    "source_ids": ["s1"],
+    "five_scores": [4, 3, 4, 3, 4],
+    "self_probability": 0.8
+  },
+  "declared_files": [],
+  "checks": ["no_concealed_unresolved"],
+  "expected_decision": "release",
+  "expected_failed": []
+}
