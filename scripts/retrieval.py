@@ -457,9 +457,24 @@ class RetrievalEvidenceRetriever:
                                   **self.options)
         sources = as_sources(found["results"], exclude=set(packet.get("source_manifest") or []))
         chosen = dict(list(sources.items())[:self.k])
+        # Hash the pre-wrap text so content_hashes stay stable across content_policy modes.
+        pre_wrap_hashes = [digest(s["text"]) for s in chosen.values()]
         receipt = {"status": "ok" if chosen else "no_new_evidence", "query_hash": scope["query_hash"],
-                   "chunk_ids": list(chosen), "content_hashes": [digest(s["text"]) for s in chosen.values()],
+                   "chunk_ids": list(chosen), "content_hashes": pre_wrap_hashes,
                    "permit_id": permit}
+        if self.content_policy != "off" and chosen:
+            import importlib as _importlib
+            cs = _importlib.import_module("content_sanitiser")
+            marker_entries = []
+            for chunk_id, source in chosen.items():
+                original = source["text"]
+                markers = cs.scan_for_injection_markers(original)
+                marker_entries.append({"chunk_id": chunk_id, "markers": markers})
+                if self.content_policy == "wrap":
+                    source["text"] = cs.wrap_as_data(original,
+                                                     source_id="retrieval:" + chunk_id,
+                                                     kind="retrieval_chunk")
+            receipt["injection_markers"] = marker_entries
         self.receipts.append(receipt)
         self.authority.receipt(permit, receipt)
         return chosen or None
