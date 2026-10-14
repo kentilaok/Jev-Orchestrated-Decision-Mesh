@@ -483,8 +483,22 @@ def permit_scope(server: str, tool: str, arguments: dict, access_class: str, sch
 
 def call_tool(catalog: McpCatalog, spec: dict, tool: str, arguments: dict, permit_id: str,
               authority: PermitAuthority, *, client_factory: Callable = client_for,
-              evidence_dir: Path | None = None) -> dict:
-    """One permit-bound tools/call; returns an evidence receipt and a bounded source."""
+              evidence_dir: Path | None = None,
+              content_policy: str = "off") -> dict:
+    """One permit-bound tools/call; returns an evidence receipt and a bounded source.
+
+    content_policy (P0-05 call-site integration):
+        'off'   — current behavior; source text as returned by the tool.
+        'audit' — scan the text with content_sanitiser for injection patterns;
+                  record them in receipt['injection_markers'] but do not alter
+                  the text.
+        'wrap'  — scan + wrap the text in CIDM DATA markers so downstream
+                  consumers see the string as inert data, not authority.
+                  Markers are also recorded in receipt['injection_markers']
+                  for audit.
+    """
+    if content_policy not in ("off", "audit", "wrap"):
+        raise ValueError("content_policy must be 'off', 'audit', or 'wrap'")
     card = catalog.describe(spec["name"], tool)
     access = card["access_class"]
     require(access != "blocked", "mcp_tool_blocked_by_owner")
@@ -511,6 +525,15 @@ def call_tool(catalog: McpCatalog, spec: dict, tool: str, arguments: dict, permi
                 encoding="utf-8")
             receipt["full_result_ref"] = str(folder / (receipt["result_hash"] + ".json"))
         source_text = text[:SOURCE_TEXT_LIMIT - 1] + "…" if receipt["truncated"] else text
+        if content_policy in ("audit", "wrap"):
+            import importlib as _importlib
+            cs = _importlib.import_module("content_sanitiser")
+            source_id = "mcp:" + spec["name"] + ":" + tool
+            markers = cs.scan_for_injection_markers(source_text)
+            receipt["injection_markers"] = markers
+            if content_policy == "wrap":
+                source_text = cs.wrap_as_data(source_text, source_id=source_id,
+                                              kind="mcp_tool_result")
         source = {"title": (spec["name"] + " " + tool)[:120], "text": source_text or "[empty tool result]"}
         return {"receipt": receipt, "source": source}
     except Exception as error:
