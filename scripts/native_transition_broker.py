@@ -632,7 +632,7 @@ class NativeTransitionBroker:
         return result
 
 
-def main():
+def _build_cli_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--task', type=Path, required=True,
                         help='JSON goal, accepted context, sources, and fresh classification')
@@ -670,11 +670,25 @@ def main():
     parser.add_argument('--operator', help='Operator id recorded for resume actions')
     parser.add_argument('--skip-route-preflight', action='store_true',
                         help='Do not compare the frozen route catalogue with the account catalogue')
+    parser.add_argument('--content-policy', choices=('off', 'audit', 'wrap'), default='off',
+                        help=('P0-05 content sanitiser policy for MCP tool results consumed by '
+                              'retrieve_evidence: audit records injection markers, wrap wraps '
+                              'the text in CIDM DATA markers so it is read as inert data.'))
+    parser.add_argument('--require-action-approval', action='store_true',
+                        help=('P0-05 non-reversible-action gate: refuse MCP calls whose action '
+                              'name classifies as non-reversible unless an action-bound approval '
+                              'is present. The read-only evidence plan should pass naturally; '
+                              'this is defense-in-depth.'))
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
     mode.add_argument('--validate-only', action='store_true',
                       help='Validate the bounded input and report its route without model calls')
+    return parser
+
+
+def main():
+    parser = _build_cli_parser()
     args = parser.parse_args()
     require(not args.arsenal_calibration_ledger or args.arsenal_shadow,
             'calibration_requires_shadow_observer')
@@ -763,7 +777,9 @@ def main():
         servers = {spec['name']: spec for spec in discover_servers()}
         retriever = McpEvidenceRetriever(McpCatalog(args.mcp_db), servers, authority, plan['steps'],
                                          max_calls=plan.get('max_calls', 4),
-                                         evidence_dir=args.out / 'evidence')
+                                         evidence_dir=args.out / 'evidence',
+                                         content_policy=args.content_policy,
+                                         require_action_approval=args.require_action_approval)
     elif args.retrieval_index:
         require(args.gate_policy == 'recovery', 'retrieval_requires_recovery_policy')
         from retrieval import LocalHybridIndex, RetrievalEvidenceRetriever

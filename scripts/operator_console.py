@@ -588,7 +588,8 @@ def build_request(payload: dict) -> dict:
 
 
 def broker_argv(task_path: Path, out_dir: Path, provider: str, gate_policy: str, *, live: bool,
-                resume: Path | None = None, operator: str | None = None, reset_rounds: bool = False) -> list[str]:
+                resume: Path | None = None, operator: str | None = None, reset_rounds: bool = False,
+                config: dict | None = None) -> list[str]:
     if provider not in ("claude", "codex") or gate_policy not in ("legacy", "fused", "recovery"):
         raise ValueError("invalid provider or gate policy")
     argv = [sys.executable, str(SCRIPTS / "native_transition_broker.py"),
@@ -602,6 +603,12 @@ def broker_argv(task_path: Path, out_dir: Path, provider: str, gate_policy: str,
             argv += ["--operator", operator]
         if reset_rounds:
             argv.append("--reset-recovery-rounds")
+    if config is not None:
+        policy = config.get("content_policy", "off")
+        if policy != "off":
+            argv += ["--content-policy", policy]
+        if config.get("require_action_approval"):
+            argv.append("--require-action-approval")
     return argv
 
 

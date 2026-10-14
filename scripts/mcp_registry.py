@@ -569,8 +569,13 @@ class McpEvidenceRetriever:
 
     def __init__(self, catalog: McpCatalog, servers: dict[str, dict], authority: PermitAuthority,
                  plan: list[dict], *, max_calls: int = 4, client_factory: Callable = client_for,
-                 evidence_dir: Path | None = None):
+                 evidence_dir: Path | None = None, content_policy: str = "off",
+                 require_action_approval: bool = False):
         require(isinstance(plan, list) and 0 < len(plan) <= 16 and 1 <= max_calls <= 16, "invalid_evidence_plan")
+        if content_policy not in ("off", "audit", "wrap"):
+            raise ValueError("content_policy must be 'off', 'audit', or 'wrap'")
+        self.content_policy = content_policy
+        self.require_action_approval = bool(require_action_approval)
         for step in plan:
             require(isinstance(step, dict) and {"server", "tool", "arguments"} <= set(step)
                     and set(step) <= {"server", "tool", "arguments", "title"}, "invalid_evidence_step")
@@ -602,7 +607,9 @@ class McpEvidenceRetriever:
         try:
             outcome = call_tool(self.catalog, self.servers[step["server"]], step["tool"], step["arguments"],
                                 permit, self.authority, client_factory=self.client_factory,
-                                evidence_dir=self.evidence_dir)
+                                evidence_dir=self.evidence_dir,
+                                content_policy=self.content_policy,
+                                require_action_approval=self.require_action_approval)
         except McpError as error:
             self.receipts.append({"step": self.cursor - 1, "status": "failed", "error": str(error)})
             return None
