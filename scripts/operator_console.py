@@ -99,6 +99,18 @@ def _merge_config(raw: dict | None) -> dict:
     return data
 
 
+def _trusted_mcp_servers(config: dict) -> set[str]:
+    """Operator-trusted MCP server names, as a set, for the P0-05 trust gate.
+
+    Default `trusted_mcp_servers=[]` yields an empty set, which puts the
+    classifier in strict mode: a server not in the set has its
+    `readOnlyHint=true` demoted to `access_class='unknown'`. This matches
+    P0-05's untrusted-by-default stance; operators opt a server into the
+    trusted set via `/api/config` to recover `read` classifications on it.
+    """
+    return set(config.get("trusted_mcp_servers") or [])
+
+
 def list_approvals(config: dict) -> dict:
     """Return pending/decided approval records under runs/approvals/."""
     folder = Path(config["runs_directory"]) / "approvals"
@@ -479,14 +491,22 @@ def mcp_overview(config: dict, query: str | None = None) -> dict:
     return out
 
 
-def mcp_refresh(config: dict, server: str) -> dict:
-    from mcp_registry import McpCatalog, client_for, discover_servers
-    spec = next((s for s in discover_servers(project_dir=Path(config["project_directory"])) if s["name"] == server), None)
+def mcp_refresh(config: dict, server: str, *, client_factory=None,
+                catalog_cls=None, discover=None) -> dict:
+    if client_factory is None or catalog_cls is None or discover is None:
+        from mcp_registry import (McpCatalog as _McpCatalog,
+                                  client_for as _client_for,
+                                  discover_servers as _discover_servers)
+        client_factory = client_factory or _client_for
+        catalog_cls = catalog_cls or _McpCatalog
+        discover = discover or _discover_servers
+    spec = next((s for s in discover(project_dir=Path(config["project_directory"])) if s["name"] == server), None)
     if spec is None:
         raise ValueError("unknown configured server")
-    with McpCatalog(Path(config["mcp_db"])) as catalog, client_for(spec) as client:
+    with catalog_cls(Path(config["mcp_db"])) as catalog, client_factory(spec) as client:
         client.initialize()
-        return catalog.ingest(spec, client.list_tools())
+        return catalog.ingest(spec, client.list_tools(),
+                              trusted_servers=_trusted_mcp_servers(config))
 
 
 # ---------------------------------------------------------------- live broker jobs
