@@ -1,0 +1,9 @@
+{
+  "critical": [],
+  "entrypoint": "parse_duration",
+  "hidden_tests": "assert parse_duration('1h') == 3600\nassert parse_duration('2m') == 120\nassert parse_duration('1h30m') == 5400\nassert parse_duration('45s') == 45\nassert parse_duration('1h0m5s') == 3605\n",
+  "required_citations": [
+    "module"
+  ],
+  "status": "complete"
+}

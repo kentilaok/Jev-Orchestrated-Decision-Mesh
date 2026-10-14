@@ -1,0 +1,41 @@
+{
+  "schema": "cidm-audit-model-registry/1",
+  "captured_utc": "2026-09-28T02:40:00Z",
+  "verification_levels": {
+    "provider_confirmed": "a saved provider response returned this model/provider identity",
+    "requested_only": "the route was requested; no response confirms the served identity",
+    "documented_only": "named in repository configuration or docs; never observed",
+    "unverified_label": "a name used in conversation or policy with no configuration or provider evidence"
+  },
+  "routes": [
+    {"label": "Jev", "request_model": "typesafe/jev-1.13", "role": "decision", "effort_setting": "none",
+     "identity": "provider_confirmed", "served_as": "typesafe/jev-1.13-20260917", "observed_calls": 74,
+     "confirmed_effort": "not_applicable",
+     "notes": "Returns typed choice/score/noul answers with probabilities and a confidence that equals (k*p_max-1)/(k-1) within rounding on 63/63 saved Choice answers."},
+    {"label": "Luna low", "request_model": "openai/gpt-6-luna", "effort": "low", "role": "worker",
+     "identity": "provider_confirmed (model and provider only)", "confirmed_effort": "unavailable: responses carry no effort field; reasoning_tokens=0 is consistent with but does not prove 'low'",
+     "observed_calls": 6},
+    {"label": "Luna medium/high/xhigh", "request_model": "openai/gpt-6-luna", "effort": ["medium", "high", "xhigh"],
+     "identity": "documented_only", "observed_calls": 0},
+    {"label": "Sol low", "request_model": "openai/gpt-6-sol", "effort": "low", "role": "worker",
+     "identity": "provider_confirmed (model and provider only)", "confirmed_effort": "unavailable", "observed_calls": 4},
+    {"label": "Sol high (checker)", "request_model": "openai/gpt-6-sol", "effort": "high", "role": "checker",
+     "identity": "provider_confirmed (model and provider only) for 6 calls; 1 failed with HTTP 404 before a response", "confirmed_effort": "unavailable", "observed_calls": 7},
+    {"label": "Sol medium (baseline)", "request_model": "openai/gpt-6-sol", "effort": "medium",
+     "identity": "documented_only", "observed_calls": 0},
+    {"label": "Sol high (one-call baseline)", "request_model": "openai/gpt-6-sol", "effort": "high", "role": "worker",
+     "identity": "provider_confirmed (model and provider only)", "confirmed_effort": "unavailable", "observed_calls": 2},
+    {"label": "Sol xhigh", "request_model": "openai/gpt-6-sol", "effort": "xhigh", "identity": "documented_only", "observed_calls": 0},
+    {"label": "Astra low", "request_model": "openai/gpt-6-astra", "effort": "low", "identity": "documented_only",
+     "observed_calls": 0, "enabled_by_default": false},
+    {"label": "GPT-5.6 Sol medium (historical)", "request_model": "openai/gpt-5.6-sol", "effort": "medium",
+     "identity": "provider_confirmed (model and provider only)", "confirmed_effort": "unavailable", "observed_calls": 30},
+    {"label": "Codex CLI children (gpt-6-luna / gpt-6-sol)", "request_model": "gpt-6-luna|gpt-6-sol via `codex exec -m`",
+     "identity": "requested_only", "observed_calls": 0,
+     "notes": "The adapter only records actual_model/actual_effort if the JSONL stream reports them; the documented stream does not. No live broker run is saved."},
+    {"label": "Terra", "identity": "unverified_label", "notes": "Excluded by SKILL.md; no configuration route exists."},
+    {"label": "Primary Codex host (interactive)", "identity": "unverified_label",
+     "notes": "Model, effort and usage of the interactive host are not recorded anywhere in the repository."}
+  ],
+  "counts_basis": "reconciliation/events.reconstructed.jsonl (GPT-6 bundles, attempts, historical pilot split ledgers)"
+}

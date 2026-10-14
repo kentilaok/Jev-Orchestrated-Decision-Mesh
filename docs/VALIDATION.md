@@ -1,6 +1,10 @@
 # Validation scope
 
-The repository has **130 passing offline tests** on Python 3.12, including the Codex CLI transition broker, its optional fused-gate protocol, and the adapter. The runners require Python 3.10+ and use only the standard library. The [historical pilot appendix](../research/historical-pilot/README.md) independently passes **40 tests** and its verifier.
+The repository has **316 offline tests** on Python 3.12 (315 pass and one opt-in Docker smoke test is skipped by default). They include the Codex CLI transition broker, its optional fused-gate protocol, the recovery-first supervisor and checkpoint resume, the Arsenal registry, shadow and calibration, and the Arsenal V1 components: capability permits, frontier providers, Fast Path, MCP catalogue, retrieval, sandbox, browser classes, telemetry, and the Operator Console's request guards. The runners require Python 3.10+ and use only the standard library. The [historical pilot appendix](../research/historical-pilot/README.md) independently passes **40 tests** and its verifier. The [inference-audit study](../.cidm/studies/20260928T013651Z-cidm-inference-audit/README.md) is a record pinned to commit `327c36b`; its candidate skill copy passes **142** tests. Of the study's own 50 tests, 48 pass against the current scripts. The other two, `test_F01` and `test_F11`, assert that defects D-06 and D-05 are present, and they now fail because those defects are fixed (`tests/test_audit_instrumentation.py` covers the fixes).
+
+The Docker sandbox smoke test (`CIDM_RUN_DOCKER_TESTS=1`, local image `node:22-alpine`) ran a real container on the build workstation. It confirmed that the network was disabled and that only the allowlisted artifact returned. The research evidence verifiers below require byte-exact checkouts; the repository's `.gitattributes` disables newline conversion so they also pass on Windows.
+
+**Arsenal V1 boundary.** The new components are verified offline against fakes, a local stdio MCP fixture, and, for the sandbox, a real local container. No live Jev, Claude Code, Codex, Qdrant, Phoenix, or hosted-reranker run has exercised them. They establish control behaviour (permits, fail-closed preflight, audits, resume integrity), not quality, latency, or token savings.
 
 The tests cover one-use approvals, exact-operation binding, gate order, predecessor and policy integrity, Jev-selected Luna/Sol worker routes, default exclusion of Astra, explicit Astra authorization, checker isolation, direct forwarding after hard checks, optional review, review recheck/repair, bounded escalation, invalid worker/checker envelopes, final-text value/source/scope checks, and Jev decisions after every five-unit output and requested checker return. The audit detects mutated committed packets. Transport tests mock model-specific reservations, role call caps, the post-response Jev token ceiling, identity, usage accounting, reserved Jev follow-up capacity, and sanitized failure logs. Entry-routing tests cover a conservative broad default, task/context-bound host assertions, a one-worker Luna-low short route, and the restricted Jev menu for broad work. Metrics tests keep unknown usage unknown and avoid invented quality gains. The one-call baseline tests cover live-call shape, answer grading, failed-call accounting, and offline simulation.
 
@@ -31,6 +35,9 @@ python research/live-gpt6-optional-final/verify_optional.py
 python research/live-gpt6-fast-exit/verify_fast_exit.py
 python scripts/adaptive_run.py --offline --task examples/production-records.json --out runs/broad-validation-001
 python research/historical-pilot/verify_appendix.py
+python scripts/frontier_providers.py coverage --provider codex
+python scripts/mcp_registry.py servers
+CIDM_RUN_DOCKER_TESTS=1 python -m unittest tests/test_sandbox_browser.py -v
 ```
 
 Use a fresh output directory for each attempt. Raw run logs can contain task data; they are excluded from version control by default. The skill contains no training dataset, learned routing checkpoint, or private conversation transcript.

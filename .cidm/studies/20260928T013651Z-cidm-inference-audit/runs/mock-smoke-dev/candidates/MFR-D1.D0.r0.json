@@ -1,0 +1,1 @@
+{"status": "complete", "answer": {"defects": [{"file": "handler.py", "line": 3, "category": "missing_permission_check"}, {"file": "pager.py", "line": 3, "category": "off_by_one"}]}, "citations": [], "flags": [], "notes": "mock"}

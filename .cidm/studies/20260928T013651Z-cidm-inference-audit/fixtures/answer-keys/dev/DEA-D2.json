@@ -1,0 +1,17 @@
+{
+  "answer": {
+    "total_usd": 2064.0,
+    "unconverted_markets": [
+      "XX"
+    ]
+  },
+  "critical": [
+    "must_flag_unsupported_currency"
+  ],
+  "required_citations": [
+    "spend",
+    "fx"
+  ],
+  "status": "partial",
+  "tolerance": 0.005
+}

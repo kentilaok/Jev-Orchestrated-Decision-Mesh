@@ -1,0 +1,11 @@
+--- a/research/historical-pilot/test_analysis_measured.py
++++ b/research/historical-pilot/test_analysis_measured.py
+@@ -27,7 +27,7 @@
+         self.assertTrue(result["full_token_result_admissible"])
+         self.assertTrue(result["full_cost_result_admissible"])
+         self.assertEqual(result["token_savings"]["B_sum"], 12*95)
+-        self.assertEqual(result["cost_savings"]["B_sum"], 24*0.001)
++        self.assertAlmostEqual(result["cost_savings"]["B_sum"], 24*0.001, places=12)
+         quality = result["arms"]["B"]["quality"]
+         self.assertEqual(quality["served_task_passes"], 11)
+         self.assertEqual(quality["raw_candidate_task_passes"], 12)

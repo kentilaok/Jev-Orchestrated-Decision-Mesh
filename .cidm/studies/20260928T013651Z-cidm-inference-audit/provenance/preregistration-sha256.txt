@@ -1,0 +1,4 @@
+8bb9595eba92a51c1d13eea6c937612cbdc180f68afea19929499cef1b9c2ff2  EXPERIMENT.yaml
+40fab03258249aa987d562a57c94308ba8454dac1a1d4a4192d48b718c00fb32  EXPERIMENT.json
+0a3d7f52f2ce0fc53bb95d606de5d6b5b3206ea12685a53d99465b2efc8e997a  fixtures/MANIFEST.json
+fixtures regenerated 2026-09-28 before any evaluation; CDR-H1 lineage renamed for privacy (no content change to answers)

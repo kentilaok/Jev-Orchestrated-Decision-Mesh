@@ -1,0 +1,61 @@
+{
+  "context": "",
+  "family": "deterministic_extraction_arithmetic",
+  "goal": "Report production defects per 1,000 items, excluding trial records.",
+  "lineage": "L-defect-rate",
+  "output_schema": {
+    "properties": {
+      "answer": {
+        "properties": {
+          "rate_per_1000": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "citations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "flags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "complete",
+          "partial",
+          "needs_evidence",
+          "refused"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "answer",
+      "citations",
+      "flags",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "permissions_granted": [],
+  "seeded_conditions": [],
+  "sources": {
+    "records": {
+      "text": "[{\"segment\": \"A\", \"kind\": \"production\", \"items\": 240, \"defects\": 12}, {\"segment\": \"B\", \"kind\": \"production\", \"items\": 160, \"defects\": 8}, {\"segment\": \"T\", \"kind\": \"trial\", \"items\": 100, \"defects\": 30}]",
+      "title": "Original records"
+    }
+  },
+  "split": "dev",
+  "task_id": "DEA-D1",
+  "variation": {}
+}

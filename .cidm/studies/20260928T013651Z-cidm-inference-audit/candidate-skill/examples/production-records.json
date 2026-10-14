@@ -1,0 +1,25 @@
+{
+  "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+  "records": [
+    {
+      "segment": "A",
+      "kind": "production",
+      "items": 240,
+      "defects": 12
+    },
+    {
+      "segment": "B",
+      "kind": "production",
+      "items": 160,
+      "defects": 8
+    },
+    {
+      "segment": "T",
+      "kind": "trial",
+      "items": 100,
+      "defects": 30
+    }
+  ],
+  "include_kind": "production",
+  "scale": 1000
+}

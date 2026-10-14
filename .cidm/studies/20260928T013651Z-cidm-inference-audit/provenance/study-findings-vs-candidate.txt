@@ -1,0 +1,38 @@
+test_F01_reported_usage_is_discarded_when_artifact_fails_schema (test_audit_findings.CodexAccountingFindings.test_F01_reported_usage_is_discarded_when_artifact_fails_schema) ... FAIL
+test_F02_missing_codex_usage_is_accepted_as_an_ok_call (test_audit_findings.CodexAccountingFindings.test_F02_missing_codex_usage_is_accepted_as_an_ok_call) ... ok
+test_F03_requested_identity_is_never_confirmed_by_the_documented_stream (test_audit_findings.CodexAccountingFindings.test_F03_requested_identity_is_never_confirmed_by_the_documented_stream) ... ok
+test_F07_deterministic_unit_gates_offer_no_alternative (test_audit_findings.GateStructureFindings.test_F07_deterministic_unit_gates_offer_no_alternative) ... ok
+test_F08_fused_protocol_drops_repair_and_escalate_for_passing_candidates (test_audit_findings.GateStructureFindings.test_F08_fused_protocol_drops_repair_and_escalate_for_passing_candidates) ... ok
+test_F09_flattened_joint_choice_can_pick_a_minority_action (test_audit_findings.GateStructureFindings.test_F09_flattened_joint_choice_can_pick_a_minority_action)
+Arithmetic on the real fused menu: 88% 'accept' mass split over 8 routes loses to 12% 'check'. ... ok
+test_F04_structural_checks_release_an_answer_with_no_content (test_audit_findings.NativeValidationFindings.test_F04_structural_checks_release_an_answer_with_no_content) ... ok
+test_F05_honest_unresolved_issue_in_interpret_commits_then_dooms_output (test_audit_findings.NativeValidationFindings.test_F05_honest_unresolved_issue_in_interpret_commits_then_dooms_output) ... ok
+test_F06_short_route_withholds_disclosed_uncertainty_but_releases_concealment (test_audit_findings.NativeValidationFindings.test_F06_short_route_withholds_disclosed_uncertainty_but_releases_concealment) ... ok
+test_F15_live_runs_predate_the_role_caps_they_are_documented_with (test_audit_findings.ProvenanceFindings.test_F15_live_runs_predate_the_role_caps_they_are_documented_with) ... ok
+test_F16_jev_confidence_is_a_function_of_peak_probability (test_audit_findings.ProvenanceFindings.test_F16_jev_confidence_is_a_function_of_peak_probability) ... ok
+test_F12_injected_unlisted_route_cannot_dispatch (test_audit_findings.SafetyControlFindings.test_F12_injected_unlisted_route_cannot_dispatch) ... ok
+test_F13_listed_but_manipulated_choice_is_not_detectable_by_the_controller (test_audit_findings.SafetyControlFindings.test_F13_listed_but_manipulated_choice_is_not_detectable_by_the_controller) ... ok
+test_F14_route_allowlist_mutation_mid_run_blocks (test_audit_findings.SafetyControlFindings.test_F14_route_allowlist_mutation_mid_run_blocks) ... ok
+test_F10_near_tie_choice_below_argmax_fails_closed_after_billing (test_audit_findings.TransportFindings.test_F10_near_tie_choice_below_argmax_fails_closed_after_billing) ... ok
+test_F11_event_records_lack_provider_generation_id_and_timestamps (test_audit_findings.TransportFindings.test_F11_event_records_lack_provider_generation_id_and_timestamps) ... FAIL
+
+======================================================================
+FAIL: test_F01_reported_usage_is_discarded_when_artifact_fails_schema (test_audit_findings.CodexAccountingFindings.test_F01_reported_usage_is_discarded_when_artifact_fails_schema)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/Jev-Orchestrated-Decision-Mesh/.cidm/studies/20260928T013651Z-cidm-inference-audit/tests/test_audit_findings.py", line 141, in test_F01_reported_usage_is_discarded_when_artifact_fails_schema
+    self.assertIsNone(broker.calls[-1]["usage"])
+AssertionError: {'input_tokens': 1234, 'output_tokens': 321, 'cached_input_tokens': 0, 'reasoning_output_tokens': 100} is not None
+
+======================================================================
+FAIL: test_F11_event_records_lack_provider_generation_id_and_timestamps (test_audit_findings.TransportFindings.test_F11_event_records_lack_provider_generation_id_and_timestamps)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/Jev-Orchestrated-Decision-Mesh/.cidm/studies/20260928T013651Z-cidm-inference-audit/tests/test_audit_findings.py", line 294, in test_F11_event_records_lack_provider_generation_id_and_timestamps
+    self.assertNotIn("gen-dec-123", json.dumps(event))
+AssertionError: 'gen-dec-123' unexpectedly found in '{"id": "call-1", "role": "jev", "status": "ok", "requested_model": "typesafe/jev-1.13", "returned_model": "typesafe/jev-1.13-20260917", "provider": "TypeSafe", "request_hash": "07d786ff63f7635086e019bf4e24dec2403514c04dfaea93be7501d27f0a3155", "policy_hash": "0c91081ea1905d7a322f834bd7fc6a3887151b19a984d8937d5a5b46a079ab5f", "reserved_usd": 0.0001265, "followup_jev_reserved_usd": 0.0, "admission_reserved_calls": 1, "followup_jev_required": false, "reasoning_effort": null, "usage": {"input_tokens": 10, "output_tokens": 2, "total_tokens": 12, "total_tokens_source": "derived_input_plus_output", "cached_input_tokens": null, "reasoning_tokens": null, "cost": 4.2e-07}, "usage_raw": {"input_tokens": 10, "output_tokens": 2, "cost": 4.2e-07}, "latency_ms": 0.185, "provider_request_id": "gen-dec-123", "started_at": "2026-09-28T02:28:55.551Z", "ended_at": "2026-09-28T02:28:55.552Z", "usage_semantics": {"cached_input_tokens": "subset_of_input_tokens", "reasoning_tokens": "subset_of_output_tokens"}, "warnings": []}'
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.077s
+
+FAILED (failures=2)

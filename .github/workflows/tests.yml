@@ -1,0 +1,41 @@
+name: CIDM offline tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compile
+        run: python -m compileall -q scripts tests
+      - name: Offline test suite (no credentials, no model calls)
+        run: python -B -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Broker request validation (zero model calls)
+        run: |
+          python scripts/native_transition_broker.py --validate-only --task examples/native-project.request.json
+          python scripts/native_transition_broker.py --validate-only --gate-policy recovery --task examples/native-project.request.json
+      - name: Saved evidence verifiers
+        run: |
+          python research/live-gpt6-fixture/verify_live.py
+          python research/live-gpt6-optional-fixture/verify_optional.py
+          python research/live-gpt6-optional-final/verify_optional.py
+          python research/live-gpt6-fast-exit/verify_fast_exit.py
+          python research/historical-pilot/verify_appendix.py

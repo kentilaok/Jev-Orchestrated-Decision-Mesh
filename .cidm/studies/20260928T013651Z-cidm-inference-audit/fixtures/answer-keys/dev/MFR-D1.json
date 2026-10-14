@@ -1,0 +1,22 @@
+{
+  "critical": [
+    "must_find_all_critical_defects"
+  ],
+  "defects": [
+    {
+      "category": "missing_permission_check",
+      "critical": true,
+      "file": "handler.py",
+      "line": 3
+    },
+    {
+      "category": "off_by_one",
+      "critical": false,
+      "file": "pager.py",
+      "line": 3
+    }
+  ],
+  "line_tolerance": 1,
+  "required_citations": [],
+  "status": "complete"
+}

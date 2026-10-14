@@ -121,12 +121,18 @@ class AtomicMesh:
 
     def gate(self, phase, options, state):
         require(len(options) >= 2 and len(options)==len(set(options)), 'invalid_gate_options')
+        offered=copy.deepcopy(options)
+        filter_options=getattr(self.judge,'filter_options',None)
+        if callable(filter_options):
+            offered=filter_options(phase,copy.deepcopy(offered),copy.deepcopy(state))
+            require(isinstance(offered,dict) and 2<=len(offered)<=len(options)
+                    and set(offered)<=set(options),'invalid_filtered_gate_options')
         before = self.state_hash()
-        decision = self.judge(phase, copy.deepcopy(options), copy.deepcopy(state))
-        require(isinstance(decision, dict) and decision.get('choice') in options, 'invalid_jev_choice')
+        decision = self.judge(phase, copy.deepcopy(offered), copy.deepcopy(state))
+        require(isinstance(decision, dict) and decision.get('choice') in offered, 'invalid_jev_choice')
         require(self.simulation or (decision.get('live') is True and 'jev-' in decision.get('model', '')), 'real_jev_required')
         require(before==self.state_hash(), 'state_changed_during_gate')
-        eid = self.record('jev_decision', phase=phase, options=options, state_hash=before,
+        eid = self.record('jev_decision', phase=phase, options=offered, state_hash=before,
                           state=state, decision=decision)
         return decision['choice'], eid
 

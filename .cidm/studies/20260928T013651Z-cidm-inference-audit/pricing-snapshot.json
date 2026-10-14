@@ -1,0 +1,67 @@
+{
+  "schema": "cidm-audit-pricing-snapshot/1",
+  "captured_utc": "2026-09-28T02:40:00Z",
+  "currency": "USD",
+  "unit": "per_million_tokens",
+  "live_reverification": {
+    "performed": false,
+    "reason": "Container egress policy denied openrouter.ai, developers.openai.com and docs.typesafe.ai on 2026-09-28; rates below are dated secondary copies corroborated against recorded provider charges.",
+    "required_before_live_run": "python -B harness/run_benchmark.py --mode preflight (fetches /api/v1/models and endpoint pricing with the operator's key; refuses to start if any row differs)"
+  },
+  "rows": [
+    {
+      "id": "jev-1.13",
+      "request_model": "typesafe/jev-1.13",
+      "served_model_observed": "typesafe/jev-1.13-20260917",
+      "provider_observed": "TypeSafe (via OpenRouter /api/alpha/decisions)",
+      "input": 0.042, "output": 0.0, "cache_read": null, "cache_write": null,
+      "source": "research/historical-pilot/provider-preflight.json jev_endpoints (frozen 2026-09-22); docs/ROUTING-ECONOMICS.md (checked 2026-09-23)",
+      "corroboration": "74/74 recorded Jev charges reproduce exactly at input 0.042, output 0.0",
+      "reservation_rate_in_repo_config": {"input": 0.05, "output": 0.05},
+      "caveat": "Output price 0 means output tokens are unpriced now; the Jev API has no output-token cap, so a non-zero future output price would make Jev calls unboundable under this harness."
+    },
+    {
+      "id": "gpt-6-luna",
+      "request_model": "openai/gpt-6-luna",
+      "served_model_observed": "openai/gpt-6-luna",
+      "provider_observed": "Azure (OpenRouter provider.only=[azure], allow_fallbacks=false)",
+      "input": 0.10, "output": 0.50, "cache_read": 0.01, "cache_write": 0.125,
+      "source": "docs/ROUTING-ECONOMICS.md (OpenAI Standard short-context list price, checked 2026-09-23)",
+      "corroboration": "6/6 recorded Luna charges reproduce exactly (no cache reads/writes occurred)"
+    },
+    {
+      "id": "gpt-6-sol",
+      "request_model": "openai/gpt-6-sol",
+      "served_model_observed": "openai/gpt-6-sol",
+      "provider_observed": "Azure",
+      "input": 2.00, "output": 10.00, "cache_read": 0.20, "cache_write": 2.50,
+      "source": "docs/ROUTING-ECONOMICS.md (checked 2026-09-23)",
+      "corroboration": "12/12 recorded Sol worker/checker charges reproduce exactly (no cache reads/writes occurred)"
+    },
+    {
+      "id": "gpt-6-astra",
+      "request_model": "openai/gpt-6-astra",
+      "input": 10.00, "output": 50.00, "cache_read": 1.00, "cache_write": 12.50,
+      "source": "docs/ROUTING-ECONOMICS.md (checked 2026-09-23)",
+      "corroboration": "none: never called in any saved run; disabled by default"
+    },
+    {
+      "id": "gpt-5.6-sol@azure",
+      "request_model": "openai/gpt-5.6-sol",
+      "served_model_observed": "openai/gpt-5.6-sol",
+      "provider_observed": "Azure",
+      "input": 5.00, "output": 30.00, "cache_read": 0.50, "cache_write": 6.25,
+      "source": "research/historical-pilot/provider-preflight.json sol_endpoints[azure] (frozen 2026-09-22); cache_write inferred as 1.25x input from charges",
+      "corroboration": "30/30 recorded charges reproduce exactly once provider-reported cache_write_tokens are priced at 6.25",
+      "note": "The same model's OpenAI endpoint listed input 2.00 / output 10.00: the served provider changed the price 2.5-3x. Price by served endpoint, not by model."
+    }
+  ],
+  "codex_plan_credits": {
+    "unit": "credits_per_million_tokens (not USD)",
+    "source": "docs/ROUTING-ECONOMICS.md citing Codex Standard credit rates (checked 2026-09-23); not re-verified",
+    "gpt-6-luna": {"input": 2.5, "cached_input": 0.25, "output": 12.5},
+    "gpt-6-sol": {"input": 50, "cached_input": 5, "output": 250},
+    "gpt-6-astra": {"input": 250, "cached_input": 25, "output": 1250},
+    "caveat": "Included plan allowance consumption cannot be inferred from these rates; never convert to USD or add to API charges."
+  }
+}

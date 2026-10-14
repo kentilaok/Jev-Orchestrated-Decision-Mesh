@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use CIDM, please cite this software and its documented validation scope."
+type: software
+title: "Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM)"
+authors:
+  - family-names: "Caber"
+    given-names: "Kenneth Vic A."
+    website: "https://github.com/kentilaok"
+repository-code: "https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh"
+url: "https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh"
+license: MIT

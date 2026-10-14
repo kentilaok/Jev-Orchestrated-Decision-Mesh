@@ -1,0 +1,4 @@
+# Keep checked-out bytes identical to committed bytes on every platform.
+# Research evidence and study fixtures are SHA-256 pinned, so any newline
+# conversion (for example core.autocrlf=true on Windows) breaks verification.
+* -text

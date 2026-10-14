@@ -1,0 +1,32 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "source_id": "records",
+    "source_hash": "20bd8062e022aebf93c45b7c5a1459c0c787f2f42467ca39ee6f0b68b94d0673",
+    "rows": 3,
+    "kinds": ["production", "trial"],
+    "include": "production",
+    "scale": 1000,
+    "exact_checks": true,
+    "budget_usd": 1.5,
+    "input_classification": {
+      "source": "conservative_default",
+      "snapshot_hash": "02c534495cb4406d8d966b6b071633dfe45fc8bc066d3f3a6c515c47aa5c6dd3",
+      "flags": null,
+      "scope": "broad_or_uncertain"
+    },
+    "context_summary": ""
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "The host classified this fresh input and carried context as broad, multi-step, context-dependent, or uncertain. The five_unit network is the default route. Choose retrieve_evidence only when required original evidence is missing, or stop only when no offered route can meet the constraints. Do not choose a direct worker shortcut. Return only a typed choice.",
+      "criteria": {
+        "five_unit": "Run the five-unit graph with Jev before and after each unit; Jev may request Sol-high review for specific units.",
+        "retrieve_evidence": "Stop to obtain missing original evidence before selecting a computation route.",
+        "stop": "Stop because no offered route can meet the constraints safely."
+      }
+    }
+  }
+}

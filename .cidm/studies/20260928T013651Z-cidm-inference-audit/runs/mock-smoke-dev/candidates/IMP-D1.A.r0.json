@@ -1,0 +1,1 @@
+{"status": "complete", "answer": {"code": "def parse_duration(text):\n    total, number = 0, ''\n    for ch in text:\n        if ch.isdigit():\n            number += ch\n        else:\n            total += int(number) * {'h': 3600, 'm': 60, 's': 1}[ch]\n            number = ''\n    return total\n"}, "citations": ["module"], "flags": [], "notes": "mock"}

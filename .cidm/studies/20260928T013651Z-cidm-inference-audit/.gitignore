@@ -1,0 +1,11 @@
+# Re-include the mock runs directory that the repository root .gitignore excludes
+!runs/
+# Regenerable or large outputs (see README.md "Regenerating omitted large files")
+snapshot/
+runs/mock-pilot-heldout/events.jsonl
+runs/mock-pilot-heldout/candidates/
+runs/*/.lock
+__pycache__/
+*.pyc
+# Private project evidence must never be placed here
+private-reconciliation/

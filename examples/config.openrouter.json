@@ -23,12 +23,15 @@
   "timeout": 45,
   "worker_luna_input_usd_per_million": 0.1,
   "worker_luna_output_usd_per_million": 0.5,
-  "worker_input_usd_per_million": 2.0,
-  "worker_output_usd_per_million": 10.0,
-  "worker_astra_input_usd_per_million": 10.0,
-  "worker_astra_output_usd_per_million": 50.0,
-  "checker_input_usd_per_million": 2.0,
-  "checker_output_usd_per_million": 10.0,
+  "worker_input_usd_per_million": 2,
+  "worker_output_usd_per_million": 10,
+  "worker_astra_input_usd_per_million": 10,
+  "worker_astra_output_usd_per_million": 50,
+  "checker_input_usd_per_million": 2,
+  "checker_output_usd_per_million": 10,
   "jev_input_usd_per_million": 0.05,
-  "jev_output_usd_per_million": 0.05
+  "jev_output_usd_per_million": 0.05,
+  "max_recovery_attempts": 2,
+  "max_verification_attempts": 2,
+  "max_recovery_rounds": 2
 }

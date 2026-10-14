@@ -1,0 +1,406 @@
+{
+  "historical_split_plus_combined": {
+    "records_in": 120,
+    "unique_requests": 60,
+    "representation_duplicates": [
+      {
+        "provider_request_id": "gen-1790101678-GU7ChSMT0FLMmxUIDt93",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:1",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:1",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101683-q9kECv3JiBuDJXX7qXdD",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:2",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:2",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101683-1KZJO2Bq0jq5YsoWBRLP",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:3",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:3",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101686-fcsUooSxyTFiApjkVN2y",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:4",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:4",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101686-gzbqb5QaAnDlEMWFz8kQ",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:5",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:5",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101686-PdoeCkfyWgCExeRzhCiw",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:6",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:6",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101691-ZbUptrAnz099oogNvv7M",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:7",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:7",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101692-RskaToMqofXZP7IMOmkY",
+        "kept": "research/historical-pilot/runs-development/ledger.jsonl:8",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:8",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101766-3BdFd21Q0BUrS4bkVfxm",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:1",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:9",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101772-zDznSRsecr3iC8KiZ1mI",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:2",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:10",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101772-qr6SjX0wBKQ8kC11jimM",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:3",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:11",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101777-vR8YlpO2QQUETMhX015V",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:4",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:12",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101777-aN1gurKOKMHgZmuVPIbK",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:5",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:13",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101777-GPCBoLKoYmNLq9sa7YQa",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:6",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:14",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101780-IafFbF9R6UlHGLZYsMr6",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:7",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:15",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101780-kk8UlSxUm5YNGkRcd86L",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:8",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:16",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101782-0QH5Vdm0TTHLO2ujjTpc",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:9",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:17",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101785-IFZs6AHGxp5TocYqqMGV",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:10",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:18",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101785-wTtIwkQDGxz4sZTEIZeY",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:11",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:19",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101788-69JTWvL1c1UXyDLx2tji",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:12",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:20",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101788-xYSF86Tku7CQq6ocZNmo",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:13",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:21",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101789-GDRLxF1TfIUooY72R33l",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:14",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:22",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101791-TVWrsUQUd40fW9kCEtsj",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:15",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:23",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101791-12TGMDFufu05oH9WMdLO",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:16",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:24",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101795-9ooSXeirYLhLSGnGiD6i",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:17",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:25",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101798-1S7LvhpYBfArLDKQDFZy",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:18",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:26",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101799-DoVA0IY3JrQMwd7mqEug",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:19",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:27",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101803-bkO3DijrJTIuj3YD9jOf",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:20",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:28",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101803-5qcPFpG9SiVGuzddhqqW",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:21",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:29",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101804-XwJ62Bo0Znv9zq3gAYUP",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:22",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:30",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101807-Pq8em8vV4hjNN2R98IyD",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:23",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:31",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101808-Nm66Gf1OUUOxmUWGu7bs",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:24",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:32",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101811-wADcc3W7LqnkrRtxSpk0",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:25",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:33",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101814-U4gQAUE9wk225b9ECA6u",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:26",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:34",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101814-50GqlTqhRAkawrurKWgW",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:27",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:35",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101819-x5aWdGjqoqudFvtdnF3B",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:28",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:36",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101819-aeTJUX2yzhZCcCoA0bhD",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:29",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:37",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101819-nuLFad7kqXxAN5v4ZX1G",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:30",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:38",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101823-akqXbk9XgpufVHLE2auL",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:31",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:39",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101823-qGkce7YHQC2xNs8kz1xe",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:32",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:40",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101826-crrVDUDmn5dpxGdiL9cp",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:33",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:41",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101829-5qCgtM2kHRskP1rbQArR",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:34",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:42",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101830-zMgKoxhl9UZw1xHDMQNU",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:35",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:43",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101834-4f3fhS6MxhmYcL7fp8mR",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:36",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:44",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101834-rtBp4wEOpbIF5ZcrMRHw",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:37",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:45",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101835-hBFI4nXoX4yhouplwkuR",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:38",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:46",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101839-qY11mOfSkw5DYwoKfww3",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:39",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:47",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101840-FlEQTd0KE6GZlcrDIU56",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:40",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:48",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101844-HRFABdGMqP31j21Gtrcq",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:41",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:49",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101844-xBrKeTE0DENZukVALClq",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:42",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:50",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101848-qIJnQalHZuy14AOh3BAQ",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:43",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:51",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101852-vUg03EhCDiZkXQ9l6utu",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:44",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:52",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101852-YgpoH7fzhKQRH8NmLjtD",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:45",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:53",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101855-8jJffkAaAmtfXPd2nsbD",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:46",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:54",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101856-Hj1OCeZQ9QPSgzLOW2vN",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:47",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:55",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101856-6Mt3gc55b51THHJGVX5U",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:48",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:56",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101865-wx7wWvw0IdZU1lBv2j5c",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:49",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:57",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101866-f4XuX7nT5SdnTGtmHeRM",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:50",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:58",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-dec-1790101871-1rMJzhCpcuuPJaH2vj1u",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:51",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:59",
+        "conflicting_fields": []
+      },
+      {
+        "provider_request_id": "gen-1790101871-aLD2rG07QLEsFNhOXgTo",
+        "kept": "research/historical-pilot/runs-evaluation/ledger.jsonl:52",
+        "duplicate": "research/historical-pilot/combined-ledger.jsonl:60",
+        "conflicting_fields": []
+      }
+    ],
+    "unidentified_records": [],
+    "identical_prompt_distinct_billed_requests": {}
+  },
+  "gpt6_and_attempts": {
+    "records_in": 63,
+    "unique_or_unidentified": 63,
+    "representation_duplicates": [],
+    "unidentified_records": [
+      "research/live-gpt6-fixture/attempts/checked-provider-filtered.json#call-1",
+      "research/live-gpt6-fixture/attempts/checked-provider-filtered.json#call-2",
+      "research/live-gpt6-fixture/attempts/checked-provider-filtered.json#call-3",
+      "research/live-gpt6-fixture/attempts/checked-jev-stop.json#call-1",
+      "research/live-gpt6-fixture/attempts/checked-jev-stop.json#call-2",
+      "research/live-gpt6-fixture/attempts/checked-jev-stop.json#call-3",
+      "research/live-gpt6-fixture/attempts/checked-jev-stop.json#call-4",
+      "research/live-gpt6-fixture/attempts/checked-jev-stop.json#call-5",
+      "research/live-gpt6-fixture/attempts/checked-jev-stop.json#call-6",
+      "research/live-gpt6-fixture/attempts/checked-jev-stop.json#call-7",
+      "research/live-gpt6-fixture/attempts/baseline-schema-mismatch.json#call-1"
+    ],
+    "identical_prompt_distinct_billed_requests": {
+      "e9de768751da94e8def5f7bf90d478e7c066eb1e032975d257fe44db3a74a60d": [
+        "gen-1790144280-Cbcy6t9LAElXBBwbWj89",
+        "gen-1790147156-VtMBuL0B5Jon4xEBTsLC"
+      ],
+      "7307abe502be46cff174822290f433168bae276b33e3c9e67a7ca2319095c772": [
+        "gen-dec-1790147155-bcbreS6gXOd9eiFDYfvM",
+        "gen-dec-1790148047-UJ6LS2Qmkkm1qvPxFd7e"
+      ],
+      "befac69afbbc723873625154700c8e561d385c0ff8e482c7552f5714cdd4d377": [
+        "gen-dec-1790147155-zhGU96b0RNkC8eYj2DHS",
+        "gen-dec-1790148047-gQck8z3WoTuPebHLPW3C"
+      ],
+      "de665a00d45a27bc3e45d0c3fc67e5fe03da61bda58a543a462e1973d469d881": [
+        "gen-dec-1790147156-XvQTtMfLHAw60RqWlCiH",
+        "gen-dec-1790148048-yBGqUG82IVoFhCSbJjzG"
+      ]
+    }
+  }
+}

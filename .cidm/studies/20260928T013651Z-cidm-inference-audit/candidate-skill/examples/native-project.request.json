@@ -1,0 +1,16 @@
+{
+  "goal": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check.",
+  "context": "The team has approved a first release for existing customers. Implementation work has not started.",
+  "sources": {
+    "brief": {
+      "title": "Approved project brief",
+      "text": "Customers should be able to sign in, recover an account, open a support request, and read the request status. The first release must work with keyboard navigation and screen readers."
+    }
+  },
+  "active_project": true,
+  "unresolved_stages": [
+    "Define account recovery acceptance criteria",
+    "Define accessibility verification"
+  ],
+  "classification": null
+}

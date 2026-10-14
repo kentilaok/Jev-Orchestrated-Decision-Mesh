@@ -1,0 +1,11 @@
+{
+  "critical": [
+    "must_raise_on_unsupported_currency"
+  ],
+  "entrypoint": "convert_money",
+  "hidden_tests": "assert convert_money(10, 'USD', {'USD': 1.0}) == 10.0\nassert convert_money(10, 'EUR', {'USD': 1.0, 'EUR': 1.08}) == 10.8\nassert convert_money(1.005, 'USD', {'USD': 1.0}) == 1.0 or convert_money(1.005, 'USD', {'USD': 1.0}) == 1.01\nassert convert_money(3.333, 'GBP', {'GBP': 1.27}) == 4.23\ntry:\n    convert_money(5, 'ZZZ', {'USD': 1.0})\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('unsupported currency must raise ValueError')\n",
+  "required_citations": [
+    "module"
+  ],
+  "status": "complete"
+}

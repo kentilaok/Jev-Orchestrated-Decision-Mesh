@@ -1,0 +1,22 @@
+--- a/scripts/audit_network.py
++++ b/scripts/audit_network.py
+@@ -11,9 +11,18 @@
+     conditional=result.get('protocol_version')=='cidm-conditional-review-v3'
+     for event in result.get('events',[]):
+         if event['id'] in seen: issues.append('duplicate_event')
++        if event['kind']=='policy_decision':
++            # Only the flagged skip policy may authorize, and only vacuous or fully checked steps.
++            flags=(result.get('policy_flags') or {})
++            opts=event.get('options',{}); choice=event.get('decision',{}).get('choice')
++            ok=(flags.get('skip_vacuous_gates') is True and
++                ((event.get('phase')=='authorize_unit' and set(opts)<={'compute','stop'} and choice=='compute') or
++                 (event.get('phase')=='after_worker' and choice=='forward'
++                  and all((event.get('state',{}).get('hard_checks') or {'x':False}).values()))))
++            if not ok: issues.append('unauthorized_policy_decision')
+         if event['kind']=='dispatch':
+             gate=seen.get(event.get('gate_id'))
+-            if not gate or gate['kind']!='jev_decision': issues.append('missing_authorization')
++            if not gate or gate['kind'] not in ('jev_decision','policy_decision'): issues.append('missing_authorization')
+             else:
+                 option=gate['options'].get(gate['decision']['choice'],{})
+                 if option.get('worker_id')!=event['worker_id'] or option.get('action')!=event['action']: issues.append('changed_dispatch')

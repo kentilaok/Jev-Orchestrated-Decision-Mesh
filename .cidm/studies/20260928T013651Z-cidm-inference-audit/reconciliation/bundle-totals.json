@@ -1,0 +1,299 @@
+{
+  "mandatory_checked": {
+    "calls": 23,
+    "tokens": 36663,
+    "unknown_token_calls": 0,
+    "cost": 0.012201078,
+    "known_cost_partial": 0.012201078,
+    "unknown_cost_calls": 0,
+    "latency_s": 36.311,
+    "jev": {
+      "calls": 15,
+      "tokens": 31700,
+      "unknown_token_calls": 0,
+      "cost": 0.001298178,
+      "known_cost_partial": 0.001298178,
+      "unknown_cost_calls": 0,
+      "latency_s": 7.921
+    },
+    "worker": {
+      "calls": 3,
+      "tokens": 1925,
+      "unknown_token_calls": 0,
+      "cost": 0.0003549,
+      "known_cost_partial": 0.0003549,
+      "unknown_cost_calls": 0,
+      "latency_s": 10.562
+    },
+    "checker": {
+      "calls": 5,
+      "tokens": 3038,
+      "unknown_token_calls": 0,
+      "cost": 0.010548,
+      "known_cost_partial": 0.010548,
+      "unknown_cost_calls": 0,
+      "latency_s": 17.828
+    }
+  },
+  "mandatory_single_sol": {
+    "calls": 1,
+    "tokens": 431,
+    "unknown_token_calls": 0,
+    "cost": 0.001726,
+    "known_cost_partial": 0.001726,
+    "unknown_cost_calls": 0,
+    "latency_s": 4.297,
+    "worker": {
+      "calls": 1,
+      "tokens": 431,
+      "unknown_token_calls": 0,
+      "cost": 0.001726,
+      "known_cost_partial": 0.001726,
+      "unknown_cost_calls": 0,
+      "latency_s": 4.297
+    }
+  },
+  "conditional_first": {
+    "calls": 13,
+    "tokens": 25651,
+    "unknown_token_calls": 0,
+    "cost": 0.00312019,
+    "known_cost_partial": 0.00312019,
+    "unknown_cost_calls": 0,
+    "latency_s": 13.468,
+    "jev": {
+      "calls": 10,
+      "tokens": 23812,
+      "unknown_token_calls": 0,
+      "cost": 0.00097209,
+      "known_cost_partial": 0.00097209,
+      "unknown_cost_calls": 0,
+      "latency_s": 4.468
+    },
+    "worker": {
+      "calls": 3,
+      "tokens": 1839,
+      "unknown_token_calls": 0,
+      "cost": 0.0021481,
+      "known_cost_partial": 0.0021481,
+      "unknown_cost_calls": 0,
+      "latency_s": 9.0
+    }
+  },
+  "conditional_hardened": {
+    "calls": 13,
+    "tokens": 25510,
+    "unknown_token_calls": 0,
+    "cost": 0.006413654,
+    "known_cost_partial": 0.006413654,
+    "unknown_cost_calls": 0,
+    "latency_s": 13.499,
+    "jev": {
+      "calls": 10,
+      "tokens": 23752,
+      "unknown_token_calls": 0,
+      "cost": 0.000969654,
+      "known_cost_partial": 0.000969654,
+      "unknown_cost_calls": 0,
+      "latency_s": 4.531
+    },
+    "worker": {
+      "calls": 3,
+      "tokens": 1758,
+      "unknown_token_calls": 0,
+      "cost": 0.005444,
+      "known_cost_partial": 0.005444,
+      "unknown_cost_calls": 0,
+      "latency_s": 8.968
+    }
+  },
+  "fast_exit_initial": {
+    "calls": 1,
+    "tokens": 889,
+    "unknown_token_calls": 0,
+    "cost": 3.423e-05,
+    "known_cost_partial": 3.423e-05,
+    "unknown_cost_calls": 0,
+    "latency_s": 1.078,
+    "jev": {
+      "calls": 1,
+      "tokens": 889,
+      "unknown_token_calls": 0,
+      "cost": 3.423e-05,
+      "known_cost_partial": 3.423e-05,
+      "unknown_cost_calls": 0,
+      "latency_s": 1.078
+    }
+  },
+  "fast_exit_compact": {
+    "calls": 1,
+    "tokens": 716,
+    "unknown_token_calls": 0,
+    "cost": 2.6964e-05,
+    "known_cost_partial": 2.6964e-05,
+    "unknown_cost_calls": 0,
+    "latency_s": 0.656,
+    "jev": {
+      "calls": 1,
+      "tokens": 716,
+      "unknown_token_calls": 0,
+      "cost": 2.6964e-05,
+      "known_cost_partial": 2.6964e-05,
+      "unknown_cost_calls": 0,
+      "latency_s": 0.656
+    }
+  },
+  "mandatory_attempt_A_provider_filtered": {
+    "calls": 3,
+    "tokens": null,
+    "unknown_token_calls": 1,
+    "cost": null,
+    "known_cost_partial": 9.3534e-05,
+    "unknown_cost_calls": 1,
+    "latency_s": 1.297,
+    "jev": {
+      "calls": 2,
+      "tokens": 2289,
+      "unknown_token_calls": 0,
+      "cost": 9.3534e-05,
+      "known_cost_partial": 9.3534e-05,
+      "unknown_cost_calls": 0,
+      "latency_s": 1.156
+    },
+    "checker": {
+      "calls": 1,
+      "tokens": null,
+      "unknown_token_calls": 1,
+      "cost": null,
+      "known_cost_partial": 0,
+      "unknown_cost_calls": 1,
+      "latency_s": 0.141
+    }
+  },
+  "mandatory_attempt_B_jev_stop": {
+    "calls": 7,
+    "tokens": 9966,
+    "unknown_token_calls": 0,
+    "cost": 0.002400746,
+    "known_cost_partial": 0.002400746,
+    "unknown_cost_calls": 0,
+    "latency_s": 13.281,
+    "jev": {
+      "calls": 5,
+      "tokens": 8760,
+      "unknown_token_calls": 0,
+      "cost": 0.000357546,
+      "known_cost_partial": 0.000357546,
+      "unknown_cost_calls": 0,
+      "latency_s": 2.672
+    },
+    "worker": {
+      "calls": 1,
+      "tokens": 644,
+      "unknown_token_calls": 0,
+      "cost": 0.0001112,
+      "known_cost_partial": 0.0001112,
+      "unknown_cost_calls": 0,
+      "latency_s": 5.046
+    },
+    "checker": {
+      "calls": 1,
+      "tokens": 562,
+      "unknown_token_calls": 0,
+      "cost": 0.001932,
+      "known_cost_partial": 0.001932,
+      "unknown_cost_calls": 0,
+      "latency_s": 5.563
+    }
+  },
+  "baseline_attempt_A_schema_mismatch": {
+    "calls": 1,
+    "tokens": 454,
+    "unknown_token_calls": 0,
+    "cost": 0.002172,
+    "known_cost_partial": 0.002172,
+    "unknown_cost_calls": 0,
+    "latency_s": 3.953,
+    "worker": {
+      "calls": 1,
+      "tokens": 454,
+      "unknown_token_calls": 0,
+      "cost": 0.002172,
+      "known_cost_partial": 0.002172,
+      "unknown_cost_calls": 0,
+      "latency_s": 3.953
+    }
+  },
+  "historical_eval_arm_A": {
+    "calls": 12,
+    "tokens": 34942,
+    "unknown_token_calls": 0,
+    "cost": 0.25523625,
+    "known_cost_partial": 0.25523625,
+    "unknown_cost_calls": 0,
+    "latency_s": 42.217,
+    "worker": {
+      "calls": 12,
+      "tokens": 34942,
+      "unknown_token_calls": 0,
+      "cost": 0.25523625,
+      "known_cost_partial": 0.25523625,
+      "unknown_cost_calls": 0,
+      "latency_s": 42.217
+    }
+  },
+  "historical_eval_arm_B": {
+    "calls": 40,
+    "tokens": 131388,
+    "unknown_token_calls": 0,
+    "cost": 0.230692994,
+    "known_cost_partial": 0.230692994,
+    "unknown_cost_calls": 0,
+    "latency_s": 68.689,
+    "jev": {
+      "calls": 26,
+      "tokens": 106358,
+      "unknown_token_calls": 0,
+      "cost": 0.004225494,
+      "known_cost_partial": 0.004225494,
+      "unknown_cost_calls": 0,
+      "latency_s": 11.174
+    },
+    "worker": {
+      "calls": 14,
+      "tokens": 25030,
+      "unknown_token_calls": 0,
+      "cost": 0.2264675,
+      "known_cost_partial": 0.2264675,
+      "unknown_cost_calls": 0,
+      "latency_s": 57.515
+    }
+  },
+  "historical_development": {
+    "calls": 8,
+    "tokens": 16602,
+    "unknown_token_calls": 0,
+    "cost": 0.042355456,
+    "known_cost_partial": 0.042355456,
+    "unknown_cost_calls": 0,
+    "latency_s": 16.343,
+    "jev": {
+      "calls": 4,
+      "tokens": 11077,
+      "unknown_token_calls": 0,
+      "cost": 0.000435456,
+      "known_cost_partial": 0.000435456,
+      "unknown_cost_calls": 0,
+      "latency_s": 1.625
+    },
+    "worker": {
+      "calls": 4,
+      "tokens": 5525,
+      "unknown_token_calls": 0,
+      "cost": 0.04192,
+      "known_cost_partial": 0.04192,
+      "unknown_cost_calls": 0,
+      "latency_s": 14.718
+    }
+  }
+}

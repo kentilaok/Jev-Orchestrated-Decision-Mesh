@@ -1,0 +1,12 @@
+== python3.10 main
+OK
+== python3.10 pilot
+FAILED (failures=1)
+== python3.12 main
+OK
+== python3.12 pilot
+OK
+== python3.13 main
+OK
+== python3.13 pilot
+OK

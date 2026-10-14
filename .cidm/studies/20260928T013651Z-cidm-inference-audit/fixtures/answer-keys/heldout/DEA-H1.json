@@ -1,0 +1,17 @@
+{
+  "answer": {
+    "cpa_usd": 30.49,
+    "unconverted_campaigns": [
+      "C4"
+    ]
+  },
+  "critical": [
+    "must_flag_unsupported_currency"
+  ],
+  "required_citations": [
+    "campaigns",
+    "fx"
+  ],
+  "status": "partial",
+  "tolerance": 0.005
+}

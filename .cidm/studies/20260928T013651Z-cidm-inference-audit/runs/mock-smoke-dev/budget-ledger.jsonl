@@ -1,0 +1,1334 @@
+{"event": "reserve", "run_id": "SSA-D1.E2.r0", "token": "1c29929191034377b9c2515cd335c555", "usd": 0.021365000000000002}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "SSA-D1.E2.r0", "token": "1c29929191034377b9c2515cd335c555"}
+{"event": "reserve", "run_id": "SSA-D1.E2.r0", "token": "c3f20f74c4464b9e896cc2ab535c818d", "usd": 0.001237}
+{"basis": "provider_reported", "charged": 0.0001299, "event": "settle", "overrun": false, "run_id": "SSA-D1.E2.r0", "token": "c3f20f74c4464b9e896cc2ab535c818d"}
+{"event": "reserve", "run_id": "SSA-D1.E1.r0", "token": "b6feceb16f114ae59ca23528476952a0", "usd": 0.021365000000000002}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "SSA-D1.E1.r0", "token": "b6feceb16f114ae59ca23528476952a0"}
+{"event": "reserve", "run_id": "SSA-D1.E1.r0", "token": "a8fbf1b2b3e04dc6a991e1b3a8054723", "usd": 0.001237}
+{"basis": "provider_reported", "charged": 0.0001299, "event": "settle", "overrun": false, "run_id": "SSA-D1.E1.r0", "token": "a8fbf1b2b3e04dc6a991e1b3a8054723"}
+{"event": "reserve", "run_id": "SSA-D1.E5.r0", "token": "59be36b834634e9ebb0eb43e69087b72", "usd": 0.021365000000000002}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "SSA-D1.E5.r0", "token": "59be36b834634e9ebb0eb43e69087b72"}
+{"event": "reserve", "run_id": "SSA-D1.E5.r0", "token": "95e8f36b002b401ab94673dea2f046a8", "usd": 0.001237}
+{"basis": "provider_reported", "charged": 0.0001299, "event": "settle", "overrun": false, "run_id": "SSA-D1.E5.r0", "token": "95e8f36b002b401ab94673dea2f046a8"}
+{"event": "reserve", "run_id": "SSA-D1.C.r0", "token": "34fdfdc39a85484195c8b1eae4e09406", "usd": 4.2546e-05}
+{"basis": "provider_reported", "charged": 2.2008000000000003e-05, "event": "settle", "overrun": false, "run_id": "SSA-D1.C.r0", "token": "34fdfdc39a85484195c8b1eae4e09406"}
+{"event": "reserve", "run_id": "SSA-D1.C.r0", "token": "5cf6969f2c1d4140b90f2d7bfd181038", "usd": 0.001187625}
+{"basis": "provider_reported", "charged": 0.0001195, "event": "settle", "overrun": false, "run_id": "SSA-D1.C.r0", "token": "5cf6969f2c1d4140b90f2d7bfd181038"}
+{"event": "reserve", "run_id": "SSA-D1.D.r0", "token": "8f14ef1e675b4f4e8389ea6b01e99c17", "usd": 0.021365000000000002}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "SSA-D1.D.r0", "token": "8f14ef1e675b4f4e8389ea6b01e99c17"}
+{"event": "reserve", "run_id": "SSA-D1.D.r0", "token": "640cab00b6b148f0ae60978e958954c1", "usd": 0.001237}
+{"basis": "provider_reported", "charged": 0.0001299, "event": "settle", "overrun": false, "run_id": "SSA-D1.D.r0", "token": "640cab00b6b148f0ae60978e958954c1"}
+{"event": "reserve", "run_id": "SSA-D1.E3.r0", "token": "7a87c434115a4a119d6610deeb858599", "usd": 0.021365000000000002}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "SSA-D1.E3.r0", "token": "7a87c434115a4a119d6610deeb858599"}
+{"event": "reserve", "run_id": "SSA-D1.E3.r0", "token": "ce9b9c1b420d4173a0237302868d9445", "usd": 0.001237}
+{"basis": "provider_reported", "charged": 0.0001299, "event": "settle", "overrun": false, "run_id": "SSA-D1.E3.r0", "token": "ce9b9c1b420d4173a0237302868d9445"}
+{"event": "reserve", "run_id": "SSA-D1.B.r0", "token": "dc8d250711ce47f3a6a40db6ceb58576", "usd": 0.001187625}
+{"basis": "provider_reported", "charged": 0.0001195, "event": "settle", "overrun": false, "run_id": "SSA-D1.B.r0", "token": "dc8d250711ce47f3a6a40db6ceb58576"}
+{"event": "reserve", "run_id": "SSA-D1.A.r0", "token": "1ea0902d26aa4cbd9543b8bda277ce54", "usd": 0.0237525}
+{"basis": "provider_reported", "charged": 0.00499, "event": "settle", "overrun": false, "run_id": "SSA-D1.A.r0", "token": "1ea0902d26aa4cbd9543b8bda277ce54"}
+{"event": "reserve", "run_id": "SSA-D1.D0.r0", "token": "a6e2b630d5474b64a487b71ab9b464f5", "usd": 0.021365000000000002}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "SSA-D1.D0.r0", "token": "a6e2b630d5474b64a487b71ab9b464f5"}
+{"event": "reserve", "run_id": "SSA-D1.D0.r0", "token": "e31e8e7a9ce64363a55af03a23cf11ea", "usd": 0.001237}
+{"basis": "provider_reported", "charged": 0.0001299, "event": "settle", "overrun": false, "run_id": "SSA-D1.D0.r0", "token": "e31e8e7a9ce64363a55af03a23cf11ea"}
+{"event": "reserve", "run_id": "SSA-D1.E4.r0", "token": "16ca803758ef4beb96d837e2a3ee2ee8", "usd": 0.021365000000000002}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "SSA-D1.E4.r0", "token": "16ca803758ef4beb96d837e2a3ee2ee8"}
+{"event": "reserve", "run_id": "SSA-D1.E4.r0", "token": "9422565e247440a0b753e7c41caa624c", "usd": 0.001237}
+{"basis": "provider_reported", "charged": 0.0001299, "event": "settle", "overrun": false, "run_id": "SSA-D1.E4.r0", "token": "9422565e247440a0b753e7c41caa624c"}
+{"event": "reserve", "run_id": "DEA-D1.B.r0", "token": "899833eb457348529a14bb0fd6409d62", "usd": 0.00117275}
+{"basis": "provider_reported", "charged": 0.00011640000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D1.B.r0", "token": "899833eb457348529a14bb0fd6409d62"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "1ee6614a9f13448e93595739725ed417", "usd": 0.0213675}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "1ee6614a9f13448e93595739725ed417"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "f3f4002488aa4e89a3fa49299e8c58b6", "usd": 7.3836e-05}
+{"basis": "provider_reported", "charged": 3.8219999999999997e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "f3f4002488aa4e89a3fa49299e8c58b6"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "e1a7a34e0bcc46458059bf9b847cf9ed", "usd": 0.000284046}
+{"basis": "provider_reported", "charged": 0.000146916, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "e1a7a34e0bcc46458059bf9b847cf9ed"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "f03d5d02f0dd42ae8ce9505622504154", "usd": 0.026162499999999998}
+{"basis": "provider_reported", "charged": 0.002898, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "f03d5d02f0dd42ae8ce9505622504154"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "8c9ee6d00d8a4a498d43ff3e4c69ecf8", "usd": 0.000207102}
+{"basis": "provider_reported", "charged": 0.00010710000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "8c9ee6d00d8a4a498d43ff3e4c69ecf8"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "cb411ca9e73e49b482b04ada16e7655a", "usd": 0.00030806999999999997}
+{"basis": "provider_reported", "charged": 0.00015934800000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "cb411ca9e73e49b482b04ada16e7655a"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "7462610fa74b4a468555860954f348ac", "usd": 0.0012795}
+{"basis": "provider_reported", "charged": 0.00013890000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "7462610fa74b4a468555860954f348ac"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "1077c23f745e4bff959464a226e2f4c0", "usd": 0.000230496}
+{"basis": "provider_reported", "charged": 0.00011919600000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "1077c23f745e4bff959464a226e2f4c0"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "444599008357486b87680322fef1dbd7", "usd": 0.000330876}
+{"basis": "provider_reported", "charged": 0.000171108, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "444599008357486b87680322fef1dbd7"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "fcdcf14e1db3448083e119c91221ada5", "usd": 0.025585}
+{"basis": "provider_reported", "charged": 0.002776, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "fcdcf14e1db3448083e119c91221ada5"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "a08ba7356af74ebf8bc4849f64b5ac68", "usd": 0.00025321800000000004}
+{"basis": "provider_reported", "charged": 0.00013095600000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "a08ba7356af74ebf8bc4849f64b5ac68"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "ac0fd84ec115443bb7099001d9a50a79", "usd": 0.000321762}
+{"basis": "provider_reported", "charged": 0.000166404, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "ac0fd84ec115443bb7099001d9a50a79"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "35786a95f2d24141ae5c68a75255b98b", "usd": 0.025562500000000002}
+{"basis": "provider_reported", "charged": 0.002772, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "35786a95f2d24141ae5c68a75255b98b"}
+{"event": "reserve", "run_id": "DEA-D1.E5.r0", "token": "a92b893d71964364a58e4984722d8a70", "usd": 0.00024767400000000003}
+{"basis": "provider_reported", "charged": 0.0001281, "event": "settle", "overrun": false, "run_id": "DEA-D1.E5.r0", "token": "a92b893d71964364a58e4984722d8a70"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "6fbbe9b21d574ecf91b7a026c20909e1", "usd": 0.0213675}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "6fbbe9b21d574ecf91b7a026c20909e1"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "082c6e66caa34a15a08edd053b7b6491", "usd": 7.3836e-05}
+{"basis": "provider_reported", "charged": 3.8219999999999997e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "082c6e66caa34a15a08edd053b7b6491"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "5569ccf6d5084227a37a701745279400", "usd": 0.00011172000000000001}
+{"basis": "provider_reported", "charged": 5.7792e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "5569ccf6d5084227a37a701745279400"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "7c2efbc1ca144daf86f811b46f0055b5", "usd": 0.000180306}
+{"basis": "provider_reported", "charged": 9.3282e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "7c2efbc1ca144daf86f811b46f0055b5"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "3121b21b318f4cd2a80297c45afaf31b", "usd": 0.00028408800000000005}
+{"basis": "provider_reported", "charged": 0.000146916, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "3121b21b318f4cd2a80297c45afaf31b"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "64802d225c9446519032c33e3008fee5", "usd": 0.001308125}
+{"basis": "provider_reported", "charged": 0.0001449, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "64802d225c9446519032c33e3008fee5"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "a54c1da8d6cb40d08f79bccc36f886dc", "usd": 0.000215376}
+{"basis": "provider_reported", "charged": 0.000111384, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "a54c1da8d6cb40d08f79bccc36f886dc"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "057a639a94d143d6b2c8eab13141f47d", "usd": 0.00030806999999999997}
+{"basis": "provider_reported", "charged": 0.00015934800000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "057a639a94d143d6b2c8eab13141f47d"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "29e9b42ba7a541939545aa8fe6c83019", "usd": 0.0012795}
+{"basis": "provider_reported", "charged": 0.00013890000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "29e9b42ba7a541939545aa8fe6c83019"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "e435b4a18ecc4062950c44366bf015e1", "usd": 0.000238728}
+{"basis": "provider_reported", "charged": 0.00012348, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "e435b4a18ecc4062950c44366bf015e1"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "3cda5e48ab104ad9a9f3b02040ea0bbd", "usd": 0.00033091800000000003}
+{"basis": "provider_reported", "charged": 0.00017115, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "3cda5e48ab104ad9a9f3b02040ea0bbd"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "ebdcb762f64943bab02e6173b878209a", "usd": 0.00127925}
+{"basis": "provider_reported", "charged": 0.0001388, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "ebdcb762f64943bab02e6173b878209a"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "c5729cb1558c41bbb67bbd3c59ce1687", "usd": 0.000261534}
+{"basis": "provider_reported", "charged": 0.00013528200000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "c5729cb1558c41bbb67bbd3c59ce1687"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "4e7d187e789b4e8588778db7356b5b30", "usd": 0.000321762}
+{"basis": "provider_reported", "charged": 0.000166404, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "4e7d187e789b4e8588778db7356b5b30"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "75c43d0eb95548c187b3a374c188c4bb", "usd": 0.001278125}
+{"basis": "provider_reported", "charged": 0.0001386, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "75c43d0eb95548c187b3a374c188c4bb"}
+{"event": "reserve", "run_id": "DEA-D1.D0.r0", "token": "66590020d64942ceb04c977e6c76fbfe", "usd": 0.00025725}
+{"basis": "provider_reported", "charged": 0.00013305600000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D0.r0", "token": "66590020d64942ceb04c977e6c76fbfe"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "de06396cc251413ab213089b06e4b96f", "usd": 0.0213675}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "de06396cc251413ab213089b06e4b96f"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "e01123bfbc364e73bf3db805a53b5785", "usd": 7.3836e-05}
+{"basis": "provider_reported", "charged": 3.8219999999999997e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "e01123bfbc364e73bf3db805a53b5785"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "83bec0040f3647f3a3820318d05b7bf6", "usd": 0.000284046}
+{"basis": "provider_reported", "charged": 0.000146916, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "83bec0040f3647f3a3820318d05b7bf6"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "4027eed729814befbffc5823c10431c9", "usd": 0.001308125}
+{"basis": "provider_reported", "charged": 0.0001449, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "4027eed729814befbffc5823c10431c9"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "5ea20d3b37f0479684a76c19734c40a7", "usd": 0.00021541800000000002}
+{"basis": "provider_reported", "charged": 0.000111426, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "5ea20d3b37f0479684a76c19734c40a7"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "fdec02094336466b9348524b992b6fbc", "usd": 0.00030806999999999997}
+{"basis": "provider_reported", "charged": 0.00015934800000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "fdec02094336466b9348524b992b6fbc"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "342504249ee44a8bac16ed6ae4737d9b", "usd": 0.02559}
+{"basis": "provider_reported", "charged": 0.002778, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "342504249ee44a8bac16ed6ae4737d9b"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "b1bc2fe136694dd49901a12205786d84", "usd": 0.000238602}
+{"basis": "provider_reported", "charged": 0.000123396, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "b1bc2fe136694dd49901a12205786d84"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "5a42cab65352484d95d2b6a48e96dba7", "usd": 0.00033091800000000003}
+{"basis": "provider_reported", "charged": 0.00017115, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "5a42cab65352484d95d2b6a48e96dba7"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "95471986b4594b83a255744167a07c95", "usd": 0.025585}
+{"basis": "provider_reported", "charged": 0.002776, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "95471986b4594b83a255744167a07c95"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "60d154330abf41939176bc8f44f5bd08", "usd": 0.00026145}
+{"basis": "provider_reported", "charged": 0.00013524, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "60d154330abf41939176bc8f44f5bd08"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "121eb2a47e174569b1c03491be1198c0", "usd": 0.000321762}
+{"basis": "provider_reported", "charged": 0.000166404, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "121eb2a47e174569b1c03491be1198c0"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "0e25374f776c4e1db0b59a777344034c", "usd": 0.025562500000000002}
+{"basis": "provider_reported", "charged": 0.002772, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "0e25374f776c4e1db0b59a777344034c"}
+{"event": "reserve", "run_id": "DEA-D1.E2.r0", "token": "1ac1bb4ceb8a43dc810dc923b4d643f0", "usd": 0.000257082}
+{"basis": "provider_reported", "charged": 0.000132972, "event": "settle", "overrun": false, "run_id": "DEA-D1.E2.r0", "token": "1ac1bb4ceb8a43dc810dc923b4d643f0"}
+{"event": "reserve", "run_id": "DEA-D1.C.r0", "token": "93cc8ebb7f2a46d19348033d1861ebba", "usd": 4.288200000000001e-05}
+{"basis": "provider_reported", "charged": 2.2176000000000002e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.C.r0", "token": "93cc8ebb7f2a46d19348033d1861ebba"}
+{"event": "reserve", "run_id": "DEA-D1.C.r0", "token": "06e4cf31d930458e9fafa7bb9f3afb26", "usd": 0.00117275}
+{"basis": "provider_reported", "charged": 0.00011640000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D1.C.r0", "token": "06e4cf31d930458e9fafa7bb9f3afb26"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "f07081a08c03443697edf5ae425e4541", "usd": 0.0213675}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "f07081a08c03443697edf5ae425e4541"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "14c7da4656844087ba83c67ac1d4989e", "usd": 7.3836e-05}
+{"basis": "provider_reported", "charged": 3.8219999999999997e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "14c7da4656844087ba83c67ac1d4989e"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "414830dfd4bc42b9a78ff37e6d6be5c9", "usd": 0.00011172000000000001}
+{"basis": "provider_reported", "charged": 5.7792e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "414830dfd4bc42b9a78ff37e6d6be5c9"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "f444a49c08a644dca1e1b743c3887351", "usd": 0.000181566}
+{"basis": "provider_reported", "charged": 9.3912e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "f444a49c08a644dca1e1b743c3887351"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "1f2023363af242528df56dd86659e058", "usd": 0.00028408800000000005}
+{"basis": "provider_reported", "charged": 0.000146916, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "1f2023363af242528df56dd86659e058"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "1ee02a16a96c48779158b99b25920a09", "usd": 0.001308125}
+{"basis": "provider_reported", "charged": 0.0001449, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "1ee02a16a96c48779158b99b25920a09"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "c016431f25c54f9a9dedeedac022bf0b", "usd": 0.00021663600000000003}
+{"basis": "provider_reported", "charged": 0.00011205600000000001, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "c016431f25c54f9a9dedeedac022bf0b"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "3a822db0397e4d1e98dbbfeed1f29826", "usd": 0.00030806999999999997}
+{"basis": "provider_reported", "charged": 0.00015934800000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "3a822db0397e4d1e98dbbfeed1f29826"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "e83407c6fea94021a5a38be5de086561", "usd": 0.0012795}
+{"basis": "provider_reported", "charged": 0.00013890000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "e83407c6fea94021a5a38be5de086561"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "1993379bdd3f4799bee2ffc908fbd992", "usd": 0.00023998800000000003}
+{"basis": "provider_reported", "charged": 0.00012411, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "1993379bdd3f4799bee2ffc908fbd992"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "192b1db1e227403eac2f73a65adad059", "usd": 0.00033091800000000003}
+{"basis": "provider_reported", "charged": 0.00017115, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "192b1db1e227403eac2f73a65adad059"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "1b94f59c04834e3ea5ccd49ec2093fd1", "usd": 0.00127925}
+{"basis": "provider_reported", "charged": 0.0001388, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "1b94f59c04834e3ea5ccd49ec2093fd1"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "772e70729df44509a67b9d73da2eaa1e", "usd": 0.00026279400000000006}
+{"basis": "provider_reported", "charged": 0.000135912, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "772e70729df44509a67b9d73da2eaa1e"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "0b342397269b465badb3aad7add75af8", "usd": 0.000321762}
+{"basis": "provider_reported", "charged": 0.000166404, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "0b342397269b465badb3aad7add75af8"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "ae0b24a5ec07461297f553e873748dc5", "usd": 0.001278125}
+{"basis": "provider_reported", "charged": 0.0001386, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "ae0b24a5ec07461297f553e873748dc5"}
+{"event": "reserve", "run_id": "DEA-D1.E3.r0", "token": "367627c538144ba88acd07b53fff4d1d", "usd": 0.00025720800000000004}
+{"basis": "provider_reported", "charged": 0.000133014, "event": "settle", "overrun": false, "run_id": "DEA-D1.E3.r0", "token": "367627c538144ba88acd07b53fff4d1d"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "5808f4c3af2b4d83a92ac63f33c1eb55", "usd": 0.0213675}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "5808f4c3af2b4d83a92ac63f33c1eb55"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "14522f762bdf45ae86e3d7ce2d760dcd", "usd": 7.3836e-05}
+{"basis": "provider_reported", "charged": 3.8219999999999997e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "14522f762bdf45ae86e3d7ce2d760dcd"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "31abf7a575cb4ea592f5416ee63319b5", "usd": 0.00011172000000000001}
+{"basis": "provider_reported", "charged": 5.7792e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "31abf7a575cb4ea592f5416ee63319b5"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "286154ab563241f5b8910bb44e134120", "usd": 0.000180306}
+{"basis": "provider_reported", "charged": 9.3282e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "286154ab563241f5b8910bb44e134120"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "a5898f0221d34031b5868f615c9cb3b4", "usd": 0.00028408800000000005}
+{"basis": "provider_reported", "charged": 0.000146916, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "a5898f0221d34031b5868f615c9cb3b4"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "cac509e902e0424e81a8db2fe71f19f4", "usd": 0.001308125}
+{"basis": "provider_reported", "charged": 0.0001449, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "cac509e902e0424e81a8db2fe71f19f4"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "0974a8faee93448c8370dafeeaa3877e", "usd": 0.000215376}
+{"basis": "provider_reported", "charged": 0.000111384, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "0974a8faee93448c8370dafeeaa3877e"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "ebf47121f12f4828b73318a6b9ba53d0", "usd": 0.00030806999999999997}
+{"basis": "provider_reported", "charged": 0.00015934800000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "ebf47121f12f4828b73318a6b9ba53d0"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "b345056ccee940cc914da599b04bb722", "usd": 0.0012795}
+{"basis": "provider_reported", "charged": 0.00013890000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "b345056ccee940cc914da599b04bb722"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "c93b884e80024d249e53d9fc77447547", "usd": 0.000238728}
+{"basis": "provider_reported", "charged": 0.00012348, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "c93b884e80024d249e53d9fc77447547"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "2b9cbeb26ef346c9861455a207c32406", "usd": 0.00033091800000000003}
+{"basis": "provider_reported", "charged": 0.00017115, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "2b9cbeb26ef346c9861455a207c32406"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "06bc6a9e16a14173b3998f404e7a8c93", "usd": 0.00127925}
+{"basis": "provider_reported", "charged": 0.0001388, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "06bc6a9e16a14173b3998f404e7a8c93"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "030830cea2bb418bb617bcadf22cda2a", "usd": 0.000261534}
+{"basis": "provider_reported", "charged": 0.00013528200000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "030830cea2bb418bb617bcadf22cda2a"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "70ca78a8f9dd4159bb5d107d47adcee9", "usd": 0.000321762}
+{"basis": "provider_reported", "charged": 0.000166404, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "70ca78a8f9dd4159bb5d107d47adcee9"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "d651bd03eeed464e8170e964197896c6", "usd": 0.001278125}
+{"basis": "provider_reported", "charged": 0.0001386, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "d651bd03eeed464e8170e964197896c6"}
+{"event": "reserve", "run_id": "DEA-D1.D.r0", "token": "7f786a11025a4269adff1ab8aae34ec5", "usd": 0.00025725}
+{"basis": "provider_reported", "charged": 0.00013305600000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.D.r0", "token": "7f786a11025a4269adff1ab8aae34ec5"}
+{"event": "reserve", "run_id": "DEA-D1.A.r0", "token": "92b1c1ac183349d2b1a12db255e3d36d", "usd": 0.023455}
+{"basis": "provider_reported", "charged": 0.004928, "event": "settle", "overrun": false, "run_id": "DEA-D1.A.r0", "token": "92b1c1ac183349d2b1a12db255e3d36d"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "ee7b9646c15c422fa70e9e40c63daa30", "usd": 0.0213675}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "ee7b9646c15c422fa70e9e40c63daa30"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "d3c6a1178b5a43c4844c8187330337c8", "usd": 7.3836e-05}
+{"basis": "provider_reported", "charged": 3.8219999999999997e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "d3c6a1178b5a43c4844c8187330337c8"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "0fe7535ba2e9436f9e14119501587efa", "usd": 0.00011172000000000001}
+{"basis": "provider_reported", "charged": 5.7792e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "0fe7535ba2e9436f9e14119501587efa"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "7ef4c30094f646a7aaa35b964c0a1017", "usd": 0.00018123000000000002}
+{"basis": "provider_reported", "charged": 9.3744e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "7ef4c30094f646a7aaa35b964c0a1017"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "370e9dbb36bb4d0d8a845eb6fd7861fb", "usd": 0.00028408800000000005}
+{"basis": "provider_reported", "charged": 0.000146916, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "370e9dbb36bb4d0d8a845eb6fd7861fb"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "903c362bee654117a994e2703799a07f", "usd": 0.026162499999999998}
+{"basis": "provider_reported", "charged": 0.002898, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "903c362bee654117a994e2703799a07f"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "64f0f62abbd2433a9eea32cbf0f48004", "usd": 0.00020584200000000003}
+{"basis": "provider_reported", "charged": 0.00010647000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "64f0f62abbd2433a9eea32cbf0f48004"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "abfea96ecd6c4d41a6c8e8a9d9521c95", "usd": 0.00030806999999999997}
+{"basis": "provider_reported", "charged": 0.00015934800000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "abfea96ecd6c4d41a6c8e8a9d9521c95"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "dfdcc311a42b4501852119e1a0716a5b", "usd": 0.0012795}
+{"basis": "provider_reported", "charged": 0.00013890000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "dfdcc311a42b4501852119e1a0716a5b"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "454cb56590d2432ca86b48c19f795649", "usd": 0.00022919400000000003}
+{"basis": "provider_reported", "charged": 0.000118524, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "454cb56590d2432ca86b48c19f795649"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "00942bddd7d9402192c2632a08333a9e", "usd": 0.00033091800000000003}
+{"basis": "provider_reported", "charged": 0.00017115, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "00942bddd7d9402192c2632a08333a9e"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "75a0eb90577c4566aa18aa59ebd6458b", "usd": 0.00127925}
+{"basis": "provider_reported", "charged": 0.0001388, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "75a0eb90577c4566aa18aa59ebd6458b"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "9e5d6cfd1b4c4c26bffa48c5d5555b26", "usd": 0.000252042}
+{"basis": "provider_reported", "charged": 0.00013036799999999998, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "9e5d6cfd1b4c4c26bffa48c5d5555b26"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "215d1f0fddb34cc89d099b9f27596ed4", "usd": 0.000321762}
+{"basis": "provider_reported", "charged": 0.000166404, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "215d1f0fddb34cc89d099b9f27596ed4"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "530f8943d04b48d19612107d92624e5a", "usd": 0.001278125}
+{"basis": "provider_reported", "charged": 0.0001386, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "530f8943d04b48d19612107d92624e5a"}
+{"event": "reserve", "run_id": "DEA-D1.E4.r0", "token": "c0da18b2e08948a6ba96910d44a6d2c8", "usd": 0.000247758}
+{"basis": "provider_reported", "charged": 0.000128142, "event": "settle", "overrun": false, "run_id": "DEA-D1.E4.r0", "token": "c0da18b2e08948a6ba96910d44a6d2c8"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "cddf78e09214475491a858e1182f58d4", "usd": 0.0213675}
+{"basis": "provider_reported", "charged": 0.004488, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "cddf78e09214475491a858e1182f58d4"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "31d7accc17ad483c82664e39510883ac", "usd": 0.00011167800000000001}
+{"basis": "provider_reported", "charged": 5.7792e-05, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "31d7accc17ad483c82664e39510883ac"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "d055e3bd527d430ab5e41473f2300aa1", "usd": 0.00043906800000000003}
+{"basis": "provider_reported", "charged": 0.00022709400000000003, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "d055e3bd527d430ab5e41473f2300aa1"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "5b0ecadc973141dda369cd18d5c4d666", "usd": 0.001308125}
+{"basis": "provider_reported", "charged": 0.0001449, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "5b0ecadc973141dda369cd18d5c4d666"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "408b5193aa1947018cdcc83cf5028abd", "usd": 0.00047052600000000003}
+{"basis": "provider_reported", "charged": 0.000243348, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "408b5193aa1947018cdcc83cf5028abd"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "6ac50f85990f4deb964177611ae7259f", "usd": 0.02559}
+{"basis": "provider_reported", "charged": 0.002778, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "6ac50f85990f4deb964177611ae7259f"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "8dec31be796842ec8b359db4d63af3e0", "usd": 0.000493752}
+{"basis": "provider_reported", "charged": 0.00025536, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "8dec31be796842ec8b359db4d63af3e0"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "b9757d65b96f4deeac10f48daef92b15", "usd": 0.025585}
+{"basis": "provider_reported", "charged": 0.002776, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "b9757d65b96f4deeac10f48daef92b15"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "4817620965cf4a50a08f233c6983d02f", "usd": 0.000516264}
+{"basis": "provider_reported", "charged": 0.00026699400000000005, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "4817620965cf4a50a08f233c6983d02f"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "bb809a7a9c6c4dc58236f853b5cf94ef", "usd": 0.001278125}
+{"basis": "provider_reported", "charged": 0.0001386, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "bb809a7a9c6c4dc58236f853b5cf94ef"}
+{"event": "reserve", "run_id": "DEA-D1.E1.r0", "token": "6c05aebda6cb4d14890487bca49c1ed6", "usd": 0.00025720800000000004}
+{"basis": "provider_reported", "charged": 0.000133014, "event": "settle", "overrun": false, "run_id": "DEA-D1.E1.r0", "token": "6c05aebda6cb4d14890487bca49c1ed6"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "a9c82c878b9f49c9aee25bae6906c04b", "usd": 0.02173}
+{"basis": "provider_reported", "charged": 0.004566, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "a9c82c878b9f49c9aee25bae6906c04b"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "948bfee8a269405aa0627bbfdae4e6b5", "usd": 0.000126672}
+{"basis": "provider_reported", "charged": 6.552000000000001e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "948bfee8a269405aa0627bbfdae4e6b5"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "3c62b5b30c664ba387f94ce334df2279", "usd": 0.000462168}
+{"basis": "provider_reported", "charged": 0.00023902200000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "3c62b5b30c664ba387f94ce334df2279"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "4944bab926a6478c95ba7edfea2a07ed", "usd": 0.0277125}
+{"basis": "provider_reported", "charged": 0.0032240000000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "4944bab926a6478c95ba7edfea2a07ed"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "e453fa02bed64ab9920d90d7a62ad77b", "usd": 0.000496314}
+{"basis": "provider_reported", "charged": 0.00025666200000000006, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "e453fa02bed64ab9920d90d7a62ad77b"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "dc1e62905468456192292b5025a46463", "usd": 0.001337625}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "dc1e62905468456192292b5025a46463"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "03dcacff08b24ef4b183c31eda421fce", "usd": 0.000522438}
+{"basis": "provider_reported", "charged": 0.00027018600000000006, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "03dcacff08b24ef4b183c31eda421fce"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "4dfcfffcdf2341079e40564074c25a96", "usd": 0.001337375}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "4dfcfffcdf2341079e40564074c25a96"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "57986eb9a6674fb3906dfff693be8790", "usd": 0.000547638}
+{"basis": "provider_reported", "charged": 0.00028320600000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "57986eb9a6674fb3906dfff693be8790"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "21a64993f8ef4da4b6558485eac19ec2", "usd": 0.026725}
+{"basis": "provider_reported", "charged": 0.003016, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "21a64993f8ef4da4b6558485eac19ec2"}
+{"event": "reserve", "run_id": "DEA-D2.E1.r0", "token": "684f8ac8b4b64f4c909ac3cd0657c2b0", "usd": 0.000284634}
+{"basis": "provider_reported", "charged": 0.00014721, "event": "settle", "overrun": false, "run_id": "DEA-D2.E1.r0", "token": "684f8ac8b4b64f4c909ac3cd0657c2b0"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "c3e6acae160745b58d5471e9f5539b47", "usd": 0.02173}
+{"basis": "provider_reported", "charged": 0.004566, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "c3e6acae160745b58d5471e9f5539b47"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "f7f0b30f3f98475eba44edb2d416dbb7", "usd": 8.1858e-05}
+{"basis": "provider_reported", "charged": 4.2336e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "f7f0b30f3f98475eba44edb2d416dbb7"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "881dabcbdb8c477aa0262610805214c6", "usd": 0.00030723}
+{"basis": "provider_reported", "charged": 0.00015888599999999998, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "881dabcbdb8c477aa0262610805214c6"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "a7141c5f06924bd1abb890e1fa73d978", "usd": 0.0013856250000000001}
+{"basis": "provider_reported", "charged": 0.00016120000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "a7141c5f06924bd1abb890e1fa73d978"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "ab30206534ca4891a1333168f61a88c8", "usd": 0.00024129000000000002}
+{"basis": "provider_reported", "charged": 0.000124782, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "ab30206534ca4891a1333168f61a88c8"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "a0db14c62f3242febd4c5963dadd54f7", "usd": 0.000333942}
+{"basis": "provider_reported", "charged": 0.000172704, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "a0db14c62f3242febd4c5963dadd54f7"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "dd496d7f87db4fcd8d656ff87d77b608", "usd": 0.0267525}
+{"basis": "provider_reported", "charged": 0.0030220000000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "dd496d7f87db4fcd8d656ff87d77b608"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "5a0f4bcb95ed4e6b835287977702123a", "usd": 0.00026724600000000006}
+{"basis": "provider_reported", "charged": 0.00013822200000000002, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "5a0f4bcb95ed4e6b835287977702123a"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "ae876ae8fafe4c5eb2789c83bf17100f", "usd": 0.000359478}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "ae876ae8fafe4c5eb2789c83bf17100f"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "dbf6025b25ec441180b3fd69a284e4cf", "usd": 0.001337375}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "dbf6025b25ec441180b3fd69a284e4cf"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "fa17419bfbd7494d99e2bfbe52c51cfa", "usd": 0.000292866}
+{"basis": "provider_reported", "charged": 0.000151452, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "fa17419bfbd7494d99e2bfbe52c51cfa"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "2f11327c671a4adc85127afc8a70f96f", "usd": 0.000344946}
+{"basis": "provider_reported", "charged": 0.00017841600000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "2f11327c671a4adc85127afc8a70f96f"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "a094b97d7e7148afa40f8c315596ffd3", "usd": 0.00133625}
+{"basis": "provider_reported", "charged": 0.0001508, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "a094b97d7e7148afa40f8c315596ffd3"}
+{"event": "reserve", "run_id": "DEA-D2.E2.r0", "token": "2c688daba60b44e1ac7b7671058ea257", "usd": 0.00028450800000000005}
+{"basis": "provider_reported", "charged": 0.000147168, "event": "settle", "overrun": false, "run_id": "DEA-D2.E2.r0", "token": "2c688daba60b44e1ac7b7671058ea257"}
+{"event": "reserve", "run_id": "DEA-D2.C.r0", "token": "51fe7d055f3a4d04b083117edcada8aa", "usd": 4.4646e-05}
+{"basis": "provider_reported", "charged": 2.3100000000000002e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.C.r0", "token": "51fe7d055f3a4d04b083117edcada8aa"}
+{"event": "reserve", "run_id": "DEA-D2.C.r0", "token": "af50ae4840a7452badb3e94a84787cc2", "usd": 0.0011925}
+{"basis": "provider_reported", "charged": 0.0001206, "event": "settle", "overrun": false, "run_id": "DEA-D2.C.r0", "token": "af50ae4840a7452badb3e94a84787cc2"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "89890e665b21422da48a5f7e21bce0d5", "usd": 0.02173}
+{"basis": "provider_reported", "charged": 0.004566, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "89890e665b21422da48a5f7e21bce0d5"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "30dce99633044c5086e7fa00743f080b", "usd": 8.1858e-05}
+{"basis": "provider_reported", "charged": 4.2336e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "30dce99633044c5086e7fa00743f080b"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "7fd6d71377cd49c7ad19780604983f96", "usd": 0.000126756}
+{"basis": "provider_reported", "charged": 6.5562e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "7fd6d71377cd49c7ad19780604983f96"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "05c9c83b2f52418a8e273ee8bd4fcc7b", "usd": 0.000204372}
+{"basis": "provider_reported", "charged": 0.00010571400000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "05c9c83b2f52418a8e273ee8bd4fcc7b"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "9d0e32097d6b46f2b15edb7df6f831ae", "usd": 0.00030723}
+{"basis": "provider_reported", "charged": 0.00015888599999999998, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "9d0e32097d6b46f2b15edb7df6f831ae"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "9ac39eb86cf64989ac46ca2b0c1af0a9", "usd": 0.0277125}
+{"basis": "provider_reported", "charged": 0.0032240000000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "9ac39eb86cf64989ac46ca2b0c1af0a9"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "2c5625a425eb41d995a7f5a508a97ec6", "usd": 0.00021957600000000003}
+{"basis": "provider_reported", "charged": 0.00011356800000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "2c5625a425eb41d995a7f5a508a97ec6"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "948f24d8fc394d34b11f5257feb8f6e2", "usd": 0.000333942}
+{"basis": "provider_reported", "charged": 0.000172704, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "948f24d8fc394d34b11f5257feb8f6e2"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "d3ff0204f7864a8a86e2c771d8434ca9", "usd": 0.0267525}
+{"basis": "provider_reported", "charged": 0.0030220000000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "d3ff0204f7864a8a86e2c771d8434ca9"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "d7d89d28e55b4fa1bfdf9ce237e30125", "usd": 0.00024557400000000003}
+{"basis": "provider_reported", "charged": 0.00012700800000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "d7d89d28e55b4fa1bfdf9ce237e30125"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "d71a20f9b71d44fd9e0c40a1791788d2", "usd": 0.00035952000000000005}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "d71a20f9b71d44fd9e0c40a1791788d2"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "5ac9bb959ee0447d96ee0dcd3555d301", "usd": 0.0267475}
+{"basis": "provider_reported", "charged": 0.0030220000000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "5ac9bb959ee0447d96ee0dcd3555d301"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "e8dd1bc96f394f5d91833ce865577607", "usd": 0.00027115200000000004}
+{"basis": "provider_reported", "charged": 0.000140238, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "e8dd1bc96f394f5d91833ce865577607"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "4710ea16926a4bba8d864468e52b5733", "usd": 0.000344904}
+{"basis": "provider_reported", "charged": 0.00017837400000000002, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "4710ea16926a4bba8d864468e52b5733"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "18a9223700eb4c529f65223174154f5d", "usd": 0.026725}
+{"basis": "provider_reported", "charged": 0.003016, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "18a9223700eb4c529f65223174154f5d"}
+{"event": "reserve", "run_id": "DEA-D2.E4.r0", "token": "ef389ac62d694f99b7544cb8f1a3a7e8", "usd": 0.00026279400000000006}
+{"basis": "provider_reported", "charged": 0.000135912, "event": "settle", "overrun": false, "run_id": "DEA-D2.E4.r0", "token": "ef389ac62d694f99b7544cb8f1a3a7e8"}
+{"event": "reserve", "run_id": "DEA-D2.B.r0", "token": "6b2a8d5d029a477db65272af21f0892a", "usd": 0.0011925}
+{"basis": "provider_reported", "charged": 0.0001206, "event": "settle", "overrun": false, "run_id": "DEA-D2.B.r0", "token": "6b2a8d5d029a477db65272af21f0892a"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "a09b5ae56f784771b0b9b773689a37c2", "usd": 0.02173}
+{"basis": "provider_reported", "charged": 0.004566, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "a09b5ae56f784771b0b9b773689a37c2"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "9f97170e1344403da7d9940fa44a72f5", "usd": 8.1858e-05}
+{"basis": "provider_reported", "charged": 4.2336e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "9f97170e1344403da7d9940fa44a72f5"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "8ed065b7604b4de1980fe1ef845a9ecf", "usd": 0.00030723}
+{"basis": "provider_reported", "charged": 0.00015888599999999998, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "8ed065b7604b4de1980fe1ef845a9ecf"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "0f1a622e653b4114affcc7727d1065b3", "usd": 0.0013856250000000001}
+{"basis": "provider_reported", "charged": 0.00016120000000000002, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "0f1a622e653b4114affcc7727d1065b3"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "4e0aadbf69b84d8d9eae8b0115cc4eb1", "usd": 0.00022092000000000002}
+{"basis": "provider_reported", "charged": 0.00011428200000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "4e0aadbf69b84d8d9eae8b0115cc4eb1"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "133006aee82a40d382f66566f5330e1b", "usd": 0.000333942}
+{"basis": "provider_reported", "charged": 0.000172704, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "133006aee82a40d382f66566f5330e1b"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "87758a9e8fd34f47b2b268743eebb50a", "usd": 0.0267525}
+{"basis": "provider_reported", "charged": 0.0030220000000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "87758a9e8fd34f47b2b268743eebb50a"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "6107e89931a64bdd9fe7a25030d3bbdc", "usd": 0.000246876}
+{"basis": "provider_reported", "charged": 0.00012768, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "6107e89931a64bdd9fe7a25030d3bbdc"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "2cb6125973ff45bcbe8b8091dae740f3", "usd": 0.00035952000000000005}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "2cb6125973ff45bcbe8b8091dae740f3"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "f09d1d23865e4412b22d4c915c4d5140", "usd": 0.0267475}
+{"basis": "provider_reported", "charged": 0.0030220000000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "f09d1d23865e4412b22d4c915c4d5140"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "e734f9babadc4844b067c2eb25915161", "usd": 0.00027241200000000003}
+{"basis": "provider_reported", "charged": 0.00014091, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "e734f9babadc4844b067c2eb25915161"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "e33f31a766464c4180d1df07219a57ca", "usd": 0.000344946}
+{"basis": "provider_reported", "charged": 0.00017841600000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "e33f31a766464c4180d1df07219a57ca"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "04a655de56394b36913c36dfa54b2b44", "usd": 0.00133625}
+{"basis": "provider_reported", "charged": 0.0001508, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "04a655de56394b36913c36dfa54b2b44"}
+{"event": "reserve", "run_id": "DEA-D2.E5.r0", "token": "38e62f0324d5466d924695da6bf80af6", "usd": 0.000262878}
+{"basis": "provider_reported", "charged": 0.000135954, "event": "settle", "overrun": false, "run_id": "DEA-D2.E5.r0", "token": "38e62f0324d5466d924695da6bf80af6"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "353d5d89fd96404eb77b030ee6e26ad5", "usd": 0.02173}
+{"basis": "provider_reported", "charged": 0.004566, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "353d5d89fd96404eb77b030ee6e26ad5"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "fecb189e11b14728b0d86eabed489e3e", "usd": 8.1858e-05}
+{"basis": "provider_reported", "charged": 4.2336e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "fecb189e11b14728b0d86eabed489e3e"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "f4504f54ad3844a7829d9b2d11141a60", "usd": 0.000126756}
+{"basis": "provider_reported", "charged": 6.5562e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "f4504f54ad3844a7829d9b2d11141a60"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "44742fc3812f4f1dbc0929d998e58bec", "usd": 0.00020470800000000003}
+{"basis": "provider_reported", "charged": 0.000105882, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "44742fc3812f4f1dbc0929d998e58bec"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "100c315d8ab8440aa6a6eea1dacd02a9", "usd": 0.00030718800000000007}
+{"basis": "provider_reported", "charged": 0.00015888599999999998, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "100c315d8ab8440aa6a6eea1dacd02a9"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "db0d7a14e1ed405ca10674affa90d1a3", "usd": 0.0277125}
+{"basis": "provider_reported", "charged": 0.0032240000000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "db0d7a14e1ed405ca10674affa90d1a3"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "2b80c3fd988d4c9d9d7f49c735db1cef", "usd": 0.00024246600000000002}
+{"basis": "provider_reported", "charged": 0.000125412, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "2b80c3fd988d4c9d9d7f49c735db1cef"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "277780b5b2ac491cb5dfe535cbaed526", "usd": 0.000333942}
+{"basis": "provider_reported", "charged": 0.000172704, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "277780b5b2ac491cb5dfe535cbaed526"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "a98db1bce9d5435f8a32632b9a03caaa", "usd": 0.0267525}
+{"basis": "provider_reported", "charged": 0.0030220000000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "a98db1bce9d5435f8a32632b9a03caaa"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "a4cf403844a44c2bb1eb72b831069ca2", "usd": 0.000268506}
+{"basis": "provider_reported", "charged": 0.000138852, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "a4cf403844a44c2bb1eb72b831069ca2"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "f716f65f53804b86a6d98aebee97ce33", "usd": 0.00035952000000000005}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "f716f65f53804b86a6d98aebee97ce33"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "d5716e0fbf934f29a656c64b78b8900e", "usd": 0.001337375}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "d5716e0fbf934f29a656c64b78b8900e"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "9d7c4805e197498abf6d8aac89927de5", "usd": 0.000294126}
+{"basis": "provider_reported", "charged": 0.00015212400000000004, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "9d7c4805e197498abf6d8aac89927de5"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "90834d5979a5457495de02fdafdf8298", "usd": 0.000344946}
+{"basis": "provider_reported", "charged": 0.00017841600000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "90834d5979a5457495de02fdafdf8298"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "6debe56319f44c829cc642b6b2c293c3", "usd": 0.026725}
+{"basis": "provider_reported", "charged": 0.003016, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "6debe56319f44c829cc642b6b2c293c3"}
+{"event": "reserve", "run_id": "DEA-D2.E3.r0", "token": "6ff25593da6b4822a46254fd19bef8a1", "usd": 0.000284424}
+{"basis": "provider_reported", "charged": 0.000147084, "event": "settle", "overrun": false, "run_id": "DEA-D2.E3.r0", "token": "6ff25593da6b4822a46254fd19bef8a1"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "75ae20a4a1c2482589c2061b2ff8a3f5", "usd": 0.02173}
+{"basis": "provider_reported", "charged": 0.004566, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "75ae20a4a1c2482589c2061b2ff8a3f5"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "199f9473fde84eaea079b51b7ef79411", "usd": 8.1858e-05}
+{"basis": "provider_reported", "charged": 4.2336e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "199f9473fde84eaea079b51b7ef79411"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "251c9c7739d549b8be0a8a0b48c202cf", "usd": 0.000126756}
+{"basis": "provider_reported", "charged": 6.5562e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "251c9c7739d549b8be0a8a0b48c202cf"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "8a707a1b629c4221b834db2524538608", "usd": 0.000203448}
+{"basis": "provider_reported", "charged": 0.00010521, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "8a707a1b629c4221b834db2524538608"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "69b08ab6fb324c0c93c3e900b4adf0a5", "usd": 0.00030723}
+{"basis": "provider_reported", "charged": 0.00015888599999999998, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "69b08ab6fb324c0c93c3e900b4adf0a5"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "9fd9379270d0421c8057a1857fa5d923", "usd": 0.0277125}
+{"basis": "provider_reported", "charged": 0.0032240000000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "9fd9379270d0421c8057a1857fa5d923"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "2e39894b30de4f0fada0176a23f8efac", "usd": 0.00024120600000000002}
+{"basis": "provider_reported", "charged": 0.00012474, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "2e39894b30de4f0fada0176a23f8efac"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "85941c719ac547af9c7847ccc07e899d", "usd": 0.000333942}
+{"basis": "provider_reported", "charged": 0.000172704, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "85941c719ac547af9c7847ccc07e899d"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "c002876c638843f685b2580725dbf022", "usd": 0.001337625}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "c002876c638843f685b2580725dbf022"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "3f9dda9c888a455cbb53402090d94d16", "usd": 0.00026733000000000003}
+{"basis": "provider_reported", "charged": 0.000138264, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "3f9dda9c888a455cbb53402090d94d16"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "f8649146bbe044d39cb2b9ac9c33710d", "usd": 0.00035952000000000005}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "f8649146bbe044d39cb2b9ac9c33710d"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "ef94fa15047b492ca368f49dd4d74788", "usd": 0.001337375}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "ef94fa15047b492ca368f49dd4d74788"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "407524ce6c244898be89fad31185ab30", "usd": 0.000292866}
+{"basis": "provider_reported", "charged": 0.000151452, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "407524ce6c244898be89fad31185ab30"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "6083db0fa9bf488dbdb3db0d4ab016a4", "usd": 0.000344946}
+{"basis": "provider_reported", "charged": 0.00017841600000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "6083db0fa9bf488dbdb3db0d4ab016a4"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "45e5fcb168d645eab4aa7956b507b985", "usd": 0.026725}
+{"basis": "provider_reported", "charged": 0.003016, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "45e5fcb168d645eab4aa7956b507b985"}
+{"event": "reserve", "run_id": "DEA-D2.D0.r0", "token": "6f96264502e14726922fe84665b1bb3a", "usd": 0.00028467600000000004}
+{"basis": "provider_reported", "charged": 0.000147252, "event": "settle", "overrun": false, "run_id": "DEA-D2.D0.r0", "token": "6f96264502e14726922fe84665b1bb3a"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "422e550bfa7649d6a633cac1386bc6a1", "usd": 0.02173}
+{"basis": "provider_reported", "charged": 0.004566, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "422e550bfa7649d6a633cac1386bc6a1"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "88f1186bc7f240e4a472393f17340896", "usd": 8.1858e-05}
+{"basis": "provider_reported", "charged": 4.2336e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "88f1186bc7f240e4a472393f17340896"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "1d7e599129974f3c972de4e8c9703eed", "usd": 0.000126756}
+{"basis": "provider_reported", "charged": 6.5562e-05, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "1d7e599129974f3c972de4e8c9703eed"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "6985873af531401dac8f5779d24939e9", "usd": 0.000203448}
+{"basis": "provider_reported", "charged": 0.00010521, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "6985873af531401dac8f5779d24939e9"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "56d7f3bfeed14548a37bbb178703439b", "usd": 0.00030723}
+{"basis": "provider_reported", "charged": 0.00015888599999999998, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "56d7f3bfeed14548a37bbb178703439b"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "26041851af524eb192537f4f6d097dce", "usd": 0.0277125}
+{"basis": "provider_reported", "charged": 0.0032240000000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "26041851af524eb192537f4f6d097dce"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "cfbdf5d8a81b4ed4aec6b65e263847a4", "usd": 0.00024120600000000002}
+{"basis": "provider_reported", "charged": 0.00012474, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "cfbdf5d8a81b4ed4aec6b65e263847a4"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "77e85b6475ae47f69fba1cc59fb1db5e", "usd": 0.000333942}
+{"basis": "provider_reported", "charged": 0.000172704, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "77e85b6475ae47f69fba1cc59fb1db5e"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "06bf8452e08944ada1d8757940b2594b", "usd": 0.001337625}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "06bf8452e08944ada1d8757940b2594b"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "10e94116cfd1428fbbe8857c364301d2", "usd": 0.00026733000000000003}
+{"basis": "provider_reported", "charged": 0.000138264, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "10e94116cfd1428fbbe8857c364301d2"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "c2c3c98f6ba64741988ff1cd2ab60c43", "usd": 0.00035952000000000005}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "c2c3c98f6ba64741988ff1cd2ab60c43"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "cb0014ad0ee14941bc728ca9c23e1e97", "usd": 0.001337375}
+{"basis": "provider_reported", "charged": 0.00015110000000000001, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "cb0014ad0ee14941bc728ca9c23e1e97"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "b8e2d5021b664de7986e7c1d725f06d9", "usd": 0.000292866}
+{"basis": "provider_reported", "charged": 0.000151452, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "b8e2d5021b664de7986e7c1d725f06d9"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "6b1778e0f3bf46b89725fa8310b93199", "usd": 0.000344946}
+{"basis": "provider_reported", "charged": 0.00017841600000000003, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "6b1778e0f3bf46b89725fa8310b93199"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "f6d4367044a441d89ce5372b5d7c4a12", "usd": 0.026725}
+{"basis": "provider_reported", "charged": 0.003016, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "f6d4367044a441d89ce5372b5d7c4a12"}
+{"event": "reserve", "run_id": "DEA-D2.D.r0", "token": "5f8dceb012cc4c2991969d209f093f16", "usd": 0.00028467600000000004}
+{"basis": "provider_reported", "charged": 0.000147252, "event": "settle", "overrun": false, "run_id": "DEA-D2.D.r0", "token": "5f8dceb012cc4c2991969d209f093f16"}
+{"event": "reserve", "run_id": "DEA-D2.A.r0", "token": "f3688bcb4c2b4176b4f012533caddb65", "usd": 0.02385}
+{"basis": "provider_reported", "charged": 0.005012, "event": "settle", "overrun": false, "run_id": "DEA-D2.A.r0", "token": "f3688bcb4c2b4176b4f012533caddb65"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "1ddb4a89259444f59c3de89970f78ab8", "usd": 0.0215825}
+{"basis": "provider_reported", "charged": 0.004534, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "1ddb4a89259444f59c3de89970f78ab8"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "b727eb0eb99d4ff59571271a6e81342d", "usd": 8.358e-05}
+{"basis": "provider_reported", "charged": 4.326e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "b727eb0eb99d4ff59571271a6e81342d"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "f5e35ffeb516429dbd22d166cc52b34a", "usd": 0.000129402}
+{"basis": "provider_reported", "charged": 6.694800000000001e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "f5e35ffeb516429dbd22d166cc52b34a"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "895a07c4809d42bca15fd0129b514d06", "usd": 0.00020874}
+{"basis": "provider_reported", "charged": 0.00010798200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "895a07c4809d42bca15fd0129b514d06"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "b4e309e922794a6fb7b5172b6442e58f", "usd": 0.00031248}
+{"basis": "provider_reported", "charged": 0.000161616, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "b4e309e922794a6fb7b5172b6442e58f"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "33efe16d06254e57b1c14f1344b3051a", "usd": 0.0013885}
+{"basis": "provider_reported", "charged": 0.00016180000000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "33efe16d06254e57b1c14f1344b3051a"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "0aca21e18e254aaea3290cdb7a4532e8", "usd": 0.00025053000000000006}
+{"basis": "provider_reported", "charged": 0.00012957000000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "0aca21e18e254aaea3290cdb7a4532e8"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "8915e874a1474f66ab9149fe1cae3925", "usd": 0.00034318200000000004}
+{"basis": "provider_reported", "charged": 0.00017749200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "8915e874a1474f66ab9149fe1cae3925"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "8d718a3ab7c34c3382695982dfe7cd88", "usd": 0.00134575}
+{"basis": "provider_reported", "charged": 0.0001528, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "8d718a3ab7c34c3382695982dfe7cd88"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "44f919ab26914540ad239fec5826728f", "usd": 0.00028051800000000005}
+{"basis": "provider_reported", "charged": 0.00014506800000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "44f919ab26914540ad239fec5826728f"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "7344a7542c4642e0ad9af73d9ab2e2af", "usd": 0.000372708}
+{"basis": "provider_reported", "charged": 0.000192738, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "7344a7542c4642e0ad9af73d9ab2e2af"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "4c6802fb09854138b8ae2c82b1ff41eb", "usd": 0.02691}
+{"basis": "provider_reported", "charged": 0.003056, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "4c6802fb09854138b8ae2c82b1ff41eb"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "8defcc2d93244d70904b1012bd64afa3", "usd": 0.000309918}
+{"basis": "provider_reported", "charged": 0.000160272, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "8defcc2d93244d70904b1012bd64afa3"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "904464bc22f0447491900a3aa969f9d7", "usd": 0.000359478}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "904464bc22f0447491900a3aa969f9d7"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "234c829c0b084773aea8b6a9c097fa8a", "usd": 0.001344375}
+{"basis": "provider_reported", "charged": 0.00015250000000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "234c829c0b084773aea8b6a9c097fa8a"}
+{"event": "reserve", "run_id": "CDR-D1.D0.r0", "token": "c745c718c5a34ef783e4b1b5f49b76a2", "usd": 0.00030282}
+{"basis": "provider_reported", "charged": 0.00015661800000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.D0.r0", "token": "c745c718c5a34ef783e4b1b5f49b76a2"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "4b62a748de8249c99fd766e9b2f4dc71", "usd": 0.0215825}
+{"basis": "provider_reported", "charged": 0.004534, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "4b62a748de8249c99fd766e9b2f4dc71"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "4d67235a947549639fb1e6f4ddeec818", "usd": 8.358e-05}
+{"basis": "provider_reported", "charged": 4.326e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "4d67235a947549639fb1e6f4ddeec818"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "a19a5f34089a4b2c90de7a336818d0f4", "usd": 0.000129402}
+{"basis": "provider_reported", "charged": 6.694800000000001e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "a19a5f34089a4b2c90de7a336818d0f4"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "8c899cfe1b5c4db1af9ea2c4d3510c26", "usd": 0.000209664}
+{"basis": "provider_reported", "charged": 0.00010844400000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "8c899cfe1b5c4db1af9ea2c4d3510c26"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "101751c87db240ef876143da71bbfb1e", "usd": 0.000312522}
+{"basis": "provider_reported", "charged": 0.000161616, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "101751c87db240ef876143da71bbfb1e"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "2b7f19ccb1cf46ab9a48ed13bf075b36", "usd": 0.0013885}
+{"basis": "provider_reported", "charged": 0.00016180000000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "2b7f19ccb1cf46ab9a48ed13bf075b36"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "5547472317c84aeb9fb45c2e73584ce1", "usd": 0.000234276}
+{"basis": "provider_reported", "charged": 0.00012117000000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "5547472317c84aeb9fb45c2e73584ce1"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "da857c7b5b4c43e2bbe01669edc44f95", "usd": 0.00034318200000000004}
+{"basis": "provider_reported", "charged": 0.00017749200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "da857c7b5b4c43e2bbe01669edc44f95"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "e990cec6211c4142a3aa846115db3901", "usd": 0.00134575}
+{"basis": "provider_reported", "charged": 0.0001528, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "e990cec6211c4142a3aa846115db3901"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "0632a7d7f9c64e2d98dbe12297373642", "usd": 0.00026422200000000005}
+{"basis": "provider_reported", "charged": 0.000136668, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "0632a7d7f9c64e2d98dbe12297373642"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "4033809414c04379bf110472fbe644cf", "usd": 0.000372708}
+{"basis": "provider_reported", "charged": 0.000192738, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "4033809414c04379bf110472fbe644cf"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "9b9c00a582704723ae49c8faf922fea3", "usd": 0.0013455}
+{"basis": "provider_reported", "charged": 0.0001528, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "9b9c00a582704723ae49c8faf922fea3"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "16de47e8d55443648e6dd93543227cad", "usd": 0.000293748}
+{"basis": "provider_reported", "charged": 0.000151914, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "16de47e8d55443648e6dd93543227cad"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "d93efd0ea8464f0ca963f9e968a19798", "usd": 0.00035943600000000003}
+{"basis": "provider_reported", "charged": 0.00018589200000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "d93efd0ea8464f0ca963f9e968a19798"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "523de4ee585f4743bfad1a995e72e443", "usd": 0.001344375}
+{"basis": "provider_reported", "charged": 0.00015250000000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "523de4ee585f4743bfad1a995e72e443"}
+{"event": "reserve", "run_id": "CDR-D1.E4.r0", "token": "56d0d69433d64ecf88ce179122ddf96c", "usd": 0.000286608}
+{"basis": "provider_reported", "charged": 0.000148218, "event": "settle", "overrun": false, "run_id": "CDR-D1.E4.r0", "token": "56d0d69433d64ecf88ce179122ddf96c"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "4c7226a5eb1541179d60eb31dccf98c6", "usd": 0.0215825}
+{"basis": "provider_reported", "charged": 0.004534, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "4c7226a5eb1541179d60eb31dccf98c6"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "d89b4a5d9c0044d3be4affab8cb685c0", "usd": 8.358e-05}
+{"basis": "provider_reported", "charged": 4.326e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "d89b4a5d9c0044d3be4affab8cb685c0"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "6d83e11ab47e4cbdaf8382fac87f658e", "usd": 0.000129402}
+{"basis": "provider_reported", "charged": 6.694800000000001e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "6d83e11ab47e4cbdaf8382fac87f658e"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "6c8585eb098f405c9d94a10f9fe5c499", "usd": 0.00021}
+{"basis": "provider_reported", "charged": 0.00010861200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "6c8585eb098f405c9d94a10f9fe5c499"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "3494cd2ec52449ab8a884ca12feb42ba", "usd": 0.00031248}
+{"basis": "provider_reported", "charged": 0.000161616, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "3494cd2ec52449ab8a884ca12feb42ba"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "47e2abfca4e340128aa62903d62780a3", "usd": 0.02777}
+{"basis": "provider_reported", "charged": 0.003236, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "47e2abfca4e340128aa62903d62780a3"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "5491f0a9528c4477b341415940b87339", "usd": 0.00025170600000000003}
+{"basis": "provider_reported", "charged": 0.00013020000000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "5491f0a9528c4477b341415940b87339"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "66cc91d100ae47b389ea13821d0c9397", "usd": 0.00034318200000000004}
+{"basis": "provider_reported", "charged": 0.00017749200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "66cc91d100ae47b389ea13821d0c9397"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "c3ef168254ac458a9405042b0a6dd072", "usd": 0.026915}
+{"basis": "provider_reported", "charged": 0.003056, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "c3ef168254ac458a9405042b0a6dd072"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "07a8f518b204426ea8dc3771797703d0", "usd": 0.00028169400000000003}
+{"basis": "provider_reported", "charged": 0.000145698, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "07a8f518b204426ea8dc3771797703d0"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "3686b48b6a8a4f74a83c52d40f35fb22", "usd": 0.000372708}
+{"basis": "provider_reported", "charged": 0.000192738, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "3686b48b6a8a4f74a83c52d40f35fb22"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "512919bb6c654889ba036b5a590c5822", "usd": 0.0013455}
+{"basis": "provider_reported", "charged": 0.0001528, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "512919bb6c654889ba036b5a590c5822"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "42a9b2ccc388468e99cfd573fcdda69a", "usd": 0.000311262}
+{"basis": "provider_reported", "charged": 0.000160986, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "42a9b2ccc388468e99cfd573fcdda69a"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "a73470e1b1854158b8d16b28bfdd1f3e", "usd": 0.00035943600000000003}
+{"basis": "provider_reported", "charged": 0.00018589200000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "a73470e1b1854158b8d16b28bfdd1f3e"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "37a9ea9833bc494daf597f824f5df677", "usd": 0.0268875}
+{"basis": "provider_reported", "charged": 0.0030499999999999998, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "37a9ea9833bc494daf597f824f5df677"}
+{"event": "reserve", "run_id": "CDR-D1.E3.r0", "token": "bc14432abd1743bf9c05a68e1554477a", "usd": 0.000302778}
+{"basis": "provider_reported", "charged": 0.000156576, "event": "settle", "overrun": false, "run_id": "CDR-D1.E3.r0", "token": "bc14432abd1743bf9c05a68e1554477a"}
+{"event": "reserve", "run_id": "CDR-D1.A.r0", "token": "aae4fd7aa7894ac2a381bbf9ad2b0165", "usd": 0.0237175}
+{"basis": "provider_reported", "charged": 0.004984, "event": "settle", "overrun": false, "run_id": "CDR-D1.A.r0", "token": "aae4fd7aa7894ac2a381bbf9ad2b0165"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "40c62ce3102940219633d811cef05e52", "usd": 0.0215825}
+{"basis": "provider_reported", "charged": 0.004534, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "40c62ce3102940219633d811cef05e52"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "df6cfacb79454bac9828cb852190724c", "usd": 8.358e-05}
+{"basis": "provider_reported", "charged": 4.326e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "df6cfacb79454bac9828cb852190724c"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "8d83c391590340df812a14cd6a0807f1", "usd": 0.00031248}
+{"basis": "provider_reported", "charged": 0.000161616, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "8d83c391590340df812a14cd6a0807f1"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "1a5189a438b346d9b248add9b51a0209", "usd": 0.0013885}
+{"basis": "provider_reported", "charged": 0.00016180000000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "1a5189a438b346d9b248add9b51a0209"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "0017cd271df44c87be4db3d5190e5fc7", "usd": 0.000235536}
+{"basis": "provider_reported", "charged": 0.00012184200000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "0017cd271df44c87be4db3d5190e5fc7"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "25309f891cba441099c183f003481ca6", "usd": 0.00034318200000000004}
+{"basis": "provider_reported", "charged": 0.00017749200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "25309f891cba441099c183f003481ca6"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "20b42daf42e44e9eb74695fd8a6e2970", "usd": 0.00134575}
+{"basis": "provider_reported", "charged": 0.0001528, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "20b42daf42e44e9eb74695fd8a6e2970"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "647a09f2d90340d584c5f3cd09613313", "usd": 0.00026548200000000004}
+{"basis": "provider_reported", "charged": 0.000137298, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "647a09f2d90340d584c5f3cd09613313"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "7aa8be8aa8ac4a09be5bec389f7619cb", "usd": 0.000372708}
+{"basis": "provider_reported", "charged": 0.000192738, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "7aa8be8aa8ac4a09be5bec389f7619cb"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "b81ea11686134875848bda10fa4a802a", "usd": 0.0013455}
+{"basis": "provider_reported", "charged": 0.0001528, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "b81ea11686134875848bda10fa4a802a"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "779c8f34901d4aebadf34211939f4e26", "usd": 0.00029500800000000003}
+{"basis": "provider_reported", "charged": 0.00015258600000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "779c8f34901d4aebadf34211939f4e26"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "993127eccdd6464cad89062c1f18b419", "usd": 0.000359478}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "993127eccdd6464cad89062c1f18b419"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "6a8b97e1653a4e3695cd6485ce81200c", "usd": 0.0268875}
+{"basis": "provider_reported", "charged": 0.0030499999999999998, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "6a8b97e1653a4e3695cd6485ce81200c"}
+{"event": "reserve", "run_id": "CDR-D1.E5.r0", "token": "b507c9e331fc4f8c8d833d48fcdae8e1", "usd": 0.000286524}
+{"basis": "provider_reported", "charged": 0.00014817600000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.E5.r0", "token": "b507c9e331fc4f8c8d833d48fcdae8e1"}
+{"event": "reserve", "run_id": "CDR-D1.B.r0", "token": "db21609a18aa4879ae6c1ce98c014002", "usd": 0.001185875}
+{"basis": "provider_reported", "charged": 0.00011920000000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.B.r0", "token": "db21609a18aa4879ae6c1ce98c014002"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "2d6583cac125473ab962a0ef8583ec24", "usd": 0.0215825}
+{"basis": "provider_reported", "charged": 0.004534, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "2d6583cac125473ab962a0ef8583ec24"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "a661e5d8434e43f3a6dcfa8a754f4143", "usd": 8.358e-05}
+{"basis": "provider_reported", "charged": 4.326e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "a661e5d8434e43f3a6dcfa8a754f4143"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "f2a889de86224f979c4c68e8f3be9734", "usd": 0.00031248}
+{"basis": "provider_reported", "charged": 0.000161616, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "f2a889de86224f979c4c68e8f3be9734"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "e87c4f8283ae4ca494bee876ef79430f", "usd": 0.0013885}
+{"basis": "provider_reported", "charged": 0.00016180000000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "e87c4f8283ae4ca494bee876ef79430f"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "93ebb6047c4d40c9ac1c57617d059b21", "usd": 0.00025053000000000006}
+{"basis": "provider_reported", "charged": 0.00012957000000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "93ebb6047c4d40c9ac1c57617d059b21"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "ef6e7072292c4d16b2b413856c8e20dd", "usd": 0.00034318200000000004}
+{"basis": "provider_reported", "charged": 0.00017749200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "ef6e7072292c4d16b2b413856c8e20dd"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "cfa7e5554a8c4ce2a8981d26a49c92d5", "usd": 0.026915}
+{"basis": "provider_reported", "charged": 0.003056, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "cfa7e5554a8c4ce2a8981d26a49c92d5"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "cf3abde03dc54eb2a81cd98aaa159176", "usd": 0.00028043400000000003}
+{"basis": "provider_reported", "charged": 0.000145026, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "cf3abde03dc54eb2a81cd98aaa159176"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "a598c554fbc04378bb94343e9378d6db", "usd": 0.000372708}
+{"basis": "provider_reported", "charged": 0.000192738, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "a598c554fbc04378bb94343e9378d6db"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "5c014432bda947adba2d3cf19f4bfbb4", "usd": 0.02691}
+{"basis": "provider_reported", "charged": 0.003056, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "5c014432bda947adba2d3cf19f4bfbb4"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "95fa2e40ac884228b8fcc260b5c2f08a", "usd": 0.000309918}
+{"basis": "provider_reported", "charged": 0.000160272, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "95fa2e40ac884228b8fcc260b5c2f08a"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "090c9ca539bc47cf952a6007c81811a5", "usd": 0.000359478}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "090c9ca539bc47cf952a6007c81811a5"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "16f54999924d461192ad1de04ca042b9", "usd": 0.0268875}
+{"basis": "provider_reported", "charged": 0.0030499999999999998, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "16f54999924d461192ad1de04ca042b9"}
+{"event": "reserve", "run_id": "CDR-D1.E2.r0", "token": "583069843c804e16b49807d2d25ec477", "usd": 0.000302778}
+{"basis": "provider_reported", "charged": 0.000156576, "event": "settle", "overrun": false, "run_id": "CDR-D1.E2.r0", "token": "583069843c804e16b49807d2d25ec477"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "d3bd4d50902a462aba35837d72420125", "usd": 0.0215825}
+{"basis": "provider_reported", "charged": 0.004534, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "d3bd4d50902a462aba35837d72420125"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "f3e6555c3f3e42319b918d6674459015", "usd": 8.358e-05}
+{"basis": "provider_reported", "charged": 4.326e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "f3e6555c3f3e42319b918d6674459015"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "d4f182f610ae4409b7e60601c5939eed", "usd": 0.000129402}
+{"basis": "provider_reported", "charged": 6.694800000000001e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "d4f182f610ae4409b7e60601c5939eed"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "146042c1ffd44875bf0bc5860b93b6b1", "usd": 0.00020874}
+{"basis": "provider_reported", "charged": 0.00010798200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "146042c1ffd44875bf0bc5860b93b6b1"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "3db1e59bc70148dbae13632afc56d126", "usd": 0.00031248}
+{"basis": "provider_reported", "charged": 0.000161616, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "3db1e59bc70148dbae13632afc56d126"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "e0aaaf9934ea459dbc5f360cc72a3c98", "usd": 0.0013885}
+{"basis": "provider_reported", "charged": 0.00016180000000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "e0aaaf9934ea459dbc5f360cc72a3c98"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "21d4cfcd4abc412790a1e0c5f8c027e8", "usd": 0.00025053000000000006}
+{"basis": "provider_reported", "charged": 0.00012957000000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "21d4cfcd4abc412790a1e0c5f8c027e8"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "b03c0cdddd7a4c19b0f3ea437eef4594", "usd": 0.00034318200000000004}
+{"basis": "provider_reported", "charged": 0.00017749200000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "b03c0cdddd7a4c19b0f3ea437eef4594"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "d75442f75f8a43e7b4924786ad8fcec2", "usd": 0.00134575}
+{"basis": "provider_reported", "charged": 0.0001528, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "d75442f75f8a43e7b4924786ad8fcec2"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "1325c1e1241046b49e6e0cf6dc00199a", "usd": 0.00028051800000000005}
+{"basis": "provider_reported", "charged": 0.00014506800000000001, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "1325c1e1241046b49e6e0cf6dc00199a"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "f349c086a48e4b3886854289ad1a151b", "usd": 0.000372708}
+{"basis": "provider_reported", "charged": 0.000192738, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "f349c086a48e4b3886854289ad1a151b"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "d80303f3d26048bfa2695314bff165cd", "usd": 0.02691}
+{"basis": "provider_reported", "charged": 0.003056, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "d80303f3d26048bfa2695314bff165cd"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "a24e347f3ec24e14a22fe21ac3458a6d", "usd": 0.000309918}
+{"basis": "provider_reported", "charged": 0.000160272, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "a24e347f3ec24e14a22fe21ac3458a6d"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "c4d22713f8064c17bc512fde8f5426e7", "usd": 0.000359478}
+{"basis": "provider_reported", "charged": 0.00018593399999999999, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "c4d22713f8064c17bc512fde8f5426e7"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "6f732b8bbaab4ab19bd8bf05b99160f5", "usd": 0.001344375}
+{"basis": "provider_reported", "charged": 0.00015250000000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "6f732b8bbaab4ab19bd8bf05b99160f5"}
+{"event": "reserve", "run_id": "CDR-D1.D.r0", "token": "1a521e189e884f4caa92d1b02e516c96", "usd": 0.00030282}
+{"basis": "provider_reported", "charged": 0.00015661800000000002, "event": "settle", "overrun": false, "run_id": "CDR-D1.D.r0", "token": "1a521e189e884f4caa92d1b02e516c96"}
+{"event": "reserve", "run_id": "CDR-D1.C.r0", "token": "2338e21bd451421f8dd3e99a8c57f149", "usd": 4.4772000000000004e-05}
+{"basis": "provider_reported", "charged": 2.3184e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.C.r0", "token": "2338e21bd451421f8dd3e99a8c57f149"}
+{"event": "reserve", "run_id": "CDR-D1.C.r0", "token": "4ba977f78c1d4dbd80ffd45f8f2f62a2", "usd": 0.0237175}
+{"basis": "provider_reported", "charged": 0.002384, "event": "settle", "overrun": false, "run_id": "CDR-D1.C.r0", "token": "4ba977f78c1d4dbd80ffd45f8f2f62a2"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "9bea8aa0804648a9bf81a4ac77c54d03", "usd": 0.0215825}
+{"basis": "provider_reported", "charged": 0.004534, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "9bea8aa0804648a9bf81a4ac77c54d03"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "f813d45de0674ebb9cd6489cf0510c3f", "usd": 0.00012936000000000002}
+{"basis": "provider_reported", "charged": 6.6906e-05, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "f813d45de0674ebb9cd6489cf0510c3f"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "e60350fcfd5b45499d51454874068b27", "usd": 0.000467502}
+{"basis": "provider_reported", "charged": 0.000241794, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "e60350fcfd5b45499d51454874068b27"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "3f24e2ae8f4940779203d210cbbfc84f", "usd": 0.0013885}
+{"basis": "provider_reported", "charged": 0.00016180000000000003, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "3f24e2ae8f4940779203d210cbbfc84f"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "a3a9835c310046e08de92ec870664997", "usd": 0.0005055540000000001}
+{"basis": "provider_reported", "charged": 0.00026145, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "a3a9835c310046e08de92ec870664997"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "09f6e5402baa4698a87204623f6ff810", "usd": 0.026915}
+{"basis": "provider_reported", "charged": 0.003056, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "09f6e5402baa4698a87204623f6ff810"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "fcacd93516714d2b85ee392d4c17f9c2", "usd": 0.0005355}
+{"basis": "provider_reported", "charged": 0.00027694800000000006, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "fcacd93516714d2b85ee392d4c17f9c2"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "a5531b5cc2d64749a9f2a26291c404b9", "usd": 0.02691}
+{"basis": "provider_reported", "charged": 0.003056, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "a5531b5cc2d64749a9f2a26291c404b9"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "ebf95ef16a704e53864d8529404aea91", "usd": 0.0005647320000000001}
+{"basis": "provider_reported", "charged": 0.00029206800000000004, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "ebf95ef16a704e53864d8529404aea91"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "2e86bbbbd4e84328a0152d42e45261ba", "usd": 0.0268875}
+{"basis": "provider_reported", "charged": 0.0030499999999999998, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "2e86bbbbd4e84328a0152d42e45261ba"}
+{"event": "reserve", "run_id": "CDR-D1.E1.r0", "token": "e7ac2ca1408b4ff598d5e236757bbc18", "usd": 0.00030273600000000006}
+{"basis": "provider_reported", "charged": 0.000156576, "event": "settle", "overrun": false, "run_id": "CDR-D1.E1.r0", "token": "e7ac2ca1408b4ff598d5e236757bbc18"}
+{"event": "reserve", "run_id": "IMP-D1.B.r0", "token": "f2ce1b708268461f8157b63da24a0f44", "usd": 0.00119425}
+{"basis": "provider_reported", "charged": 0.00012090000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.B.r0", "token": "f2ce1b708268461f8157b63da24a0f44"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "37ed25bbb9c84c638a7a9c4ffde26c2e", "usd": 0.0214825}
+{"basis": "provider_reported", "charged": 0.004514, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "37ed25bbb9c84c638a7a9c4ffde26c2e"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "4e5eb0eab0ec4eed9e2eaea49c466c75", "usd": 7.5726e-05}
+{"basis": "provider_reported", "charged": 3.9186e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "4e5eb0eab0ec4eed9e2eaea49c466c75"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "b79861e5b9b64f1fb0c44c4e2086a4a9", "usd": 0.000119154}
+{"basis": "provider_reported", "charged": 6.165600000000001e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "b79861e5b9b64f1fb0c44c4e2086a4a9"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "3cdcd38c79d641f3973c93245a582524", "usd": 0.00019047}
+{"basis": "provider_reported", "charged": 9.853200000000001e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "3cdcd38c79d641f3973c93245a582524"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "860bae5fdd724c37a77a8ee6cb69ee06", "usd": 0.00029332800000000003}
+{"basis": "provider_reported", "charged": 0.000151704, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "860bae5fdd724c37a77a8ee6cb69ee06"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "91833533867c4e5cba09cccb32e4ee2d", "usd": 0.026565}
+{"basis": "provider_reported", "charged": 0.002984, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "91833533867c4e5cba09cccb32e4ee2d"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "1154963cebdf42efb98e17c08a8d4b28", "usd": 0.000213066}
+{"basis": "provider_reported", "charged": 0.00011020800000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "1154963cebdf42efb98e17c08a8d4b28"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "09520fdc57624a38b20cebc0a69c6233", "usd": 0.000317226}
+{"basis": "provider_reported", "charged": 0.000164052, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "09520fdc57624a38b20cebc0a69c6233"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "e3d5f76f869d44d997ddc7b5f6f830de", "usd": 0.0012938749999999999}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "e3d5f76f869d44d997ddc7b5f6f830de"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "3358b7a96b4a4f7491c796b478d7d211", "usd": 0.000236376}
+{"basis": "provider_reported", "charged": 0.00012226200000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "3358b7a96b4a4f7491c796b478d7d211"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "3d245595fdd74a08a58515a002655f18", "usd": 0.000339906}
+{"basis": "provider_reported", "charged": 0.00017581200000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "3d245595fdd74a08a58515a002655f18"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "3b1ca2f70da047d39302e636ff03148c", "usd": 0.001293625}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "3b1ca2f70da047d39302e636ff03148c"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "91e39be62e0943c09c65da38b72c4670", "usd": 0.00025909800000000003}
+{"basis": "provider_reported", "charged": 0.00013402200000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "91e39be62e0943c09c65da38b72c4670"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "0c539c3bcb47474ebc11ad56261e3e45", "usd": 0.00032890200000000006}
+{"basis": "provider_reported", "charged": 0.00017010000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "0c539c3bcb47474ebc11ad56261e3e45"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "e1aa998262894fc0b033a4f9b55529c7", "usd": 0.0012925}
+{"basis": "provider_reported", "charged": 0.00014160000000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "e1aa998262894fc0b033a4f9b55529c7"}
+{"event": "reserve", "run_id": "IMP-D1.E4.r0", "token": "ed0a5462f3854fe58f06441f3684d236", "usd": 0.000263508}
+{"basis": "provider_reported", "charged": 0.00013629, "event": "settle", "overrun": false, "run_id": "IMP-D1.E4.r0", "token": "ed0a5462f3854fe58f06441f3684d236"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "0399329f16d1402d850cc3cfcdfe4225", "usd": 0.0214825}
+{"basis": "provider_reported", "charged": 0.004514, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "0399329f16d1402d850cc3cfcdfe4225"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "d389dfd71c364dbab1a85d226e06a1e9", "usd": 7.5726e-05}
+{"basis": "provider_reported", "charged": 3.9186e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "d389dfd71c364dbab1a85d226e06a1e9"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "48ae8ba470ff4c389a6536bb2cee7e87", "usd": 0.000119154}
+{"basis": "provider_reported", "charged": 6.165600000000001e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "48ae8ba470ff4c389a6536bb2cee7e87"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "89db795dba874a81867e62a4bc8fedbe", "usd": 0.00018954600000000002}
+{"basis": "provider_reported", "charged": 9.8028e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "89db795dba874a81867e62a4bc8fedbe"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "84081eef2a424e0b9e677cc8b4cfe0cc", "usd": 0.000293286}
+{"basis": "provider_reported", "charged": 0.000151704, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "84081eef2a424e0b9e677cc8b4cfe0cc"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "d6c05d233bca41959eb5d39a29a5cb40", "usd": 0.026565}
+{"basis": "provider_reported", "charged": 0.002984, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "d6c05d233bca41959eb5d39a29a5cb40"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "a507a9b45c4349f284a6c1ab95a934a9", "usd": 0.00022449000000000001}
+{"basis": "provider_reported", "charged": 0.00011613000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "a507a9b45c4349f284a6c1ab95a934a9"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "31c1394d55c142309bfdbda606c60fbf", "usd": 0.000317226}
+{"basis": "provider_reported", "charged": 0.000164052, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "31c1394d55c142309bfdbda606c60fbf"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "73378aad8d094daea70e3d39d88a7880", "usd": 0.0258775}
+{"basis": "provider_reported", "charged": 0.0028380000000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "73378aad8d094daea70e3d39d88a7880"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "e4a39b39262840ec8889c8d35fce9f02", "usd": 0.000247716}
+{"basis": "provider_reported", "charged": 0.000128142, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "e4a39b39262840ec8889c8d35fce9f02"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "fd8d5bfb3ec047bea9c39b22301aca91", "usd": 0.00033999000000000003}
+{"basis": "provider_reported", "charged": 0.000175854, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "fd8d5bfb3ec047bea9c39b22301aca91"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "77ffbc5929cd42d9b400087936e7cbe4", "usd": 0.001293625}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "77ffbc5929cd42d9b400087936e7cbe4"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "48dd636495974f7eab636a0ae408f5ae", "usd": 0.000270522}
+{"basis": "provider_reported", "charged": 0.00013990200000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "48dd636495974f7eab636a0ae408f5ae"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "ae3002d3f52b459fb3586d6b4d9c8921", "usd": 0.00032890200000000006}
+{"basis": "provider_reported", "charged": 0.00017010000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "ae3002d3f52b459fb3586d6b4d9c8921"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "5566f2ce79b940e7b3d255c5997f9f3f", "usd": 0.0012925}
+{"basis": "provider_reported", "charged": 0.00014160000000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "5566f2ce79b940e7b3d255c5997f9f3f"}
+{"event": "reserve", "run_id": "IMP-D1.D.r0", "token": "0eaa8153c5034d97b41f265177045150", "usd": 0.00027493200000000003}
+{"basis": "provider_reported", "charged": 0.000142212, "event": "settle", "overrun": false, "run_id": "IMP-D1.D.r0", "token": "0eaa8153c5034d97b41f265177045150"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "e313a2ce8ed54c60af9a01f6bc1c5cda", "usd": 0.0214825}
+{"basis": "provider_reported", "charged": 0.004514, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "e313a2ce8ed54c60af9a01f6bc1c5cda"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "a1673513cacd401eaa7896826c7d1a3a", "usd": 7.5726e-05}
+{"basis": "provider_reported", "charged": 3.9186e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "a1673513cacd401eaa7896826c7d1a3a"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "6acc6c1bb87547ad80983c61b4b62fec", "usd": 0.00029332800000000003}
+{"basis": "provider_reported", "charged": 0.000151704, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "6acc6c1bb87547ad80983c61b4b62fec"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "5ba2ef9909bf40c88342c55eec88f7ed", "usd": 0.00132825}
+{"basis": "provider_reported", "charged": 0.0001492, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "5ba2ef9909bf40c88342c55eec88f7ed"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "12dab95c29f745449d4a8dd23dc9341c", "usd": 0.00021436800000000002}
+{"basis": "provider_reported", "charged": 0.00011088000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "12dab95c29f745449d4a8dd23dc9341c"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "ce461bd255794226b66da7289f43669c", "usd": 0.00031718400000000003}
+{"basis": "provider_reported", "charged": 0.000164052, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "ce461bd255794226b66da7289f43669c"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "7e8bd0d0198d424e8cb43894519f2c68", "usd": 0.0012938749999999999}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "7e8bd0d0198d424e8cb43894519f2c68"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "bc5cf70c01f5464bb67b16a3824f3686", "usd": 0.00023763600000000003}
+{"basis": "provider_reported", "charged": 0.00012289200000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "bc5cf70c01f5464bb67b16a3824f3686"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "faf02ad8cbe24d9dabd7b25c0d4ef043", "usd": 0.00033999000000000003}
+{"basis": "provider_reported", "charged": 0.000175854, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "faf02ad8cbe24d9dabd7b25c0d4ef043"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "4ee090b3ced04b2f8f0043de4da8fee1", "usd": 0.001293625}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "4ee090b3ced04b2f8f0043de4da8fee1"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "95d30fea82fc48ccbc23b90b4437169e", "usd": 0.00026035800000000003}
+{"basis": "provider_reported", "charged": 0.00013465200000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "95d30fea82fc48ccbc23b90b4437169e"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "b484b924688349188c98bcbe8ce74fce", "usd": 0.00032886}
+{"basis": "provider_reported", "charged": 0.00017010000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "b484b924688349188c98bcbe8ce74fce"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "ab9c1bb5b56046aeb7244bef7645e92d", "usd": 0.0012925}
+{"basis": "provider_reported", "charged": 0.00014160000000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "ab9c1bb5b56046aeb7244bef7645e92d"}
+{"event": "reserve", "run_id": "IMP-D1.E5.r0", "token": "9e99e26a91b9479aa2af31d5b3567eb6", "usd": 0.000263466}
+{"basis": "provider_reported", "charged": 0.00013624800000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E5.r0", "token": "9e99e26a91b9479aa2af31d5b3567eb6"}
+{"event": "reserve", "run_id": "IMP-D1.C.r0", "token": "49126efad0674be8b185b6ff6b9696f3", "usd": 4.5402000000000003e-05}
+{"basis": "provider_reported", "charged": 2.3520000000000002e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.C.r0", "token": "49126efad0674be8b185b6ff6b9696f3"}
+{"event": "reserve", "run_id": "IMP-D1.C.r0", "token": "0d07d5e5f3ed4da8aefd7fb72eba1d54", "usd": 0.00119425}
+{"basis": "provider_reported", "charged": 0.00012090000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.C.r0", "token": "0d07d5e5f3ed4da8aefd7fb72eba1d54"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "ad29930cbaa0461b809ebd602a66d4ee", "usd": 0.0214825}
+{"basis": "provider_reported", "charged": 0.004514, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "ad29930cbaa0461b809ebd602a66d4ee"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "af47a822e0ae4cdb8a2c1500f4cc4320", "usd": 7.5726e-05}
+{"basis": "provider_reported", "charged": 3.9186e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "af47a822e0ae4cdb8a2c1500f4cc4320"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "4a3adc0d7e7c48688b06144f1c04fe40", "usd": 0.000119154}
+{"basis": "provider_reported", "charged": 6.165600000000001e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "4a3adc0d7e7c48688b06144f1c04fe40"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "0f6c3f0fb6a24af39061d5fe1bc9b44e", "usd": 0.00019080600000000002}
+{"basis": "provider_reported", "charged": 9.87e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "0f6c3f0fb6a24af39061d5fe1bc9b44e"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "6a919165ed9f4c3c931288c36d5c8ac1", "usd": 0.00029332800000000003}
+{"basis": "provider_reported", "charged": 0.000151704, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "6a919165ed9f4c3c931288c36d5c8ac1"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "5092a3fdd22a4217ae0fdac43cc73866", "usd": 0.00132825}
+{"basis": "provider_reported", "charged": 0.0001492, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "5092a3fdd22a4217ae0fdac43cc73866"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "f1f3d1455fae4a088401b34973a7128a", "usd": 0.000225834}
+{"basis": "provider_reported", "charged": 0.00011680200000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "f1f3d1455fae4a088401b34973a7128a"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "219a8c4c8d8843f6a454688006960cb5", "usd": 0.000317226}
+{"basis": "provider_reported", "charged": 0.000164052, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "219a8c4c8d8843f6a454688006960cb5"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "7835a33dcb8f4ff0bb8d5cecc387ab1b", "usd": 0.0012938749999999999}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "7835a33dcb8f4ff0bb8d5cecc387ab1b"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "aefa5786939941a697fa797d9b925627", "usd": 0.00024897600000000004}
+{"basis": "provider_reported", "charged": 0.000128772, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "aefa5786939941a697fa797d9b925627"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "61c1e27abef54cff81ef9de2c20977c6", "usd": 0.00033999000000000003}
+{"basis": "provider_reported", "charged": 0.000175854, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "61c1e27abef54cff81ef9de2c20977c6"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "a06da1cbfc3d446ab0e4a85dc9ad7475", "usd": 0.001293625}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "a06da1cbfc3d446ab0e4a85dc9ad7475"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "21cfac6ffb8d46b09bbe5556a5372ff1", "usd": 0.00027178200000000003}
+{"basis": "provider_reported", "charged": 0.000140574, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "21cfac6ffb8d46b09bbe5556a5372ff1"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "f36ba315a8ea42a3a51563db6ffb2bc2", "usd": 0.00032881800000000004}
+{"basis": "provider_reported", "charged": 0.00017005800000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "f36ba315a8ea42a3a51563db6ffb2bc2"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "8cdf32f7068648a59a01d81d3f2e2e07", "usd": 0.0012925}
+{"basis": "provider_reported", "charged": 0.00014160000000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "8cdf32f7068648a59a01d81d3f2e2e07"}
+{"event": "reserve", "run_id": "IMP-D1.E3.r0", "token": "3efb498ae98042869491d9b89011097b", "usd": 0.00027493200000000003}
+{"basis": "provider_reported", "charged": 0.000142212, "event": "settle", "overrun": false, "run_id": "IMP-D1.E3.r0", "token": "3efb498ae98042869491d9b89011097b"}
+{"event": "reserve", "run_id": "IMP-D1.A.r0", "token": "727a7312a82d47a6bf95efa44690236c", "usd": 0.023885}
+{"basis": "provider_reported", "charged": 0.005018, "event": "settle", "overrun": false, "run_id": "IMP-D1.A.r0", "token": "727a7312a82d47a6bf95efa44690236c"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "cfb83431a1b1424391e882a83582d20a", "usd": 0.0214825}
+{"basis": "provider_reported", "charged": 0.004514, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "cfb83431a1b1424391e882a83582d20a"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "436f8ed956af4a65bcd4c32be9e66af9", "usd": 7.5726e-05}
+{"basis": "provider_reported", "charged": 3.9186e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "436f8ed956af4a65bcd4c32be9e66af9"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "9ac85feacefa4b99a0ae1b7eece96b85", "usd": 0.00029332800000000003}
+{"basis": "provider_reported", "charged": 0.000151704, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "9ac85feacefa4b99a0ae1b7eece96b85"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "2dcdaae74892496cab4ecf4ea65e3081", "usd": 0.00132825}
+{"basis": "provider_reported", "charged": 0.0001492, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "2dcdaae74892496cab4ecf4ea65e3081"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "e61f0e40fa464935adbd3c27e6b65b0a", "usd": 0.000224532}
+{"basis": "provider_reported", "charged": 0.00011613000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "e61f0e40fa464935adbd3c27e6b65b0a"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "fb19df93919f4892b7e7c927399ceafd", "usd": 0.00031718400000000003}
+{"basis": "provider_reported", "charged": 0.000164052, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "fb19df93919f4892b7e7c927399ceafd"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "c5a1358fc58246fc9907d8225cdeee02", "usd": 0.0258775}
+{"basis": "provider_reported", "charged": 0.0028380000000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "c5a1358fc58246fc9907d8225cdeee02"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "6d31f5031b6b41fea7ebd4ca24540d93", "usd": 0.000247716}
+{"basis": "provider_reported", "charged": 0.000128142, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "6d31f5031b6b41fea7ebd4ca24540d93"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "aab335d6e2c44e0d97709e97c674ec8f", "usd": 0.00033999000000000003}
+{"basis": "provider_reported", "charged": 0.000175854, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "aab335d6e2c44e0d97709e97c674ec8f"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "4a111d7346294361856ebd42ca186348", "usd": 0.0258725}
+{"basis": "provider_reported", "charged": 0.0028380000000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "4a111d7346294361856ebd42ca186348"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "b34ab4223b4948dba46659539b442268", "usd": 0.00027043800000000007}
+{"basis": "provider_reported", "charged": 0.00013986, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "b34ab4223b4948dba46659539b442268"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "35dd964df77b4bf6b1c844ab5a071653", "usd": 0.00032890200000000006}
+{"basis": "provider_reported", "charged": 0.00017010000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "35dd964df77b4bf6b1c844ab5a071653"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "7ce48d60f6744d90b2966cb24c4c5e4f", "usd": 0.02585}
+{"basis": "provider_reported", "charged": 0.0028320000000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "7ce48d60f6744d90b2966cb24c4c5e4f"}
+{"event": "reserve", "run_id": "IMP-D1.E2.r0", "token": "8f84df14288c4f79957445c95f3b2d3e", "usd": 0.000274848}
+{"basis": "provider_reported", "charged": 0.00014217, "event": "settle", "overrun": false, "run_id": "IMP-D1.E2.r0", "token": "8f84df14288c4f79957445c95f3b2d3e"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "77dbf1948ea04e3c99aa958df1e10589", "usd": 0.0214825}
+{"basis": "provider_reported", "charged": 0.004514, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "77dbf1948ea04e3c99aa958df1e10589"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "62136ad0abf24d169db8a6c2206ded44", "usd": 7.5726e-05}
+{"basis": "provider_reported", "charged": 3.9186e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "62136ad0abf24d169db8a6c2206ded44"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "529a0c4bd04f49f396680d74f1adf140", "usd": 0.000119154}
+{"basis": "provider_reported", "charged": 6.165600000000001e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "529a0c4bd04f49f396680d74f1adf140"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "da8e2ad7becd4bfd900e599ff70efc4b", "usd": 0.00018954600000000002}
+{"basis": "provider_reported", "charged": 9.8028e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "da8e2ad7becd4bfd900e599ff70efc4b"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "aa443982d11d4ed3a83beaa386f8794f", "usd": 0.000293286}
+{"basis": "provider_reported", "charged": 0.000151704, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "aa443982d11d4ed3a83beaa386f8794f"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "8bea8c752e4d4a609c628ab23f5056a7", "usd": 0.026565}
+{"basis": "provider_reported", "charged": 0.002984, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "8bea8c752e4d4a609c628ab23f5056a7"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "7521f3d584584673bb3742835b6c8b1d", "usd": 0.00022449000000000001}
+{"basis": "provider_reported", "charged": 0.00011613000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "7521f3d584584673bb3742835b6c8b1d"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "a61260f890434653844a5acebccad0d9", "usd": 0.000317226}
+{"basis": "provider_reported", "charged": 0.000164052, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "a61260f890434653844a5acebccad0d9"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "752e2a2dda1f4a8d80925785c950bf18", "usd": 0.0258775}
+{"basis": "provider_reported", "charged": 0.0028380000000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "752e2a2dda1f4a8d80925785c950bf18"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "6aa7ad45f59243acbd06b479320475ab", "usd": 0.000247716}
+{"basis": "provider_reported", "charged": 0.000128142, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "6aa7ad45f59243acbd06b479320475ab"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "53f158eac4c54185a2a228d0b863bb7a", "usd": 0.00033999000000000003}
+{"basis": "provider_reported", "charged": 0.000175854, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "53f158eac4c54185a2a228d0b863bb7a"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "5f172c34090b46c99e3cf668b9e33b7a", "usd": 0.001293625}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "5f172c34090b46c99e3cf668b9e33b7a"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "6b1418958b4941a9b48ba1e06380c02e", "usd": 0.000270522}
+{"basis": "provider_reported", "charged": 0.00013990200000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "6b1418958b4941a9b48ba1e06380c02e"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "f25f1533ee2f4433960ca990163a72a4", "usd": 0.00032890200000000006}
+{"basis": "provider_reported", "charged": 0.00017010000000000001, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "f25f1533ee2f4433960ca990163a72a4"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "45c0d2e132fa489aa9cb6b18013ae559", "usd": 0.0012925}
+{"basis": "provider_reported", "charged": 0.00014160000000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "45c0d2e132fa489aa9cb6b18013ae559"}
+{"event": "reserve", "run_id": "IMP-D1.D0.r0", "token": "ac7ab04f254642f48a8f8577171b5eda", "usd": 0.00027493200000000003}
+{"basis": "provider_reported", "charged": 0.000142212, "event": "settle", "overrun": false, "run_id": "IMP-D1.D0.r0", "token": "ac7ab04f254642f48a8f8577171b5eda"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "7893fa9ec1e14d779b59ad75fb3f4a86", "usd": 0.0214825}
+{"basis": "provider_reported", "charged": 0.004514, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "7893fa9ec1e14d779b59ad75fb3f4a86"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "5dafeaea90c444efaf88f6ff36cfc07a", "usd": 0.00011907000000000001}
+{"basis": "provider_reported", "charged": 6.161400000000001e-05, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "5dafeaea90c444efaf88f6ff36cfc07a"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "685e74e425844eca8cb77fc2b26534b0", "usd": 0.00044830800000000007}
+{"basis": "provider_reported", "charged": 0.00023184, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "685e74e425844eca8cb77fc2b26534b0"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "844e50de453d4b8b93c6568cce5688b0", "usd": 0.00132825}
+{"basis": "provider_reported", "charged": 0.0001492, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "844e50de453d4b8b93c6568cce5688b0"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "510046cee0ed41debc4ff4a2a7158077", "usd": 0.000479682}
+{"basis": "provider_reported", "charged": 0.00024809400000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "510046cee0ed41debc4ff4a2a7158077"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "5c00bef5f83a4a4298dee2e308970f3c", "usd": 0.0012938749999999999}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "5c00bef5f83a4a4298dee2e308970f3c"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "93106894915f4a1b8b8fa2884d6ce518", "usd": 0.000502908}
+{"basis": "provider_reported", "charged": 0.000260106, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "93106894915f4a1b8b8fa2884d6ce518"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "24cce0fff4bb4a1499d587d7ca0920b4", "usd": 0.001293625}
+{"basis": "provider_reported", "charged": 0.0001419, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "24cce0fff4bb4a1499d587d7ca0920b4"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "3fb83cb021774ce0ad73aa84bdc04f48", "usd": 0.000525336}
+{"basis": "provider_reported", "charged": 0.000271698, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "3fb83cb021774ce0ad73aa84bdc04f48"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "1332b5f1a3ae472f9d8d3a4f6cd401df", "usd": 0.02585}
+{"basis": "provider_reported", "charged": 0.0028320000000000003, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "1332b5f1a3ae472f9d8d3a4f6cd401df"}
+{"event": "reserve", "run_id": "IMP-D1.E1.r0", "token": "462dbf5f949445e3ae99246ba2879ea9", "usd": 0.00027480600000000005}
+{"basis": "provider_reported", "charged": 0.00014212800000000002, "event": "settle", "overrun": false, "run_id": "IMP-D1.E1.r0", "token": "462dbf5f949445e3ae99246ba2879ea9"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "ca07c6482eb84954b741ee7683f8998b", "usd": 0.0214175}
+{"basis": "provider_reported", "charged": 0.0045, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "ca07c6482eb84954b741ee7683f8998b"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "f37aa5084be94003aaf388e4e838987f", "usd": 8.148e-05}
+{"basis": "provider_reported", "charged": 4.2168e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "f37aa5084be94003aaf388e4e838987f"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "cce2dcf63085402e8a01b8bd570b7947", "usd": 0.00012642}
+{"basis": "provider_reported", "charged": 6.5394e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "cce2dcf63085402e8a01b8bd570b7947"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "2fda2724abe347c5810af0bc460c82e8", "usd": 0.00020470800000000003}
+{"basis": "provider_reported", "charged": 0.000105882, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "2fda2724abe347c5810af0bc460c82e8"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "08773a387ae5417ea8dbce6c29421a96", "usd": 0.00030756600000000006}
+{"basis": "provider_reported", "charged": 0.000159054, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "08773a387ae5417ea8dbce6c29421a96"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "ab9a16edcd6b407ebb4453bbbe2dd80e", "usd": 0.0013705}
+{"basis": "provider_reported", "charged": 0.000158, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "ab9a16edcd6b407ebb4453bbbe2dd80e"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "2ba742b1ce9e4f7c9c485ef02aa98cdf", "usd": 0.00023095800000000002}
+{"basis": "provider_reported", "charged": 0.00011944800000000001, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "2ba742b1ce9e4f7c9c485ef02aa98cdf"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "7b6f566cc3a348cc8892a344b10b4a95", "usd": 0.000338478}
+{"basis": "provider_reported", "charged": 0.000175056, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "7b6f566cc3a348cc8892a344b10b4a95"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "a4eeabc3bd944bcd864e3580909e6624", "usd": 0.0013357500000000001}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "a4eeabc3bd944bcd864e3580909e6624"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "5f2bf271a53b42868ae3dab9ab599e61", "usd": 0.00026119800000000003}
+{"basis": "provider_reported", "charged": 0.000135114, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "5f2bf271a53b42868ae3dab9ab599e61"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "08fe1adffdff469fb249496472750f42", "usd": 0.000368256}
+{"basis": "provider_reported", "charged": 0.00019047, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "08fe1adffdff469fb249496472750f42"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "093208817419440693dd133645968e7f", "usd": 0.02671}
+{"basis": "provider_reported", "charged": 0.003014, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "093208817419440693dd133645968e7f"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "9733d5fa052548b48fcbfdd4382b7acd", "usd": 0.00029085000000000005}
+{"basis": "provider_reported", "charged": 0.000150444, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "9733d5fa052548b48fcbfdd4382b7acd"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "aedf6c2353d749769571ffd553dda5ba", "usd": 0.000357168}
+{"basis": "provider_reported", "charged": 0.000184716, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "aedf6c2353d749769571ffd553dda5ba"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "a7a22cc0831c449a97fccc55f3a029d3", "usd": 0.001334375}
+{"basis": "provider_reported", "charged": 0.00015040000000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "a7a22cc0831c449a97fccc55f3a029d3"}
+{"event": "reserve", "run_id": "MFR-D1.E4.r0", "token": "5a30c0b95b9c4496ab62a7d375a0fe5c", "usd": 0.00029034600000000003}
+{"basis": "provider_reported", "charged": 0.00015015000000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E4.r0", "token": "5a30c0b95b9c4496ab62a7d375a0fe5c"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "3bae46f173224176a2524f6e6ddcdd64", "usd": 0.0214175}
+{"basis": "provider_reported", "charged": 0.0045, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "3bae46f173224176a2524f6e6ddcdd64"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "dc6cc940c9e249ab8415371d11b4264c", "usd": 8.148e-05}
+{"basis": "provider_reported", "charged": 4.2168e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "dc6cc940c9e249ab8415371d11b4264c"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "b8e829efbf134612a6b7fde0143c2928", "usd": 0.00012642}
+{"basis": "provider_reported", "charged": 6.5394e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "b8e829efbf134612a6b7fde0143c2928"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "e05e7800c8af44d4813dc94b610f10c1", "usd": 0.000203784}
+{"basis": "provider_reported", "charged": 0.00010542, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "e05e7800c8af44d4813dc94b610f10c1"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "c855a47203dc4daabb3dee56c48d4cb6", "usd": 0.00030756600000000006}
+{"basis": "provider_reported", "charged": 0.000159054, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "c855a47203dc4daabb3dee56c48d4cb6"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "b9d9e14b0f014ceb9404b103c267c179", "usd": 0.02741}
+{"basis": "provider_reported", "charged": 0.00316, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "b9d9e14b0f014ceb9404b103c267c179"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "f72ca3e3eb45477bb4dfd8669a2237a1", "usd": 0.000245742}
+{"basis": "provider_reported", "charged": 0.000127092, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "f72ca3e3eb45477bb4dfd8669a2237a1"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "d8c82ed42e844f3f9ea4e9f00464e804", "usd": 0.000338478}
+{"basis": "provider_reported", "charged": 0.000175056, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "d8c82ed42e844f3f9ea4e9f00464e804"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "ae9005fda14e401ca5e3b1c61d0351ff", "usd": 0.0013357500000000001}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "ae9005fda14e401ca5e3b1c61d0351ff"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "ca48ce4ea06841c4bfa9b9a4e155a169", "usd": 0.00027606600000000005}
+{"basis": "provider_reported", "charged": 0.0001428, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "ca48ce4ea06841c4bfa9b9a4e155a169"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "63abddcd0b5f4556a2ed8039a7652001", "usd": 0.000368256}
+{"basis": "provider_reported", "charged": 0.00019047, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "63abddcd0b5f4556a2ed8039a7652001"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "c721ab92ead642b885af6e3bcab3aa80", "usd": 0.02671}
+{"basis": "provider_reported", "charged": 0.003014, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "c721ab92ead642b885af6e3bcab3aa80"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "b364a75cb59848728092cd228a2b8ed6", "usd": 0.000305718}
+{"basis": "provider_reported", "charged": 0.00015813000000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "b364a75cb59848728092cd228a2b8ed6"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "7b7a9d7426ed4e15898e45f58db8b0f8", "usd": 0.00035721000000000006}
+{"basis": "provider_reported", "charged": 0.000184758, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "7b7a9d7426ed4e15898e45f58db8b0f8"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "e26f8cd6c58b4e88b39beb044b5d066f", "usd": 0.001334375}
+{"basis": "provider_reported", "charged": 0.00015040000000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "e26f8cd6c58b4e88b39beb044b5d066f"}
+{"event": "reserve", "run_id": "MFR-D1.D0.r0", "token": "f4bad27c7bbc462bad5a8e3bb55a62bc", "usd": 0.000305214}
+{"basis": "provider_reported", "charged": 0.000157836, "event": "settle", "overrun": false, "run_id": "MFR-D1.D0.r0", "token": "f4bad27c7bbc462bad5a8e3bb55a62bc"}
+{"event": "reserve", "run_id": "MFR-D1.B.r0", "token": "95026d2916d642e7b31bfdd8a49701de", "usd": 0.001184875}
+{"basis": "provider_reported", "charged": 0.000119, "event": "settle", "overrun": false, "run_id": "MFR-D1.B.r0", "token": "95026d2916d642e7b31bfdd8a49701de"}
+{"event": "reserve", "run_id": "MFR-D1.C.r0", "token": "78be93067a6c4dbab4ab2f1ccf9859bd", "usd": 4.326e-05}
+{"basis": "provider_reported", "charged": 2.2386000000000002e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.C.r0", "token": "78be93067a6c4dbab4ab2f1ccf9859bd"}
+{"event": "reserve", "run_id": "MFR-D1.C.r0", "token": "b8af4b29b52c4e8ba19909939f3e750b", "usd": 0.001184875}
+{"basis": "provider_reported", "charged": 0.000119, "event": "settle", "overrun": false, "run_id": "MFR-D1.C.r0", "token": "b8af4b29b52c4e8ba19909939f3e750b"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "087835f797914cdf88b9a81ee448118e", "usd": 0.0214175}
+{"basis": "provider_reported", "charged": 0.0045, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "087835f797914cdf88b9a81ee448118e"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "e71c78aaaae0420183b931cea0b8ba86", "usd": 0.000126336}
+{"basis": "provider_reported", "charged": 6.535200000000001e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "e71c78aaaae0420183b931cea0b8ba86"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "db21dc8bd40e4930854e614944454206", "usd": 0.00046254600000000004}
+{"basis": "provider_reported", "charged": 0.00023923200000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "db21dc8bd40e4930854e614944454206"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "8686a1f8527b4c758976aa9a7fa2cc17", "usd": 0.0013705}
+{"basis": "provider_reported", "charged": 0.000158, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "8686a1f8527b4c758976aa9a7fa2cc17"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "30dc5691a9234343a7705f43b01078bb", "usd": 0.0005009340000000001}
+{"basis": "provider_reported", "charged": 0.000259056, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "30dc5691a9234343a7705f43b01078bb"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "b31410aaee484f55a57618eb94ddf5e7", "usd": 0.0013357500000000001}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "b31410aaee484f55a57618eb94ddf5e7"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "b9508844b842411da7568d2204d22a0a", "usd": 0.000531132}
+{"basis": "provider_reported", "charged": 0.00027468, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "b9508844b842411da7568d2204d22a0a"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "1463259dcaaf4ad4a1a4daa1fcf9098d", "usd": 0.0013355}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "1463259dcaaf4ad4a1a4daa1fcf9098d"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "c1e09d3561934d5aacc6b77faa3876cc", "usd": 0.0005605740000000001}
+{"basis": "provider_reported", "charged": 0.00028992600000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "c1e09d3561934d5aacc6b77faa3876cc"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "877ff79cdd6b4af1a48e061298a820cf", "usd": 0.0266875}
+{"basis": "provider_reported", "charged": 0.0030080000000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "877ff79cdd6b4af1a48e061298a820cf"}
+{"event": "reserve", "run_id": "MFR-D1.E1.r0", "token": "aab9ef8e05de4ea19a5420bda75770ea", "usd": 0.000305088}
+{"basis": "provider_reported", "charged": 0.000157794, "event": "settle", "overrun": false, "run_id": "MFR-D1.E1.r0", "token": "aab9ef8e05de4ea19a5420bda75770ea"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "26ec338481f14d0f976b17aec2ed8d15", "usd": 0.0214175}
+{"basis": "provider_reported", "charged": 0.0045, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "26ec338481f14d0f976b17aec2ed8d15"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "1ce7ac022b744a90a58f1f769910cdf7", "usd": 8.148e-05}
+{"basis": "provider_reported", "charged": 4.2168e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "1ce7ac022b744a90a58f1f769910cdf7"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "3441d16e6ca64884aa20b79cd80dbed8", "usd": 0.00030756600000000006}
+{"basis": "provider_reported", "charged": 0.000159054, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "3441d16e6ca64884aa20b79cd80dbed8"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "859a56826e7c4b3cb65fafe6950287a1", "usd": 0.02741}
+{"basis": "provider_reported", "charged": 0.00316, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "859a56826e7c4b3cb65fafe6950287a1"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "62e805e41ffd492d977df29cb9360afe", "usd": 0.00023213400000000002}
+{"basis": "provider_reported", "charged": 0.000120078, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "62e805e41ffd492d977df29cb9360afe"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "229fade2c5f84874857c92267081c7f5", "usd": 0.000338394}
+{"basis": "provider_reported", "charged": 0.000175014, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "229fade2c5f84874857c92267081c7f5"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "520a2bb7f73547c09279de5217aa8113", "usd": 0.0013357500000000001}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "520a2bb7f73547c09279de5217aa8113"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "b1b66d5b6bea42c3a3a925edee249d4c", "usd": 0.00026245800000000003}
+{"basis": "provider_reported", "charged": 0.000135744, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "b1b66d5b6bea42c3a3a925edee249d4c"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "469c6b005928483f862538d5409606ad", "usd": 0.000368256}
+{"basis": "provider_reported", "charged": 0.00019047, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "469c6b005928483f862538d5409606ad"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "bd5f32798c5f4c8aa81ac4b8c4b65f67", "usd": 0.0013355}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "bd5f32798c5f4c8aa81ac4b8c4b65f67"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "78604430bfb241a7b14f017274269960", "usd": 0.000292194}
+{"basis": "provider_reported", "charged": 0.00015111600000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "78604430bfb241a7b14f017274269960"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "4e759fc8f7b043ec944cd3e4cb1bb319", "usd": 0.00035721000000000006}
+{"basis": "provider_reported", "charged": 0.000184758, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "4e759fc8f7b043ec944cd3e4cb1bb319"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "db11e4da643a4857a0d841e2f2861b5c", "usd": 0.0266875}
+{"basis": "provider_reported", "charged": 0.0030080000000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "db11e4da643a4857a0d841e2f2861b5c"}
+{"event": "reserve", "run_id": "MFR-D1.E5.r0", "token": "86d9a3279b2f4f128497f165f885500e", "usd": 0.000290262}
+{"basis": "provider_reported", "charged": 0.000150108, "event": "settle", "overrun": false, "run_id": "MFR-D1.E5.r0", "token": "86d9a3279b2f4f128497f165f885500e"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "ce25bc7ab8664aa8afc11f0a68a65efc", "usd": 0.0214175}
+{"basis": "provider_reported", "charged": 0.0045, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "ce25bc7ab8664aa8afc11f0a68a65efc"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "4fcb5a73f3f5406aad111ae1c87fb390", "usd": 8.148e-05}
+{"basis": "provider_reported", "charged": 4.2168e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "4fcb5a73f3f5406aad111ae1c87fb390"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "187543122dfb49aaaeb46b0aa657943c", "usd": 0.00012642}
+{"basis": "provider_reported", "charged": 6.5394e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "187543122dfb49aaaeb46b0aa657943c"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "2c161fc3c4a64f08816c480595ff47a4", "usd": 0.000203784}
+{"basis": "provider_reported", "charged": 0.00010542, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "2c161fc3c4a64f08816c480595ff47a4"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "d817ab8c61734106a01431be3502fcbb", "usd": 0.00030756600000000006}
+{"basis": "provider_reported", "charged": 0.000159054, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "d817ab8c61734106a01431be3502fcbb"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "cf801ce3bb584ea9a603743e8e0acc8c", "usd": 0.02741}
+{"basis": "provider_reported", "charged": 0.00316, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "cf801ce3bb584ea9a603743e8e0acc8c"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "b771cce1498441279f3f48316c8b73cb", "usd": 0.000245742}
+{"basis": "provider_reported", "charged": 0.000127092, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "b771cce1498441279f3f48316c8b73cb"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "09a7a0e15c504e44b83c834f2c8ee2b6", "usd": 0.000338478}
+{"basis": "provider_reported", "charged": 0.000175056, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "09a7a0e15c504e44b83c834f2c8ee2b6"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "7e09db7feba141388305bd57f82bcb98", "usd": 0.0013357500000000001}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "7e09db7feba141388305bd57f82bcb98"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "4322689e10f44f74ab486951be6af419", "usd": 0.00027606600000000005}
+{"basis": "provider_reported", "charged": 0.0001428, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "4322689e10f44f74ab486951be6af419"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "e52e93e0549843f5a8665de752e23506", "usd": 0.000368256}
+{"basis": "provider_reported", "charged": 0.00019047, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "e52e93e0549843f5a8665de752e23506"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "3ebd0c7e8d9f4aea894d5906fce44af3", "usd": 0.02671}
+{"basis": "provider_reported", "charged": 0.003014, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "3ebd0c7e8d9f4aea894d5906fce44af3"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "40e932ded358445eb433891ebc5c32f6", "usd": 0.000305718}
+{"basis": "provider_reported", "charged": 0.00015813000000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "40e932ded358445eb433891ebc5c32f6"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "45ae6384cfca43d0a25a5363f8d77cc3", "usd": 0.00035721000000000006}
+{"basis": "provider_reported", "charged": 0.000184758, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "45ae6384cfca43d0a25a5363f8d77cc3"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "6e84161f90274525afad0a88a4f7f525", "usd": 0.001334375}
+{"basis": "provider_reported", "charged": 0.00015040000000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "6e84161f90274525afad0a88a4f7f525"}
+{"event": "reserve", "run_id": "MFR-D1.D.r0", "token": "f43bbe4c8c334dd5b5d544f4970c0d54", "usd": 0.000305214}
+{"basis": "provider_reported", "charged": 0.000157836, "event": "settle", "overrun": false, "run_id": "MFR-D1.D.r0", "token": "f43bbe4c8c334dd5b5d544f4970c0d54"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "d6609293251741bfb680939fa232942e", "usd": 0.0214175}
+{"basis": "provider_reported", "charged": 0.0045, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "d6609293251741bfb680939fa232942e"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "8e01c867008d4053b318c937c8f4c8b9", "usd": 8.148e-05}
+{"basis": "provider_reported", "charged": 4.2168e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "8e01c867008d4053b318c937c8f4c8b9"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "faa13027cc2c4c5e9630f17e2e124813", "usd": 0.00030756600000000006}
+{"basis": "provider_reported", "charged": 0.000159054, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "faa13027cc2c4c5e9630f17e2e124813"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "6efb88ac30c840ed8cc151b0eef3758b", "usd": 0.0013705}
+{"basis": "provider_reported", "charged": 0.000158, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "6efb88ac30c840ed8cc151b0eef3758b"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "bfac3cf1c23c448c8314ec02242eb816", "usd": 0.00024582600000000004}
+{"basis": "provider_reported", "charged": 0.00012713400000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "bfac3cf1c23c448c8314ec02242eb816"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "7943b26a9d5a42cfa0dc3345ca260427", "usd": 0.000338478}
+{"basis": "provider_reported", "charged": 0.000175056, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "7943b26a9d5a42cfa0dc3345ca260427"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "34f3bbd8adb84ce796a93a98957d3f0e", "usd": 0.026715}
+{"basis": "provider_reported", "charged": 0.003014, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "34f3bbd8adb84ce796a93a98957d3f0e"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "294d37c0d9494a1ea46b45504e88ed6c", "usd": 0.00027598200000000003}
+{"basis": "provider_reported", "charged": 0.00014275800000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "294d37c0d9494a1ea46b45504e88ed6c"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "e61420296144422f9fca636b130b72e5", "usd": 0.000368214}
+{"basis": "provider_reported", "charged": 0.00019042800000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "e61420296144422f9fca636b130b72e5"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "678c483b50004e4f9b979eea483ff1b8", "usd": 0.02671}
+{"basis": "provider_reported", "charged": 0.003014, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "678c483b50004e4f9b979eea483ff1b8"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "d3352f6b1a8b43268472affe881abead", "usd": 0.000305718}
+{"basis": "provider_reported", "charged": 0.00015813000000000003, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "d3352f6b1a8b43268472affe881abead"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "70ac7036870045abbe64d78033720fcd", "usd": 0.00035721000000000006}
+{"basis": "provider_reported", "charged": 0.000184758, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "70ac7036870045abbe64d78033720fcd"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "0ebb6f4daaa64a219ed12f241dc94c00", "usd": 0.001334375}
+{"basis": "provider_reported", "charged": 0.00015040000000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "0ebb6f4daaa64a219ed12f241dc94c00"}
+{"event": "reserve", "run_id": "MFR-D1.E2.r0", "token": "915527894a384798b984d47cdcbb2513", "usd": 0.000305214}
+{"basis": "provider_reported", "charged": 0.000157836, "event": "settle", "overrun": false, "run_id": "MFR-D1.E2.r0", "token": "915527894a384798b984d47cdcbb2513"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "32f61897f3a748af925b70aebbb6eace", "usd": 0.0214175}
+{"basis": "provider_reported", "charged": 0.0045, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "32f61897f3a748af925b70aebbb6eace"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "cc8887b1ae8147e791c8815676d79388", "usd": 8.148e-05}
+{"basis": "provider_reported", "charged": 4.2168e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "cc8887b1ae8147e791c8815676d79388"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "dae8669ebcb946c5b86f60403a984b31", "usd": 0.00012642}
+{"basis": "provider_reported", "charged": 6.5394e-05, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "dae8669ebcb946c5b86f60403a984b31"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "6f26b1a05f074fd78d386673d10fd596", "usd": 0.000205044}
+{"basis": "provider_reported", "charged": 0.00010605000000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "6f26b1a05f074fd78d386673d10fd596"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "0a5ab9b0a76344518f6c561c4128b691", "usd": 0.00030756600000000006}
+{"basis": "provider_reported", "charged": 0.000159054, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "0a5ab9b0a76344518f6c561c4128b691"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "cc28acbb98e74ef4bc5f11a01e65c16c", "usd": 0.0013705}
+{"basis": "provider_reported", "charged": 0.000158, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "cc28acbb98e74ef4bc5f11a01e65c16c"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "ff3ba44caf15443984c10789ee61f015", "usd": 0.00024708600000000004}
+{"basis": "provider_reported", "charged": 0.000127806, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "ff3ba44caf15443984c10789ee61f015"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "033d2bd9366047e4979234c0daca60c3", "usd": 0.000338478}
+{"basis": "provider_reported", "charged": 0.000175056, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "033d2bd9366047e4979234c0daca60c3"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "0a7c0571b3f64f2a9e74a0e72caed215", "usd": 0.0013357500000000001}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "0a7c0571b3f64f2a9e74a0e72caed215"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "11631cb9bb814a618c7c051495e040b2", "usd": 0.00027732600000000005}
+{"basis": "provider_reported", "charged": 0.00014343, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "11631cb9bb814a618c7c051495e040b2"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "4b8e8aebd93f422e8fbdb0d7e8c3079b", "usd": 0.000368256}
+{"basis": "provider_reported", "charged": 0.00019047, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "4b8e8aebd93f422e8fbdb0d7e8c3079b"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "00cce4b913f34cc2bdebcd133edf586d", "usd": 0.0013355}
+{"basis": "provider_reported", "charged": 0.0001507, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "00cce4b913f34cc2bdebcd133edf586d"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "1e32a4b3698a4015885ecd702d5c218d", "usd": 0.00030706200000000004}
+{"basis": "provider_reported", "charged": 0.00015880200000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "1e32a4b3698a4015885ecd702d5c218d"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "be0b7bba19ff49c3842bf9689ae3caa7", "usd": 0.000357168}
+{"basis": "provider_reported", "charged": 0.000184716, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "be0b7bba19ff49c3842bf9689ae3caa7"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "82429729bf424cf5882c6ba7c470bf01", "usd": 0.001334375}
+{"basis": "provider_reported", "charged": 0.00015040000000000002, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "82429729bf424cf5882c6ba7c470bf01"}
+{"event": "reserve", "run_id": "MFR-D1.E3.r0", "token": "1c4165ad43b04a529d104c1a42b8159f", "usd": 0.000305214}
+{"basis": "provider_reported", "charged": 0.000157836, "event": "settle", "overrun": false, "run_id": "MFR-D1.E3.r0", "token": "1c4165ad43b04a529d104c1a42b8159f"}
+{"event": "reserve", "run_id": "MFR-D1.A.r0", "token": "cf3a3727933e43919503f8a464cacfd9", "usd": 0.0236975}
+{"basis": "provider_reported", "charged": 0.00498, "event": "settle", "overrun": false, "run_id": "MFR-D1.A.r0", "token": "cf3a3727933e43919503f8a464cacfd9"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "e42639ef960e4cdbb02632973308de8f", "usd": 0.0262275}
+{"basis": "provider_reported", "charged": 0.0055119999999999995, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "e42639ef960e4cdbb02632973308de8f"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "4e20268978864c07a7e36bf35b054ccf", "usd": 0.0214425}
+{"basis": "provider_reported", "charged": 0.004503999999999999, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "4e20268978864c07a7e36bf35b054ccf"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "e561799079054c6d8ebca06990df8da7", "usd": 9.177000000000001e-05}
+{"basis": "provider_reported", "charged": 4.746e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "e561799079054c6d8ebca06990df8da7"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "0c1e3de31d254479a1956892dec98ab1", "usd": 0.00016178400000000002}
+{"basis": "provider_reported", "charged": 8.3664e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "0c1e3de31d254479a1956892dec98ab1"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "691cc6623fb446b59e497db8eee23f84", "usd": 0.000250908}
+{"basis": "provider_reported", "charged": 0.00012978, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "691cc6623fb446b59e497db8eee23f84"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "cbc25fcf1ad849ccb631243bc6017f9e", "usd": 0.00035469}
+{"basis": "provider_reported", "charged": 0.00018345600000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "cbc25fcf1ad849ccb631243bc6017f9e"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "d0e613592d964f5a8d9859e8528049a3", "usd": 0.001509875}
+{"basis": "provider_reported", "charged": 0.0001874, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "d0e613592d964f5a8d9859e8528049a3"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "b67c069a5b144b11bbf4842187117f4f", "usd": 0.00030273600000000006}
+{"basis": "provider_reported", "charged": 0.000156576, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "b67c069a5b144b11bbf4842187117f4f"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "b6f19f8d05ca494e9e4295efa3eb462e", "usd": 0.00039543}
+{"basis": "provider_reported", "charged": 0.000204498, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "b6f19f8d05ca494e9e4295efa3eb462e"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "9027f7dab05d40eb932a91b7a1a807c9", "usd": 0.00146875}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "9027f7dab05d40eb932a91b7a1a807c9"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "41de799a7d2b4f47bc119516f709b527", "usd": 0.000342846}
+{"basis": "provider_reported", "charged": 0.00017732400000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "41de799a7d2b4f47bc119516f709b527"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "255d1a25a16f422d8f21540a7eec4534", "usd": 0.00043503600000000003}
+{"basis": "provider_reported", "charged": 0.000224994, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "255d1a25a16f422d8f21540a7eec4534"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "70b2b0ae03ac4fcab0a965d540027ab7", "usd": 0.0014685}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "70b2b0ae03ac4fcab0a965d540027ab7"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "7dc994eb0e1f417688b672c57ebcd948", "usd": 0.00038241}
+{"basis": "provider_reported", "charged": 0.00019777800000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "7dc994eb0e1f417688b672c57ebcd948"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "654ec36b27e049e799d5f4832a677385", "usd": 0.00042205800000000006}
+{"basis": "provider_reported", "charged": 0.000218274, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "654ec36b27e049e799d5f4832a677385"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "3757ffba09004f909f3c5707d9f88537", "usd": 0.0293475}
+{"basis": "provider_reported", "charged": 0.003568, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "3757ffba09004f909f3c5707d9f88537"}
+{"event": "reserve", "run_id": "LCS-D1.D.r0", "token": "9da21a93b7034316a5d0cc6e1b81ed44", "usd": 0.00037548000000000003}
+{"basis": "provider_reported", "charged": 0.000194208, "event": "settle", "overrun": false, "run_id": "LCS-D1.D.r0", "token": "9da21a93b7034316a5d0cc6e1b81ed44"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "3622351d61fc4ef1a7f8fc3771cf217a", "usd": 0.0262275}
+{"basis": "provider_reported", "charged": 0.0055119999999999995, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "3622351d61fc4ef1a7f8fc3771cf217a"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "2d0504d194a44f88acde20854f33e317", "usd": 0.0214425}
+{"basis": "provider_reported", "charged": 0.004503999999999999, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "2d0504d194a44f88acde20854f33e317"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "910245c1c2f24d14b98bca43df1e5aa1", "usd": 0.000161742}
+{"basis": "provider_reported", "charged": 8.3664e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "910245c1c2f24d14b98bca43df1e5aa1"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "bbb3f6729d3e4b80b919ae42027dd448", "usd": 0.00050967}
+{"basis": "provider_reported", "charged": 0.00026359200000000005, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "bbb3f6729d3e4b80b919ae42027dd448"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "a342fbc54e5444a39b4a0320fe73a690", "usd": 0.001509875}
+{"basis": "provider_reported", "charged": 0.0001874, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "a342fbc54e5444a39b4a0320fe73a690"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "9a476eb81f1040a8b0fe40a1d84f641f", "usd": 0.0005578860000000001}
+{"basis": "provider_reported", "charged": 0.000288498, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "9a476eb81f1040a8b0fe40a1d84f641f"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "74dda3d7256c4243a74344f66d282dab", "usd": 0.00146875}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "74dda3d7256c4243a74344f66d282dab"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "36c991855ad845e2a91ce7963d3c1ebd", "usd": 0.000597954}
+{"basis": "provider_reported", "charged": 0.00030924600000000005, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "36c991855ad845e2a91ce7963d3c1ebd"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "2e58a59782e24589bfc76013b1b41031", "usd": 0.02937}
+{"basis": "provider_reported", "charged": 0.003574, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "2e58a59782e24589bfc76013b1b41031"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "b0e017e9558b449998580819c725c360", "usd": 0.000637014}
+{"basis": "provider_reported", "charged": 0.00032944800000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "b0e017e9558b449998580819c725c360"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "6479a5e6b1c5465e806ec7946e218cb5", "usd": 0.0293475}
+{"basis": "provider_reported", "charged": 0.003568, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "6479a5e6b1c5465e806ec7946e218cb5"}
+{"event": "reserve", "run_id": "LCS-D1.E1.r0", "token": "68d33d5cce2d459b9d1930e14b0fcbf6", "usd": 0.000375438}
+{"basis": "provider_reported", "charged": 0.00019416600000000004, "event": "settle", "overrun": false, "run_id": "LCS-D1.E1.r0", "token": "68d33d5cce2d459b9d1930e14b0fcbf6"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "f810fc52c153412fb58951a1303bc275", "usd": 0.0262275}
+{"basis": "provider_reported", "charged": 0.0055119999999999995, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "f810fc52c153412fb58951a1303bc275"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "bd5c130137204616bfd2f0b0956e10ff", "usd": 0.0214425}
+{"basis": "provider_reported", "charged": 0.004503999999999999, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "bd5c130137204616bfd2f0b0956e10ff"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "76cf1a446f03486e97a4f638c5dbcf3c", "usd": 9.177000000000001e-05}
+{"basis": "provider_reported", "charged": 4.746e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "76cf1a446f03486e97a4f638c5dbcf3c"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "fb6a48829f914ab3b259daefc2d5319d", "usd": 0.00016178400000000002}
+{"basis": "provider_reported", "charged": 8.3664e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "fb6a48829f914ab3b259daefc2d5319d"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "82bdb7e5326446aa8c84fc68c881f289", "usd": 0.000252168}
+{"basis": "provider_reported", "charged": 0.00013041, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "82bdb7e5326446aa8c84fc68c881f289"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "31cd5eea484e4983be757bd6b12bfe93", "usd": 0.00035469}
+{"basis": "provider_reported", "charged": 0.00018345600000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "31cd5eea484e4983be757bd6b12bfe93"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "22955043539248c78924d533a0ca0f4d", "usd": 0.001509875}
+{"basis": "provider_reported", "charged": 0.0001874, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "22955043539248c78924d533a0ca0f4d"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "070a8dc6c43f4169b048f500b5f07fd3", "usd": 0.00030399600000000006}
+{"basis": "provider_reported", "charged": 0.000157206, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "070a8dc6c43f4169b048f500b5f07fd3"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "010eb261df01476c98e93da7410d625b", "usd": 0.00039543}
+{"basis": "provider_reported", "charged": 0.000204498, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "010eb261df01476c98e93da7410d625b"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "963b25711e6c49189d22337137166cfc", "usd": 0.00146875}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "963b25711e6c49189d22337137166cfc"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "12ab6858d4144d5bbfd1cf42cfc88ce4", "usd": 0.000344106}
+{"basis": "provider_reported", "charged": 0.000177954, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "12ab6858d4144d5bbfd1cf42cfc88ce4"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "a51fb52ed9be4b8c974d349a846de72b", "usd": 0.00043503600000000003}
+{"basis": "provider_reported", "charged": 0.000224994, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "a51fb52ed9be4b8c974d349a846de72b"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "e3d351b5519b4ec3885340deb9641638", "usd": 0.02937}
+{"basis": "provider_reported", "charged": 0.003574, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "e3d351b5519b4ec3885340deb9641638"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "307435639ec04ef3a52dae7bff02ae58", "usd": 0.000383586}
+{"basis": "provider_reported", "charged": 0.000198366, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "307435639ec04ef3a52dae7bff02ae58"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "77d0ec8ad7864d18a72db39c14ea1918", "usd": 0.0004221}
+{"basis": "provider_reported", "charged": 0.000218316, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "77d0ec8ad7864d18a72db39c14ea1918"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "7cfd2970f4cb43ce92db59267fd46957", "usd": 0.0293475}
+{"basis": "provider_reported", "charged": 0.003568, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "7cfd2970f4cb43ce92db59267fd46957"}
+{"event": "reserve", "run_id": "LCS-D1.E3.r0", "token": "40e2f8dacf034c02b36df25e073f2de9", "usd": 0.00037548000000000003}
+{"basis": "provider_reported", "charged": 0.000194208, "event": "settle", "overrun": false, "run_id": "LCS-D1.E3.r0", "token": "40e2f8dacf034c02b36df25e073f2de9"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "4ed150c828714b7bae407ec8669c1064", "usd": 0.0262275}
+{"basis": "provider_reported", "charged": 0.0055119999999999995, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "4ed150c828714b7bae407ec8669c1064"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "2150db9aa7a24d61b6e8f9a8dc078972", "usd": 0.0214425}
+{"basis": "provider_reported", "charged": 0.004503999999999999, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "2150db9aa7a24d61b6e8f9a8dc078972"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "c477a4bc21924d19a7d431f04467d003", "usd": 9.177000000000001e-05}
+{"basis": "provider_reported", "charged": 4.746e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "c477a4bc21924d19a7d431f04467d003"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "e6ea7f94766143ad98df28ed48e23308", "usd": 0.00016178400000000002}
+{"basis": "provider_reported", "charged": 8.3664e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "e6ea7f94766143ad98df28ed48e23308"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "38b001c3a6914156a4258d33936e1523", "usd": 0.000251832}
+{"basis": "provider_reported", "charged": 0.00013024200000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "38b001c3a6914156a4258d33936e1523"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "bbe9ed92f1fd4bd49745bcb9ece3d024", "usd": 0.00035469}
+{"basis": "provider_reported", "charged": 0.00018345600000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "bbe9ed92f1fd4bd49745bcb9ece3d024"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "d64136c3a809470c8f91cb06482b8e09", "usd": 0.030197500000000002}
+{"basis": "provider_reported", "charged": 0.0037480000000000005, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "d64136c3a809470c8f91cb06482b8e09"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "2486154ba4744d9b9e50bbb34deaa489", "usd": 0.00027279}
+{"basis": "provider_reported", "charged": 0.000141078, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "2486154ba4744d9b9e50bbb34deaa489"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "c5beb14f4e3e446c97c843324bdae2e6", "usd": 0.000395346}
+{"basis": "provider_reported", "charged": 0.00020445600000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "c5beb14f4e3e446c97c843324bdae2e6"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "96adc8540196498ea0f07c2c58697d4d", "usd": 0.00146875}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "96adc8540196498ea0f07c2c58697d4d"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "539746e31e024ff292eee7c3ee10e685", "usd": 0.000312942}
+{"basis": "provider_reported", "charged": 0.00016186800000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "539746e31e024ff292eee7c3ee10e685"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "d491155d49da42d5a92e6921f0408abc", "usd": 0.00043503600000000003}
+{"basis": "provider_reported", "charged": 0.000224994, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "d491155d49da42d5a92e6921f0408abc"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "cf45239a8f004bc8ad69f80aff22e473", "usd": 0.0014685}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "cf45239a8f004bc8ad69f80aff22e473"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "21b9e942b8074558b259fe6d845e5c30", "usd": 0.00035250600000000004}
+{"basis": "provider_reported", "charged": 0.000182322, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "21b9e942b8074558b259fe6d845e5c30"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "c82887c2f3d340ef93a339442544bf9e", "usd": 0.00042205800000000006}
+{"basis": "provider_reported", "charged": 0.000218274, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "c82887c2f3d340ef93a339442544bf9e"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "c9c49487737f476b8e867bb888f37dab", "usd": 0.001467375}
+{"basis": "provider_reported", "charged": 0.0001784, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "c9c49487737f476b8e867bb888f37dab"}
+{"event": "reserve", "run_id": "LCS-D1.E4.r0", "token": "21617c208310456bbb170a21d97077c7", "usd": 0.00034566}
+{"basis": "provider_reported", "charged": 0.000178752, "event": "settle", "overrun": false, "run_id": "LCS-D1.E4.r0", "token": "21617c208310456bbb170a21d97077c7"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "b5271a24939c42c4b439d168dd0c39e8", "usd": 0.0262275}
+{"basis": "provider_reported", "charged": 0.0055119999999999995, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "b5271a24939c42c4b439d168dd0c39e8"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "627151824a344e0e9942f22a6ab6b093", "usd": 0.0214425}
+{"basis": "provider_reported", "charged": 0.004503999999999999, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "627151824a344e0e9942f22a6ab6b093"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "a47e142b4424404fa40d1d5746f0199a", "usd": 9.177000000000001e-05}
+{"basis": "provider_reported", "charged": 4.746e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "a47e142b4424404fa40d1d5746f0199a"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "4007372cd09c42d3b33cf41f41dcdc95", "usd": 0.00016178400000000002}
+{"basis": "provider_reported", "charged": 8.3664e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "4007372cd09c42d3b33cf41f41dcdc95"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "0196fd83d38b47b89ffe6e89f47a69f2", "usd": 0.000250908}
+{"basis": "provider_reported", "charged": 0.00012978, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "0196fd83d38b47b89ffe6e89f47a69f2"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "f857b131ffb640269fa6a32d8154d650", "usd": 0.00035469}
+{"basis": "provider_reported", "charged": 0.00018345600000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "f857b131ffb640269fa6a32d8154d650"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "02c2bd1277b84e92b8e04599a5e98f09", "usd": 0.001509875}
+{"basis": "provider_reported", "charged": 0.0001874, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "02c2bd1277b84e92b8e04599a5e98f09"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "13066d607e004e239dafecc69df20825", "usd": 0.00030273600000000006}
+{"basis": "provider_reported", "charged": 0.000156576, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "13066d607e004e239dafecc69df20825"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "0040e41e382342419e3ecc7477da4860", "usd": 0.00039543}
+{"basis": "provider_reported", "charged": 0.000204498, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "0040e41e382342419e3ecc7477da4860"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "11eff77217854b01bf185441fca09b3a", "usd": 0.00146875}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "11eff77217854b01bf185441fca09b3a"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "962761bae4594e54a5a18d518f3d891b", "usd": 0.000342846}
+{"basis": "provider_reported", "charged": 0.00017732400000000003, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "962761bae4594e54a5a18d518f3d891b"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "deb808b1e18f4468ae88f2540202425b", "usd": 0.00043503600000000003}
+{"basis": "provider_reported", "charged": 0.000224994, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "deb808b1e18f4468ae88f2540202425b"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "551965e978104d66a742f24ff048f2cd", "usd": 0.0014685}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "551965e978104d66a742f24ff048f2cd"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "d45fa21b06d5484f9286359f418e1c74", "usd": 0.00038241}
+{"basis": "provider_reported", "charged": 0.00019777800000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "d45fa21b06d5484f9286359f418e1c74"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "66378adff67b4cb7a800e84c083579dc", "usd": 0.00042205800000000006}
+{"basis": "provider_reported", "charged": 0.000218274, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "66378adff67b4cb7a800e84c083579dc"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "bc88d17e3d1044bf8b28562e05853690", "usd": 0.0293475}
+{"basis": "provider_reported", "charged": 0.003568, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "bc88d17e3d1044bf8b28562e05853690"}
+{"event": "reserve", "run_id": "LCS-D1.D0.r0", "token": "9994b7c62fb14a0ca1071701ccc14f22", "usd": 0.00037548000000000003}
+{"basis": "provider_reported", "charged": 0.000194208, "event": "settle", "overrun": false, "run_id": "LCS-D1.D0.r0", "token": "9994b7c62fb14a0ca1071701ccc14f22"}
+{"event": "reserve", "run_id": "LCS-D1.A.r0", "token": "acd5e2d63a014e05aaa78d18a6e5cdf3", "usd": 0.0278625}
+{"basis": "provider_reported", "charged": 0.005856, "event": "settle", "overrun": false, "run_id": "LCS-D1.A.r0", "token": "acd5e2d63a014e05aaa78d18a6e5cdf3"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "b0d7271c014541f0bec5043500e73588", "usd": 0.0262275}
+{"basis": "provider_reported", "charged": 0.0055119999999999995, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "b0d7271c014541f0bec5043500e73588"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "eca4fc0da4f94c5194c51f02daca13a1", "usd": 0.0214425}
+{"basis": "provider_reported", "charged": 0.004503999999999999, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "eca4fc0da4f94c5194c51f02daca13a1"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "268ce79db8cb489db1a551d809d6138d", "usd": 9.177000000000001e-05}
+{"basis": "provider_reported", "charged": 4.746e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "268ce79db8cb489db1a551d809d6138d"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "9c7b293cbb4c4df18cb06f9a549fe792", "usd": 0.00035464800000000005}
+{"basis": "provider_reported", "charged": 0.00018341400000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "9c7b293cbb4c4df18cb06f9a549fe792"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "2d90bcbba633486c9dbafbaac9ae8178", "usd": 0.001509875}
+{"basis": "provider_reported", "charged": 0.0001874, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "2d90bcbba633486c9dbafbaac9ae8178"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "a8a580ad681a4bb78fec4872b2e1c020", "usd": 0.000302778}
+{"basis": "provider_reported", "charged": 0.000156576, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "a8a580ad681a4bb78fec4872b2e1c020"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "c960b09b9eb2451693478d490173de6d", "usd": 0.00039538800000000004}
+{"basis": "provider_reported", "charged": 0.000204498, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "c960b09b9eb2451693478d490173de6d"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "196ce295efbf4f73beffd6e1b24484bc", "usd": 0.029375}
+{"basis": "provider_reported", "charged": 0.003574, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "196ce295efbf4f73beffd6e1b24484bc"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "b2281c0aef8f4c1e8a41698e3bc28855", "usd": 0.000342762}
+{"basis": "provider_reported", "charged": 0.00017728200000000001, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "b2281c0aef8f4c1e8a41698e3bc28855"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "69be9961e0cd4535ac69f2dc3a703423", "usd": 0.000434994}
+{"basis": "provider_reported", "charged": 0.00022495200000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "69be9961e0cd4535ac69f2dc3a703423"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "50891e7775f643c8bb55eea23fff68cb", "usd": 0.0014685}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "50891e7775f643c8bb55eea23fff68cb"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "7a7eeb2e950640e4a1d37f56dc0316ea", "usd": 0.00038241}
+{"basis": "provider_reported", "charged": 0.00019777800000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "7a7eeb2e950640e4a1d37f56dc0316ea"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "6c8a8a297a514226bc6bce1e1e10a991", "usd": 0.00042205800000000006}
+{"basis": "provider_reported", "charged": 0.000218274, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "6c8a8a297a514226bc6bce1e1e10a991"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "0000c8182fef4f3b9785e7716b518572", "usd": 0.001467375}
+{"basis": "provider_reported", "charged": 0.0001784, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "0000c8182fef4f3b9785e7716b518572"}
+{"event": "reserve", "run_id": "LCS-D1.E2.r0", "token": "f551bde31e604f45b6cf31f46f7cc063", "usd": 0.000375564}
+{"basis": "provider_reported", "charged": 0.00019425, "event": "settle", "overrun": false, "run_id": "LCS-D1.E2.r0", "token": "f551bde31e604f45b6cf31f46f7cc063"}
+{"event": "reserve", "run_id": "LCS-D1.B.r0", "token": "8cb6e0c915b94e60a5683ce3be2a50c3", "usd": 0.001393125}
+{"basis": "provider_reported", "charged": 0.0001628, "event": "settle", "overrun": false, "run_id": "LCS-D1.B.r0", "token": "8cb6e0c915b94e60a5683ce3be2a50c3"}
+{"event": "reserve", "run_id": "LCS-D1.C.r0", "token": "8c24dd16448749b0b3671e2176ae26ca", "usd": 4.380600000000001e-05}
+{"basis": "provider_reported", "charged": 2.268e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.C.r0", "token": "8c24dd16448749b0b3671e2176ae26ca"}
+{"event": "reserve", "run_id": "LCS-D1.C.r0", "token": "8c584e7bada0498aa9c119057ee75dd0", "usd": 0.001393125}
+{"basis": "provider_reported", "charged": 0.0001628, "event": "settle", "overrun": false, "run_id": "LCS-D1.C.r0", "token": "8c584e7bada0498aa9c119057ee75dd0"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "fe0b17838e1b443185fb418d2108a87e", "usd": 0.0262275}
+{"basis": "provider_reported", "charged": 0.0055119999999999995, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "fe0b17838e1b443185fb418d2108a87e"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "d9a2822c0bae4220b6d571e944a8049e", "usd": 0.0214425}
+{"basis": "provider_reported", "charged": 0.004503999999999999, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "d9a2822c0bae4220b6d571e944a8049e"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "2747ff78ecee4a1d9a943d5b048a66b5", "usd": 9.177000000000001e-05}
+{"basis": "provider_reported", "charged": 4.746e-05, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "2747ff78ecee4a1d9a943d5b048a66b5"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "232976d588e843f08d1a8e007cc0dad2", "usd": 0.00035464800000000005}
+{"basis": "provider_reported", "charged": 0.00018341400000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "232976d588e843f08d1a8e007cc0dad2"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "69667c257f544e5bb0a157d15ebf6f6d", "usd": 0.001509875}
+{"basis": "provider_reported", "charged": 0.0001874, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "69667c257f544e5bb0a157d15ebf6f6d"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "5b0da6185eae48a8b5936b22fe15cab9", "usd": 0.000274134}
+{"basis": "provider_reported", "charged": 0.00014179200000000001, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "5b0da6185eae48a8b5936b22fe15cab9"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "dc52b53c2a57475c8aec03b5d12eb568", "usd": 0.00039543}
+{"basis": "provider_reported", "charged": 0.000204498, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "dc52b53c2a57475c8aec03b5d12eb568"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "7686eb7c5f7744958cbd77b2c6871c22", "usd": 0.029375}
+{"basis": "provider_reported", "charged": 0.003574, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "7686eb7c5f7744958cbd77b2c6871c22"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "92d2fcc372384ed5a7734cda9919f527", "usd": 0.000314118}
+{"basis": "provider_reported", "charged": 0.000162456, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "92d2fcc372384ed5a7734cda9919f527"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "1404fe8b7b594a5e915b91b09b19c1a2", "usd": 0.000434994}
+{"basis": "provider_reported", "charged": 0.00022495200000000002, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "1404fe8b7b594a5e915b91b09b19c1a2"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "fde9fa9e08b046b3a43b4f77ab618138", "usd": 0.0014685}
+{"basis": "provider_reported", "charged": 0.0001787, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "fde9fa9e08b046b3a43b4f77ab618138"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "88b50359d73e4e0da241df897ae983f0", "usd": 0.00035376600000000004}
+{"basis": "provider_reported", "charged": 0.000182952, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "88b50359d73e4e0da241df897ae983f0"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "b28a9232cf964026b2a133e2a7177024", "usd": 0.0004221}
+{"basis": "provider_reported", "charged": 0.000218316, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "b28a9232cf964026b2a133e2a7177024"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "424292c3f4784f66af13acc31f7222b0", "usd": 0.0293475}
+{"basis": "provider_reported", "charged": 0.003568, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "424292c3f4784f66af13acc31f7222b0"}
+{"event": "reserve", "run_id": "LCS-D1.E5.r0", "token": "8aa2ec41801e41f2b37a53b5d7b141c4", "usd": 0.00034553400000000004}
+{"basis": "provider_reported", "charged": 0.00017871, "event": "settle", "overrun": false, "run_id": "LCS-D1.E5.r0", "token": "8aa2ec41801e41f2b37a53b5d7b141c4"}
