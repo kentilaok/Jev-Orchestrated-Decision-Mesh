@@ -575,6 +575,84 @@ def validate_broker_request(payload: dict, config: dict) -> dict:
     return {"validated": json.loads(proc.stdout.strip().splitlines()[-1]), "request": request}
 
 
+CHAT_MODELS = ("cidm-jev",)
+
+
+def _messages_to_task(messages: list) -> tuple[str, str]:
+    """Collapse OpenAI chat messages into (goal, context) for the CIDM broker.
+
+    Last user message becomes the goal; everything before it (any role) is joined
+    as context. Both are hard-capped at 1200 chars to match build_request limits.
+    """
+    if not isinstance(messages, list) or not messages:
+        raise ValueError("messages must be a non-empty list")
+    last_user_idx = None
+    for idx in range(len(messages) - 1, -1, -1):
+        item = messages[idx]
+        if isinstance(item, dict) and item.get("role") == "user" and str(item.get("content") or "").strip():
+            last_user_idx = idx
+            break
+    if last_user_idx is None:
+        raise ValueError("messages must contain at least one user message with content")
+    goal = str(messages[last_user_idx]["content"]).strip()[:1200]
+    prior = messages[:last_user_idx]
+    context_lines = []
+    for item in prior:
+        if not isinstance(item, dict):
+            continue
+        role = str(item.get("role") or "").strip()
+        content = str(item.get("content") or "").strip()
+        if not role or not content:
+            continue
+        context_lines.append("%s: %s" % (role, content))
+    context = "\n".join(context_lines)[:1200]
+    return goal, context
+
+
+def chat_completions(payload: dict, config: dict) -> dict:
+    """OpenAI-compatible /v1/chat/completions handler, non-streaming, validate-only.
+
+    Slice 1 scope: run the CIDM broker in --validate-only mode and summarise the
+    plan as the assistant message. No model calls, no live spend. Live routing
+    is added in a later slice behind an explicit opt-in.
+    """
+    if not isinstance(payload, dict):
+        raise ValueError("JSON object required")
+    model = str(payload.get("model") or "").strip()
+    if model not in CHAT_MODELS:
+        raise ValueError("unknown model: %r (expected one of %s)" % (model, ", ".join(CHAT_MODELS)))
+    if "messages" not in payload:
+        raise ValueError("messages field is required")
+    goal, context = _messages_to_task(payload["messages"])
+    broker_payload = {"task": goal, "context": context,
+                      "provider": payload.get("provider") or config["frontier_provider"],
+                      "gate_policy": payload.get("gate_policy") or config.get("gate_policy", "recovery")}
+    validated = validate_broker_request(broker_payload, config)
+    plan = validated.get("validated") or {}
+    route_hint = plan.get("route") or plan.get("gate_policy") or broker_payload["gate_policy"]
+    summary_lines = [
+        "[CIDM validate] Request accepted; no model calls were made.",
+        "Provider: %s" % broker_payload["provider"],
+        "Gate policy: %s" % broker_payload["gate_policy"],
+        "Route hint: %s" % route_hint,
+        "Goal: %s" % goal[:400],
+    ]
+    content = "\n".join(summary_lines)
+    now = int(time.time())
+    return {
+        "id": "chatcmpl-" + uuid.uuid4().hex[:24],
+        "object": "chat.completion",
+        "created": now,
+        "model": model,
+        "choices": [{
+            "index": 0,
+            "message": {"role": "assistant", "content": content},
+            "finish_reason": "stop",
+        }],
+        "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+    }
+
+
 def start_resume_job(name: str, payload: dict, config: dict) -> dict:
     if payload.get("confirm_live_spend") is not True:
         raise ValueError("resuming spends Jev API credits and provider plan usage; confirm_live_spend is required")
@@ -658,6 +736,34 @@ class Handler(SimpleHTTPRequestHandler):
                 return False
         return True
 
+    def _openai_guard(self) -> bool:
+        """OpenAI-compat endpoint guard: loopback + Bearer <CIDM_API_KEY>.
+
+        Hermes (and other OpenAI-shape clients) do not send the X-CIDM-Console
+        browser-CSRF header. Instead we require Authorization: Bearer <token>
+        matched against CIDM_API_KEY in the server's environment.
+        """
+        if not host_allowed(self.headers.get("Host"), self.port):
+            self.send_json({"error": "host not allowed"}, HTTPStatus.FORBIDDEN)
+            return False
+        if "application/json" not in (self.headers.get("Content-Type") or ""):
+            self.send_json({"error": "JSON content type required"}, HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
+            return False
+        expected = os.environ.get("CIDM_API_KEY", "").strip()
+        if not expected:
+            self.send_json({"error": {"message": "CIDM_API_KEY not configured on server", "type": "auth_error"}},
+                           HTTPStatus.UNAUTHORIZED)
+            return False
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json({"error": {"message": "missing Authorization: Bearer header", "type": "auth_error"}},
+                           HTTPStatus.UNAUTHORIZED)
+            return False
+        if auth[len("Bearer "):].strip() != expected:
+            self.send_json({"error": {"message": "invalid API key", "type": "auth_error"}}, HTTPStatus.UNAUTHORIZED)
+            return False
+        return True
+
     def do_GET(self):
         if not self._guard(post=False):
             return
@@ -696,6 +802,20 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json({"error": type(exc).__name__ + ": " + str(exc)[:300]}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def do_POST(self):
+        if self.path == "/v1/chat/completions":
+            if not self._openai_guard():
+                return
+            try:
+                payload = self.read_json()
+                config = self.store.load()
+                self.send_json(chat_completions(payload, config))
+            except ValueError as exc:
+                self.send_json({"error": {"message": str(exc), "type": "invalid_request_error"}},
+                               HTTPStatus.BAD_REQUEST)
+            except Exception as exc:
+                self.send_json({"error": {"message": type(exc).__name__ + ": " + str(exc)[:300],
+                                          "type": "server_error"}}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            return
         if not self._guard(post=True):
             return
         try:
