@@ -623,7 +623,7 @@ def start_broker_job(payload: dict, config: dict) -> dict:
     run_dir.mkdir(parents=True)
     task_path = run_dir / "request.json"
     task_path.write_text(json.dumps(request, indent=2), encoding="utf-8")
-    argv = broker_argv(task_path, run_dir / "run", provider, gate_policy, live=True)
+    argv = broker_argv(task_path, run_dir / "run", provider, gate_policy, live=True, config=config)
     return JOBS.start(argv, run_dir, {"kind": "broker_run", "provider": provider, "gate_policy": gate_policy})
 
 
@@ -634,7 +634,8 @@ def validate_broker_request(payload: dict, config: dict) -> dict:
     with tempfile.TemporaryDirectory() as temp:
         task_path = Path(temp) / "request.json"
         task_path.write_text(json.dumps(request), encoding="utf-8")
-        proc = subprocess.run(broker_argv(task_path, Path(temp) / "out", provider, gate_policy, live=False),
+        proc = subprocess.run(broker_argv(task_path, Path(temp) / "out", provider, gate_policy,
+                                           live=False, config=config),
                               capture_output=True, text=True, timeout=60, cwd=str(REPO_ROOT))
     if proc.returncode != 0:
         raise ValueError((proc.stderr or proc.stdout).strip().splitlines()[-1][:300])
@@ -954,7 +955,7 @@ def start_resume_job(name: str, payload: dict, config: dict) -> dict:
     shutil.copyfile(task, run_dir / "request.json")
     argv = broker_argv(run_dir / "request.json", run_dir / "run", previous.get("host") or "claude", "recovery",
                        live=True, resume=checkpoint, operator=operator,
-                       reset_rounds=bool(payload.get("reset_recovery_rounds")))
+                       reset_rounds=bool(payload.get("reset_recovery_rounds")), config=config)
     return JOBS.start(argv, run_dir, {"kind": "broker_resume", "resumed": name})
 
 
