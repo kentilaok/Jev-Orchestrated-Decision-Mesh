@@ -613,13 +613,46 @@ class McpEvidenceRetriever:
         return {source_id: {"title": title[:120], "text": outcome["source"]["text"]}}
 
 
-def main(argv=None) -> int:
+DEFAULT_OPERATOR_STATE_PATH = Path("~/.jev/operator-console.json").expanduser()
+
+
+def _resolve_cli_trusted_servers(*, cli_value, state_path):
+    """CLI trust set resolution order:
+
+    1. explicit `--trusted-servers a,b,c` → set from those names.
+    2. `trusted_mcp_servers` in `~/.jev/operator-console.json` → shared with
+       the Operator Console so both paths read one source of truth.
+    3. empty set (strict untrusted-by-default).
+
+    Corrupt or missing state files fall through silently to strict (never
+    raise); the operator can always see what was resolved by inspecting the
+    CLI stdout (future enhancement: print it).
+    """
+    if cli_value is not None:
+        return set(name.strip() for name in cli_value.split(",") if name.strip())
+    if state_path is None:
+        return set()
+    try:
+        data = json.loads(Path(state_path).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    entries = data.get("trusted_mcp_servers") or []
+    if not isinstance(entries, list):
+        return set()
+    return set(str(name).strip() for name in entries if isinstance(name, str) and name.strip())
+
+
+def _build_cli_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="CIDM MCP capability catalogue")
     parser.add_argument("--db", type=Path, default=Path("~/.jev/arsenal/mcp.db").expanduser())
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("servers", help="List configured MCP servers (nothing is started)")
     refresh = sub.add_parser("refresh", help="Start one configured server and catalogue its tools")
     refresh.add_argument("--server", required=True)
+    refresh.add_argument("--trusted-servers", default=None,
+                         help=("Comma-separated MCP server names to trust for annotation-based "
+                               "read classification. Defaults to the Operator Console's "
+                               "trusted_mcp_servers field; absent → strict (untrusted-by-default)."))
     search = sub.add_parser("search")
     search.add_argument("--query", required=True)
     search.add_argument("--access", choices=ACCESS)
@@ -633,6 +666,11 @@ def main(argv=None) -> int:
     override.add_argument("--access", choices=ACCESS, required=True)
     override.add_argument("--owner", required=True)
     sub.add_parser("stats")
+    return parser
+
+
+def main(argv=None) -> int:
+    parser = _build_cli_parser()
     args = parser.parse_args(argv)
     if args.command == "servers":
         output = {"servers": [public_spec(s) for s in discover_servers()]}
@@ -641,9 +679,13 @@ def main(argv=None) -> int:
             if args.command == "refresh":
                 spec = next((s for s in discover_servers() if s["name"] == args.server), None)
                 require(spec is not None, "unknown_configured_server")
+                trusted = _resolve_cli_trusted_servers(
+                    cli_value=getattr(args, "trusted_servers", None),
+                    state_path=DEFAULT_OPERATOR_STATE_PATH)
                 with client_for(spec) as client:
                     client.initialize()
-                    output = catalog.ingest(spec, client.list_tools())
+                    output = catalog.ingest(spec, client.list_tools(),
+                                            trusted_servers=trusted)
             elif args.command == "search":
                 output = catalog.search(args.query, top_k=args.top_k, access=args.access)
             elif args.command == "describe":
