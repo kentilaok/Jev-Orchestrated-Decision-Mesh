@@ -42,6 +42,27 @@ def extract_candidate_fields(broker_candidate: dict | None, *,
     }
 
 
+def run_with_postconditions(broker, spec: Any, *, postconditions: Iterable[Any],
+                            workspace: Path, declared_files: list[str] | None = None,
+                            resume: Any = None) -> dict:
+    """Thin wrapper over `broker.run(spec, resume=…)` that applies the
+    postconditions gate on the returned result.
+
+    The broker is any object with a `run(spec, resume=None) -> dict` method
+    (`NativeTransitionBroker` fits; tests pass stubs). If the broker exposes
+    `last_candidate` (optional convention), that candidate is forwarded to
+    the adapter so postconditions see the richer broker-shape candidate
+    rather than a synthetic shell built from `result['answer']`.
+    """
+    result = broker.run(spec, resume=resume) if resume is not None else broker.run(spec)
+    broker_candidate = getattr(broker, "last_candidate", None)
+    if broker_candidate is None and result.get("answer"):
+        broker_candidate = {"text": result["answer"], "data": {"unresolved": []}}
+    return apply_postconditions(result=result, broker_candidate=broker_candidate,
+                                declared_files=declared_files, workspace=workspace,
+                                checks=postconditions)
+
+
 def apply_postconditions(*, result: dict, broker_candidate: dict | None,
                          declared_files: list[str] | None,
                          workspace: Path,
