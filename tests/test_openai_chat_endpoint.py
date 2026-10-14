@@ -161,6 +161,80 @@ class ThreadBindingTests(unittest.TestCase):
             self.assertEqual(len(list(threads_dir.glob("*.json"))), 2)
 
 
+class StreamingTests(unittest.TestCase):
+    """Slice 3: when payload has stream=true, response is a sequence of OpenAI
+    chat.completion.chunk SSE events, with status chunks before the final content,
+    a finish_reason=stop closing chunk, and a terminal '[DONE]' sentinel."""
+
+    def _cfg(self, root: Path):
+        return console._merge_config({"runs_directory": str(root / "runs")})
+
+    def _collect(self, generator):
+        return list(generator)
+
+    def test_stream_yields_sse_events(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            events = self._collect(console.chat_completions_stream(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "hi"}]}, cfg))
+            self.assertTrue(all(isinstance(e, str) for e in events))
+            self.assertTrue(all(e.startswith("data: ") and e.endswith("\n\n") for e in events))
+
+    def test_stream_terminates_with_done_sentinel(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            events = self._collect(console.chat_completions_stream(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "hi"}]}, cfg))
+            self.assertEqual(events[-1], "data: [DONE]\n\n")
+
+    def test_stream_includes_status_before_content(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            events = self._collect(console.chat_completions_stream(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "hi"}]}, cfg))
+            payloads = []
+            for event in events[:-1]:
+                body = event[len("data: "):].rstrip("\n")
+                payloads.append(json.loads(body))
+            contents = []
+            for chunk in payloads:
+                self.assertEqual(chunk["object"], "chat.completion.chunk")
+                delta = chunk["choices"][0]["delta"]
+                if "content" in delta:
+                    contents.append(delta["content"])
+            self.assertTrue(len(contents) >= 2, "expected at least one status chunk + one final chunk")
+            self.assertTrue(any("[CIDM]" in c for c in contents[:-1]),
+                            "expected a [CIDM] status chunk before the final one")
+
+    def test_stream_last_chunk_has_finish_reason_stop(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            events = self._collect(console.chat_completions_stream(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "hi"}]}, cfg))
+            closing = json.loads(events[-2][len("data: "):].rstrip("\n"))
+            self.assertEqual(closing["choices"][0]["finish_reason"], "stop")
+
+    def test_stream_chunks_share_id_and_model(self):
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            events = self._collect(console.chat_completions_stream(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "hi"}]}, cfg))
+            ids = set()
+            for event in events[:-1]:
+                chunk = json.loads(event[len("data: "):].rstrip("\n"))
+                ids.add(chunk["id"])
+                self.assertEqual(chunk["model"], "cidm-jev")
+            self.assertEqual(len(ids), 1, "all chunks in a stream must share one id")
+
+    def test_non_stream_request_still_returns_single_object(self):
+        """Regression: payloads without stream=true keep the slice-1 behavior."""
+        with tempfile.TemporaryDirectory() as td:
+            cfg = self._cfg(Path(td))
+            response = console.chat_completions(
+                {"model": "cidm-jev", "messages": [{"role": "user", "content": "hi"}]}, cfg)
+            self.assertEqual(response["object"], "chat.completion")
+
+
 class ChatCompletionsHttpTests(unittest.TestCase):
     """End-to-end HTTP tests: Hermes-shaped request → OpenAI response via the real Handler."""
 
@@ -249,6 +323,27 @@ class ChatCompletionsHttpTests(unittest.TestCase):
         status, _ = self._post("/api/config", {"frontier_provider": "codex"},
                                {"Authorization": "Bearer " + self.API_KEY})
         self.assertEqual(status, 403)
+
+    def test_streaming_http_response_delivers_sse_events(self):
+        """Slice 3: stream=true -> text/event-stream with SSE chunks ending in [DONE]."""
+        connection = HTTPConnection("127.0.0.1", self.port, timeout=15)
+        connection.request("POST", "/v1/chat/completions",
+                           body=json.dumps({"model": "cidm-jev",
+                                            "messages": [{"role": "user", "content": "hi"}],
+                                            "stream": True}),
+                           headers={"Host": "127.0.0.1:%d" % self.port,
+                                    "Content-Type": "application/json",
+                                    "Authorization": "Bearer " + self.API_KEY})
+        response = connection.getresponse()
+        self.assertEqual(response.status, 200)
+        self.assertIn("text/event-stream", response.headers.get("Content-Type", ""))
+        body = response.read().decode("utf-8")
+        connection.close()
+        events = [e for e in body.split("\n\n") if e]
+        self.assertTrue(any(e.startswith("data: ") for e in events))
+        self.assertEqual(events[-1], "data: [DONE]")
+        # The final content chunk must appear before [DONE].
+        self.assertTrue(any("[CIDM validate]" in e for e in events))
 
 
 if __name__ == "__main__":

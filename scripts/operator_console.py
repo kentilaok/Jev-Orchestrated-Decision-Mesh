@@ -652,13 +652,9 @@ def _messages_to_task(messages: list) -> tuple[str, str]:
     return goal, context
 
 
-def chat_completions(payload: dict, config: dict) -> dict:
-    """OpenAI-compatible /v1/chat/completions handler, non-streaming, validate-only.
-
-    Slice 1 scope: run the CIDM broker in --validate-only mode and summarise the
-    plan as the assistant message. No model calls, no live spend. Live routing
-    is added in a later slice behind an explicit opt-in.
-    """
+def _prepare_chat_run(payload: dict, config: dict) -> dict:
+    """Validate payload and run the shared broker handshake. Returns the data
+    both chat_completions() and chat_completions_stream() need to shape output."""
     if not isinstance(payload, dict):
         raise ValueError("JSON object required")
     model = str(payload.get("model") or "").strip()
@@ -676,6 +672,7 @@ def chat_completions(payload: dict, config: dict) -> dict:
     thread_id = _derive_thread_id(payload["messages"])
     journal = _record_thread_turn(thread_id, config, goal,
                                   broker_payload["provider"], broker_payload["gate_policy"])
+    turn = len(json.loads(journal.read_text(encoding="utf-8"))["turns"])
     summary_lines = [
         "[CIDM validate] Request accepted; no model calls were made.",
         "Thread: %s (turn journal: %s)" % (thread_id, journal.name),
@@ -684,22 +681,58 @@ def chat_completions(payload: dict, config: dict) -> dict:
         "Route hint: %s" % route_hint,
         "Goal: %s" % goal[:400],
     ]
-    content = "\n".join(summary_lines)
+    return {"model": model, "goal": goal, "broker_payload": broker_payload,
+            "route_hint": route_hint, "thread_id": thread_id, "turn": turn,
+            "final_content": "\n".join(summary_lines)}
+
+
+def chat_completions(payload: dict, config: dict) -> dict:
+    """OpenAI-compatible non-streaming handler. See _prepare_chat_run docstring."""
+    prep = _prepare_chat_run(payload, config)
     now = int(time.time())
     return {
         "id": "chatcmpl-" + uuid.uuid4().hex[:24],
         "object": "chat.completion",
         "created": now,
-        "model": model,
-        "choices": [{
-            "index": 0,
-            "message": {"role": "assistant", "content": content},
-            "finish_reason": "stop",
-        }],
+        "model": prep["model"],
+        "choices": [{"index": 0, "message": {"role": "assistant", "content": prep["final_content"]},
+                     "finish_reason": "stop"}],
         "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
-        "cidm": {"thread_id": thread_id, "mode": "validate", "turn": len(
-            json.loads(journal.read_text(encoding="utf-8"))["turns"])},
+        "cidm": {"thread_id": prep["thread_id"], "mode": "validate", "turn": prep["turn"]},
     }
+
+
+def _sse(chunk: dict) -> str:
+    return "data: " + json.dumps(chunk) + "\n\n"
+
+
+def chat_completions_stream(payload: dict, config: dict):
+    """OpenAI-compatible streaming handler.
+
+    Emits a sequence of chat.completion.chunk events ending with a
+    finish_reason=stop chunk and a [DONE] sentinel. Status chunks ("[CIDM]
+    starting", "[CIDM] validating request", "[CIDM] plan ready") appear
+    before the final content so Hermes shows progress while the broker runs.
+    """
+    prep = _prepare_chat_run(payload, config)
+    stream_id = "chatcmpl-" + uuid.uuid4().hex[:24]
+    created = int(time.time())
+
+    def chunk(delta: dict, finish: str | None = None) -> dict:
+        return {"id": stream_id, "object": "chat.completion.chunk", "created": created,
+                "model": prep["model"],
+                "choices": [{"index": 0, "delta": delta, "finish_reason": finish}],
+                "cidm": {"thread_id": prep["thread_id"], "mode": "validate", "turn": prep["turn"]}}
+
+    yield _sse(chunk({"role": "assistant"}))
+    yield _sse(chunk({"content": "[CIDM] starting (thread %s, turn %d)\n" % (
+        prep["thread_id"], prep["turn"])}))
+    yield _sse(chunk({"content": "[CIDM] validating request against gate policy '%s'...\n" %
+                      prep["broker_payload"]["gate_policy"]}))
+    yield _sse(chunk({"content": "[CIDM] plan ready (route hint: %s)\n\n" % prep["route_hint"]}))
+    yield _sse(chunk({"content": prep["final_content"]}))
+    yield _sse(chunk({}, finish="stop"))
+    yield "data: [DONE]\n\n"
 
 
 def start_resume_job(name: str, payload: dict, config: dict) -> dict:
@@ -762,6 +795,19 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(raw)))
         self.end_headers()
         self.wfile.write(raw)
+
+    def _send_sse(self, generator):
+        """Stream SSE events to the client. Each item from the generator is a
+        pre-formatted 'data: ...\\n\\n' string. Flushes after each event so
+        Hermes receives status updates in real time."""
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", "text/event-stream; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Accel-Buffering", "no")
+        self.end_headers()
+        for event in generator:
+            self.wfile.write(event.encode("utf-8"))
+            self.wfile.flush()
 
     def read_json(self):
         size = int(self.headers.get("Content-Length") or 0)
@@ -857,7 +903,10 @@ class Handler(SimpleHTTPRequestHandler):
             try:
                 payload = self.read_json()
                 config = self.store.load()
-                self.send_json(chat_completions(payload, config))
+                if payload.get("stream") is True:
+                    self._send_sse(chat_completions_stream(payload, config))
+                else:
+                    self.send_json(chat_completions(payload, config))
             except ValueError as exc:
                 self.send_json({"error": {"message": str(exc), "type": "invalid_request_error"}},
                                HTTPStatus.BAD_REQUEST)
