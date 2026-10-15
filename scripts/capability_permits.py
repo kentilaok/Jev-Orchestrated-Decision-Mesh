@@ -145,12 +145,55 @@ class PermitAuthority:
     def __init__(self, ledger_path: Path | None = None, *, default_ttl_seconds: float = 900,
                  clock=time.time):
         require(0 < default_ttl_seconds <= 86_400, "invalid_permit_ttl")
-        self.ledger = HashChainLedger(ledger_path)
+        try:
+            self.ledger = HashChainLedger(ledger_path)
+        except PermitError:
+            raise
+        except Exception as exc:
+            raise PermitError("ledger_unreadable") from exc
         self.default_ttl = default_ttl_seconds
         self.clock = clock
         self._permits: dict[str, dict] = {}
         self._used: set[str] = set()
         self.lock = threading.Lock()
+        self._replay_ledger()
+
+    def _replay_ledger(self) -> None:
+        """Rebuild in-memory state from an existing ledger so a resumed
+        broker refuses to re-issue or re-consume old permit IDs.
+
+        The hash-chain verification in `HashChainLedger.read()` already
+        raises on tampering; here we additionally wrap JSON errors from
+        a truncated file into a `PermitError` so operators see a single
+        failure vocabulary when inspecting a crashed run.
+        """
+        try:
+            events = self.ledger.read()
+        except PermitError:
+            raise
+        except Exception as exc:
+            raise PermitError("ledger_unreadable") from exc
+        for event in events:
+            kind = event.get("kind")
+            if kind == "permit_issued":
+                pid = event.get("permit_id")
+                if not isinstance(pid, str):
+                    continue
+                self._permits[pid] = {
+                    "permit_id": pid,
+                    "capability": event.get("capability"),
+                    "scope_hash": event.get("scope_hash"),
+                    "basis_hash": event.get("basis_hash"),
+                    "issued_at": event.get("issued_at"),
+                    "expires_at": event.get("expires_at"),
+                    "budget": copy.deepcopy(event.get("budget")),
+                    "scope_keys": list(event.get("scope_keys") or []),
+                    "replayed": True,
+                }
+            elif kind == "permit_consumed":
+                pid = event.get("permit_id")
+                if isinstance(pid, str):
+                    self._used.add(pid)
 
     def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,
               budget: dict | None = None) -> str:
