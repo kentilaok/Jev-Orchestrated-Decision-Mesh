@@ -68,6 +68,7 @@ DEFAULT_CONFIG = {
     "trusted_mcp_servers": [],
     "content_policy": "off",
     "require_action_approval": False,
+    "secret_env_names": [],
 }
 
 
@@ -93,6 +94,12 @@ def _merge_config(raw: dict | None) -> dict:
                 raise ValueError("trusted_mcp_servers must be a list of strings")
             if not all(isinstance(x, str) and x for x in value):
                 raise ValueError("trusted_mcp_servers entries must be non-empty strings")
+            data[key] = list(value)
+        elif key == "secret_env_names":
+            if not isinstance(value, list):
+                raise ValueError("secret_env_names must be a list of strings")
+            if not all(isinstance(x, str) and x and "=" not in x for x in value):
+                raise ValueError("secret_env_names entries must be non-empty strings without '='")
             data[key] = list(value)
         elif key in data:
             data[key] = value
@@ -609,6 +616,9 @@ def broker_argv(task_path: Path, out_dir: Path, provider: str, gate_policy: str,
             argv += ["--content-policy", policy]
         if config.get("require_action_approval"):
             argv.append("--require-action-approval")
+        names = config.get("secret_env_names") or []
+        if names:
+            argv += ["--secret-env-names", ",".join(names)]
     return argv
 
 
