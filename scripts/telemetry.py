@@ -24,6 +24,28 @@ from urllib import request as urlrequest
 SERVICE = "cidm"
 KIND_INTERNAL, KIND_CLIENT = 1, 3
 
+# Every span must carry this attribute so a Phoenix consumer never
+# mistakes an ordinal span for a measured wall-clock latency.
+# P0-06 slice 5: `_assert_ordinal_caveat` runs across the full span list
+# before `to_otlp` returns, so a future span type cannot silently ship
+# without the caveat.
+ORDINAL_TIMING_KEY = "cidm.timing"
+ORDINAL_TIMING_VALUE = "ordinal_not_wallclock"
+
+
+def _assert_ordinal_caveat(spans: list[dict]) -> None:
+    """Raise `RuntimeError('ordinal_caveat_missing:<name>')` if any span
+    lacks `cidm.timing="ordinal_not_wallclock"`. Pure read; no mutation."""
+    for span in spans:
+        value = None
+        for item in span.get("attributes") or []:
+            if item.get("key") == ORDINAL_TIMING_KEY:
+                inner = item.get("value") or {}
+                value = inner.get("stringValue")
+                break
+        if value != ORDINAL_TIMING_VALUE:
+            raise RuntimeError("ordinal_caveat_missing:" + str(span.get("name")))
+
 
 def _id(seed: str, length: int) -> str:
     return hashlib.sha256(seed.encode("utf-8")).hexdigest()[:length]
@@ -112,7 +134,7 @@ def to_otlp(result: dict, *, run_id: str | None = None, start_ns: int | None = N
     end = start + (len(events) + 2) * step
     summary = run_summary(result)
     root_id = _id(seed + ":root", 16)
-    common = {"cidm.timing": "ordinal_not_wallclock"}
+    common = {ORDINAL_TIMING_KEY: ORDINAL_TIMING_VALUE}
     spans = [{"traceId": trace_id, "spanId": root_id, "name": "cidm.run", "kind": KIND_INTERNAL,
               "startTimeUnixNano": str(start), "endTimeUnixNano": str(end),
               "attributes": _attrs({**common, "openinference.span.kind": "CHAIN",
@@ -188,6 +210,7 @@ def to_otlp(result: dict, *, run_id: str | None = None, start_ns: int | None = N
                 "timeUnixNano": str(at), "name": "cidm." + kind,
                 "attributes": _attrs({"cidm.event_id": event.get("id"), "cidm.choice": event.get("choice"),
                                       "cidm.hard_checks": event.get("hard_checks")})})
+    _assert_ordinal_caveat(spans)
     return {"resourceSpans": [{
         "resource": {"attributes": _attrs({"service.name": SERVICE, "cidm.trace_seed": seed[:64]})},
         "scopeSpans": [{"scope": {"name": "cidm.telemetry", "version": "1"}, "spans": spans}]}]}
