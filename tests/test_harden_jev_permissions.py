@@ -102,6 +102,29 @@ class PosixHardenTests(unittest.TestCase):
                             platform="linux", runner=lambda *a, **k: None, log=_silent_log)
             self.assertEqual(stat.S_IMODE(os.stat(root).st_mode), 0o755)
 
+    def test_symlink_file_is_skipped_not_followed(self):
+        """A symlink inside the tree pointing to a file outside the tree must
+        not have its target chmoded; the link itself is skipped."""
+        with tempfile.TemporaryDirectory() as outside_tds, \
+                tempfile.TemporaryDirectory() as tds:
+            outside = Path(outside_tds)
+            target = outside / "target.txt"
+            target.write_text("x", encoding="utf-8")
+            os.chmod(target, 0o644)
+            root = Path(tds)
+            link = root / "ptr"
+            try:
+                os.symlink(target, link)
+            except (OSError, NotImplementedError) as exc:
+                self.skipTest(f"symlinks not supported: {exc}")
+            result = hjp.harden_tree(root, user="irrelevant", dry_run=False, verbose=False,
+                                     platform="linux", runner=lambda *a, **k: None, log=_silent_log)
+            self.assertEqual(result["errors"], 0)
+            # Target outside the tree keeps its original mode.
+            self.assertEqual(stat.S_IMODE(os.stat(target).st_mode), 0o644)
+            # Root directory itself still got hardened.
+            self.assertEqual(stat.S_IMODE(os.stat(root).st_mode), 0o700)
+
     def test_idempotent(self):
         with tempfile.TemporaryDirectory() as tds:
             root = Path(tds)

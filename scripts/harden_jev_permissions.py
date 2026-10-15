@@ -69,6 +69,13 @@ def _icacls_argv(path: Path, user: str, is_dir: bool) -> list[str]:
 
 def _apply_posix(path: Path, *, dry_run: bool, verbose: bool,
                  log: Callable[[str], None]) -> int:
+    # Skip symlinks: os.chmod follows symlinks by default, so touching a
+    # symlink file inside the tree would re-permission its target outside
+    # the tree. The link itself has no owner-settable mode we care about.
+    if os.path.islink(path):
+        if verbose or dry_run:
+            log(f"skip symlink {path}")
+        return 0
     mode = POSIX_DIR_MODE if path.is_dir() else POSIX_FILE_MODE
     if verbose or dry_run:
         log(f"chmod {oct(mode)} {path}")
