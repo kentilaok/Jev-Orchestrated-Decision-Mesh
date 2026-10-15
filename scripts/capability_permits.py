@@ -14,6 +14,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 import threading
 import time
 import uuid
@@ -143,8 +144,12 @@ class PermitAuthority:
     """Issue, consume, and receipt single-use capability permits."""
 
     def __init__(self, ledger_path: Path | None = None, *, default_ttl_seconds: float = 900,
-                 clock=time.time):
+                 clock=time.time, max_cumulative_usd: float | None = None):
         require(0 < default_ttl_seconds <= 86_400, "invalid_permit_ttl")
+        if max_cumulative_usd is not None:
+            require(type(max_cumulative_usd) in (int, float)
+                    and math.isfinite(max_cumulative_usd) and max_cumulative_usd > 0,
+                    "invalid_max_cumulative_usd")
         try:
             self.ledger = HashChainLedger(ledger_path)
         except PermitError:
@@ -153,10 +158,16 @@ class PermitAuthority:
             raise PermitError("ledger_unreadable") from exc
         self.default_ttl = default_ttl_seconds
         self.clock = clock
+        self.max_cumulative_usd = max_cumulative_usd
         self._permits: dict[str, dict] = {}
         self._used: set[str] = set()
+        self._cumulative_cost_usd: float = 0.0
         self.lock = threading.Lock()
         self._replay_ledger()
+
+    @property
+    def cumulative_cost_usd(self) -> float:
+        return self._cumulative_cost_usd
 
     def _replay_ledger(self) -> None:
         """Rebuild in-memory state from an existing ledger so a resumed
@@ -194,6 +205,10 @@ class PermitAuthority:
                 pid = event.get("permit_id")
                 if isinstance(pid, str):
                     self._used.add(pid)
+            elif kind == "permit_receipt":
+                cost = event.get("cost_usd")
+                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):
+                    self._cumulative_cost_usd += float(cost)
 
     def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,
               budget: dict | None = None) -> str:
@@ -202,6 +217,9 @@ class PermitAuthority:
         ttl = self.default_ttl if ttl_seconds is None else ttl_seconds
         require(0 < ttl <= 86_400, "invalid_permit_ttl")
         require(budget is None or isinstance(budget, dict), "invalid_permit_budget")
+        if (self.max_cumulative_usd is not None
+                and self._cumulative_cost_usd >= self.max_cumulative_usd):
+            raise PermitError("cumulative_cap_exceeded")
         permit_id = uuid.uuid4().hex
         now = self.clock()
         grant = {
@@ -233,9 +251,18 @@ class PermitAuthority:
     def receipt(self, permit_id: str, outcome: dict) -> dict:
         require(permit_id in self._used, "receipt_requires_consumed_permit")
         require(isinstance(outcome, dict), "invalid_receipt_outcome")
+        cost = outcome.get("cost_usd")
+        if cost is not None:
+            require(type(cost) in (int, float) and not isinstance(cost, bool)
+                    and math.isfinite(cost) and cost >= 0,
+                    "invalid_receipt_cost")
+            cost = float(cost)
+            with self.lock:
+                self._cumulative_cost_usd += cost
         return self.ledger.append({"kind": "permit_receipt", "permit_id": permit_id,
                                    "outcome_hash": digest(outcome),
-                                   "status": outcome.get("status")})
+                                   "status": outcome.get("status"),
+                                   "cost_usd": cost})
 
     def events(self) -> list[dict]:
         return self.ledger.read()

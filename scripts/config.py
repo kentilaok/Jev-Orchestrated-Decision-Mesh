@@ -54,6 +54,7 @@ class RunConfig:
     checker_model_aliases: tuple = ()
     jev_model_aliases: tuple = ("typesafe/jev-1.13-20260917",)
     max_usd: float = 1.50
+    max_cumulative_usd: float | None = None
     max_calls: int = 40
     max_jev_calls: int = 30
     max_jev_tokens: int = 50000
@@ -121,6 +122,8 @@ class RunConfig:
             _require(isinstance(value, str) and 0 < len(value.strip()) <= 80
                      and value == value.strip() and not any(ord(c) < 32 for c in value), "invalid_" + name)
         _require(_number(self.max_usd, positive=True), "invalid_max_usd")
+        _require(self.max_cumulative_usd is None or _number(self.max_cumulative_usd, positive=True),
+                 "invalid_max_cumulative_usd")
         _require(type(self.max_calls) is int and 1 <= self.max_calls <= 1000, "invalid_max_calls")
         for name in ("max_jev_calls","max_worker_calls","max_checker_calls"):
             value=getattr(self,name)
