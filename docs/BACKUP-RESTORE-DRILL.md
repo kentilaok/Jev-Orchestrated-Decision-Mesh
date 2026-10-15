@@ -98,6 +98,11 @@ there (`operator-console.json`, `arsenal/arsenal.db`, the calibration
 ledger). The drill is a success only if the report prints `"ok": true`
 and the ledgers look sane under inspection.
 
+**Never use `--no-verify` in the monthly drill.** It skips the SHA-256
+pass and the manifest-vs-archive comparison — the two checks the drill
+exists to run. The flag is kept only for ad-hoc inspection of a tarball
+you already trust (e.g. a copy you just made yourself).
+
 Delete the scratch directory when the drill is done. Do not point CIDM at
 a restored tree unless you are deliberately recovering from a loss.
 

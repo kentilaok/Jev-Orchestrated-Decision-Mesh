@@ -178,6 +178,31 @@ class RoundTripTests(unittest.TestCase):
             self.assertIn("arsenal/calibration.jsonl", report["mismatched"])
 
 
+class RestoreSurplusMemberTests(unittest.TestCase):
+    """A snapshot that smuggles an extra file past the manifest must flag
+    `unexpected` and set `ok=False`, even if every manifest-listed file
+    passes checksum verification."""
+
+    def test_file_outside_manifest_is_reported_as_unexpected(self):
+        with tempfile.TemporaryDirectory() as tds_snap, tempfile.TemporaryDirectory() as tds_scratch:
+            path = Path(tds_snap) / "smuggle.tar.gz"
+            manifest = {"schema": 1, "created_at": "x", "host": "x", "files": []}
+            with tarfile.open(path, "w:gz") as tar:
+                raw = json.dumps(manifest).encode()
+                info = tarfile.TarInfo("MANIFEST.json")
+                info.size = len(raw)
+                import io
+                tar.addfile(info, io.BytesIO(raw))
+                # Smuggle a file that is NOT in the manifest.
+                payload = b"stowaway"
+                extra = tarfile.TarInfo("extra.bin")
+                extra.size = len(payload)
+                tar.addfile(extra, io.BytesIO(payload))
+            report = bjs.restore(path, Path(tds_scratch), verify=True)
+            self.assertFalse(report["ok"])
+            self.assertEqual(report["unexpected"], ["extra.bin"])
+
+
 class RestoreSafetyTests(unittest.TestCase):
     def test_restore_rejects_path_traversal_entry(self):
         """A malicious snapshot carrying `../etc/passwd` must not escape scratch."""
@@ -213,6 +238,10 @@ class ListSnapshotsTests(unittest.TestCase):
 
 
 class PruneTests(unittest.TestCase):
+    def _utc_epoch(self, token):
+        import calendar
+        return calendar.timegm(time.strptime(token, "%Y-%m-%d"))
+
     def test_removes_snapshots_older_than_threshold(self):
         with tempfile.TemporaryDirectory() as tds_jev, tempfile.TemporaryDirectory() as tds_snap:
             jev = Path(tds_jev)
@@ -220,13 +249,30 @@ class PruneTests(unittest.TestCase):
             _seed_state(jev)
             old, _ = bjs.snapshot(jev, snap_root, now="2026-09-01T00-00-00Z", host="h")
             new, _ = bjs.snapshot(jev, snap_root, now="2026-10-15T00-00-00Z", host="h")
-            # Pretend "now" is 2026-10-15, prune > 30 days old.
+            # Pretend "now" is 2026-10-15 UTC; prune > 30 days old.
             removed = bjs.prune(snap_root, older_than_days=30,
-                                now_ts=time.mktime(time.strptime("2026-10-15", "%Y-%m-%d")),
+                                now_ts=self._utc_epoch("2026-10-15"),
                                 dry_run=False)
             self.assertEqual(removed, [str(old)])
             self.assertFalse(old.exists())
             self.assertTrue(new.exists())
+
+    def test_prune_boundary_is_honest_in_utc(self):
+        """Regression guard for the mktime/local-time bug: a snapshot at UTC
+        midnight should prune based on true UTC age, not TZ-shifted local age."""
+        with tempfile.TemporaryDirectory() as tds_jev, tempfile.TemporaryDirectory() as tds_snap:
+            jev = Path(tds_jev)
+            snap_root = Path(tds_snap)
+            _seed_state(jev)
+            path, _ = bjs.snapshot(jev, snap_root, now="2026-10-01T00-00-00Z", host="h")
+            # Exactly 29 days later in UTC — must NOT be pruned at threshold=30.
+            removed = bjs.prune(snap_root, older_than_days=30,
+                                now_ts=self._utc_epoch("2026-10-30"), dry_run=False)
+            self.assertEqual(removed, [])
+            # Exactly 31 days later in UTC — must be pruned at threshold=30.
+            removed = bjs.prune(snap_root, older_than_days=30,
+                                now_ts=self._utc_epoch("2026-11-01"), dry_run=False)
+            self.assertEqual(removed, [str(path)])
 
     def test_dry_run_does_not_delete(self):
         with tempfile.TemporaryDirectory() as tds_jev, tempfile.TemporaryDirectory() as tds_snap:
@@ -235,7 +281,7 @@ class PruneTests(unittest.TestCase):
             _seed_state(jev)
             old, _ = bjs.snapshot(jev, snap_root, now="2026-09-01T00-00-00Z", host="h")
             removed = bjs.prune(snap_root, older_than_days=30,
-                                now_ts=time.mktime(time.strptime("2026-10-15", "%Y-%m-%d")),
+                                now_ts=self._utc_epoch("2026-10-15"),
                                 dry_run=True)
             self.assertEqual(removed, [str(old)])
             self.assertTrue(old.exists())

@@ -28,6 +28,7 @@ to delete a file it claimed to remove.
 from __future__ import annotations
 
 import argparse
+import calendar
 import hashlib
 import io
 import json
@@ -137,6 +138,7 @@ def _safe_name(name: str) -> bool:
 def restore(snapshot_path: Path, scratch: Path, *, verify: bool = True) -> dict:
     """Extract `snapshot_path` into `scratch` and (optionally) verify checksums."""
     scratch.mkdir(parents=True, exist_ok=True)
+    extracted: list[str] = []
     with tarfile.open(snapshot_path, "r:gz") as tar:
         members = tar.getmembers()
         for member in members:
@@ -159,7 +161,9 @@ def restore(snapshot_path: Path, scratch: Path, *, verify: bool = True) -> dict:
                     if not chunk:
                         break
                     out.write(chunk)
-    report = {"ok": True, "manifest": manifest, "mismatched": [], "missing": []}
+            extracted.append(member.name)
+    report = {"ok": True, "manifest": manifest, "mismatched": [], "missing": [],
+              "unexpected": []}
     if verify:
         expected = {f["name"]: f["sha256"] for f in manifest.get("files", [])}
         for name, want in expected.items():
@@ -171,6 +175,11 @@ def restore(snapshot_path: Path, scratch: Path, *, verify: bool = True) -> dict:
             if _file_digest(path) != want:
                 report["mismatched"].append(name)
                 report["ok"] = False
+        # Catch tarballs that smuggle extra files past the manifest.
+        surplus = sorted(set(extracted) - set(expected))
+        if surplus:
+            report["unexpected"] = surplus
+            report["ok"] = False
     return report
 
 
@@ -195,7 +204,10 @@ def _snapshot_timestamp(path: Path) -> float | None:
         return None
     token = stem[len(prefix):-len(suffix)]
     try:
-        return time.mktime(time.strptime(token, "%Y-%m-%dT%H-%M-%SZ"))
+        # Token is UTC (snapshot writes it via time.gmtime); use calendar.timegm
+        # for a true UTC epoch. time.mktime would re-interpret as local time
+        # and produce a TZ-offset age error for operators outside UTC.
+        return calendar.timegm(time.strptime(token, "%Y-%m-%dT%H-%M-%SZ"))
     except ValueError:
         return None
 
@@ -269,7 +281,8 @@ def main(argv=None) -> int:
         print(json.dumps({"ok": report["ok"], "scratch": str(args.scratch),
                           "verified": not args.no_verify,
                           "mismatched": report["mismatched"],
-                          "missing": report["missing"]}, indent=2))
+                          "missing": report["missing"],
+                          "unexpected": report.get("unexpected", [])}, indent=2))
         return 0 if report["ok"] else 2
     if args.command == "list":
         print(json.dumps(list_snapshots(args.snapshot_root), indent=2))
