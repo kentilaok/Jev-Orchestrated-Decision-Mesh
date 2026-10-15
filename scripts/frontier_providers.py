@@ -16,6 +16,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 import os
 import shutil
 import subprocess
@@ -58,6 +59,24 @@ def _opaque(value: Any) -> str | None:
     if not isinstance(value, str) or not value:
         return None
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:12]
+
+
+def _cost_from_usage(usage: Any) -> float | None:
+    """Return a non-negative finite cost from an adapter usage dict, else None.
+
+    Claude Code reports an `api_equivalent_cost_usd` estimate (which is a
+    reservation ceiling, not a bill). Codex returns token counts only, so
+    cost stays None for that provider until a later slice decides whether
+    to price it from `RunConfig` ceilings.
+    """
+    if not isinstance(usage, dict):
+        return None
+    value = usage.get("api_equivalent_cost_usd")
+    if type(value) not in (int, float) or isinstance(value, bool):
+        return None
+    if not math.isfinite(value) or value < 0:
+        return None
+    return float(value)
 
 
 def _request_scope(provider_id: str, request: dict) -> dict:
@@ -105,12 +124,15 @@ class _BoundedProvider:
                                         request["schema"], request["workspace"])
             outcome = {"status": "ok", "run_id": run_id, "artifact_hash": digest(response["artifact"]),
                        "usage": response.get("usage"),
+                       "cost_usd": _cost_from_usage(response.get("usage")),
                        "identity_verification": response.get("identity_verification")}
             response = {**response, "run_id": run_id, "permit_id": permit_id, "provider": self.provider_id}
             return response
         except Exception as error:
+            error_usage = getattr(error, "usage", None)
             outcome = {"status": "cancelled" if cancel.is_set() else "failed", "run_id": run_id,
-                       "error": str(error)[:200], "usage": getattr(error, "usage", None)}
+                       "error": str(error)[:200], "usage": error_usage,
+                       "cost_usd": _cost_from_usage(error_usage)}
             raise
         finally:
             self.adapter.cancel_event = None

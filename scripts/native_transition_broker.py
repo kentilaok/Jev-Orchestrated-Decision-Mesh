@@ -763,7 +763,8 @@ def main():
         return gateway.network_judge(phase, options, state)
     from capability_permits import PermitAuthority
     from frontier_providers import PermittedAdapter, build_provider, route_coverage
-    authority = PermitAuthority(args.out / 'permits.jsonl')
+    authority = PermitAuthority(args.out / 'permits.jsonl',
+                                max_cumulative_usd=config.max_cumulative_usd)
     options = ({} if args.host == 'claude'
                else {'astra_explicitly_authorized': config.astra_explicitly_authorized})
     if args.secret_env_names:
