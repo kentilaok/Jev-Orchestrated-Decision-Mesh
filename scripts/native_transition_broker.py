@@ -632,6 +632,18 @@ class NativeTransitionBroker:
         return result
 
 
+def _parse_secret_env_names(raw: str) -> list:
+    if not isinstance(raw, str):
+        raise argparse.ArgumentTypeError('secret-env-names must be a string')
+    if not raw:
+        return []
+    names = [n.strip() for n in raw.split(',')]
+    if any(not n or '=' in n for n in names):
+        raise argparse.ArgumentTypeError(
+            "secret-env-names entries must be non-empty and must not contain '='")
+    return names
+
+
 def _build_cli_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--task', type=Path, required=True,
@@ -679,6 +691,11 @@ def _build_cli_parser() -> argparse.ArgumentParser:
                               'name classifies as non-reversible unless an action-bound approval '
                               'is present. The read-only evidence plan should pass naturally; '
                               'this is defense-in-depth.'))
+    parser.add_argument('--secret-env-names', type=_parse_secret_env_names, default=[],
+                        help=('P0-06 env scrub: comma-separated env var names to strip from the '
+                              'worker subprocess environment, in addition to the adapter default '
+                              'secrets. Names are case-insensitive. Entries containing "=" or '
+                              'empty entries are rejected.'))
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
@@ -749,6 +766,8 @@ def main():
     authority = PermitAuthority(args.out / 'permits.jsonl')
     options = ({} if args.host == 'claude'
                else {'astra_explicitly_authorized': config.astra_explicitly_authorized})
+    if args.secret_env_names:
+        options['secret_env_names'] = args.secret_env_names
     provider = build_provider(args.host, authority, **options)
     coverage = None
     if not args.skip_route_preflight:

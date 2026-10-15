@@ -73,6 +73,10 @@ class ClaudeCliAdapter:
             raise ValueError("invalid_adapter_limits")
         if not isinstance(executable, str) or not executable:
             raise ValueError("invalid_claude_executable")
+        if (not isinstance(secret_env_names, (tuple, list, set, frozenset))
+                or any(not isinstance(name, str) or not name or "=" in name
+                       for name in secret_env_names)):
+            raise ValueError("invalid_secret_env_names")
         self.timeout_seconds, self.max_stdout_bytes = timeout_seconds, max_stdout_bytes
         self.max_prompt_bytes, self.max_schema_bytes = max_prompt_bytes, max_schema_bytes
         self.executable = executable

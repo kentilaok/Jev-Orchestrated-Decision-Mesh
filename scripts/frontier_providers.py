@@ -143,10 +143,10 @@ class ClaudeCodeProvider(_BoundedProvider):
     PRESETS = ("claude-sonnet-5", "claude-opus-5")
 
     def __init__(self, authority: PermitAuthority, *, adapter=None, executable="claude", runner=None,
-                 env=None):
+                 env=None, secret_env_names=()):
         if adapter is None:
             from claude_cli_adapter import ClaudeCliAdapter
-            adapter = ClaudeCliAdapter(executable=executable)
+            adapter = ClaudeCliAdapter(executable=executable, secret_env_names=secret_env_names)
         super().__init__(adapter, authority, executable=executable, runner=runner)
         self.env = os.environ if env is None else env
 
@@ -198,11 +198,12 @@ class CodexProvider(_BoundedProvider):
     provider_id = "codex"
 
     def __init__(self, authority: PermitAuthority, *, adapter=None, executable="codex", runner=None,
-                 astra_explicitly_authorized=False):
+                 astra_explicitly_authorized=False, secret_env_names=()):
         if adapter is None:
             from codex_cli_adapter import CodexCliAdapter
             adapter = CodexCliAdapter(executable=executable,
-                                      astra_explicitly_authorized=astra_explicitly_authorized)
+                                      astra_explicitly_authorized=astra_explicitly_authorized,
+                                      secret_env_names=secret_env_names)
         super().__init__(adapter, authority, executable=executable, runner=runner)
 
     def status(self) -> dict:
