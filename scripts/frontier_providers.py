@@ -39,13 +39,14 @@ class FrontierProvider(Protocol):
     def usage(self, run_id: str) -> dict: ...
 
 
-def _run_status_command(argv: list[str], *, timeout: float = 20, runner=None) -> dict:
+def _run_status_command(argv: list[str], *, timeout: float = 20, runner=None, env=None) -> dict:
     """Run a read-only status command without a shell; never raise."""
     if runner is not None:
         return runner(argv, timeout)
     try:
         proc = subprocess.run(argv, capture_output=True, text=True, timeout=timeout,
-                              encoding="utf-8", errors="replace", shell=False)
+                              encoding="utf-8", errors="replace", shell=False,
+                              env=None if env is None else dict(env))
     except FileNotFoundError:
         return {"ok": False, "returncode": None, "stdout": "", "stderr": "command_not_found"}
     except subprocess.TimeoutExpired:
@@ -185,7 +186,8 @@ class ClaudeCodeProvider(_BoundedProvider):
         if not installed:
             return {"provider": self.provider_id, "installed": False, "logged_in": False,
                     "billing": "unknown", "detail": "Claude Code CLI not found"}
-        result = _run_status_command([self.executable, "auth", "status", "--json"], runner=self.runner)
+        result = _run_status_command([self.executable, "auth", "status", "--json"], runner=self.runner,
+                                     env=self.env)
         try:
             data = json.loads(result["stdout"])
         except ValueError:

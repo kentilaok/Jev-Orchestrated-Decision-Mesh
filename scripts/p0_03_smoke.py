@@ -17,6 +17,9 @@ Negative runs must stop before any paid call:
 Each launched run writes `<out-root>/<UTC stamp>-<mode>/` with `config.json`,
 `broker/` (the broker --out folder), the broker's stdout/stderr and
 `smoke-report.json` (preflight, command, result status, offline audit).
+Claude Code session variables (CLAUDECODE, CLAUDE_CODE_*, and ANTHROPIC_BASE_URL
+when inherited from a session) are removed before the preflight and the broker;
+their names are listed in the report.
 Exit 0 when the run met its expectation, 1 when it did not, 2 when refused.
 """
 import argparse
@@ -42,6 +45,21 @@ LOW_BUDGET_USD = 1e-6
 NEGATIVES = ('low-budget', 'wrong-model', 'provider-unavailable')
 PREFLIGHT_NEGATIVES = {'wrong-model': 'models_pinned', 'provider-unavailable': 'claude_cli'}
 BROKER_TIMEOUT_SECONDS = 3600
+# Variables a Claude Code session (CLI or desktop app) sets for its own children.
+# Launched from inside one, the worker `claude` would inherit them and could run
+# as a child session or through the host's ANTHROPIC_BASE_URL instead of the
+# operator's own sign-in, so they are removed before the broker starts.
+SESSION_ENV_PREFIXES = ('CLAUDE_CODE_', 'CLAUDE_AGENT_SDK_', 'CLAUDE_PREVIEW_')
+SESSION_ENV_NAMES = ('CLAUDECODE', 'CLAUDE_PID')
+
+
+def run_env(env) -> tuple[dict, list]:
+    """The broker's environment and the sorted names removed from it (never values)."""
+    inside_session = 'CLAUDECODE' in env
+    removed = sorted(name for name in env
+                     if name.upper().startswith(SESSION_ENV_PREFIXES) or name.upper() in SESSION_ENV_NAMES
+                     or (inside_session and name.upper() == 'ANTHROPIC_BASE_URL'))
+    return {k: v for k, v in env.items() if k not in removed}, removed
 
 
 def build_config(settings: dict, *, max_usd: float, max_cumulative_usd: float,
@@ -129,7 +147,7 @@ def main(argv=None, *, env=None, launch=subprocess.run, clock=None) -> int:
     mode_group.add_argument('--dry-run', action='store_true', help='Preflight and print the command only')
     mode_group.add_argument('--live', action='store_true', help='Launch the capped run (paid unless negative)')
     args = parser.parse_args(argv)
-    env = os.environ if env is None else env
+    env, scrubbed = run_env(os.environ if env is None else env)
     mode = args.negative or 'smoke'
     stamp = (clock or (lambda: datetime.datetime.now(datetime.timezone.utc)))().strftime('%Y%m%dT%H%M%SZ')
     run_dir = args.out_root / (stamp + '-' + mode)
@@ -148,7 +166,8 @@ def main(argv=None, *, env=None, launch=subprocess.run, clock=None) -> int:
     command = broker_command(args.task.resolve(), run_dir / 'broker', run_dir / 'config.json',
                              config, claude_executable)
     report = {'slice': 'p0-03-3b', 'mode': mode, 'started_at': stamp, 'preflight': checks,
-              'config_policy_hash': config.policy_hash, 'command': command}
+              'config_policy_hash': config.policy_hash, 'command': command,
+              'session_env_removed': scrubbed}
 
     if args.dry_run:
         print(json.dumps({**report, 'status': 'dry_run'}, indent=2))

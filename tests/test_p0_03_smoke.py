@@ -63,8 +63,10 @@ class SmokeRunnerTests(unittest.TestCase):
         self.tmp = Path(tmp.name)
         self.claude = make_fake_claude(self.tmp)
         self.out_root = self.tmp / "smoke"
+        # Hermetic: no real keys and no variables of a Claude Code session running the suite.
         self.env = {k: v for k, v in os.environ.items()
-                    if k.upper() not in ("OPENROUTER_API_KEY", "ANTHROPIC_API_KEY")}
+                    if k.upper() not in ("OPENROUTER_API_KEY", "ANTHROPIC_API_KEY", "ANTHROPIC_BASE_URL")
+                    and not k.upper().startswith("CLAUDE")}
         self.env.update(OPENROUTER_API_KEY="sk-test-smoke-do-not-log",
                         HTTPS_PROXY="http://127.0.0.1:9", HTTP_PROXY="http://127.0.0.1:9",
                         NO_PROXY="")
@@ -129,6 +131,27 @@ class SmokeRunnerTests(unittest.TestCase):
         code, out = self.run_main("--dry-run", "--config", str(config))
         self.assertEqual(code, 2)
         self.assertIn("smoke_requires_claude_worker_family", out)
+
+    def test_claude_session_variables_are_removed_before_preflight_and_broker(self):
+        env = dict(self.env, CLAUDECODE="1", CLAUDE_CODE_ENTRYPOINT="desktop", CLAUDE_PID="7",
+                   ANTHROPIC_BASE_URL="http://127.0.0.1:9/host-proxy")
+        seen = []
+        def launch(command, **kwargs):
+            seen.append(kwargs["env"])
+            return self.fake_broker()(command, **kwargs)
+        code, _ = self.run_main("--live", env=env, launch=launch)
+        self.assertEqual(code, 0)
+        removed = ["ANTHROPIC_BASE_URL", "CLAUDECODE", "CLAUDE_CODE_ENTRYPOINT", "CLAUDE_PID"]
+        self.assertEqual(self.report("smoke")["session_env_removed"], removed)
+        for name in removed:
+            self.assertNotIn(name, seen[0])
+        self.assertIn("OPENROUTER_API_KEY", seen[0])
+
+    def test_base_url_set_outside_a_session_is_kept(self):
+        from p0_03_smoke import run_env
+        kept, removed = run_env({"ANTHROPIC_BASE_URL": "https://example.test", "PATH": "x"})
+        self.assertEqual(removed, [])
+        self.assertIn("ANTHROPIC_BASE_URL", kept)
 
     # Negatives that the preflight must refuse.
 

@@ -14,6 +14,7 @@
 - `--dry-run` prints the preflight and the exact broker command; nothing is created or launched.
 - `--live` writes `runs/p0-03-smoke/<UTC stamp>-<mode>/`: `config.json`, `broker/` (broker `--out`), broker stdout/stderr, and `smoke-report.json` (preflight, command, exit code, result status, Jev cost, full slice-3a audit, expectation). A run folder is never reused.
 - Exit 0 when the run met its expectation, 1 when it did not, 2 when refused before launch.
+- Launched from inside a Claude Code session (CLI or desktop app), the runner removes that session's variables (`CLAUDECODE`, `CLAUDE_CODE_*`, `CLAUDE_AGENT_SDK_*`, `CLAUDE_PID`, `CLAUDE_PREVIEW_*`, and an inherited `ANTHROPIC_BASE_URL`) before the preflight and the broker, so the worker `claude` uses the operator's own sign-in rather than the host session's endpoint. Removed names (never values) are in `session_env_removed`. The provider status check now runs with the provider's `env`.
 
 ## 2. Negative runs (each must stop before any paid call)
 
@@ -31,14 +32,15 @@ A preflight negative counts only when its targeted check is one that refused.
 |---|---|
 | `scripts/p0_03_smoke.py` | New runner. |
 | `scripts/native_transition_broker.py` | `--claude-executable` (Claude host only, refused otherwise before anything is written). |
-| `tests/test_p0_03_smoke.py` | 11 tests: dry run, missing key, both caps above the ceiling, non-Claude family, both preflight negatives, low-budget through the real broker subprocess (dummy key, dead proxy, fake `claude` that leaves a marker if a model call is attempted), clean and tampered live runs with a fake broker, folder reuse, broker flag guard. |
+| `scripts/frontier_providers.py` | `ClaudeCodeProvider.status()` runs `claude auth status` with the provider's `env` (default `os.environ`, unchanged for existing callers). |
+| `tests/test_p0_03_smoke.py` | 13 tests: session-variable removal (and a base URL set outside a session is kept), dry run, missing key, both caps above the ceiling, non-Claude family, both preflight negatives, low-budget through the real broker subprocess (dummy key, dead proxy, fake `claude` that leaves a marker if a model call is attempted), clean and tampered live runs with a fake broker, folder reuse, broker flag guard. |
 
 ## 4. Verification
 
 | Check | Result |
 |---|---|
 | Slice tests | 11/11 pass |
-| Full offline suite | 711 pass, 5 skips |
+| Full offline suite | 713 pass, 5 skips |
 | `compileall`, `git diff --check`, CI validate-only and evidence verifiers | pass |
 | Live model calls | none |
 
