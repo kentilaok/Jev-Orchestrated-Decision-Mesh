@@ -79,6 +79,14 @@ def _cost_from_usage(usage: Any) -> float | None:
     return float(value)
 
 
+def _cost_from_response(response: Any) -> float | None:
+    """Cost of a successful adapter response. ClaudeCliAdapter reports
+    `api_equivalent_cost_usd` at the top level; older shapes put it in usage."""
+    if isinstance(response, dict) and "api_equivalent_cost_usd" in response:
+        return _cost_from_usage({"api_equivalent_cost_usd": response["api_equivalent_cost_usd"]})
+    return _cost_from_usage(response.get("usage") if isinstance(response, dict) else None)
+
+
 def _request_scope(provider_id: str, request: dict) -> dict:
     require(isinstance(request, dict), "invalid_frontier_request")
     require(set(request) == {"model", "effort", "prompt", "schema", "workspace"},
@@ -124,7 +132,7 @@ class _BoundedProvider:
                                         request["schema"], request["workspace"])
             outcome = {"status": "ok", "run_id": run_id, "artifact_hash": digest(response["artifact"]),
                        "usage": response.get("usage"),
-                       "cost_usd": _cost_from_usage(response.get("usage")),
+                       "cost_usd": _cost_from_response(response),
                        "identity_verification": response.get("identity_verification")}
             response = {**response, "run_id": run_id, "permit_id": permit_id, "provider": self.provider_id}
             return response
@@ -330,7 +338,11 @@ class PermittedAdapter:
         basis, self._basis = self._basis, None
         request = {"model": model, "effort": effort, "prompt": prompt, "schema": schema,
                    "workspace": str(workspace)}
-        permit_id = self.authority.issue("frontier.run", _request_scope(self.provider.provider_id, request), basis)
+        try:
+            permit_id = self.authority.issue("frontier.run", _request_scope(self.provider.provider_id, request), basis)
+        except Exception as error:
+            error.ran = False  # refused before launch; the broker records usage as not_launched
+            raise
         return self.provider.run(request, permit_id)
 
 

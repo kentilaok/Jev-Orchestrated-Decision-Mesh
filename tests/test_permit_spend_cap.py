@@ -382,5 +382,46 @@ class AuditLedgerBackwardCompatTests(unittest.TestCase):
             self.assertEqual(result["issues"], [])
 
 
+
+class RealClaudeAdapterCostTests(unittest.TestCase):
+    """The real ClaudeCliAdapter puts api_equivalent_cost_usd at the top level of
+    its response, not in usage. Drive its real _parse so receipts carry the cost."""
+
+    BASIS = {"kind": "jev_decision", "decision_id": "d", "choice": "frontier.run",
+             "state_hash": "s", "live": True}
+
+    def _provider(self, td, cap=None):
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from capability_permits import PermitAuthority  # type: ignore
+        from frontier_providers import ClaudeCodeProvider, PermittedAdapter  # type: ignore
+        from test_claude_host import SCHEMA, StubCli, cli_result  # type: ignore
+        self.schema = SCHEMA
+        auth = PermitAuthority(td / "permits.jsonl", max_cumulative_usd=cap)
+        provider = ClaudeCodeProvider(auth, adapter=StubCli(cli_result()))
+        return auth, PermittedAdapter(provider, auth)
+
+    def _call(self, adapter, td):
+        adapter.prepare(self.BASIS)
+        return adapter.run("claude-sonnet-5", "low", "hi", self.schema, td)
+
+    def test_real_parse_cost_reaches_receipt(self):
+        with tempfile.TemporaryDirectory() as tds:
+            td = Path(tds)
+            auth, adapter = self._provider(td)
+            self._call(adapter, td)
+            receipt = [e for e in auth.events() if e.get("kind") == "permit_receipt"][-1]
+            self.assertAlmostEqual(receipt["cost_usd"], 0.0042, places=9)
+            self.assertAlmostEqual(auth.cumulative_cost_usd, 0.0042, places=9)
+
+    def test_real_parse_cost_trips_the_cumulative_cap(self):
+        with tempfile.TemporaryDirectory() as tds:
+            td = Path(tds)
+            auth, adapter = self._provider(td, cap=0.004)
+            self._call(adapter, td)  # the call that crosses the cap still runs
+            with self.assertRaises(Exception) as caught:
+                self._call(adapter, td)
+            self.assertIn("cumulative_cap_exceeded", str(caught.exception))
+            self.assertIs(getattr(caught.exception, "ran", None), False)
+
 if __name__ == "__main__":
     unittest.main()
