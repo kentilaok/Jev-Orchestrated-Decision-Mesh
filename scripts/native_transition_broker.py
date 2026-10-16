@@ -237,6 +237,8 @@ class NativeTransitionBroker:
                            'actual_effort': response.get('actual_effort'),
                            'identity_verification': response.get('identity_verification'),
                            'usage': response.get('usage'), 'status': 'ok',
+                           'session_id': response.get('session_id'),
+                           'permit_id': response.get('permit_id'),
                            'artifact_hash': artifact_hash})
         return response['artifact']
 
