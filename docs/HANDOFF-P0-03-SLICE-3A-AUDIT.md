@@ -33,21 +33,35 @@ Evidence collected: status, task hash, source hashes, policy hash, SHA-256 of `r
 |---|---|
 | `scripts/p0_03_audit.py` | New auditor (stdlib plus existing CIDM modules). |
 | `scripts/native_transition_broker.py` | Successful call records now keep `session_id` (P0-03 req. 3: provider IDs when available) and `permit_id` (binds each call to its permit). |
-| `tests/test_p0_03_audit.py` | 12 tests: one clean permit-backed recovery run built from fakes, then one tamper per check, plus CLI exit codes. |
+| `tests/test_p0_03_audit.py` | 35 tests: clean permit-backed recovery, fused and short-route runs built from fakes; legitimate shapes that must pass (refused-at-issue call, retrieval permit on the same ledger, resumed run, route-preflight failure, run stopping after crossing the cap); one tamper per check; CLI exit codes. |
 | `tests/test_console_max_cumulative_usd.py`, `docs/HANDOFF-CONSOLE-MAX-CUMULATIVE-USD.md` | PR #25 round-4 nits: assert the `checkpoint` error prefix; log QA round 3. |
 
 ## 4. Verification
 
 | Check | Result |
 |---|---|
-| Slice tests | 12/12 pass |
-| Full offline suite | 666 pass, 1 opt-in Docker skip + 4 POSIX-only skips |
+| Slice tests | 35/35 pass; 12 auditor mutants all caught |
+| Full offline suite | 691 pass, 1 opt-in Docker skip + 4 POSIX-only skips |
 | `compileall`, `git diff --check` | pass |
 | Live model calls | none |
 
+## 4a. QA round 1 (commit 9331e78: FAIL) and fixes
+
+1. **HIGH, pre-existing (PR #20):** real Claude runs never put a cost on permit receipts. `ClaudeCliAdapter` reports `api_equivalent_cost_usd` at the top level of its response; `_BoundedProvider` looked only inside `usage`, so `max_cumulative_usd` limited nothing. Fixed in `8251035` (`_cost_from_response`), with tests through the real `_parse`. The auditor now flags `cumulative_cap_unverifiable` when a cap is set and a frontier receipt has no cost. A call refused at permit issue is now `not_launched`, not `unknown_child_ran`.
+2. Short-route runs crashed the auditor; now checked for the single pinned worker and passing hard checks.
+3. Fused runs were checked with the wrong order audit; now chosen by `protocol_version`.
+4. Resumed runs were falsely flagged; calls carried from a checkpoint are reported (`resumed_calls_carried`) and not bound to this ledger; the journal must be a tail of the events.
+5. Retrieval/MCP permits on the same ledger were counted as frontier permits; only `frontier.run` counts, and `permit_id` reuse across calls is flagged.
+6. The auditor's config was never checked; broker `main()` now writes `config_policy_hash` into `result.json` (also on route-preflight failure), and the auditor flags `config_mismatch` / `config_policy_hash_missing`. New `--max-cumulative-usd` flag mirrors the broker's.
+7. Weak tests: added the missing cases; mutation run catches all 12 mutants, including the `>=` cap boundary.
+8-12. Route-preflight results no longer flagged; Jev overspend is checked on known costs even when another event is unknown; journal is compared with the result's events and known token totals are recomputed; the order audit also runs on unreleased broad-route runs; a missing `result.json` is reported (`result_missing`) and the ledger is still audited.
+
 ## 5. Known limits
 
-- Runs saved before this slice have no `permit_id` on call records and will fail the binding check; the auditor targets new P0-03 runs.
+- **Trust model:** the auditor catches broker bugs and accidental corruption, not deliberate rewriting. The ledger chain can be rebuilt and `result.json` is read as written; the recorded hashes mean something only once committed with the evidence bundle in slice 3c.
+- Jev events are not yet cross-checked against the gateway's `usage.jsonl`; Jev request IDs and billing channel are not in the evidence yet (P0-03 req. 3, slice 3b/3c).
+- "Zero unauthorized calls" is proven by permit binding for successful calls; a failed call that launched has no `permit_id` on its record, so it is covered only by the count check.
+- Runs saved before this slice have no `permit_id` or `config_policy_hash` and will be flagged; the auditor targets new P0-03 runs.
 - Codex runs are not exercised (Codex is out of scope for P0-03 V1).
 - The auditor checks structure and accounting, not answer quality.
 

@@ -800,7 +800,8 @@ def main():
             result = {'status': 'route_preflight_failed', 'route': normalized['classification']['scope'],
                       'gate_policy': args.gate_policy, 'host': args.host, 'answer': None,
                       'task_hash': normalized['snapshot_hash'], 'route_coverage': coverage,
-                      'calls': [], 'simulation': False, 'training_performed': False}
+                      'calls': [], 'simulation': False, 'training_performed': False,
+                      'config_policy_hash': config.policy_hash}
             (args.out / 'result.json').write_text(json.dumps(result, indent=2, allow_nan=False),
                                                   encoding='utf-8')
             print(packed({'status': result['status'], 'route': result['route'], 'answer': None,
@@ -836,6 +837,7 @@ def main():
                   'reset_active_unit_rounds': args.reset_recovery_rounds, 'operator': args.operator}
     result = broker.run(spec, resume=resume)
     result['host'] = args.host
+    result['config_policy_hash'] = config.policy_hash
     result['route_coverage'] = coverage if coverage is not None else {'status': 'skipped'}
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []
     result['jev_provider_events'] = provider_events
