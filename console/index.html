@@ -174,7 +174,7 @@ th{color:#8d98a9;font-weight:600;font-size:11px;letter-spacing:.04em;text-transf
     <label style="display:block;margin-top:12px">Cumulative spend cap (USD, blank to disable)
       <input id="maxCumulativeUsd" type="number" step="0.01" min="0.01" style="width:200px;font-family:monospace" placeholder="e.g. 1.50">
     </label>
-    <p class="helper" style="margin-top:6px">Once the sum of per-permit <code>cost_usd</code> across the run's permit ledger meets or exceeds this cap, new permits are refused with <code>cumulative_cap_exceeded</code>. The permit that pushed over still issues/consumes/receipts; only the next one is blocked. Codex cost is unknown today (adapter does not emit cost), so this cap tracks Claude spend only until a later slice prices Codex calls.</p>
+    <p class="helper" style="margin-top:6px">Once the sum of per-permit <code>cost_usd</code> in this launch's permit ledger meets or exceeds this cap, new permits are refused with <code>cumulative_cap_exceeded</code>. The permit that pushed over still issues/consumes/receipts; only the next one is blocked. Codex cost is unknown today (adapter does not emit cost), so this cap tracks Claude spend only until a later slice prices Codex calls. Claude cost is the CLI's API-equivalent estimate, not your plan bill. Jev (OpenRouter) credits are not counted here; they are bounded separately per run. Each resume starts a new ledger at $0, and a resume keeps the cap the run started with.</p>
     <div class="row" style="margin-top:12px"><button class="button primary" id="saveSecurity">Save</button></div>
   </article>
   <article class="panel"><div class="panel-head"><div><p class="eyebrow">Pending approvals</p><h2>Strong-permit queue</h2></div></div>
@@ -322,8 +322,11 @@ $('saveSkillsSource').onclick=()=>save({skills_source:$('skillsSource').value});
 $('saveSecurity').onclick=async()=>{try{
   const trusted=$('trustedMcpServers').value.split(/[,\n]/).map(s=>s.trim()).filter(Boolean);
   const secrets=$('secretEnvNames').value.split(/[,\n]/).map(s=>s.trim()).filter(Boolean);
-  const capRaw=$('maxCumulativeUsd').value.trim();
-  const max_cumulative_usd=capRaw===''?null:parseFloat(capRaw);
+  const capEl=$('maxCumulativeUsd');
+  if(capEl.validity.badInput)throw new Error('Spend cap must be a number, or blank to disable');
+  const capRaw=capEl.value.trim();
+  const max_cumulative_usd=capRaw===''?null:Number(capRaw);
+  if(max_cumulative_usd!==null&&!(Number.isFinite(max_cumulative_usd)&&max_cumulative_usd>0))throw new Error('Spend cap must be a positive number');
   await save({content_policy:$('contentPolicy').value,require_action_approval:$('requireActionApproval').checked,trusted_mcp_servers:trusted,secret_env_names:secrets,max_cumulative_usd:max_cumulative_usd});
   loadSecurity();
 }catch(e){alert(e.message)}};

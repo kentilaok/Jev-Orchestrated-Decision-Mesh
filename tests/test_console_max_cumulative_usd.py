@@ -106,45 +106,79 @@ class BrokerCliParsesMaxCumulativeUsdTests(unittest.TestCase):
 
 
 class EndToEndBrokerOverrideTests(unittest.TestCase):
-    """A Console-launched broker run honours the CLI override even when
-    the --config JSON omits the field (which is the normal Console path:
-    `broker_argv` emits the flag but not a --config file today)."""
+    """Drive the real native_transition_broker.main() up to PermitAuthority
+    construction and assert the cap it receives. Offline: PermitAuthority is
+    patched to raise before any provider is built."""
 
-    def test_cli_override_lands_on_authority_via_runconfig(self):
-        import os
-        import subprocess
+    class _Stop(Exception):
+        pass
+
+    def _drive(self, extra, config_file=None):
         import json
-        import tempfile as tf
+        from unittest import mock
+        import capability_permits  # type: ignore
+        import native_transition_broker as ntb  # type: ignore
+        sys.path.insert(0, str(ROOT / "tests"))
+        from test_native_transition_broker import SPEC  # type: ignore
+        with tempfile.TemporaryDirectory() as tds:
+            td = Path(tds)
+            task = td / "task.json"
+            task.write_text(json.dumps(SPEC), encoding="utf-8")
+            argv = ["ntb", "--live", "--host", "claude", "--gate-policy", "recovery",
+                    "--task", str(task), "--out", str(td / "out"), "--skip-route-preflight", *extra]
+            if config_file is not None:
+                cfg = td / "cfg.json"
+                cfg.write_text(json.dumps(config_file), encoding="utf-8")
+                argv += ["--config", str(cfg)]
+            with mock.patch.object(sys, "argv", argv),                     mock.patch.object(capability_permits, "PermitAuthority", side_effect=self._Stop) as pa:
+                with self.assertRaises(self._Stop):
+                    ntb.main()
+                return pa.call_args.kwargs.get("max_cumulative_usd")
 
-        from native_transition_broker import _build_cli_parser  # type: ignore
-        from config import RunConfig  # type: ignore
-        parser = _build_cli_parser()
-        args = parser.parse_args([
-            "--validate-only", "--host", "claude", "--gate-policy", "recovery",
-            "--task", "t.json", "--max-cumulative-usd", "4.25",
-        ])
-        # Simulate main's RunConfig build (settings + CLI override + family).
-        settings = {}
-        if args.max_cumulative_usd is not None:
-            settings["max_cumulative_usd"] = args.max_cumulative_usd
-        family = "claude"
-        config = RunConfig.from_dict({**settings, "worker_family": family})
-        self.assertEqual(config.max_cumulative_usd, 4.25)
+    def test_cli_flag_reaches_permit_authority(self):
+        self.assertEqual(self._drive(["--max-cumulative-usd", "4.25"]), 4.25)
 
-    def test_cli_override_wins_over_config_file_value(self):
-        from native_transition_broker import _build_cli_parser  # type: ignore
-        from config import RunConfig  # type: ignore
-        parser = _build_cli_parser()
-        args = parser.parse_args([
-            "--validate-only", "--host", "claude", "--gate-policy", "recovery",
-            "--task", "t.json", "--max-cumulative-usd", "9.99",
-        ])
-        settings = {"max_cumulative_usd": 1.00}  # value from --config JSON
-        if args.max_cumulative_usd is not None:
-            settings["max_cumulative_usd"] = args.max_cumulative_usd
-        family = "claude"
-        config = RunConfig.from_dict({**settings, "worker_family": family})
-        self.assertEqual(config.max_cumulative_usd, 9.99)
+    def test_no_flag_no_file_means_no_cap(self):
+        self.assertIsNone(self._drive([]))
+
+    def test_config_file_value_used_without_flag(self):
+        self.assertEqual(self._drive([], {"max_cumulative_usd": 1.0}), 1.0)
+
+    def test_cli_flag_wins_over_config_file_value(self):
+        self.assertEqual(self._drive(["--max-cumulative-usd", "9.99"], {"max_cumulative_usd": 1.0}), 9.99)
+
+
+class ConsoleResumeKeepsOriginalCapTests(unittest.TestCase):
+    """The cap is part of the checkpoint policy hash, so a Console resume must
+    pass the cap the run started with, not the Console's current value."""
+
+    def _resume_argv(self, policy):
+        import json
+        with tempfile.TemporaryDirectory() as tds:
+            td = Path(tds)
+            source = td / "runs" / "r1"
+            (source / "run").mkdir(parents=True)
+            (source / "request.json").write_text("{}", encoding="utf-8")
+            (source / "run" / "result.json").write_text(json.dumps({"host": "claude"}), encoding="utf-8")
+            (source / "run" / "checkpoint.json").write_text(json.dumps({"policy": policy}), encoding="utf-8")
+            cfg = console._merge_config({"project_directory": str(td), "runs_directory": str(td / "runs"),
+                                         "max_cumulative_usd": 5.0})
+            real_start = console.JOBS.start
+            console.JOBS.start = lambda argv, run_dir, meta: list(argv)
+            try:
+                return console.start_resume_job("r1", {"confirm_live_spend": True, "operator": "ken"}, cfg)
+            finally:
+                console.JOBS.start = real_start
+
+    def test_resume_uses_checkpoint_cap_not_console_cap(self):
+        argv = self._resume_argv({"max_cumulative_usd": 1.0})
+        self.assertEqual(argv[argv.index("--max-cumulative-usd") + 1], "1.0")
+
+    def test_resume_of_uncapped_run_omits_flag(self):
+        self.assertNotIn("--max-cumulative-usd", self._resume_argv({"max_cumulative_usd": None}))
+
+    def test_resume_of_pre_cap_checkpoint_omits_flag(self):
+        self.assertNotIn("--max-cumulative-usd", self._resume_argv({}))
 
 
 class ConsoleUiTests(unittest.TestCase):

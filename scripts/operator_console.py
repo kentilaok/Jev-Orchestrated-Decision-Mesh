@@ -974,6 +974,10 @@ def start_resume_job(name: str, payload: dict, config: dict) -> dict:
     if checkpoint is None or not checkpoint.is_file() or not task.is_file():
         raise ValueError("run has no checkpoint or request to resume")
     previous = json.loads(result_path.read_text(encoding="utf-8"))
+    # The cap is part of the checkpoint's policy hash, so resume with the cap the
+    # run started with, not the Console's current value (else resume_config_mismatch).
+    bundle = json.loads(checkpoint.read_text(encoding="utf-8"))
+    config = {**config, "max_cumulative_usd": (bundle.get("policy") or {}).get("max_cumulative_usd")}
     run_dir = _runs_root(config) / (source_dir.name + "-resume-" + uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
     shutil.copyfile(task, run_dir / "request.json")

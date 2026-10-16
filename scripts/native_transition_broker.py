@@ -710,7 +710,7 @@ def _build_cli_parser() -> argparse.ArgumentParser:
     parser.add_argument('--max-cumulative-usd', type=_parse_positive_usd, default=None,
                         help=('P0-06 spend cap: cumulative USD across the permit ledger that, '
                               'once reached, refuses new permits with cumulative_cap_exceeded. '
-                              'Overrides any value in --config. Omit to disable the cap.'))
+                              'Overrides any value in --config. Omit to keep the --config value (no cap by default).'))
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
