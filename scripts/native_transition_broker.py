@@ -713,6 +713,8 @@ def _build_cli_parser() -> argparse.ArgumentParser:
                         help=('P0-06 spend cap: cumulative USD across the permit ledger that, '
                               'once reached, refuses new permits with cumulative_cap_exceeded. '
                               'Overrides any value in --config. Omit to keep the --config value (no cap by default).'))
+    parser.add_argument('--claude-executable',
+                        help='Claude host only: path to the Claude Code CLI (default: claude on PATH)')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
@@ -726,6 +728,7 @@ def main():
     args = parser.parse_args()
     require(not args.arsenal_calibration_ledger or args.arsenal_shadow,
             'calibration_requires_shadow_observer')
+    require(not args.claude_executable or args.host == 'claude', 'claude_executable_requires_claude_host')
     spec = json.loads(args.task.read_text(encoding='utf-8-sig'))
     normalized = validate_spec(spec)
     arsenal_observer = None
@@ -788,6 +791,8 @@ def main():
                else {'astra_explicitly_authorized': config.astra_explicitly_authorized})
     if args.secret_env_names:
         options['secret_env_names'] = args.secret_env_names
+    if args.claude_executable:
+        options['executable'] = args.claude_executable
     provider = build_provider(args.host, authority, **options)
     coverage = None
     if not args.skip_route_preflight:
