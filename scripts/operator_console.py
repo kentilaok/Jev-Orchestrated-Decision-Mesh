@@ -977,7 +977,11 @@ def start_resume_job(name: str, payload: dict, config: dict) -> dict:
     # The cap is part of the checkpoint's policy hash, so resume with the cap the
     # run started with, not the Console's current value (else resume_config_mismatch).
     bundle = json.loads(checkpoint.read_text(encoding="utf-8"))
-    config = {**config, "max_cumulative_usd": (bundle.get("policy") or {}).get("max_cumulative_usd")}
+    policy = bundle.get("policy") if isinstance(bundle, dict) else None
+    if not isinstance(policy, dict):
+        raise ValueError("checkpoint has no policy to resume with")
+    cap = _merge_config({"max_cumulative_usd": policy.get("max_cumulative_usd")})["max_cumulative_usd"]
+    config = {**config, "max_cumulative_usd": cap}
     run_dir = _runs_root(config) / (source_dir.name + "-resume-" + uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
     shutil.copyfile(task, run_dir / "request.json")

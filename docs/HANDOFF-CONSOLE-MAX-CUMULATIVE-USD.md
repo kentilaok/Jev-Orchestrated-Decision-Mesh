@@ -23,18 +23,18 @@ The broker-side RunConfig override order of precedence is explicit:
 
 | File | Change |
 |---|---|
-| `scripts/operator_console.py` | +12 lines. New `max_cumulative_usd` field in `DEFAULT_CONFIG`, validation branch in `_merge_config`, `broker_argv` emission. |
-| `scripts/native_transition_broker.py` | +14 lines. `_parse_positive_usd` argparse type, new `--max-cumulative-usd` CLI arg, injection into `settings` before `RunConfig.from_dict`. |
-| `console/index.html` | +4 lines of markup (number input, label, helper paragraph), +1 line in `loadSecurity`, +2 lines in `saveSecurity`. |
-| `tests/test_console_max_cumulative_usd.py` | New, 24 tests: Console config merge (default/accept/reject), `broker_argv` emission, broker CLI parse (accept + reject), end-to-end precedence driven through the real `main()` up to `PermitAuthority` (CLI wins over file), Console resume keeps the checkpoint's cap, Console UI static markers + regression guard on earlier P0-05/P0-06 Security fields. |
+| `scripts/operator_console.py` | New `max_cumulative_usd` field in `DEFAULT_CONFIG`, validation branch in `_merge_config`, `broker_argv` emission; `start_resume_job` validates the checkpoint policy and resumes with its cap. |
+| `scripts/native_transition_broker.py` | `_parse_positive_usd` argparse type, new `--max-cumulative-usd` CLI arg, injection into `settings` before `RunConfig.from_dict`. |
+| `console/index.html` | Number input, label and helper paragraph; one line in `loadSecurity`; cap parsing and validation in `saveSecurity`. |
+| `tests/test_console_max_cumulative_usd.py` | New, 26 tests: Console config merge (default/accept/reject), `broker_argv` emission, broker CLI parse (accept + reject), end-to-end precedence driven through the real `main()` up to `PermitAuthority` (CLI wins over file), Console resume keeps the checkpoint's cap and rejects a malformed checkpoint policy before creating the resume folder, Console UI static markers + a Save-handler guard against bad input clearing the cap + regression guard on earlier P0-05/P0-06 Security fields. |
 | `docs/HANDOFF-CONSOLE-MAX-CUMULATIVE-USD.md` | This handoff. |
 
 ## 3. Verification
 
 | Check | Result |
 |---|---|
-| Slice tests | 24/24 pass (after QA round 1) |
-| Full offline suite | 652/652 pass, 1 opt-in Docker skip + 4 POSIX-only skips (Windows host) |
+| Slice tests | 26/26 pass (after QA round 2) |
+| Full offline suite | 654/654 pass, 1 opt-in Docker skip + 4 POSIX-only skips (Windows host) |
 | Regressions on 628-test post-PR#24 baseline | 0 |
 | `python -m compileall -q scripts tests` | pass |
 | Live model calls | None |
@@ -50,11 +50,13 @@ The broker-side RunConfig override order of precedence is explicit:
 ## 4a. QA round 1 (commit 6e63b8d: FAIL) and fixes
 
 1. **Bad input silently cleared the cap.** A number input reports unparseable text as `""`, which the Save handler sent as `null`. Fix: reject `validity.badInput` and non-positive/non-finite values in the browser before POST.
-2. **Changing the cap broke Console resume.** The cap is part of `policy_hash`, so resuming with the Console's current cap raised `resume_config_mismatch`. Fix: `start_resume_job` passes the cap stored in `checkpoint.json` `policy.max_cumulative_usd` (absent for pre-2b checkpoints, which means no cap).
+2. **Changing the cap broke Console resume.** The cap is part of `policy_hash`, so resuming with the Console's current cap raised `resume_config_mismatch`. Fix: `start_resume_job` passes the cap stored in `checkpoint.json` `policy.max_cumulative_usd` Pre-2b checkpoints cannot be resumed at all: slice 2b added the field to `RunConfig.to_dict()`, which changed `policy_hash`. That predates this slice.
 3. **End-to-end tests did not test `main()`.** They copied the override logic. Replaced with tests that drive `main()`; mutation-checked (deleting the override or the resume fix fails 5 tests).
 4. Help text now says the cap is per launch (each resume starts a fresh ledger at $0), that Claude cost is an API-equivalent estimate, and that Jev/OpenRouter credits are bounded separately.
 
-Not fixed (nits, logged): a 400-digit JSON integer returns HTTP 500 instead of 400 (nothing saved); a hand-edited invalid cap in the state file blocks the Console until fixed by hand; an int cap from a CLI `--config` file (`5`) hashes differently from the Console's float (`5.0`), so such a run cannot be resumed from the Console.
+QA round 2 (commit 342b850: PASS WITH NITS). Fixed: static regression test for the Save-handler guard (mutation-checked: dropping either check fails it); `_drive` also patches `frontier_providers.build_provider` and `Gateway` to raise, so a refactor cannot turn the offline test into a live call; `start_resume_job` rejects a non-dict bundle/policy or invalid cap with HTTP 400 before `mkdir` (no orphan resume folder).
+
+Not fixed (nits, logged): the Resume confirm does not show which cap will apply (help text says it); clearing a set cap to blank does not ask for confirmation; a 400-digit JSON integer returns HTTP 500 instead of 400 (nothing saved); a hand-edited invalid cap in the state file blocks the Console until fixed by hand; an int cap from a CLI `--config` file (`5`) hashes differently from the Console's float (`5.0`), so such a run cannot be resumed from the Console.
 
 ## 5. Open items
 

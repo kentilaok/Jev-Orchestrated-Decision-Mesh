@@ -17,6 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 
 for name in ("operator_console",):
     spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / (name + ".py"))
@@ -117,8 +118,8 @@ class EndToEndBrokerOverrideTests(unittest.TestCase):
         import json
         from unittest import mock
         import capability_permits  # type: ignore
+        import frontier_providers  # type: ignore
         import native_transition_broker as ntb  # type: ignore
-        sys.path.insert(0, str(ROOT / "tests"))
         from test_native_transition_broker import SPEC  # type: ignore
         with tempfile.TemporaryDirectory() as tds:
             td = Path(tds)
@@ -130,7 +131,13 @@ class EndToEndBrokerOverrideTests(unittest.TestCase):
                 cfg = td / "cfg.json"
                 cfg.write_text(json.dumps(config_file), encoding="utf-8")
                 argv += ["--config", str(cfg)]
-            with mock.patch.object(sys, "argv", argv),                     mock.patch.object(capability_permits, "PermitAuthority", side_effect=self._Stop) as pa:
+            # Fail closed if PermitAuthority stops being the first stop: never let a
+            # refactor turn this offline test into a live provider or Jev call.
+            with (mock.patch.object(sys, "argv", argv),
+                  mock.patch.object(capability_permits, "PermitAuthority", side_effect=self._Stop) as pa,
+                  mock.patch.object(frontier_providers, "build_provider",
+                                    side_effect=AssertionError("live provider")),
+                  mock.patch.object(ntb, "Gateway", side_effect=AssertionError("live Jev gateway"))):
                 with self.assertRaises(self._Stop):
                     ntb.main()
                 return pa.call_args.kwargs.get("max_cumulative_usd")
@@ -180,11 +187,26 @@ class ConsoleResumeKeepsOriginalCapTests(unittest.TestCase):
     def test_resume_of_pre_cap_checkpoint_omits_flag(self):
         self.assertNotIn("--max-cumulative-usd", self._resume_argv({}))
 
+    def test_malformed_checkpoint_policy_is_rejected_before_mkdir(self):
+        for policy in ("x", ["a"], {"max_cumulative_usd": "abc"}, {"max_cumulative_usd": True},
+                       {"max_cumulative_usd": -1}):
+            with self.subTest(policy=policy):
+                with self.assertRaises(ValueError):
+                    self._resume_argv(policy)
+
 
 class ConsoleUiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = INDEX.read_text(encoding="utf-8")
+
+    def test_save_rejects_bad_cap_input_instead_of_sending_null(self):
+        # Regression guard: a number input reports unparseable text as "", which
+        # used to be saved as null and silently clear the cap.
+        save = self.html[self.html.index("$('saveSecurity').onclick"):]
+        save = save[:save.index("};")]
+        self.assertIn("capEl.validity.badInput", save)
+        self.assertIn("Number.isFinite(max_cumulative_usd)&&max_cumulative_usd>0", save)
 
     def test_number_input_exists(self):
         self.assertIn('id="maxCumulativeUsd"', self.html)
