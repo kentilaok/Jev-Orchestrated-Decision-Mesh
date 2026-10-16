@@ -1,0 +1,227 @@
+{
+  "slice": "p0-03-3b",
+  "mode": "smoke",
+  "started_at": "20261016T194827Z",
+  "preflight": {
+    "ok": true,
+    "checks": {
+      "task": {
+        "ok": true,
+        "route": "broad_or_uncertain",
+        "task_hash": "f5f9d6cb39e342332ce5b28cfcbed9e3746ae42b46ef2e97f5031141ca316bb2"
+      },
+      "models_pinned": {
+        "ok": true,
+        "jev_model": "typesafe/jev-1.13",
+        "pinned_jev_model": "typesafe/jev-1.13",
+        "worker_routes": [
+          "sonnet_low",
+          "sonnet_medium",
+          "sonnet_high",
+          "sonnet_xhigh",
+          "opus_low",
+          "opus_medium",
+          "opus_high",
+          "opus_xhigh"
+        ],
+        "checker": [
+          "anthropic/claude-opus-5",
+          "high"
+        ]
+      },
+      "jev_cap": {
+        "ok": true,
+        "max_usd": 1.0,
+        "ceiling_usd": 1.0
+      },
+      "cumulative_cap": {
+        "ok": true,
+        "max_cumulative_usd": 1.0,
+        "ceiling_usd": 1.0
+      },
+      "openrouter_key": {
+        "ok": true,
+        "present": true
+      },
+      "claude_cli": {
+        "ok": true,
+        "installed": true,
+        "logged_in": true,
+        "auth_method": "claude.ai",
+        "billing": "subscription",
+        "subscription_type": "pro",
+        "warnings": [],
+        "detail": null
+      }
+    }
+  },
+  "config_policy_hash": "9fc5fa28de04579c2f54f0e2aec98607d938e38f0571c945329357cd3e365a12",
+  "command": [
+    "C:\\Users\\caber\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\scripts\\native_transition_broker.py",
+    "--task",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\examples\\native-project.request.json",
+    "--out",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\runs\\p0-03-smoke\\20261016T194827Z-smoke\\broker",
+    "--host",
+    "claude",
+    "--gate-policy",
+    "recovery",
+    "--config",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\runs\\p0-03-smoke\\20261016T194827Z-smoke\\config.json",
+    "--max-cumulative-usd",
+    "1.0",
+    "--claude-executable",
+    "claude",
+    "--live"
+  ],
+  "session_env_removed": [
+    "ANTHROPIC_BASE_URL",
+    "CLAUDECODE",
+    "CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+    "CLAUDE_AGENT_SDK_VERSION",
+    "CLAUDE_CODE_ACCOUNT_UUID",
+    "CLAUDE_CODE_CHILD_SESSION",
+    "CLAUDE_CODE_DESKTOP_APP_VERSION",
+    "CLAUDE_CODE_DISABLE_CRON",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE",
+    "CLAUDE_CODE_EAGER_FLUSH",
+    "CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES",
+    "CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL",
+    "CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING",
+    "CLAUDE_CODE_ENTRYPOINT",
+    "CLAUDE_CODE_HOST_SESSION_ID",
+    "CLAUDE_CODE_MESSAGING_SOCKET",
+    "CLAUDE_CODE_MESSAGING_TOKEN",
+    "CLAUDE_CODE_OAUTH_SCOPES",
+    "CLAUDE_CODE_ORGANIZATION_UUID",
+    "CLAUDE_CODE_REPORT_FINDINGS",
+    "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+    "CLAUDE_CODE_SESSION_ATTENDED",
+    "CLAUDE_CODE_SESSION_ID",
+    "CLAUDE_CODE_SIMPLE",
+    "CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+    "CLAUDE_CODE_TERMINAL_MCP_TOOLS",
+    "CLAUDE_CODE_USER_EMAIL",
+    "CLAUDE_PID",
+    "CLAUDE_PREVIEW_CLASSIFIER_FLOOR"
+  ],
+  "status": "ran",
+  "broker_exit_code": 2,
+  "result_status": "failed",
+  "jev_api_cost_usd": 0.0021722819999999998,
+  "audit": {
+    "ok": true,
+    "issues": [],
+    "evidence": {
+      "status": "failed",
+      "route": "broad_or_uncertain",
+      "task_hash": "f5f9d6cb39e342332ce5b28cfcbed9e3746ae42b46ef2e97f5031141ca316bb2",
+      "source_hashes": {
+        "request": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+        "context": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+        "outstanding": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+        "brief": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465"
+      },
+      "policy_hash": "9fc5fa28de04579c2f54f0e2aec98607d938e38f0571c945329357cd3e365a12",
+      "run_config_policy_hash": "9fc5fa28de04579c2f54f0e2aec98607d938e38f0571c945329357cd3e365a12",
+      "result_sha256": "6a62fdbc88b31b8736ec153df1fa562142d9991fb4a3bddaeac5b2393d6727b0",
+      "journal_sha256": "9e89260c403e10d5d8aaaeb4b4b5f64a7f55a240114b1e89a97b342409e96003",
+      "permits_sha256": "e7f0f85a485140da93c2ca31c21e7d8d665467ca257c279920386345a518696a",
+      "usage_log_sha256": "85d835ddcaba8b377a3fd0952bd8920123b2fb3a917299deaf2d9b2258d9d112",
+      "jev_calls": 13,
+      "jev_request_ids": [
+        "gen-dec-1792180108-izBKXyR7js6CRheg0Ylu",
+        "gen-dec-1792180109-qD87fnHDpr1cpjnG36RI",
+        "gen-dec-1792180109-f3swgZIYVk8ypD8leOsx",
+        "gen-dec-1792180137-0li0wG8rnoCx59pwQhnN",
+        "gen-dec-1792180138-DFFcZysIclC3AQ5zoUrl",
+        "gen-dec-1792180168-Baqzgc5ZwtO734Ck8P6j",
+        "gen-dec-1792180168-QeKsDy4f9oUuAHrIEicN",
+        "gen-dec-1792180192-fnOu3RsL1SddBrQiSGdV",
+        "gen-dec-1792180193-vDbORqLk6NYHwQPu4QcD",
+        "gen-dec-1792180212-E7x7qLUz3igyPMODOjqs",
+        "gen-dec-1792180213-ha6uX6GxCqq4uZYFOFXW",
+        "gen-dec-1792180233-BbiJZ8E5ttA9HX4gaVn6",
+        "gen-dec-1792180233-DzMZm7oV8P2Bk3GO3dzj"
+      ],
+      "jev_api_cost_usd": 0.0021722819999999998,
+      "resumed_calls_carried": 0,
+      "frontier_calls": [
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-opus-5",
+          "actual_model": "claude-opus-5",
+          "identity_verification": "reported_match",
+          "session_id": "1ab87831-42c4-4fe4-bf48-dc44c37974ff",
+          "permit_id": "4ae4c9f7d8e043e794838d4ecf5fd447",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-sonnet-5",
+          "actual_model": "claude-sonnet-5",
+          "identity_verification": "reported_match",
+          "session_id": "d8c2d38d-37ae-4e55-a0e6-02c4396aef6f",
+          "permit_id": "0bd7b1ad281e4cd4b2d1ccd363174381",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-sonnet-5",
+          "actual_model": "claude-sonnet-5",
+          "identity_verification": "reported_match",
+          "session_id": "b05095bb-07cc-47b2-996c-1f956f43afe4",
+          "permit_id": "5c57a5d3e7194a85a9875a2b76d4de59",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-sonnet-5",
+          "actual_model": "claude-sonnet-5",
+          "identity_verification": "reported_match",
+          "session_id": "e878ecec-9db9-43ed-958e-36f1be73658b",
+          "permit_id": "57f61f734fbb44a2be3fd58095b06e1a",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-sonnet-5",
+          "actual_model": "claude-sonnet-5",
+          "identity_verification": "reported_match",
+          "session_id": "5aff7675-bad6-4794-aa75-e24b019baf7f",
+          "permit_id": "4d2453abd38f4b9c94b8352b6005a878",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        }
+      ],
+      "permits_consumed": 5,
+      "route_coverage": "unverified"
+    }
+  },
+  "expectation": {
+    "met": false,
+    "reasons": [
+      "run_not_complete:failed"
+    ]
+  }
+}
