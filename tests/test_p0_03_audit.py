@@ -45,21 +45,27 @@ def short_spec():
     return spec
 
 
-def build_run(folder: Path, *, judge=None, gate_policy='recovery', spec=SPEC) -> Path:
+def build_run(folder: Path, *, judge=None, gate_policy='recovery', spec=SPEC, config=CONFIG,
+              adapter=None) -> Path:
     """A complete run whose result.json mirrors what broker main() writes."""
     out = folder / 'run'
     authority = PermitAuthority(folder / 'permits.jsonl')
-    provider = ClaudeCodeProvider(authority, adapter=SessionCodex())
+    provider = ClaudeCodeProvider(authority, adapter=adapter or SessionCodex())
     broker = NativeTransitionBroker(PermittedAdapter(provider, authority), judge or RecoveryJev(),
-                                    CONFIG, out, gate_policy=gate_policy, permit_authority=authority)
+                                    config, out, gate_policy=gate_policy, permit_authority=authority)
     result = broker.run(spec)
     assert result['status'] == 'complete', result['status']
     shutil.move(str(folder / 'permits.jsonl'), str(out / 'permits.jsonl'))
     jev = [c for c in result['calls'] if c['role'] == 'jev']
-    result['jev_provider_events'] = [{'usage': c['usage']} for c in jev]
+    result['jev_provider_events'] = [{'id': 'call-%d' % (i + 1), 'role': 'jev', 'status': 'ok',
+                                      'provider_request_id': 'gen-%d' % i, 'usage': c['usage']}
+                                     for i, c in enumerate(jev)]
+    with (out / 'usage.jsonl').open('w', encoding='utf-8') as stream:
+        for event in result['jev_provider_events']:
+            stream.write(json.dumps(event) + '\n')
     result['jev_api_cost_usd'] = sum(c['usage']['cost'] for c in jev) if jev else None
     result['route_coverage'] = {'status': 'skipped'}
-    result['config_policy_hash'] = CONFIG.policy_hash
+    result['config_policy_hash'] = config.policy_hash
     (out / 'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
     return out
 
@@ -173,8 +179,8 @@ class RecoveryRunTests(Base):
     def test_route_preflight_failed_result_is_not_flagged(self):
         self.save({'status': 'route_preflight_failed', 'route': 'broad_or_uncertain', 'answer': None,
                    'calls': [], 'config_policy_hash': CONFIG.policy_hash})
-        (self.run_dir / 'permits.jsonl').unlink()
-        (self.run_dir / 'journal.jsonl').unlink()
+        for name in ('permits.jsonl', 'journal.jsonl', 'usage.jsonl'):
+            (self.run_dir / name).unlink()
         self.assertEqual(self.issues(), [])
 
     # Config binding.
@@ -261,6 +267,30 @@ class RecoveryRunTests(Base):
     def test_receipt_without_cost_makes_cap_unverifiable(self):
         self.assertIn('cumulative_cap_unverifiable:receipt_without_cost', self.issues(self.capped(1.0)))
 
+    def test_costed_non_frontier_receipt_counts_toward_cap(self):
+        # PermitAuthority sums every costed receipt, so the auditor must too.
+        self.set_receipt_costs([0.1, 0.1, 0.1, 0.1])
+        def transform(events):
+            first = next(i for i, e in enumerate(events) if e['kind'] == 'permit_issued')
+            spend = [{'kind': 'permit_issued', 'permit_id': 'r1', 'capability': 'retrieval.read',
+                      'scope_hash': 'x', 'basis': {'kind': 'jev_decision'}},
+                     {'kind': 'permit_consumed', 'permit_id': 'r1', 'scope_hash': 'x'},
+                     {'kind': 'permit_receipt', 'permit_id': 'r1', 'status': 'ok', 'cost_usd': 5.0}]
+            return events[:first] + spend + events[first:]
+        rewrite_ledger(self.run_dir / 'permits.jsonl', transform)
+        self.assertIn('permit_issued_past_cumulative_cap', self.issues(self.capped(1.0)))
+
+    def test_non_frontier_receipt_without_cost_keeps_cap_verifiable(self):
+        self.set_receipt_costs([0.1, 0.1, 0.1, 0.1])
+        config = self.capped(1.0)
+        def transform(events):
+            return events + [{'kind': 'permit_issued', 'permit_id': 'r1', 'capability': 'retrieval.read',
+                              'scope_hash': 'x', 'basis': {'kind': 'jev_decision'}},
+                             {'kind': 'permit_consumed', 'permit_id': 'r1', 'scope_hash': 'x'},
+                             {'kind': 'permit_receipt', 'permit_id': 'r1', 'status': 'ok', 'cost_usd': None}]
+        rewrite_ledger(self.run_dir / 'permits.jsonl', transform)
+        self.assertEqual(self.issues(config), [])
+
     # Release audits.
 
     def test_answer_without_complete_status_is_flagged(self):
@@ -286,6 +316,17 @@ class RecoveryRunTests(Base):
         result['events'] = result['events'][:-1]
         self.save(result)
         self.assertIn('journal_differs_from_result_events', self.issues())
+
+    def test_corrupt_result_is_reported_not_raised(self):
+        (self.run_dir / 'result.json').write_text('{"status": ', encoding='utf-8')
+        report = audit_run(self.run_dir, CONFIG)
+        self.assertIn('result_unreadable:JSONDecodeError', report['issues'])
+        self.assertEqual(report['evidence']['permits_consumed'], 4)
+
+    def test_corrupt_journal_is_reported_not_raised(self):
+        with (self.run_dir / 'journal.jsonl').open('a', encoding='utf-8') as stream:
+            stream.write('{"kind": \n')
+        self.assertIn('journal_unreadable:JSONDecodeError', self.issues())
 
     def test_missing_result_is_flagged_and_ledger_still_audited(self):
         (self.run_dir / 'result.json').unlink()
@@ -335,6 +376,39 @@ class RecoveryRunTests(Base):
         result['accounting']['frontier_input_tokens'] = 0
         self.save(result)
         self.assertIn('frontier_token_totals_mismatch', self.issues())
+
+    def test_jev_request_ids_are_collected(self):
+        events = self.result()['jev_provider_events']
+        evidence = audit_run(self.run_dir, CONFIG)['evidence']
+        self.assertTrue(events)
+        self.assertEqual(evidence['jev_request_ids'], ['gen-%d' % i for i in range(len(events))])
+        self.assertTrue(evidence['usage_log_sha256'])
+
+    def test_jev_event_missing_from_usage_log_is_flagged(self):
+        path = self.run_dir / 'usage.jsonl'
+        path.write_text(''.join(path.read_text(encoding='utf-8').splitlines(keepends=True)[:-1]),
+                        encoding='utf-8')
+        self.assertIn('jev_usage_log_mismatch', self.issues())
+
+    def test_jev_cost_rewritten_in_result_only_is_flagged(self):
+        result = self.result()
+        result['jev_provider_events'][0]['usage']['cost'] = 0.0
+        result['jev_api_cost_usd'] = sum(e['usage']['cost'] for e in result['jev_provider_events'])
+        self.save(result)
+        self.assertEqual(self.issues(), ['jev_usage_log_mismatch'])
+
+    def test_missing_usage_log_with_jev_events_is_flagged(self):
+        (self.run_dir / 'usage.jsonl').unlink()
+        self.assertIn('jev_usage_log_missing', self.issues())
+
+    def test_cli_refuses_host_and_worker_family_mismatch(self):
+        config = self.run_dir.parent / 'config.json'
+        config.write_text(json.dumps({'worker_family': 'gpt6'}), encoding='utf-8')
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            with self.assertRaises(SystemExit) as raised:
+                main([str(self.run_dir), '--config', str(config), '--host', 'claude'])
+        self.assertEqual(raised.exception.code, 2)
+        self.assertIn('host_and_worker_family_mismatch', err.getvalue())
 
     def test_cli_exit_codes(self):
         with contextlib.redirect_stdout(io.StringIO()):

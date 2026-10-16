@@ -56,10 +56,20 @@ Evidence collected: status, task hash, source hashes, policy hash, SHA-256 of `r
 7. Weak tests: added the missing cases; mutation run catches all 12 mutants, including the `>=` cap boundary.
 8-12. Route-preflight results no longer flagged; Jev overspend is checked on known costs even when another event is unknown; journal is compared with the result's events and known token totals are recomputed; the order audit also runs on unreleased broad-route runs; a missing `result.json` is reported (`result_missing`) and the ledger is still audited.
 
+## 4b. QA round 2 (17 October 2026) and fixes
+
+1. **MED:** the cap replay summed only `frontier.run` receipts, while `PermitAuthority` sums every costed receipt and refuses every capability. A costed retrieval/MCP receipt could push the ledger past the cap unseen. The auditor now mirrors the authority; only frontier receipts must carry a cost. Non-finite costs are ignored as the authority ignores them on replay.
+2. **MED:** a corrupt `result.json` or `journal.jsonl` raised a traceback instead of a report. Now reported as `result_unreadable:*` / `journal_unreadable:*`, and the ledger is still audited.
+3. **LOW:** the CLI silently overrode `worker_family` from `--config`; it now refuses a host/family mismatch exactly as the broker does.
+4. Closed a known limit: Jev events in `result.json` are cross-checked against the gateway's `usage.jsonl` (id, status, request id, cost): `jev_usage_log_missing` / `jev_usage_log_mismatch`. Jev request IDs and the `usage.jsonl` SHA-256 are in the evidence.
+5. Checked and not a defect: Claude adapter refusals before launch are recorded `not_launched` (`ClaudeCliError` inherits `ran = False`).
+
+Tests: 44 in this file (9 new); the new cap test fails when only frontier receipts are summed.
+
 ## 5. Known limits
 
 - **Trust model:** the auditor catches broker bugs and accidental corruption, not deliberate rewriting. The ledger chain can be rebuilt and `result.json` is read as written; the recorded hashes mean something only once committed with the evidence bundle in slice 3c.
-- Jev events are not yet cross-checked against the gateway's `usage.jsonl`; Jev request IDs and billing channel are not in the evidence yet (P0-03 req. 3, slice 3b/3c).
+- Billing channel (subscription vs API key) is recorded by the slice 3b smoke runner's preflight, not by the auditor.
 - "Zero unauthorized calls" is proven by permit binding for successful calls; a failed call that launched has no `permit_id` on its record, so it is covered only by the count check.
 - Runs saved before this slice have no `permit_id` or `config_policy_hash` and will be flagged; the auditor targets new P0-03 runs.
 - Codex runs are not exercised (Codex is out of scope for P0-03 V1).
@@ -68,6 +78,6 @@ Evidence collected: status, task hash, source hashes, policy hash, SHA-256 of `r
 ## 6. Decision
 
 - `scope`: P0-03 slice 3a.
-- `decision`: **PASS pending QA**.
+- `decision`: **PASS** after QA round 2 fixes (full offline suite 711 pass, 5 skips).
 
 *CIDM architecture and research by Ken Caber (Kenneth Vic A. Caber).*

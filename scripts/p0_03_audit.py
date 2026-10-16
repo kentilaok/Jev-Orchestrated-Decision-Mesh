@@ -10,6 +10,7 @@ folder and recomputes, without trusting the run's own audit fields:
   the source run's ledger and are reported, not bound here);
 - route-specific release audits: order + native audits for broad routes, the
   single pinned worker and hard checks for the short route;
+- Jev events in `result.json` match the gateway's own `usage.jsonl`;
 - Jev spend within `max_usd`, no permit issued after the cumulative cap was hit,
   and a cap that cannot be verified (frontier receipt without cost) is flagged;
 - usage not reported stays unknown (None), never summed as zero.
@@ -22,6 +23,7 @@ Exit 0 when no issue is found, 1 otherwise. Offline only.
 import argparse
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -44,13 +46,29 @@ def _known_tokens(usage) -> bool:
 
 
 def _is_cost(value) -> bool:
-    return type(value) in (int, float) and value >= 0
+    return type(value) in (int, float) and math.isfinite(value) and value >= 0
 
 
 def _read_jsonl(path: Path) -> list:
     if not path.is_file():
         return []
     return [json.loads(line) for line in path.read_text(encoding='utf-8').splitlines() if line.strip()]
+
+
+def _read_result(folder: Path, issues: list) -> dict:
+    path = folder / 'result.json'
+    if not path.is_file():
+        issues.append('result_missing')
+        return {}
+    try:
+        result = json.loads(path.read_text(encoding='utf-8'))
+    except (UnicodeError, ValueError) as error:
+        issues.append('result_unreadable:' + type(error).__name__)
+        return {}
+    if not isinstance(result, dict):
+        issues.append('result_unreadable:not_an_object')
+        return {}
+    return result
 
 
 def _audit_permits(folder, result, frontier, config, issues) -> int:
@@ -85,15 +103,17 @@ def _audit_permits(folder, result, frontier, config, issues) -> int:
             issues.append('ok_call_permit_not_consumed:' + str(permit_id))
 
     # Cumulative cap: nothing issued once the receipted cost reached the cap.
+    # Mirrors PermitAuthority: every costed receipt counts and every capability
+    # is refused; only frontier receipts must carry a cost.
     if config.max_cumulative_usd is not None:
         spent = 0.0
         for event in permit_events:
             if event.get('kind') == 'permit_issued' and spent >= config.max_cumulative_usd:
                 issues.append('permit_issued_past_cumulative_cap')
-            if event.get('kind') == 'permit_receipt' and event.get('permit_id') in frontier_ids:
+            if event.get('kind') == 'permit_receipt':
                 if _is_cost(event.get('cost_usd')):
                     spent += event['cost_usd']
-                else:
+                elif event.get('permit_id') in frontier_ids:
                     issues.append('cumulative_cap_unverifiable:receipt_without_cost')
     return len(consumed)
 
@@ -102,8 +122,12 @@ def _audit_journal(folder, result, resumed, issues):
     events = result.get('events')
     if not events:
         return
-    journal = [e for e in _read_jsonl(folder / 'journal.jsonl')
-               if not str(e.get('kind', '')).startswith('arsenal_shadow')]
+    try:
+        journal = [e for e in _read_jsonl(folder / 'journal.jsonl')
+                   if not str(e.get('kind', '')).startswith('arsenal_shadow')]
+    except (UnicodeError, ValueError, AttributeError) as error:
+        issues.append('journal_unreadable:' + type(error).__name__)
+        return
     if resumed:
         if not journal or events[len(events) - len(journal):] != journal:
             issues.append('journal_not_tail_of_result_events')
@@ -147,6 +171,29 @@ def _audit_release(result, calls, frontier, config, issues):
             pass
 
 
+def _jev_key(event):
+    usage = event.get('usage') if isinstance(event.get('usage'), dict) else {}
+    return (event.get('id'), event.get('status'), event.get('provider_request_id'), usage.get('cost'))
+
+
+def _audit_usage_log(folder, result, issues):
+    """The gateway appends every Jev call to usage.jsonl as it happens; result.json
+    must report the same calls (id, status, request id, cost)."""
+    events = result.get('jev_provider_events') or []
+    path = folder / 'usage.jsonl'
+    if not path.is_file():
+        if events:
+            issues.append('jev_usage_log_missing')
+        return
+    try:
+        logged = [e for e in _read_jsonl(path) if e.get('role') == 'jev']
+    except (UnicodeError, ValueError, AttributeError) as error:
+        issues.append('jev_usage_log_unreadable:' + type(error).__name__)
+        return
+    if [_jev_key(e) for e in logged] != [_jev_key(e) for e in events]:
+        issues.append('jev_usage_log_mismatch')
+
+
 def _audit_spend(result, frontier, config, issues):
     jev_events = result.get('jev_provider_events') or []
     jev_cost = result.get('jev_api_cost_usd')
@@ -181,11 +228,7 @@ def _audit_spend(result, frontier, config, issues):
 def audit_run(folder: Path, config: RunConfig) -> dict:
     folder = Path(folder)
     issues = []
-    if (folder / 'result.json').is_file():
-        result = json.loads((folder / 'result.json').read_text(encoding='utf-8'))
-    else:
-        issues.append('result_missing')
-        result = {}
+    result = _read_result(folder, issues)
     run_hash = result.get('config_policy_hash')
     if result and run_hash is None:
         issues.append('config_policy_hash_missing')
@@ -201,6 +244,7 @@ def audit_run(folder: Path, config: RunConfig) -> dict:
         _audit_journal(folder, result, resumed, issues)
         _audit_release(result, calls, frontier, config, issues)
         _audit_spend(result, frontier, config, issues)
+        _audit_usage_log(folder, result, issues)
 
     evidence = {
         'status': result.get('status'),
@@ -212,7 +256,9 @@ def audit_run(folder: Path, config: RunConfig) -> dict:
         'result_sha256': _sha256(folder / 'result.json'),
         'journal_sha256': _sha256(folder / 'journal.jsonl'),
         'permits_sha256': _sha256(folder / 'permits.jsonl'),
+        'usage_log_sha256': _sha256(folder / 'usage.jsonl'),
         'jev_calls': len(result.get('jev_provider_events') or []),
+        'jev_request_ids': [e.get('provider_request_id') for e in result.get('jev_provider_events') or []],
         'jev_api_cost_usd': result.get('jev_api_cost_usd'),
         'resumed_calls_carried': sum(bool(c.get('carried_from_checkpoint')) for c in calls),
         'frontier_calls': [{'role': c.get('role'), 'status': c.get('status'),
@@ -243,6 +289,8 @@ def main(argv=None) -> int:
     if args.max_cumulative_usd is not None:
         settings['max_cumulative_usd'] = args.max_cumulative_usd
     family = 'claude' if args.host == 'claude' else 'gpt6'
+    if settings.get('worker_family', family) != family:
+        parser.error('host_and_worker_family_mismatch')  # the broker refuses this pair too
     report = audit_run(args.run_dir, RunConfig.from_dict({**settings, 'worker_family': family}))
     print(json.dumps(report, indent=2))
     return 0 if report['ok'] else 1
