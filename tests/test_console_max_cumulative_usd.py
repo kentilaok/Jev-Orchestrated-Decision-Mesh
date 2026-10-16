@@ -176,6 +176,7 @@ class ConsoleResumeKeepsOriginalCapTests(unittest.TestCase):
                 return console.start_resume_job("r1", {"confirm_live_spend": True, "operator": "ken"}, cfg)
             finally:
                 console.JOBS.start = real_start
+                self.resume_dirs = [p.name for p in (td / "runs").iterdir() if "-resume-" in p.name]
 
     def test_resume_uses_checkpoint_cap_not_console_cap(self):
         argv = self._resume_argv({"max_cumulative_usd": 1.0})
@@ -193,6 +194,7 @@ class ConsoleResumeKeepsOriginalCapTests(unittest.TestCase):
             with self.subTest(policy=policy):
                 with self.assertRaises(ValueError):
                     self._resume_argv(policy)
+                self.assertEqual(self.resume_dirs, [])
 
 
 class ConsoleUiTests(unittest.TestCase):

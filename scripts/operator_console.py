@@ -980,7 +980,10 @@ def start_resume_job(name: str, payload: dict, config: dict) -> dict:
     policy = bundle.get("policy") if isinstance(bundle, dict) else None
     if not isinstance(policy, dict):
         raise ValueError("checkpoint has no policy to resume with")
-    cap = _merge_config({"max_cumulative_usd": policy.get("max_cumulative_usd")})["max_cumulative_usd"]
+    try:
+        cap = _merge_config({"max_cumulative_usd": policy.get("max_cumulative_usd")})["max_cumulative_usd"]
+    except ValueError as error:
+        raise ValueError(f"checkpoint policy: {error}") from None
     config = {**config, "max_cumulative_usd": cap}
     run_dir = _runs_root(config) / (source_dir.name + "-resume-" + uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)

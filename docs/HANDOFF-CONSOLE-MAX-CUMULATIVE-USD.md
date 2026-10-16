@@ -50,7 +50,7 @@ The broker-side RunConfig override order of precedence is explicit:
 ## 4a. QA round 1 (commit 6e63b8d: FAIL) and fixes
 
 1. **Bad input silently cleared the cap.** A number input reports unparseable text as `""`, which the Save handler sent as `null`. Fix: reject `validity.badInput` and non-positive/non-finite values in the browser before POST.
-2. **Changing the cap broke Console resume.** The cap is part of `policy_hash`, so resuming with the Console's current cap raised `resume_config_mismatch`. Fix: `start_resume_job` passes the cap stored in `checkpoint.json` `policy.max_cumulative_usd` Pre-2b checkpoints cannot be resumed at all: slice 2b added the field to `RunConfig.to_dict()`, which changed `policy_hash`. That predates this slice.
+2. **Changing the cap broke Console resume.** The cap is part of `policy_hash`, so resuming with the Console's current cap raised `resume_config_mismatch`. Fix: `start_resume_job` passes the cap stored in `checkpoint.json` `policy.max_cumulative_usd`. Pre-2b checkpoints cannot be resumed at all: slice 2b added the field to `RunConfig.to_dict()`, which changed `policy_hash`. That predates this slice.
 3. **End-to-end tests did not test `main()`.** They copied the override logic. Replaced with tests that drive `main()`; mutation-checked (deleting the override or the resume fix fails 5 tests).
 4. Help text now says the cap is per launch (each resume starts a fresh ledger at $0), that Claude cost is an API-equivalent estimate, and that Jev/OpenRouter credits are bounded separately.
 
