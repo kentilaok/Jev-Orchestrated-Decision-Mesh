@@ -171,6 +171,10 @@ th{color:#8d98a9;font-weight:600;font-size:11px;letter-spacing:.04em;text-transf
       <textarea id="secretEnvNames" rows="3" style="width:100%;font-family:monospace" placeholder="EXTRA_SECRET&#10;MY_INTERNAL_TOKEN"></textarea>
     </label>
     <p class="helper" style="margin-top:6px">These are added to the hardcoded CLI-adapter scrub set (OPENROUTER_API_KEY, OPENAI_API_KEY, CODEX_API_KEY, GITHUB_TOKEN, GH_TOKEN; plus TYPESAFE_API_KEY on Claude). Names must be non-empty and must not contain <code>=</code>; comparison is case-insensitive. Default empty keeps only the hardcoded set.</p>
+    <label style="display:block;margin-top:12px">Cumulative spend cap (USD, blank to disable)
+      <input id="maxCumulativeUsd" type="number" step="0.01" min="0.01" style="width:200px;font-family:monospace" placeholder="e.g. 1.50">
+    </label>
+    <p class="helper" style="margin-top:6px">Once the sum of per-permit <code>cost_usd</code> across the run's permit ledger meets or exceeds this cap, new permits are refused with <code>cumulative_cap_exceeded</code>. The permit that pushed over still issues/consumes/receipts; only the next one is blocked. Codex cost is unknown today (adapter does not emit cost), so this cap tracks Claude spend only until a later slice prices Codex calls.</p>
     <div class="row" style="margin-top:12px"><button class="button primary" id="saveSecurity">Save</button></div>
   </article>
   <article class="panel"><div class="panel-head"><div><p class="eyebrow">Pending approvals</p><h2>Strong-permit queue</h2></div></div>
@@ -294,6 +298,7 @@ async function loadSecurity(){try{
   $('requireActionApproval').checked=!!s.require_action_approval;
   $('trustedMcpServers').value=(s.trusted_mcp_servers||[]).join('\n');
   $('secretEnvNames').value=(s.secret_env_names||[]).join('\n');
+  $('maxCumulativeUsd').value=(s.max_cumulative_usd==null?'':s.max_cumulative_usd);
   const a=await api('/api/approvals');
   const row=r=>'<div class="card" style="margin-bottom:8px"><div class="row"><strong>'+esc(r.token.slice(0,10))+'…</strong>'+chip(r.status,r.status==='approved'?'good':r.status==='rejected'?'bad':'warn')+'</div><p class="muted">thread '+esc(r.thread_id)+' · '+esc(r.provider||'')+' · '+esc(r.gate_policy||'')+'</p><p>'+esc(r.goal||'')+'</p>'+(r.status==='pending'?'<div class="row"><button class="button primary" data-approve="'+esc(r.token)+'">Approve</button><button class="button secondary" data-reject="'+esc(r.token)+'">Reject</button></div>':'<p class="muted">decided by '+esc(r.operator||'—')+'</p>')+'</div>';
   $('pendingApprovals').innerHTML=a.pending.length?a.pending.map(row).join(''):'<div class="empty">No pending approvals.</div>';
@@ -317,7 +322,9 @@ $('saveSkillsSource').onclick=()=>save({skills_source:$('skillsSource').value});
 $('saveSecurity').onclick=async()=>{try{
   const trusted=$('trustedMcpServers').value.split(/[,\n]/).map(s=>s.trim()).filter(Boolean);
   const secrets=$('secretEnvNames').value.split(/[,\n]/).map(s=>s.trim()).filter(Boolean);
-  await save({content_policy:$('contentPolicy').value,require_action_approval:$('requireActionApproval').checked,trusted_mcp_servers:trusted,secret_env_names:secrets});
+  const capRaw=$('maxCumulativeUsd').value.trim();
+  const max_cumulative_usd=capRaw===''?null:parseFloat(capRaw);
+  await save({content_policy:$('contentPolicy').value,require_action_approval:$('requireActionApproval').checked,trusted_mcp_servers:trusted,secret_env_names:secrets,max_cumulative_usd:max_cumulative_usd});
   loadSecurity();
 }catch(e){alert(e.message)}};
 $('openSkillsFolder').onclick=async()=>{try{await post('/api/skills/open',{path:$('skillsSource').value})}catch(e){alert(e.message)}};
