@@ -135,7 +135,7 @@ def _write_json(path: Path, value) -> None:
 
 def main(argv=None, *, env=None, launch=subprocess.run, clock=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument('--task', type=Path, default=ROOT / 'examples' / 'native-project.request.json')
+    parser.add_argument('--task', type=Path, default=ROOT / 'examples' / 'p0-03-smoke.request.json')
     parser.add_argument('--config', type=Path, help='RunConfig JSON; worker_family must be claude')
     parser.add_argument('--out-root', type=Path, default=ROOT / 'runs' / 'p0-03-smoke')
     parser.add_argument('--max-usd', type=float, default=SMOKE_CEILING_USD, help='Jev cap (RunConfig.max_usd)')

@@ -8,7 +8,7 @@
 
 `python scripts/p0_03_smoke.py (--dry-run | --live) [--negative low-budget|wrong-model|provider-unavailable]`
 
-- One capped run of the broker with Jev via OpenRouter and the worker via the Claude CLI (`--host claude --gate-policy recovery`). Default task: `examples/native-project.request.json`.
+- One capped run of the broker with Jev via OpenRouter and the worker via the Claude CLI (`--host claude --gate-policy recovery`). Default task: `examples/p0-03-smoke.request.json` (the synthetic production-records task of the earlier GPT-6 live runs, as a native request with no outstanding stages; see slice 3c §4).
 - Both caps default to, and may not exceed, `SMOKE_CEILING_USD = 1.0`: `RunConfig.max_usd` (Jev) and `max_cumulative_usd` (Claude permit ledger).
 - **Preflight, no model calls:** task validates; Jev model is the pinned `typesafe/jev-1.13` and the worker family is Claude; both caps within the ceiling; `OPENROUTER_API_KEY` present (reported as a boolean only); Claude CLI installed and signed in, with billing channel, auth method, subscription type and the `ANTHROPIC_API_KEY` warning recorded.
 - `--dry-run` prints the preflight and the exact broker command; nothing is created or launched.

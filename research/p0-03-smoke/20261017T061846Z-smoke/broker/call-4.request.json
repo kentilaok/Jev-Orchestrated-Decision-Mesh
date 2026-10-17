@@ -1,0 +1,182 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "records",
+        "title": "Synthetic production records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "records"
+        ],
+        "data": {
+          "summary": "Report production defects per 1,000 items, excluding trial records, with source support.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+            "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+          }
+        },
+        "artifact_hash": "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+        "text": "Report production defects per 1,000 items, excluding trial records, with source support."
+      },
+      {
+        "id": "records",
+        "hash": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5",
+        "text": "segment A, kind production, items 240, defects 12\nsegment B, kind production, items 160, defects 8\nsegment T, kind trial, items 100, defects 30"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8"
+      }
+    ],
+    "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+    "selected_worker": {
+      "id": "sonnet_low",
+      "model": "anthropic/claude-sonnet-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Production defect rate: combining segments A and B (production records only, trial segment T excluded), total items = 240 + 160 = 400, total defects = 12 + 8 = 20. Defect rate = 20/400 \u00d7 1000 = 50 defects per 1,000 items.\n\nNote: the accepted_parent artifact's data.parent_hashes field is empty ([]), but the required_parent_hashes field specifies a hash (\"fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8\") that is not present in that list. This parent-hash chain cannot be verified from the evidence given and is flagged as unresolved rather than silently assumed.",
+      "data": {
+        "summary": "Production defect rate computed as 50 per 1,000 items (20 defects / 400 production items), excluding the trial segment T. Parent hash chain could not be verified.",
+        "claims": [
+          "Segment A (production): 240 items, 12 defects \u2014 from records",
+          "Segment B (production): 160 items, 8 defects \u2014 from records",
+          "Segment T (trial): 100 items, 30 defects \u2014 excluded per request instruction to exclude trial records",
+          "Total production items = 240 + 160 = 400",
+          "Total production defects = 12 + 8 = 20",
+          "Defect rate = 20/400 * 1000 = 50 defects per 1,000 items",
+          "Request asks specifically for production defects per 1,000 items excluding trial records \u2014 satisfied by this calculation"
+        ],
+        "unresolved": [
+          "required_parent_hashes lists 'fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8', but accepted_parent.data.parent_hashes is empty \u2014 the predecessor hash cannot be confirmed from provided evidence",
+          "No source hash for this unit's own output could be verified against required_source_hashes beyond matching the literal record/request text given"
+        ],
+        "parent_hashes": [
+          "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8"
+        ],
+        "source_hashes": {
+          "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+          "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+        }
+      },
+      "source_ids": [
+        "request",
+        "records"
+      ],
+      "five_scores": [
+        4,
+        4,
+        3,
+        4,
+        3
+      ],
+      "self_probability": 0.75
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 27,
+      "jev_tokens_remaining": 43569,
+      "jev_api_usd_remaining": 0.999737122,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "9e25507a02a3fbb966cd61a4a2f2c2d3089813522f9a2116a41141b4290700d9",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "9e25507a02a3fbb966cd61a4a2f2c2d3089813522f9a2116a41141b4290700d9",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}
