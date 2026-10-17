@@ -3,7 +3,7 @@
 **Branch:** `feature/p0-03-live-smoke`, stacked on PR #25. Retarget to `main` after #25 merges.
 **Parent gate:** P0-03 (live provider execution and accounting).
 **Evidence level:** live. Jev `typesafe/jev-1.13` via OpenRouter; worker via Claude Code 2.1.296 (native `claude.exe`), signed in with a claude.ai Pro subscription.
-**Evidence:** `research/p0-03-smoke/` (five run folders, produced by `scripts/p0_03_smoke.py`; no secrets found by a key/token scan).
+**Evidence:** `research/p0-03-smoke/` (six run folders, produced by `scripts/p0_03_smoke.py`; no secrets found by a key/token scan).
 
 ## 1. Results
 
@@ -14,8 +14,11 @@
 | `20261016T194816Z-low-budget` | broker runs, no paid call | gateway refused the first Jev call at admission; 0 Jev requests, 0 permits; audit clean | $0 |
 | `20261016T194827Z-smoke` (task `native-project`) | complete answer, clean audit | **halted, not complete**; audit clean | Jev $0.00217; Claude $0.271 API-equivalent (subscription usage, not billed) |
 | `20261017T061846Z-smoke` (task `p0-03-smoke`) | complete answer, clean audit | **halted, not complete**; audit clean | Jev $0.00212; Claude $0.311 API-equivalent |
+| `20261017T062818Z-smoke` (task `p0-03-smoke`, after the §4 fixes, commit `0799283`) | complete answer, clean audit | **complete**; every audit clean | Jev $0.00142; Claude $0.273 API-equivalent |
 
-All runs used policy hash `9fc5fa28de04579c…` (`max_usd = 1.0`, `max_cumulative_usd = 1.0`, `max_jev_tokens = 50000`).
+The first four runs used policy hash `9fc5fa28de04579c…` (`max_usd = 1.0`, `max_cumulative_usd = 1.0`, `max_jev_tokens = 50000`); the last used `d7237472704f8ed9…` (same caps, `max_jev_tokens = 100000`).
+
+**Run 3 (1 min 10 s, 06:28:19–06:29:28 UTC):** all five units forwarded on the first attempt with every applicable hard check passing; no repairs, replans or checker calls. 10 Jev calls (34,520 tokens), 4 Claude Opus low workers (identity `reported_match`, session IDs recorded, one consumed permit each), frontier tokens 50,958 in / 5,504 out. Released answer: "Verified: production defect rate is 50.0 defects per 1,000 items (20 defects / 400 items, segments A and B; trial segment T excluded). Sources: request, records." That is correct: (12 + 8) / (240 + 160) × 1000 = 50. Broker order, native and permit audits valid; offline re-audit of the committed copy clean, `result.json` hash `a0f263c9…` matching the run's report.
 
 The second run used `examples/p0-03-smoke.request.json`: the synthetic production-records task of the earlier GPT-6 live runs as a native request with no outstanding stages (the first run's task carries two stages its evidence cannot settle). It ran 14 Jev calls and 6 Claude workers (Sonnet low ×2, Opus low ×4) in 1 min 35 s, accepted `input`, `hidden1` and `hidden2`, and halted on `hidden3`. Its last Jev call chose `forward` (p 0.71) but took Jev tokens to 51,504, so the gateway rejected it.
 
@@ -47,15 +50,20 @@ Why it did not complete:
 
 - `scope`: P0-03 slice 3c.
 - **Execution, accounting and caps: PASS** on live evidence (permits bound, identities reported, costs reconciled, caps enforced, negatives refused with zero spend).
-- **End-to-end completion: FAIL** in both runs, for the reasons in §2b; not a broker or accounting defect.
-- Two runs only; the evidence is recorded as it happened. No further paid runs until the contract decision below.
+- **End-to-end completion: PASS** on run 3, after the three fixes below. Runs 1 and 2 failed for the reasons in §2b; they stay in the evidence as recorded.
+- Three paid smoke runs in total, combined spend: Jev $0.0057, Claude $0.855 API-equivalent (subscription usage, not billed).
 
-## 4. Open items (need Ken's decision; each changes the CIDM protocol or policy hash)
+## 4. Fixes applied (Ken approved, commit `0799283`)
 
-1. **Worker contract wording** (`produce()` prompt in `native_transition_broker.py`): state that `data.parent_hashes` must equal `required_parent_hashes` exactly and that `accepted_parent.data.parent_hashes` are not compared; and that `unresolved` is only for material open issues that block acceptance, with assumptions and caveats going in `claims`.
-2. **Check labels for intermediate units:** report `prior_units_resolved` / `output_has_no_unresolved` as not applicable instead of `true`. Audits and Jev's view need to agree on the representation.
-3. **`max_jev_tokens` for the Claude family** (for example 100,000; Jev cost stays near $0.0002 per call).
-4. Then re-run the smoke run, still capped at $1.
-5. Merge PR #25, then retarget this branch to `main`.
+1. **Worker contract** (`ARTIFACT_CONTRACT` in `native_transition_broker.py`, used by the project and short-route prompts): parent and source hashes must equal the required values, the parent's own `parent_hashes` are not compared, caveats go in `claims`, and `unresolved` lists only blocking issues and never hides one.
+2. **Applicable checks only:** intermediate units omit `prior_units_resolved` / `output_has_no_unresolved` instead of reporting them as passed; the output unit and short route keep them, and an unresolved output still blocks release.
+3. **Claude Jev budget:** with `worker_family = claude`, an untouched `max_jev_tokens` default becomes 100,000 (GPT-6 stays 50,000; an explicit value is kept).
+
+Tests: `tests/test_p0_03_contract.py` (6). Full offline suite 719 pass, 5 skips; all saved-evidence verifiers pass.
+
+## 5. Open items
+
+1. One run is a smoke test, not a benchmark: worker choice and Jev decisions vary between runs (see the GPT-6 runs). Repeated runs belong to P0-07.
+2. Merge PR #25, then retarget this branch to `main`.
 
 *CIDM architecture and research by Ken Caber (Kenneth Vic A. Caber).*
