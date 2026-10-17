@@ -94,6 +94,10 @@ class RunConfig:
                 object.__setattr__(self, "worker_model", family["tiers"]["sonnet"])
             if self.checker_model == "openai/gpt-6-sol":
                 object.__setattr__(self, "checker_model", family["checker"][0])
+            # Claude artifacts make Jev states about 1.8x larger than GPT-6 ones
+            # (P0-03 slice 3c), so the untouched Jev token default doubles.
+            if self.max_jev_tokens == 50000:
+                object.__setattr__(self, "max_jev_tokens", 100000)
         allowed = set(family["tiers"].values())
         if self.astra_explicitly_authorized:
             allowed.add("openai/gpt-6-astra")

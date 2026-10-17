@@ -27,6 +27,15 @@ PROJECT_UNITS = (
     Unit('hidden3', 'Reconcile', 'Check the proposed work against requirements, predecessors, and source evidence.'),
     Unit('output', 'Output', 'Deliver a concise supported result and state material unresolved issues.'),
 )
+# Worker artifact contract. Live Claude runs (P0-03 slice 3c) read the earlier
+# "preserve predecessor hashes, and disclose unresolved issues" as "copy the
+# parent's own parent_hashes" and "list every caveat", so both are stated exactly.
+ARTIFACT_CONTRACT = (
+    'Return only the structured artifact and cite source IDs. '
+    'Set data.parent_hashes to exactly required_parent_hashes and data.source_hashes to exactly '
+    'required_source_hashes; accepted_parent.data.parent_hashes belong to the parent and are not compared. '
+    'Put assumptions and caveats in claims. List in data.unresolved only material open issues that block '
+    'accepting this result, and leave it empty when there are none; never hide such an issue.')
 
 
 def validate_spec(spec):
@@ -367,13 +376,16 @@ class NativeTransitionBroker:
                 shape = False
         if not shape:
             return {'native_shape': False}
-        prior_unresolved = (any(packet['artifact']['data'].get('unresolved', [])
-                                for packet in parents) if output else False)
-        return {'native_shape': True,
-                'source_hashes_match': data['source_hashes'] == self._source_hashes(sources, sources),
-                'parent_hashes_match': data['parent_hashes'] == expected_parents,
-                'prior_units_resolved': not prior_unresolved if output else True,
-                'output_has_no_unresolved': not data['unresolved'] if output else True}
+        checks = {'native_shape': True,
+                  'source_hashes_match': data['source_hashes'] == self._source_hashes(sources, sources),
+                  'parent_hashes_match': data['parent_hashes'] == expected_parents}
+        # The resolution checks apply only to the released output; intermediate units
+        # omit them rather than report an unevaluated check as passed.
+        if output:
+            checks['prior_units_resolved'] = not any(packet['artifact']['data'].get('unresolved', [])
+                                                     for packet in parents)
+            checks['output_has_no_unresolved'] = not data['unresolved']
+        return checks
 
     def run(self, spec, resume=None):
         """Run one request; `resume` continues a persisted recovery checkpoint.
@@ -442,7 +454,7 @@ class NativeTransitionBroker:
                                  'goal': goal, 'context': context, 'sources': sources,
                                  'required_source_hashes': self._source_hashes(sources, sources),
                                  'required_parent_hashes': [],
-                                 'format': 'Return the requested structured artifact. State unresolved issues.'})
+                                 'format': ARTIFACT_CONTRACT})
                 short = self.config.short_route()
                 self._short_basis = {'kind': 'host_short_classification',
                                      'snapshot_hash': normalized['snapshot_hash'],
@@ -494,8 +506,7 @@ class NativeTransitionBroker:
                                          'required_parent_hashes': expected,
                                          'required_source_hashes': self._source_hashes(sources, sources),
                                          'repair_feedback': feedback,
-                                         'format': 'Return only the structured artifact. Cite source IDs, '
-                                                   'preserve predecessor hashes, and disclose unresolved issues.'})
+                                         'format': ARTIFACT_CONTRACT})
                         return self._codex('worker', worker_route['model'], worker_route['effort'],
                                            prompt, artifact_schema(sources))
                     def validate(unit, candidate, parents):
