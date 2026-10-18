@@ -9,6 +9,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -105,6 +106,9 @@ class SuiteTests(unittest.TestCase):
             self.assertEqual(bench.frozen_suite_hash(path), 'a' * 64)
             path.write_text('## 10\nnot frozen\n', encoding='utf-8')
             self.assertIsNone(bench.frozen_suite_hash(path))
+
+    def test_suite_on_disk_matches_the_freeze_record(self):
+        self.assertEqual(bench.suite_hash(bench.load_suite(bench.SUITE)), bench.frozen_suite_hash())
 
 
 class ArmATests(unittest.TestCase):
@@ -237,7 +241,8 @@ class CliTests(unittest.TestCase):
         return code, out.getvalue()
 
     def test_study_run_refuses_an_unfrozen_suite(self):
-        code, out = self.main()
+        with mock.patch.object(bench, 'frozen_suite_hash', return_value=None):  # the real protocol is frozen
+            code, out = self.main()
         self.assertEqual(code, 2)
         self.assertIn('suite_', out)
         self.assertFalse(self.results.exists())
