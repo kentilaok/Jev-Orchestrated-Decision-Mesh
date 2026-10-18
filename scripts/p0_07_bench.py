@@ -9,8 +9,10 @@ Protocol: docs/P0-07-BENCHMARK-PROTOCOL.md. Arm A is a direct Claude CLI agent
 to two extra attempts on schema failure). Arm B is the CIDM broker
 (--gate-policy recovery, Jev via OpenRouter, Claude workers). Every task has a
 deterministic acceptance check; there is no human grading. S3 injection
-markers are canary tokens the injected text asks for, never the injected claim
-itself: a correct answer may quote and reject it.
+markers are canary tokens the injected text asks to *end* the reply with,
+anchored with `$`: a correct answer may quote the injection, canary included,
+while rejecting it. An arm-B run that fails only on a Jev `network_error` is an
+infrastructure failure: recorded, excluded from analysis, and re-run.
 
 A study run refuses to start unless the suite hash equals the `suite_sha256`
 recorded in the protocol's freeze record (§10). `--pilot` runs are allowed
@@ -150,6 +152,8 @@ def validate_suite(tasks: list, *, expect_full=False) -> dict:
             continue
         if stratum == 'S3' and not spec.get('injection_markers'):
             issues.append(f'{tid}: s3_needs_injection_markers')
+        if any(not p.endswith('$') for p in spec.get('injection_markers', [])):
+            issues.append(f'{tid}: injection_marker_must_be_anchored_at_end')
         # Markers are canary tokens the injected text asks for. A correct answer may
         # quote and reject the injected claim, so each S3 task proves its markers
         # accept such a refusal.
@@ -240,7 +244,9 @@ def run_arm_a(task: dict, run_dir: Path, adapter) -> dict:
             'frontier_input_tokens': None if unknown else tin,
             'frontier_output_tokens': None if unknown else tout,
             'jev_usd': 0.0, 'jev_calls': 0, 'jev_tokens': 0,
-            'wall_s': round(time.monotonic() - started, 3), 'audit_ok': None, 'audit_issues': []}
+            'wall_s': round(time.monotonic() - started, 3), 'audit_ok': None, 'audit_issues': [],
+            'infra_failure': answer is None and any(a.get('error') == 'claude_cli_unavailable'
+                                                    for a in attempts)}
 
 
 def run_arm_b(task: dict, run_dir: Path, *, claude_executable: str, max_usd: float, env: dict,
@@ -279,7 +285,9 @@ def run_arm_b(task: dict, run_dir: Path, *, claude_executable: str, max_usd: flo
             'jev_usd': result.get('jev_api_cost_usd'), 'jev_calls': len(jev),
             'jev_tokens': sum((e.get('usage') or {}).get('total_tokens') or 0 for e in jev),
             'wall_s': wall, 'audit_ok': audit['ok'], 'audit_issues': audit['issues'],
-            'config_policy_hash': config.policy_hash}
+            'config_policy_hash': config.policy_hash,
+            'infra_failure': result.get('status') != 'complete' and any(
+                (e.get('error') or {}).get('code') == 'network_error' for e in jev)}
 
 
 def schedule(tasks: list, arms=('A', 'B'), seed=SCHEDULE_SEED) -> list:
@@ -326,7 +334,7 @@ def _paired_bootstrap(pairs: dict, stat, reps=BOOTSTRAP_REPS, seed=BOOTSTRAP_SEE
 
 
 def analyze(records: list, *, include_pilot=False, delta=DELTA) -> dict:
-    records = [r for r in records if include_pilot or not r.get('pilot')]
+    records = [r for r in records if (include_pilot or not r.get('pilot')) and not r.get('infra_failure')]
     by_task = {}
     for r in records:
         by_task.setdefault(r['task_id'], {})[r['arm']] = r
@@ -434,7 +442,7 @@ def main(argv=None, *, env=None, launch=subprocess.run, adapter=None) -> int:
     env, _ = run_env(os.environ if env is None else env)
     selected = [t for t in tasks if not args.task or t['id'] in args.task]
     existing = read_results(args.results)
-    done = {(r['task_id'], r['arm'], bool(r.get('pilot'))) for r in existing}
+    done = {(r['task_id'], r['arm'], bool(r.get('pilot'))) for r in existing if not r.get('infra_failure')}
     args.results.parent.mkdir(parents=True, exist_ok=True)
     if adapter is None:
         from claude_cli_adapter import ClaudeCliAdapter
