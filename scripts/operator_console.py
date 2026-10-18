@@ -69,6 +69,7 @@ DEFAULT_CONFIG = {
     "content_policy": "off",
     "require_action_approval": False,
     "secret_env_names": [],
+    "max_cumulative_usd": None,
 }
 
 
@@ -101,6 +102,16 @@ def _merge_config(raw: dict | None) -> dict:
             if not all(isinstance(x, str) and x and "=" not in x for x in value):
                 raise ValueError("secret_env_names entries must be non-empty strings without '='")
             data[key] = list(value)
+        elif key == "max_cumulative_usd":
+            if value is None:
+                data[key] = None
+            elif isinstance(value, bool) or type(value) not in (int, float):
+                raise ValueError("max_cumulative_usd must be null or a positive number")
+            else:
+                import math as _math
+                if not _math.isfinite(value) or value <= 0:
+                    raise ValueError("max_cumulative_usd must be null or a positive number")
+                data[key] = float(value)
         elif key in data:
             data[key] = value
     return data
@@ -619,6 +630,9 @@ def broker_argv(task_path: Path, out_dir: Path, provider: str, gate_policy: str,
         names = config.get("secret_env_names") or []
         if names:
             argv += ["--secret-env-names", ",".join(names)]
+        cap = config.get("max_cumulative_usd")
+        if cap is not None:
+            argv += ["--max-cumulative-usd", str(float(cap))]
     return argv
 
 
@@ -960,6 +974,17 @@ def start_resume_job(name: str, payload: dict, config: dict) -> dict:
     if checkpoint is None or not checkpoint.is_file() or not task.is_file():
         raise ValueError("run has no checkpoint or request to resume")
     previous = json.loads(result_path.read_text(encoding="utf-8"))
+    # The cap is part of the checkpoint's policy hash, so resume with the cap the
+    # run started with, not the Console's current value (else resume_config_mismatch).
+    bundle = json.loads(checkpoint.read_text(encoding="utf-8"))
+    policy = bundle.get("policy") if isinstance(bundle, dict) else None
+    if not isinstance(policy, dict):
+        raise ValueError("checkpoint has no policy to resume with")
+    try:
+        cap = _merge_config({"max_cumulative_usd": policy.get("max_cumulative_usd")})["max_cumulative_usd"]
+    except ValueError as error:
+        raise ValueError(f"checkpoint policy: {error}") from None
+    config = {**config, "max_cumulative_usd": cap}
     run_dir = _runs_root(config) / (source_dir.name + "-resume-" + uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
     shutil.copyfile(task, run_dir / "request.json")

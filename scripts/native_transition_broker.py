@@ -632,6 +632,17 @@ class NativeTransitionBroker:
         return result
 
 
+def _parse_positive_usd(raw: str) -> float:
+    try:
+        value = float(raw)
+    except (TypeError, ValueError):
+        raise argparse.ArgumentTypeError('max-cumulative-usd must be a positive finite number')
+    import math as _math
+    if not _math.isfinite(value) or value <= 0:
+        raise argparse.ArgumentTypeError('max-cumulative-usd must be a positive finite number')
+    return value
+
+
 def _parse_secret_env_names(raw: str) -> list:
     if not isinstance(raw, str):
         raise argparse.ArgumentTypeError('secret-env-names must be a string')
@@ -696,6 +707,10 @@ def _build_cli_parser() -> argparse.ArgumentParser:
                               'worker subprocess environment, in addition to the adapter default '
                               'secrets. Names are case-insensitive. Entries containing "=" or '
                               'empty entries are rejected.'))
+    parser.add_argument('--max-cumulative-usd', type=_parse_positive_usd, default=None,
+                        help=('P0-06 spend cap: cumulative USD across the permit ledger that, '
+                              'once reached, refuses new permits with cumulative_cap_exceeded. '
+                              'Overrides any value in --config. Omit to keep the --config value (no cap by default).'))
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
@@ -753,6 +768,8 @@ def main():
     settings = json.loads(args.config.read_text(encoding='utf-8-sig')) if args.config else {}
     family = 'claude' if args.host == 'claude' else 'gpt6'
     require(settings.get('worker_family', family) == family, 'host_and_worker_family_mismatch')
+    if args.max_cumulative_usd is not None:
+        settings['max_cumulative_usd'] = args.max_cumulative_usd
     config = RunConfig.from_dict({**settings, 'worker_family': family})
     require(not args.out.exists(), 'output_directory_must_be_new')
     gateway = None
