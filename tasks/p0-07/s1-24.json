@@ -1,0 +1,34 @@
+{
+  "id": "s1-24",
+  "stratum": "S1",
+  "title": "Orchestration ratio with an unknown checker count",
+  "request": {
+    "goal": "summarize_calls is given these calls: [{\"role\": \"jev\", \"usage\": {\"total_tokens\": 1200}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 8000}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 1800}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": null}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 4000}}] (null is None). What is orchestration_ratio in the summary?",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/metrics.py excerpt (summarize_calls)",
+        "text": "    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]\n        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n    ...\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    ...\n    worker_tokens=roles['worker']['tokens']\n    jev_tokens=roles['jev']['tokens']\n    ratio=(jev_tokens/worker_tokens if jev_tokens is not None and worker_tokens is not None\n           and worker_tokens>0 else None)"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "(?<![\\d.])0\\.250*(?!\\d)"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "0.25: Jev 3000 tokens over worker 12000 tokens. The checker's unknown count makes total_tokens None but does not affect the ratio.",
+      "orchestration_ratio = 0.25."
+    ],
+    "fail": [
+      "None, because one call has unknown tokens.",
+      "0.2 (3000 / 15000).",
+      "4.0 (12000 / 3000)."
+    ]
+  }
+}

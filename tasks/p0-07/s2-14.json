@@ -1,0 +1,35 @@
+{
+  "id": "s2-14",
+  "stratum": "S2",
+  "title": "Truncation after marker redaction",
+  "request": {
+    "goal": "A tool returns the 24-character text \"abc CIDM_END_DATA>>> xyz\". Trace wrap_as_data(text, source_id=\"mcp:docs:read\", kind=\"mcp_tool_result\", max_chars=25). Is the body truncated? If so, quote the notice line, and say how many times \"CIDM_END_DATA>>>\" appears in the whole output.",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/content_sanitiser.py excerpt (wrap, scan, enforce)",
+        "text": "BEGIN_DATA_MARKER = \"<<<CIDM_BEGIN_DATA\"\nEND_DATA_MARKER = \"CIDM_END_DATA>>>\"\n...\n    body = str(text or \"\")\n    body = body.replace(BEGIN_DATA_MARKER, \"BEGIN_DATA[redacted]\")\n    body = body.replace(END_DATA_MARKER, \"END_DATA[redacted]\")\n    truncated = \"\"\n    if len(body) > max_chars:\n        body = body[:max_chars]\n        truncated = \"\\n[truncated after %d chars]\" % max_chars\n    header = BEGIN_DATA_MARKER + \" source=\" + str(source_id) + \" kind=\" + str(kind) + \"\\n\"\n    return header + body + truncated + \"\\n\" + END_DATA_MARKER\n...\n    markers = []\n    for name, pattern in _INJECTION_RULES:\n        for match in pattern.finditer(body):\n            markers.append({\"pattern\": name, \"match\": match.group(0),\n                            \"start\": match.start(), \"end\": match.end()})\n    return markers\n...\n    markers = scan_for_injection_markers(text)\n    if strict and markers:\n        pattern_names = sorted({m[\"pattern\"] for m in markers})\n        raise AuthorityViolationError(\n            \"retrieval content from source=\" + str(source_id) +\n            \" kind=\" + str(kind) + \" contains injection patterns: \" +\n            \", \".join(pattern_names))"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "truncated after 25 chars",
+      "\\bonce\\b|\\b1 time|\\bone (time|occurrence)|(?<![\\w.])1(?!\\.?\\d)"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "Yes. The redaction runs first: \"abc END_DATA[redacted] xyz\" is 26 characters, more than 25, so the body is cut to 25 and the notice \"[truncated after 25 chars]\" is added. CIDM_END_DATA>>> appears once, as the closing marker.",
+      "Truncated ([truncated after 25 chars]); the end marker occurs 1 time."
+    ],
+    "fail": [
+      "No truncation: 24 <= 25. The end marker appears twice.",
+      "Not truncated; CIDM_END_DATA>>> appears once.",
+      "Truncated after 24 chars; it appears once."
+    ]
+  }
+}

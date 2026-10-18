@@ -1,0 +1,47 @@
+{
+  "id": "s2-13",
+  "stratum": "S2",
+  "title": "Route preflight against an account catalogue",
+  "request": {
+    "goal": "The broker preflight calls route_coverage(provider, list(config.worker_routes()), checker=(config.checker_model, config.checker_effort), catalogue=catalogue) for RunConfig(worker_family=\"claude\"). Give the report status and the id of every missing route.",
+    "context": "",
+    "sources": {
+      "routes": {
+        "title": "scripts/config.py excerpt (routes)",
+        "text": "EFFORTS = (\"low\", \"medium\", \"high\", \"xhigh\")\n...\n    def worker_routes(self):\n        tiers = FAMILIES[self.worker_family][\"tiers\"]\n        routes = tuple({\"id\": tier + \"_\" + effort, \"model\": model, \"effort\": effort}\n                       for tier, model in tiers.items() for effort in EFFORTS)\n        return routes + (({\"id\": \"astra_low\", \"model\": \"openai/gpt-6-astra\", \"effort\": \"low\"},)\n                         if self.astra_explicitly_authorized else ())\n\n    def short_route(self):\n        \"\"\"The single-worker route for an explicitly self-contained request.\"\"\"\n        model, effort = FAMILIES[self.worker_family][\"short\"]\n        return next(r for r in self.worker_routes() if r[\"model\"] == model and r[\"effort\"] == effort)"
+      },
+      "coverage": {
+        "title": "scripts/frontier_providers.py excerpt (route_coverage)",
+        "text": "def route_coverage(provider: FrontierProvider, routes: list[dict], *, checker: tuple[str, str],\n                   catalogue: dict | None = None) -> dict:\n    ...\n    `covered` requires every worker route, the checker, and the short route.\n    ...\n    catalogue = provider.list_models() if catalogue is None else catalogue\n    needed = [(route[\"model\"].split(\"/\", 1)[-1], route[\"effort\"], route.get(\"id\", \"\")) for route in routes]\n    needed.append((checker[0].split(\"/\", 1)[-1], checker[1], \"checker\"))\n    available = {model[\"slug\"]: set(model.get(\"efforts\") or []) for model in catalogue.get(\"models\", [])}\n    missing = [{\"route\": rid, \"model\": model, \"effort\": effort,\n                \"reason\": \"model_not_in_catalogue\" if model not in available else \"effort_not_supported\"}\n               for model, effort, rid in needed\n               if model not in available or effort not in available[model]]\n    if not catalogue.get(\"account_derived\"):\n        status = \"unverified\"\n    elif not missing:\n        status = \"covered\"\n    elif len(missing) < len(needed):\n        status = \"partial\"\n    else:\n        status = \"unavailable\""
+      },
+      "prices": {
+        "title": "scripts/config.py excerpt (families and price fields)",
+        "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+      },
+      "catalogue": {
+        "title": "Account catalogue",
+        "text": "{\"account_derived\": true, \"models\": [{\"slug\": \"claude-sonnet-5\", \"efforts\": [\"low\", \"medium\", \"high\"]}, {\"slug\": \"claude-opus-5\", \"efforts\": [\"low\", \"medium\", \"high\", \"xhigh\"]}]}"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "\\bpartial\\b",
+      "sonnet_xhigh"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "status \"partial\": the only missing route is sonnet_xhigh (claude-sonnet-5 lacks xhigh); the checker (claude-opus-5, high) is covered. 1 of 9 missing.",
+      "Partial coverage; missing: sonnet_xhigh."
+    ],
+    "fail": [
+      "covered: every model slug is in the catalogue.",
+      "unavailable; missing sonnet_xhigh and checker.",
+      "unverified, because the slugs lack the anthropic/ prefix."
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "s2-21",
+  "stratum": "S2",
+  "title": "Promoted skill name from a distilled lesson",
+  "request": {
+    "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+    "context": "",
+    "sources": {
+      "fields": {
+        "title": "scripts/experience_distiller.py excerpt (lesson fields)",
+        "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+      },
+      "code": {
+        "title": "scripts/experience_distiller.py excerpt (skill_name)",
+        "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+      },
+      "records": {
+        "title": "experience records (in order)",
+        "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "cidm-p007bench-suite-hidden-2-9f3a-77b"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "\"cidm-p007bench-suite-hidden-2-9f3a-77b\": scope and unit come from the first verified record (\"P0.07 Bench_Suite\", \"hidden_2\"); underscores become hyphens, the \".\" and space are dropped, and the signature is cut to 8 characters (\"9f3a-77b\").",
+      "cidm-p007bench-suite-hidden-2-9f3a-77b"
+    ],
+    "fail": [
+      "cidm-old-scope-hidden3-9f3a-77b",
+      "cidm-p0.07-bench-suite-hidden-2-9f3a-77b",
+      "cidm-p007bench-suite-hidden-2-9f3a77bc"
+    ]
+  }
+}

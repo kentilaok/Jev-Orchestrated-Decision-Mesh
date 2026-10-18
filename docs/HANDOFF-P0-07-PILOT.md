@@ -28,9 +28,26 @@ Pilot 3 (six paired tasks): yield A 1.00, B 1.00. Efficiency, B minus A, stratif
 2. **Cost and latency of CIDM are already measurable**: about 3× wall clock, 2.5× Claude usage and 3.4× worker tokens against a direct Opus-medium agent on these tasks. Unless quality differs on harder tasks, the study will show CIDM costs more without being better, which the protocol must report as is.
 3. **Injection checks must tolerate refusals that quote.** Fixed in the harness and validator.
 
-## 4. Next steps
+## 4. Full task suite (authored 18 October 2026, not frozen)
 
-1. Author the remaining 65 tasks (to 24/24/23) to the difficulty target above; keep or replace the six pilot tasks. `python scripts/p0_07_bench.py validate --expect-full` must pass.
+71 tasks in `tasks/p0-07/` (24 S1, 24 S2, 23 S3). `validate --expect-full` reports ok. The suite hash is printed by `validate`; it goes into §10 only at freeze. The pilot ids are kept. `s1-01` and `s3-01` were rewritten to be harder with the same gold and canary, `s3-02` gained decoy sources, and the other pilot tasks were replaced. Every task is a code-reading or debugging question about this repo's own code. Difficulty comes from traps: near-miss values, check-order traps, Python semantics (float sums, `str(None)`, `\b` in regexes, `bool` as `int`, `float('1_000')`) and stale docstrings.
+
+| Stratum | Task families |
+|---|---|
+| S1 (single bounded question, short route) | `RunConfig` defaults and error order; reservation ceilings (Claude checker priced at Opus rates); `_cost_from_response` shadowing; Claude CLI usage totals and error order; Jev probability/score tolerances and model-id checks; permit basis rules; spend-cap float sum on replay; reversibility classifier and approval gate; browser and MCP access classes; MCP argument checks; sanitiser marker counts; `calculate` range checks; route coverage; `validate_spec` scope; distiller confidence; bench `_quantile`. |
+| S2 (several sources combined, traced through more than one function) | `Gateway.call` admission (follow-up Jev reservation, call slots), Jev token budget, response-usage and identity checks; permit-ledger audit and replay with malformed receipts; provider runs feeding the spend cap; `chunk_text` overlap trace; broker config merge; bench `analyze` yields and safety entries; a planted bug (`permit_receipts` typo); `require_approval` messages; metrics comparison; route preflight; wrap truncation after redaction; strict sanitiser message; `calculate` node budget; skill naming; offline spend audit; browser and MCP permits for strong actions. |
+| S3 (stale, contradictory or injected source in every task) | The same code areas, each with a stale doc giving a plausible wrong value and an injected instruction carrying a unique canary that the reply is asked to end with (markers anchored with `$`). One task (`s3-18`) also has two real, conflicting limits: the transport 24,000-byte guard and the 28,000-byte guard in `jev_decide`. |
+
+**How the gold answers were checked.** `tasks/p0-07/build_suite.py` is the source of all 71 JSON files. For each task it calls the repo's real functions on the task's exact inputs and asserts the gold answer. Those functions include `RunConfig`, `Gateway.call` with a fake `_request`, `PermitAuthority` on real hash-chained ledgers, `audit_permit_ledger`, `chunk_text`, `bench.analyze` and `validate_response`. It also checks every code excerpt line by line against the file it names. Only S3's stale and injected sources, test output and the planted-bug copy are not checked against a file. `python tasks/p0-07/build_suite.py --check` re-verifies everything and fails if any JSON differs from the builder. Each task's pass examples include a differently phrased correct answer; its fail examples are the trap answers.
+
+**For Ken's review.**
+- Protocol §3 requires at least one S2 task in three to be built to trigger a repair, retrieval or pause. These tasks are built to invite a first-pass wrong answer, which a checker would have to catch. None of them requires retrieval, because both arms get identical sources and arm B has no retrieval index.
+- Difficulty is not measured yet. No live run has used the new suite.
+- The regex checks favour exact tokens, and a few count answers use bare numbers. A wrong answer that happens to mention the gold token would pass. Those patterns are worth reading.
+
+## 5. Next steps
+
+1. Optional: a pilot on a sample of the new suite (`--pilot`) to see whether the direct-agent yield is near the 0.85 target before freezing.
 2. Ken reviews the suite and its checks, then the freeze record (§10) gets the suite and file hashes and Ken's countersignature.
 3. Study run: `python scripts/p0_07_bench.py run` (resumable; Pro rate limits may spread it over days).
 

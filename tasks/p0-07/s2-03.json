@@ -1,0 +1,47 @@
+{
+  "id": "s2-03",
+  "stratum": "S2",
+  "title": "Jev token budget across a Claude run",
+  "request": {
+    "goal": "Using the config, the transport code and the run state: is the next Jev call sent, and how does it end? Give the error code recorded in the call event (if any) and the MeshError code call() raises (if any).",
+    "context": "",
+    "sources": {
+      "config": {
+        "title": "scripts/config.py excerpt",
+        "text": "@dataclass(frozen=True)\nclass RunConfig:\n    ...\n    worker_family: str = \"gpt6\"\n    ...\n    max_jev_tokens: int = 50000\n    ...\n    def __post_init__(self):\n        ...\n        family = FAMILIES[self.worker_family]\n        if self.worker_family == \"claude\":\n            ...\n            # Claude artifacts make Jev states about 1.8x larger than GPT-6 ones\n            # (P0-03 slice 3c), so the untouched Jev token default doubles.\n            if self.max_jev_tokens == 50000:\n                object.__setattr__(self, \"max_jev_tokens\", 100000)\n    ...\n    @classmethod\n    def from_dict(cls, value):\n        _require(type(value) is dict, \"configuration_must_be_object\")\n        allowed = {field.name for field in fields(cls)}\n        _require(all(type(k) is str for k in value) and set(value) <= allowed, \"unknown_configuration_fields\")\n        return cls(**value)"
+      },
+      "admission": {
+        "title": "scripts/transport.py excerpt (Gateway.call admission)",
+        "text": "MAX_REQUEST_BYTES = 24000\n...\n        data = packed(payload).encode()\n        ...\n        role_calls=sum(event[\"role\"]==role for event in self.calls)\n        role_limit={\"jev\":self.config.max_jev_calls,\"worker\":self.config.max_worker_calls,\n                    \"checker\":self.config.max_checker_calls}[role]\n        require(role_calls < role_limit,\"role_call_budget_exhausted\")\n        if role==\"jev\":\n            known_jev_tokens=sum(event[\"usage\"][\"total_tokens\"] or 0 for event in self.calls\n                                 if event[\"role\"]==\"jev\")\n            require(known_jev_tokens < self.config.max_jev_tokens,\"jev_token_budget_exhausted\")\n        reserve = self.config.reserve_usd(role, len(data), payload[\"model\"] if role == \"worker\" else None)\n        needs_followup = role == \"checker\" or followup_required\n        followup_reserve = self.config.reserve_usd(\"jev\", MAX_REQUEST_BYTES) if needs_followup else 0.0\n        admission_calls = 2 if needs_followup else 1\n        require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls\n                and self.spent + reserve + followup_reserve <= self.config.max_usd, \"call_or_cost_budget_exhausted\")"
+      },
+      "checks": {
+        "title": "scripts/transport.py excerpt (Gateway.call response checks)",
+        "text": "        try:\n            ...\n            event[\"usage\"], event[\"usage_raw\"] = self._usage(response, role)\n            ...\n            usage = event[\"usage\"]\n            raw_usage = response.get(\"usage\")\n            names = (\"input_tokens\", \"output_tokens\", \"total_tokens\") if role == \"jev\" else (\"prompt_tokens\", \"completion_tokens\", \"total_tokens\")\n            require(all(raw_usage.get(k) is None or _counter(raw_usage[k]) is not None for k in names), \"invalid_token_usage\")\n            require(usage[\"input_tokens\"] is not None and usage[\"output_tokens\"] is not None, \"missing_token_usage\")\n            require(usage[\"total_tokens\"] == usage[\"input_tokens\"] + usage[\"output_tokens\"], \"inconsistent_token_usage\")\n            if role==\"jev\":\n                require(known_jev_tokens + usage[\"total_tokens\"] <= self.config.max_jev_tokens,\n                        \"jev_token_budget_exceeded\")\n            ...\n        except (MeshError, jev.Failure) as error:\n            event.setdefault(\"error\", {\"code\": self._error_code(getattr(error, \"code\", str(error)), \"contract_error\")})\n        ...\n        require(event[\"status\"] == \"ok\", \"provider_call_failed\")"
+      },
+      "state": {
+        "title": "Run state",
+        "text": "RunConfig.from_dict({\"worker_family\": \"claude\"}); every other field default (max_jev_calls 30, max_usd 1.50).\nGateway.calls so far: three Jev calls, all ok, usage total_tokens 40000, 35000 and 20000; no other calls. spent = 0.004, blocked = False.\nNext: a valid 3,000-byte Jev request. The OpenRouter response reports usage input_tokens 5800, output_tokens 200, total_tokens 6000, cost 0.00005."
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "jev_token_budget_exceeded",
+      "provider_call_failed"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "It is sent: max_jev_tokens is 100000 for the Claude family and 95,000 < 100,000. The response brings the total to 101,000 > 100,000, so the event records jev_token_budget_exceeded and call() raises provider_call_failed.",
+      "Sent, then rejected: event error jev_token_budget_exceeded; call raises MeshError provider_call_failed."
+    ],
+    "fail": [
+      "Not sent: 95000 >= 50000, so call() raises jev_token_budget_exhausted.",
+      "Sent and accepted: 101000 is within the limit.",
+      "The event records jev_token_budget_exceeded and the call returns the response."
+    ]
+  }
+}

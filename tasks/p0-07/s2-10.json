@@ -1,0 +1,43 @@
+{
+  "id": "s2-10",
+  "stratum": "S2",
+  "title": "Worker response with Jev-style usage names",
+  "request": {
+    "goal": "Trace Gateway.call for this worker call. Give the error code recorded in the call event and the MeshError code that call() raises.",
+    "context": "",
+    "sources": {
+      "usage": {
+        "title": "scripts/transport.py excerpt (Gateway._usage)",
+        "text": "def _counter(value):\n    return value if type(value) is int and value >= 0 else None\n...\n    def _usage(self, response, role):\n        raw = response.get(\"usage\")\n        usage = raw if isinstance(raw, dict) else {}\n        input_name, output_name = (\"input_tokens\", \"output_tokens\") if role == \"jev\" else (\"prompt_tokens\", \"completion_tokens\")\n        inp, out = _counter(usage.get(input_name)), _counter(usage.get(output_name))\n        ...\n        total = _counter(usage.get(\"total_tokens\"))\n        return {\n            \"input_tokens\": inp, \"output_tokens\": out,\n            \"total_tokens\": total if total is not None else (inp + out if inp is not None and out is not None else None),"
+      },
+      "checks": {
+        "title": "scripts/transport.py excerpt (Gateway.call response checks)",
+        "text": "        try:\n            ...\n            event[\"usage\"], event[\"usage_raw\"] = self._usage(response, role)\n            ...\n            usage = event[\"usage\"]\n            raw_usage = response.get(\"usage\")\n            names = (\"input_tokens\", \"output_tokens\", \"total_tokens\") if role == \"jev\" else (\"prompt_tokens\", \"completion_tokens\", \"total_tokens\")\n            require(all(raw_usage.get(k) is None or _counter(raw_usage[k]) is not None for k in names), \"invalid_token_usage\")\n            require(usage[\"input_tokens\"] is not None and usage[\"output_tokens\"] is not None, \"missing_token_usage\")\n            require(usage[\"total_tokens\"] == usage[\"input_tokens\"] + usage[\"output_tokens\"], \"inconsistent_token_usage\")\n            if role==\"jev\":\n                require(known_jev_tokens + usage[\"total_tokens\"] <= self.config.max_jev_tokens,\n                        \"jev_token_budget_exceeded\")\n            ...\n        except (MeshError, jev.Failure) as error:\n            event.setdefault(\"error\", {\"code\": self._error_code(getattr(error, \"code\", str(error)), \"contract_error\")})\n        ...\n        require(event[\"status\"] == \"ok\", \"provider_call_failed\")"
+      },
+      "state": {
+        "title": "Call and response",
+        "text": "RunConfig: gpt6 defaults. Gateway has no previous calls; spent = 0.\nWorker call: model \"openai/gpt-6-sol\", effort \"medium\", valid provider policy, 4,000-byte request.\nThe upstream response: HTTP 200, model \"openai/gpt-6-sol\", provider \"Azure\", one choice with finish_reason \"stop\", and usage {\"input_tokens\": 900, \"output_tokens\": 100, \"total_tokens\": 1000, \"cost\": 0.001}."
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "missing_token_usage",
+      "provider_call_failed"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "For a worker, _usage reads prompt_tokens/completion_tokens, which are absent, so input and output are None (total 1000 is reported). The raw-name check passes because those keys are None. Then missing_token_usage is raised and recorded in the event, and call() raises provider_call_failed.",
+      "Event error: missing_token_usage; call() raises MeshError(\"provider_call_failed\")."
+    ],
+    "fail": [
+      "invalid_token_usage, then provider_call_failed.",
+      "It succeeds: total_tokens 1000 equals 900 + 100.",
+      "inconsistent_token_usage; call() raises provider_call_failed."
+    ]
+  }
+}

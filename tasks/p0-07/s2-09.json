@@ -1,0 +1,47 @@
+{
+  "id": "s2-09",
+  "stratum": "S2",
+  "title": "Resumed broker ignores its spend cap",
+  "request": {
+    "goal": "A test fails on a working copy of capability_permits.py. Using the requirement, the code under test, the ledger sample and the test output, name the function that contains the defect and give the exact fix.",
+    "context": "",
+    "sources": {
+      "requirement": {
+        "title": "P0-06 requirement",
+        "text": "A resumed broker must count every receipted cost already in the ledger toward max_cumulative_usd, and refuse new permits once the total reaches the cap."
+      },
+      "code": {
+        "title": "capability_permits.py (working copy under test)",
+        "text": "    def _replay_ledger(self) -> None:\n        events = self.ledger.read()\n        for event in events:\n            kind = event.get(\"kind\")\n            if kind == \"permit_issued\":\n                pid = event.get(\"permit_id\")\n                if not isinstance(pid, str):\n                    continue\n                self._permits[pid] = {\"permit_id\": pid, \"replayed\": True}\n            elif kind == \"permit_consumed\":\n                pid = event.get(\"permit_id\")\n                if isinstance(pid, str):\n                    self._used.add(pid)\n            elif kind == \"permit_receipts\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability, scope, basis, *, ttl_seconds=None, budget=None):\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")"
+      },
+      "ledger": {
+        "title": "permits.jsonl written by receipt()",
+        "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1\",...}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1\",...}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1\",\"cost_usd\":1.0,...}"
+      },
+      "test": {
+        "title": "Test output",
+        "text": "FAIL: test_resumed_authority_refuses_at_cap\n    authority = PermitAuthority(ledger_with_1_usd_receipt, max_cumulative_usd=1.0)\n    authority.issue(\"frontier.run\", scope, basis)\nAssertionError: PermitError not raised\n    authority.cumulative_cost_usd == 0.0"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "_replay_ledger",
+      "permit_receipts"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "The defect is in _replay_ledger: it compares kind to \"permit_receipts\", but receipt() writes \"permit_receipt\", so no cost is replayed and the total stays 0.0. Change the branch to elif kind == \"permit_receipt\":. The >= comparison in issue() is already correct.",
+      "_replay_ledger: \"permit_receipts\" should be \"permit_receipt\"."
+    ],
+    "fail": [
+      "issue() should use > instead of >=.",
+      "issue(): the cap check must compare against the ledger directly.",
+      "_replay_ledger must also add costs for permit_consumed events."
+    ]
+  }
+}

@@ -1,14 +1,18 @@
 {
   "id": "s2-02",
   "stratum": "S2",
-  "title": "Consumed permit without receipt",
+  "title": "Full audit of a damaged permit ledger",
   "request": {
-    "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+    "goal": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list.",
     "context": "",
     "sources": {
+      "code": {
+        "title": "scripts/capability_permits.py excerpt (audit_permit_ledger)",
+        "text": "    issues, issued, consumed, receipted = [], {}, set(), set()\n    ...\n    for event in events:\n        kind, pid = event.get(\"kind\"), event.get(\"permit_id\")\n        if kind == \"permit_issued\":\n            ...\n            issued[pid] = event\n            ...\n        elif kind == \"permit_consumed\":\n            if pid not in issued:\n                issues.append(\"consumed_without_issue:\" + str(pid))\n            elif pid in consumed:\n                issues.append(\"double_consumption:\" + str(pid))\n            elif issued[pid].get(\"scope_hash\") != event.get(\"scope_hash\"):\n                issues.append(\"consumed_scope_mismatch:\" + str(pid))\n            consumed.add(pid)\n        elif kind == \"permit_receipt\":\n            if pid not in consumed:\n                issues.append(\"receipt_without_consumption:\" + str(pid))\n            receipted.add(pid)\n    missing = sorted(consumed - receipted)\n    issues.extend(\"consumed_without_receipt:\" + pid for pid in missing)\n    return {\"valid\": not issues, \"issues\": issues, \"issued\": len(issued),\n            \"consumed\": len(consumed), \"receipted\": len(receipted),\n            \"unused\": sorted(set(issued) - consumed)}"
+      },
       "ledger": {
-        "title": "permits.jsonl (excerpt)",
-        "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+        "title": "permits.jsonl (events in order)",
+        "text": "{\"kind\": \"permit_issued\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-a1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-b2\", \"scope_hash\": \"s2\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-c3\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-d4\", \"scope_hash\": \"s4\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5x\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-e5\"}"
       }
     },
     "active_project": false,
@@ -17,16 +21,22 @@
   },
   "acceptance": {
     "must_match": [
-      "p-7c2"
+      "double_consumption:p-a1",
+      "consumed_without_issue:p-b2",
+      "receipt_without_consumption:p-c3",
+      "consumed_scope_mismatch:p-e5",
+      "consumed_without_receipt:p-b2",
+      "unused[^.]{0,40}p-d4"
     ]
   },
   "examples": {
     "pass": [
-      "p-7c2 was consumed but has no permit_receipt."
+      "Issues: double_consumption:p-a1, consumed_without_issue:p-b2, receipt_without_consumption:p-c3, consumed_scope_mismatch:p-e5, consumed_without_receipt:p-b2 (p-b2 still enters the consumed set). unused = [\"p-d4\"].",
+      "Five issues - double_consumption:p-a1; consumed_without_issue:p-b2; receipt_without_consumption:p-c3; consumed_scope_mismatch:p-e5; consumed_without_receipt:p-b2 - and the unused list is [p-d4]."
     ],
     "fail": [
-      "p-9d4 is missing a receipt.",
-      "All permits were receipted."
+      "double_consumption:p-a1, consumed_without_issue:p-b2, receipt_without_consumption:p-c3, consumed_scope_mismatch:p-e5. unused: p-d4.",
+      "double_consumption:p-a1, consumed_without_issue:p-b2, receipt_without_consumption:p-c3, consumed_without_receipt:p-b2, consumed_without_receipt:p-c3; unused p-d4."
     ]
   }
 }

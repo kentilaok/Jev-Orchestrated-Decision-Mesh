@@ -1,0 +1,34 @@
+{
+  "id": "s1-17",
+  "stratum": "S1",
+  "title": "Route for a host-short request with an outstanding stage",
+  "request": {
+    "goal": "A broker request has active_project false, unresolved_stages [\"finish hidden3\"], and an explicit host classification whose snapshot_hash is fresh, whose four flags are all false and whose rationale is \"Single bounded question.\". Which scope does validate_spec assign?",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/native_transition_broker.py excerpt (validate_spec)",
+        "text": "    classification = spec['classification']\n    if classification is None:\n        scope = 'broad_or_uncertain'\n        record = {'source': 'conservative_default', 'snapshot_hash': snapshot,\n                  'flags': None, 'rationale': None, 'scope': scope}\n    else:\n        require(type(classification) is dict\n                and set(classification) == {'snapshot_hash', 'rationale', *CLASSIFICATION_FLAGS},\n                'native_classification_schema')\n        require(classification['snapshot_hash'] == snapshot, 'stale_native_classification')\n        flags = {name: classification[name] for name in CLASSIFICATION_FLAGS}\n        require(all(type(value) is bool for value in flags.values()), 'native_classification_flags')\n        rationale = classification['rationale']\n        require(type(rationale) is str and 10 <= len(rationale) <= 500,\n                'native_classification_rationale')\n        scope = ('broad_or_uncertain' if any(flags.values()) or spec['active_project'] or unresolved\n                 else 'short_self_contained')"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "broad_or_uncertain"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "broad_or_uncertain: the flags are all false, but the non-empty unresolved_stages list still forces the broad route.",
+      "Scope broad_or_uncertain."
+    ],
+    "fail": [
+      "short_self_contained, because every host flag is false.",
+      "It raises stale_native_classification.",
+      "native_classification_rationale."
+    ]
+  }
+}

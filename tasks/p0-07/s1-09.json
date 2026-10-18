@@ -1,0 +1,38 @@
+{
+  "id": "s1-09",
+  "stratum": "S1",
+  "title": "Compiled policy basis on a strong browser action",
+  "request": {
+    "goal": "What does validate_basis(\"browser.mutate\", {\"kind\": \"compiled_policy\", \"policy_hash\": \"p1\", \"skill_id\": \"s1\", \"skill_hash\": \"h1\", \"manifest_hash\": \"m1\"}) raise? Give the PermitError code.",
+    "context": "",
+    "sources": {
+      "classes": {
+        "title": "scripts/capability_permits.py excerpt (capability classes and bases)",
+        "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+      },
+      "code": {
+        "title": "scripts/capability_permits.py excerpt (validate_basis)",
+        "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "compiled_policy_only_authorizes_fast_path"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "PermitError(\"compiled_policy_only_authorizes_fast_path\"): the compiled_policy check runs before the strong-capability check.",
+      "compiled_policy_only_authorizes_fast_path."
+    ],
+    "fail": [
+      "strong_capability_requires_jev_basis, because browser.mutate is strong.",
+      "permit_basis_missing_fields.",
+      "It is accepted and a copy of the basis is returned."
+    ]
+  }
+}

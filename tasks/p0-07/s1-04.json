@@ -1,0 +1,38 @@
+{
+  "id": "s1-04",
+  "stratum": "S1",
+  "title": "First config error for a Claude family mix-up",
+  "request": {
+    "goal": "Which error code does RunConfig.from_dict({\"worker_family\": \"claude\", \"checker_model\": \"anthropic/claude-sonnet-5\", \"worker_effort\": \"max\"}) raise? Give the code of the first check that fails.",
+    "context": "",
+    "sources": {
+      "defaults": {
+        "title": "scripts/config.py excerpt (defaults)",
+        "text": "    worker_model: str = \"openai/gpt-6-sol\"\n    worker_effort: str = \"medium\"\n    checker_model: str = \"openai/gpt-6-sol\"\n    checker_effort: str = \"high\"\n    astra_explicitly_authorized: bool = False\n    worker_family: str = \"gpt6\""
+      },
+      "post_init": {
+        "title": "scripts/config.py excerpt (__post_init__, first checks)",
+        "text": "    def __post_init__(self):\n        _require(type(self.astra_explicitly_authorized) is bool, \"astra_authorization_must_be_boolean\")\n        _require(self.worker_family in FAMILIES, \"unknown_worker_family\")\n        family = FAMILIES[self.worker_family]\n        if self.worker_family == \"claude\":\n            _require(not self.astra_explicitly_authorized, \"astra_is_gpt6_only\")\n            if self.worker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"worker_model\", family[\"tiers\"][\"sonnet\"])\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])\n            ...\n        allowed = set(family[\"tiers\"].values())\n        if self.astra_explicitly_authorized:\n            allowed.add(\"openai/gpt-6-astra\")\n        _require(self.worker_model in allowed, \"worker_model_not_permitted\")\n        _require(self.checker_model == family[\"checker\"][0],\n                 \"checker_must_be_gpt_6_sol\" if self.worker_family == \"gpt6\" else \"checker_must_be_claude_opus\")\n        _require(self.worker_effort in (\"low\", \"medium\", \"high\", \"xhigh\"), \"invalid_worker_effort\")"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "checker_must_be_claude_opus"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "ValueError('checker_must_be_claude_opus'). The worker model is replaced by Sonnet and passes, and the checker check runs before the effort check.",
+      "The first failure is checker_must_be_claude_opus."
+    ],
+    "fail": [
+      "invalid_worker_effort, because \"max\" is not an allowed effort.",
+      "worker_model_not_permitted.",
+      "checker_must_be_gpt_6_sol."
+    ]
+  }
+}

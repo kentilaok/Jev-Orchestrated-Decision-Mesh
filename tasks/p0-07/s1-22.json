@@ -1,0 +1,35 @@
+{
+  "id": "s1-22",
+  "stratum": "S1",
+  "title": "Bootstrap lower quantile on five draws",
+  "request": {
+    "goal": "What does _quantile([0.2, -0.1, 0.05, 0.0, 0.1], 0.025) return?",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/p0_07_bench.py excerpt (_quantile)",
+        "text": "def _quantile(values, q):\n    values = sorted(values)\n    position = (len(values) - 1) * q\n    low = int(position)\n    high = min(low + 1, len(values) - 1)\n    return values[low] + (values[high] - values[low]) * (position - low)"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "(?<![\\d.])-0\\.090*(?!\\d)"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "-0.09: sorted values are [-0.1, 0.0, 0.05, 0.1, 0.2], position = 4 x 0.025 = 0.1, so -0.1 + (0.0 - (-0.1)) x 0.1 = -0.09.",
+      "It returns -0.090."
+    ],
+    "fail": [
+      "-0.1, the smallest value.",
+      "-0.0975.",
+      "0.0.",
+      "-0.095."
+    ]
+  }
+}

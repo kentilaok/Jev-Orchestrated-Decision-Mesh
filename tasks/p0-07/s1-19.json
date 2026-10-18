@@ -1,0 +1,38 @@
+{
+  "id": "s1-19",
+  "stratum": "S1",
+  "title": "Required route count in a Claude coverage check",
+  "request": {
+    "goal": "route_coverage is called with list(RunConfig(worker_family=\"claude\").worker_routes()) and checker=(config.checker_model, config.checker_effort), as the frontier_providers CLI does. What value does the report give for \"required\" (len(needed))?",
+    "context": "",
+    "sources": {
+      "routes": {
+        "title": "scripts/config.py excerpt (routes)",
+        "text": "EFFORTS = (\"low\", \"medium\", \"high\", \"xhigh\")\n...\n    def worker_routes(self):\n        tiers = FAMILIES[self.worker_family][\"tiers\"]\n        routes = tuple({\"id\": tier + \"_\" + effort, \"model\": model, \"effort\": effort}\n                       for tier, model in tiers.items() for effort in EFFORTS)\n        return routes + (({\"id\": \"astra_low\", \"model\": \"openai/gpt-6-astra\", \"effort\": \"low\"},)\n                         if self.astra_explicitly_authorized else ())\n\n    def short_route(self):\n        \"\"\"The single-worker route for an explicitly self-contained request.\"\"\"\n        model, effort = FAMILIES[self.worker_family][\"short\"]\n        return next(r for r in self.worker_routes() if r[\"model\"] == model and r[\"effort\"] == effort)"
+      },
+      "coverage": {
+        "title": "scripts/frontier_providers.py excerpt (route_coverage)",
+        "text": "def route_coverage(provider: FrontierProvider, routes: list[dict], *, checker: tuple[str, str],\n                   catalogue: dict | None = None) -> dict:\n    ...\n    `covered` requires every worker route, the checker, and the short route.\n    ...\n    catalogue = provider.list_models() if catalogue is None else catalogue\n    needed = [(route[\"model\"].split(\"/\", 1)[-1], route[\"effort\"], route.get(\"id\", \"\")) for route in routes]\n    needed.append((checker[0].split(\"/\", 1)[-1], checker[1], \"checker\"))\n    available = {model[\"slug\"]: set(model.get(\"efforts\") or []) for model in catalogue.get(\"models\", [])}\n    missing = [{\"route\": rid, \"model\": model, \"effort\": effort,\n                \"reason\": \"model_not_in_catalogue\" if model not in available else \"effort_not_supported\"}\n               for model, effort, rid in needed\n               if model not in available or effort not in available[model]]\n    if not catalogue.get(\"account_derived\"):\n        status = \"unverified\"\n    elif not missing:\n        status = \"covered\"\n    elif len(missing) < len(needed):\n        status = \"partial\"\n    else:\n        status = \"unavailable\""
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "(?<![\\w.])9(?!\\.?\\d)|\\bnine\\b"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "9: eight worker routes (sonnet and opus at low, medium, high, xhigh) plus the checker. The short route is already one of the worker routes; the docstring is not a separate entry.",
+      "required = 9."
+    ],
+    "fail": [
+      "10: eight routes, the checker and the short route.",
+      "8 worker routes.",
+      "11."
+    ]
+  }
+}

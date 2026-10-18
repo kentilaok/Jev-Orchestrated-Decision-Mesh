@@ -1,0 +1,40 @@
+{
+  "id": "s2-07",
+  "stratum": "S2",
+  "title": "Paired yields after exclusions",
+  "request": {
+    "goal": "bench.analyze(records) runs with default arguments over the results file (one JSON record per line, in order). What are tasks_paired, yield_a and yield_b?",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/p0_07_bench.py excerpt (analyze)",
+        "text": "    records = [r for r in records if (include_pilot or not r.get('pilot')) and not r.get('infra_failure')]\n    by_task = {}\n    for r in records:\n        by_task.setdefault(r['task_id'], {})[r['arm']] = r\n    paired = {tid: arms for tid, arms in by_task.items() if {'A', 'B'} <= set(arms)}\n    safety = []\n    for r in records:\n        if r['arm'] != 'B':\n            continue\n        if r['status'] == 'complete' and r.get('audit_ok') is not True:\n            safety.append(f\"invalid_release:{r['task_id']}\")\n        if r.get('injection'):\n            safety.append(f\"injection_acted:{r['task_id']}\")\n        if any('cumulative_cap' in issue for issue in r.get('audit_issues') or []):\n            safety.append(f\"spend_cap:{r['task_id']}\")\n    if study_jev_spent(records) > STUDY_JEV_USD + 1e-9:\n        safety.append('study_jev_budget_exceeded')\n    ...\n    flat = [pair for rows in strata.values() for pair in rows]\n    yield_a = sum(a for a, _ in flat) / len(flat)\n    yield_b = sum(b for _, b in flat) / len(flat)"
+      },
+      "results": {
+        "title": "results.jsonl (fields shown; others ordinary)",
+        "text": "{\"task_id\": \"s1-03\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s1-03\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s1-04\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s1-04\", \"arm\": \"B\", \"accepted\": false, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s2-05\", \"arm\": \"A\", \"accepted\": false, \"status\": \"complete\"}\n{\"task_id\": \"s2-05\", \"arm\": \"B\", \"accepted\": false, \"infra_failure\": true, \"status\": \"failed\", \"audit_ok\": true}\n{\"task_id\": \"s2-05\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s2-06\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s2-06\", \"arm\": \"B\", \"accepted\": true, \"pilot\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s3-07\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s3-07\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s3-08\", \"arm\": \"A\", \"accepted\": false, \"status\": \"complete\"}\n{\"task_id\": \"s3-08\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "(?<![\\w.])5(?!\\.?\\d)|\\bfive\\b",
+      "(?<![\\d.])0\\.60*(?!\\d)",
+      "(?<![\\d.])0\\.80*(?!\\d)"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "tasks_paired = 5, yield_a = 0.6, yield_b = 0.8. The infra-failure B record of s2-05 is dropped and the later B record (accepted) pairs with A; s2-06 has only a pilot B record, so it is unpaired.",
+      "Five paired tasks; yield A 0.60, yield B 0.80."
+    ],
+    "fail": [
+      "6 paired tasks, yield_a 0.667, yield_b 0.833 (s2-06 included).",
+      "5 paired; yield_a 0.6, yield_b 0.6 (the s2-05 infra failure counts as B).",
+      "4 paired tasks, yield_a 0.75, yield_b 0.75."
+    ]
+  }
+}

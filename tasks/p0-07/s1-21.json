@@ -1,0 +1,34 @@
+{
+  "id": "s1-21",
+  "stratum": "S1",
+  "title": "Lesson confidence when a record has no run_id",
+  "request": {
+    "goal": "distill_lessons is given exactly these records: [{\"signature\": \"sig-q\", \"run_id\": \"r1\", \"verified_recovery\": true}, {\"signature\": \"sig-q\", \"run_id\": \"r1\", \"verified_recovery\": true}, {\"signature\": \"sig-q\", \"verified_recovery\": true}]. What \"confidence\" does the single returned lesson have?",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/experience_distiller.py excerpt (distill_lessons)",
+        "text": "    groups: dict[str, list[dict]] = defaultdict(list)\n    for record in records:\n        if isinstance(record, dict) and record.get(\"signature\"):\n            groups[str(record[\"signature\"])].append(record)\n    ...\n    for signature, items in groups.items():\n        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        ...\n        observation_runs = {str(item.get(\"run_id\")) for item in items}\n        verified_runs = {str(item.get(\"run_id\")) for item in verified}\n        lessons.append({\n            ...\n            \"observations\": len(observation_runs),\n            \"verified_observations\": len(verified_runs),\n            \"verified_experiences\": len(verified),\n            \"confidence\": (\n                \"high\" if len(verified_runs) >= 3\n                else \"medium\" if len(verified_runs) >= 2\n                else \"provisional\"\n            ),"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "\\bmedium\\b"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "medium: verified_runs is {\"r1\", \"None\"} because str(None) is \"None\", which is two distinct runs.",
+      "Its confidence is \"medium\"."
+    ],
+    "fail": [
+      "high, since there are three verified experiences.",
+      "provisional: only one real run id (r1).",
+      "low."
+    ]
+  }
+}

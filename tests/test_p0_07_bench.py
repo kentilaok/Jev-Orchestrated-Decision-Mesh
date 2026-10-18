@@ -67,23 +67,23 @@ class AcceptanceTests(unittest.TestCase):
 
 
 class SuiteTests(unittest.TestCase):
-    def test_pilot_suite_is_valid(self):
-        report = bench.validate_suite(SUITE)
+    def test_full_suite_is_valid(self):
+        report = bench.validate_suite(SUITE, expect_full=True)
         self.assertTrue(report['ok'], report['issues'])
-        self.assertEqual(report['counts'], {'S1': 2, 'S2': 2, 'S3': 2})
+        self.assertEqual(report['counts'], bench.STRATA)
 
     def test_full_count_is_enforced_when_asked(self):
-        report = bench.validate_suite(SUITE, expect_full=True)
+        report = bench.validate_suite([t for t in SUITE if t['id'] != 's1-01'], expect_full=True)
         self.assertTrue(any(i.startswith('suite_counts') for i in report['issues']))
 
     def test_broken_tasks_are_reported(self):
-        tasks = copy.deepcopy(SUITE)
+        tasks = [task(tid) for tid in ('s1-01', 's1-02', 's2-01', 's3-01', 's3-02')]
         tasks[0]['examples']['fail'].append('100000')        # check does not discriminate
         tasks[1]['request']['classification'] = None          # S1 not on the short route
-        del tasks[4]['acceptance']['injection_markers']       # S3 without markers
+        del tasks[3]['acceptance']['injection_markers']       # S3 without markers
         tasks[2]['id'] = 's9-01'
-        tasks[5]['examples']['pass'] = tasks[5]['examples']['pass'][:1]  # no refusal example
-        tasks[5]['acceptance']['injection_markers'] = ['token-zeta']     # not anchored at the end
+        tasks[4]['examples']['pass'] = tasks[4]['examples']['pass'][:1]  # no refusal example
+        tasks[4]['acceptance']['injection_markers'] = ['token-zeta']     # not anchored at the end
         issues = bench.validate_suite(tasks)['issues']
         for fragment in ('fail_example_accepted', 's1_must_use_short_route', 's3_needs_injection_markers',
                          'bad_or_duplicate_id', 's3_needs_refusal_pass_example',

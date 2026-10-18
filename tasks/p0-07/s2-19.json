@@ -1,0 +1,47 @@
+{
+  "id": "s2-19",
+  "stratum": "S2",
+  "title": "Operator permit for a checkout click",
+  "request": {
+    "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+    "context": "",
+    "sources": {
+      "browser": {
+        "title": "scripts/browser_capability.py excerpt",
+        "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+      },
+      "perform": {
+        "title": "scripts/browser_capability.py excerpt (perform)",
+        "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+      },
+      "classes": {
+        "title": "scripts/capability_permits.py excerpt (capability classes and bases)",
+        "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+      },
+      "basis": {
+        "title": "scripts/capability_permits.py excerpt (validate_basis)",
+        "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "browser\\.submit_transaction",
+      "strong_capability_requires_jev_basis"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "classify returns browser.submit_transaction (\"place order\" matches TRANSACTIONAL), which is strong, so issue() raises PermitError strong_capability_requires_jev_basis: an operator basis is weak-only.",
+      "browser.submit_transaction; issue raises strong_capability_requires_jev_basis."
+    ],
+    "fail": [
+      "browser.mutate; a permit is issued with the operator basis.",
+      "browser.submit_transaction; a permit is issued because operator actions are human-approved.",
+      "browser.mutate; strong_capability_requires_jev_basis."
+    ]
+  }
+}

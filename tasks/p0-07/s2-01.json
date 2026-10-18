@@ -1,22 +1,26 @@
 {
   "id": "s2-01",
   "stratum": "S2",
-  "title": "Off-by-one spend cap",
+  "title": "Checker admission with the follow-up Jev reservation",
   "request": {
-    "goal": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator.",
+    "goal": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
     "context": "",
     "sources": {
-      "requirement": {
-        "title": "Spend-cap requirement",
-        "text": "No new permit may be issued once the receipted cost has reached the cap. Reaching the cap exactly counts as reached."
+      "transport": {
+        "title": "scripts/transport.py excerpt (Gateway.call admission)",
+        "text": "MAX_REQUEST_BYTES = 24000\n...\n        data = packed(payload).encode()\n        ...\n        role_calls=sum(event[\"role\"]==role for event in self.calls)\n        role_limit={\"jev\":self.config.max_jev_calls,\"worker\":self.config.max_worker_calls,\n                    \"checker\":self.config.max_checker_calls}[role]\n        require(role_calls < role_limit,\"role_call_budget_exhausted\")\n        if role==\"jev\":\n            known_jev_tokens=sum(event[\"usage\"][\"total_tokens\"] or 0 for event in self.calls\n                                 if event[\"role\"]==\"jev\")\n            require(known_jev_tokens < self.config.max_jev_tokens,\"jev_token_budget_exhausted\")\n        reserve = self.config.reserve_usd(role, len(data), payload[\"model\"] if role == \"worker\" else None)\n        needs_followup = role == \"checker\" or followup_required\n        followup_reserve = self.config.reserve_usd(\"jev\", MAX_REQUEST_BYTES) if needs_followup else 0.0\n        admission_calls = 2 if needs_followup else 1\n        require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls\n                and self.spent + reserve + followup_reserve <= self.config.max_usd, \"call_or_cost_budget_exhausted\")"
       },
-      "code": {
-        "title": "ledger.py",
-        "text": "def cap_reached(spent, cap):\n    return spent > cap\n\ndef issue(ledger, cap):\n    if cap_reached(ledger.spent, cap):\n        raise PermitError(\"cumulative_cap_exceeded\")\n    return ledger.new_permit()"
+      "reserve": {
+        "title": "scripts/config.py excerpt (reserve_usd)",
+        "text": "    def reserve_usd(self, role, request_bytes, model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        _require(type(request_bytes) is int and request_bytes >= 0, \"invalid_request_size\")\n        if role == \"worker\":\n            selected = self.worker_model if model is None else model\n            _require(any(route[\"model\"] == selected for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n        else:\n            _require(model is None or model == getattr(self, role + \"_model\"), \"reservation_model_mismatch\")\n            selected = None if role == \"jev\" else self.checker_model\n        if selected is None:\n            prefix = \"jev_\"\n        elif role == \"checker\" and self.worker_family == \"gpt6\":\n            prefix = \"checker_\"\n        else:\n            tier = TIER_OF_MODEL[selected]\n            prefix = \"worker_\" if tier == \"sol\" else \"worker_\" + tier + \"_\"\n        return (request_bytes * getattr(self, prefix + \"input_usd_per_million\")\n                + self.max_output_tokens * getattr(self, prefix + \"output_usd_per_million\")) / 1_000_000"
       },
-      "test": {
-        "title": "Test output",
-        "text": "FAIL: test_refuses_at_exact_cap\n    ledger.spent = 1.0; issue(ledger, cap=1.0)\nAssertionError: PermitError not raised"
+      "prices": {
+        "title": "scripts/config.py excerpt (families and price fields)",
+        "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+      },
+      "state": {
+        "title": "Run state",
+        "text": "RunConfig: all defaults (worker_family gpt6, max_usd 1.50, max_calls 40, max_checker_calls 10).\nGateway state before the call: 38 calls recorded (all worker calls, all ok), spent = 1.462 USD, blocked = False.\nNext call: role \"checker\", model \"openai/gpt-6-sol\", effort \"high\"; packed request is exactly 9,000 bytes."
       }
     },
     "active_project": false,
@@ -25,17 +29,18 @@
   },
   "acceptance": {
     "must_match": [
-      "cap_reached",
-      ">=|greater than or equal"
+      "call_or_cost_budget_exhausted"
     ]
   },
   "examples": {
     "pass": [
-      "cap_reached uses spent > cap; it must use spent >= cap so a cost exactly at the cap counts as reached."
+      "Refused with call_or_cost_budget_exhausted. Checker reserve = (9000 x 2 + 2000 x 10) / 1e6 = 0.038, and a checker always adds the follow-up Jev reserve (24000 x 0.05 + 2000 x 0.05) / 1e6 = 0.0013, so 1.462 + 0.038 + 0.0013 = 1.5013 > 1.50. Calls are fine (38 + 2 = 40).",
+      "The call is not sent: call_or_cost_budget_exhausted (1.5013 USD would exceed max_usd)."
     ],
     "fail": [
-      "issue should catch PermitError.",
-      "cap_reached should use spent < cap."
+      "Admitted: 1.462 + 0.038 = 1.500, which is within max_usd, and 39 calls is under 40.",
+      "Refused with role_call_budget_exhausted.",
+      "Admitted; the reservation is 0.0533."
     ]
   }
 }

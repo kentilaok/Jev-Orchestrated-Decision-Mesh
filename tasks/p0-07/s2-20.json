@@ -1,0 +1,46 @@
+{
+  "id": "s2-20",
+  "stratum": "S2",
+  "title": "Evidence call to a tool that claims to be read-only",
+  "request": {
+    "goal": "A recovery evidence plan calls tool \"http_get\" on MCP server \"roblox-dev\". The server annotates it {\"readOnlyHint\": true}; the owner set no override, so the catalogue access_class comes from classify(server, tool) with no trust gate. The planner issued an \"mcp.read\" permit (Jev basis) for the call. The arguments match the schema. What does call_tool raise, and at which check?",
+    "context": "",
+    "sources": {
+      "profiles": {
+        "title": "scripts/mcp_registry.py excerpt (PROFILES)",
+        "text": "PROFILES = {\n    \"roblox\": {\n        \"read\": {\"list_roblox_studios\", \"get_studio_state\", \"search_game_tree\", \"script_search\",\n                 \"script_grep\", \"script_read\", \"inspect_instance\", \"get_console_output\",\n                 \"search_asset\", \"wait_job_finished\", \"screen_capture\"},\n        \"mutate\": {\"execute_luau\", \"multi_edit\", \"start_stop_play\", \"insert_asset\", \"generate_material\",\n                   \"generate_mesh\", \"generate_procedural_model\", \"generate_texture\", \"segment_mesh\",\n                   \"user_keyboard_input\", \"user_mouse_input\", \"character_navigation\", \"store_image\",\n                   \"upload_image\", \"http_get\", \"subagent\", \"skill\"},\n    },\n}"
+      },
+      "classify": {
+        "title": "scripts/mcp_registry.py excerpt (classify)",
+        "text": "def classify(server: str, tool: dict, *, trusted_servers=None) -> tuple[str, str]:\n    ...\n    name = tool.get(\"name\", \"\")\n    for key, profile in PROFILES.items():\n        if key in server.lower():\n            if name in profile[\"read\"]:\n                return \"read\", \"builtin_profile:\" + key\n            if name in profile[\"mutate\"]:\n                return \"mutate\", \"builtin_profile:\" + key\n    hints = tool.get(\"annotations\") or {}\n    if hints.get(\"destructiveHint\") is True or hints.get(\"readOnlyHint\") is False:\n        return \"mutate\", \"server_annotations\"\n    if hints.get(\"readOnlyHint\") is True and hints.get(\"openWorldHint\") is not True:\n        if trusted_servers is not None and server not in trusted_servers:\n            return \"unknown\", \"untrusted_server_readonly_hint_ignored\"\n        return \"read\", \"server_annotations\"\n    return \"unknown\", \"unclassified\""
+      },
+      "call": {
+        "title": "scripts/mcp_registry.py excerpt (call_tool)",
+        "text": "    access = card[\"access_class\"]\n    require(access != \"blocked\", \"mcp_tool_blocked_by_owner\")\n    capability = \"mcp.read\" if access == \"read\" else \"mcp.mutate\"\n    _check_arguments(card[\"input_schema\"], arguments)\n    scope = permit_scope(spec[\"name\"], tool, arguments, access, card[\"schema_hash\"])\n    authority.consume(permit_id, capability, scope)"
+      },
+      "consume": {
+        "title": "scripts/capability_permits.py excerpt (consume)",
+        "text": "    def consume(self, permit_id: str, capability: str, scope: dict) -> dict:\n        with self.lock:\n            require(isinstance(permit_id, str) and permit_id in self._permits, \"unknown_permit\")\n            require(permit_id not in self._used, \"permit_already_used\")\n            grant = self._permits[permit_id]\n            require(grant[\"capability\"] == capability, \"permit_capability_mismatch\")\n            require(grant[\"scope_hash\"] == digest(scope), \"permit_scope_mismatch\")\n            require(self.clock() <= grant[\"expires_at\"], \"permit_expired\")"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": null
+  },
+  "acceptance": {
+    "must_match": [
+      "permit_capability_mismatch"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "classify returns (\"mutate\", \"builtin_profile:roblox\") because the builtin profile wins over the readOnlyHint, so call_tool asks for mcp.mutate and consume() raises PermitError permit_capability_mismatch before the scope is compared.",
+      "consume raises permit_capability_mismatch (mcp.mutate requested, mcp.read granted)."
+    ],
+    "fail": [
+      "Nothing; the read-only hint makes it an mcp.read call and the permit is consumed.",
+      "permit_scope_mismatch.",
+      "mcp_tool_blocked_by_owner."
+    ]
+  }
+}

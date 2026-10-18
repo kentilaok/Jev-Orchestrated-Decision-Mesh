@@ -1,0 +1,34 @@
+{
+  "id": "s1-05",
+  "stratum": "S1",
+  "title": "Underscore in the cap flag value",
+  "request": {
+    "goal": "The broker is started with the arguments --max-cumulative-usd 1_000 . Using only the source and Python's own float() semantics, is the value rejected by argparse, or which float is stored?",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/native_transition_broker.py excerpt",
+        "text": "def _parse_positive_usd(raw: str) -> float:\n    try:\n        value = float(raw)\n    except (TypeError, ValueError):\n        raise argparse.ArgumentTypeError('max-cumulative-usd must be a positive finite number')\n    import math as _math\n    if not _math.isfinite(value) or value <= 0:\n        raise argparse.ArgumentTypeError('max-cumulative-usd must be a positive finite number')\n    return value\n...\n    parser.add_argument('--max-cumulative-usd', type=_parse_positive_usd, default=None,"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "(?<![\\d.])1000(\\.0+)?(?!\\d)"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "It is accepted: float('1_000') is 1000.0 because Python allows underscores between digits, and 1000.0 is finite and positive, so the cap is 1000.0 USD.",
+      "Stored value: 1000.0."
+    ],
+    "fail": [
+      "argparse rejects it: 1_000 is not a valid float.",
+      "It stores 1.0.",
+      "It is rejected with \"max-cumulative-usd must be a positive finite number\"."
+    ]
+  }
+}

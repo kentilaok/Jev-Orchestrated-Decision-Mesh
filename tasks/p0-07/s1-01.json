@@ -1,14 +1,14 @@
 {
   "id": "s1-01",
   "stratum": "S1",
-  "title": "Claude-family Jev token default",
+  "title": "Explicit Jev token value in a Claude config",
   "request": {
-    "goal": "Using only the config source, state the max_jev_tokens value a RunConfig gets when worker_family is \"claude\" and max_jev_tokens is not set explicitly.",
+    "goal": "A run-config file contains exactly {\"worker_family\": \"claude\", \"max_jev_tokens\": 50000}. Using only the config source, state the max_jev_tokens value of RunConfig.from_dict(that object).",
     "context": "",
     "sources": {
       "config": {
         "title": "scripts/config.py excerpt",
-        "text": "max_jev_tokens: int = 50000\n...\ndef __post_init__(self):\n    family = FAMILIES[self.worker_family]\n    if self.worker_family == \"claude\":\n        # Claude artifacts make Jev states larger, so the untouched Jev token default doubles.\n        if self.max_jev_tokens == 50000:\n            object.__setattr__(self, \"max_jev_tokens\", 100000)"
+        "text": "@dataclass(frozen=True)\nclass RunConfig:\n    ...\n    worker_family: str = \"gpt6\"\n    ...\n    max_jev_tokens: int = 50000\n    ...\n    def __post_init__(self):\n        ...\n        family = FAMILIES[self.worker_family]\n        if self.worker_family == \"claude\":\n            ...\n            # Claude artifacts make Jev states about 1.8x larger than GPT-6 ones\n            # (P0-03 slice 3c), so the untouched Jev token default doubles.\n            if self.max_jev_tokens == 50000:\n                object.__setattr__(self, \"max_jev_tokens\", 100000)\n    ...\n    @classmethod\n    def from_dict(cls, value):\n        _require(type(value) is dict, \"configuration_must_be_object\")\n        allowed = {field.name for field in fields(cls)}\n        _require(all(type(k) is str for k in value) and set(value) <= allowed, \"unknown_configuration_fields\")\n        return cls(**value)"
       }
     },
     "active_project": false,
@@ -22,11 +22,13 @@
   },
   "examples": {
     "pass": [
-      "The Claude family gets max_jev_tokens = 100,000 (the 50,000 default doubles)."
+      "max_jev_tokens is 100,000. The explicit 50000 equals the default, so __post_init__ cannot tell it apart from an untouched default and doubles it.",
+      "It ends up as 100000 tokens."
     ],
     "fail": [
-      "max_jev_tokens stays 50000.",
-      "It becomes 75000."
+      "It stays 50000, because the value was set explicitly and only an untouched default doubles.",
+      "About 90000 (1.8x the GPT-6 size).",
+      "It becomes 50,000."
     ]
   }
 }

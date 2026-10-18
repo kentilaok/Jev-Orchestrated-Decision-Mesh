@@ -1,0 +1,34 @@
+{
+  "id": "s1-18",
+  "stratum": "S1",
+  "title": "Float sum at the spend cap on resume",
+  "request": {
+    "goal": "A broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger (hash chain valid) holds exactly two permit_receipt events, in this order: cost_usd 0.7, then cost_usd 0.1. State the exact value of authority.cumulative_cost_usd after replay as Python repr() prints it, and say whether the next issue() raises cumulative_cap_exceeded.",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)",
+        "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "0\\.7999999999999999"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "cumulative_cost_usd is 0.7999999999999999 (0.7 + 0.1 in binary floating point), which is below 0.8, so issue() does not raise and a new permit is issued.",
+      "repr gives 0.7999999999999999; the cap is not reached."
+    ],
+    "fail": [
+      "0.8, so issue() raises cumulative_cap_exceeded.",
+      "0.8000000000000002; refused.",
+      "It is 0.8 exactly and the permit is refused."
+    ]
+  }
+}

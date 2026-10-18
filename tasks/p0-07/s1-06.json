@@ -1,0 +1,34 @@
+{
+  "id": "s1-06",
+  "stratum": "S1",
+  "title": "Range check on an expression that cancels to zero",
+  "request": {
+    "goal": "What does calculate(\"1e13 - 1e13\") return or raise? If it raises, give the MeshError code.",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/atomic_mesh.py excerpt (calculate)",
+        "text": "def calculate(expression):\n    require(isinstance(expression, str) and 0 < len(expression) <= 120, 'invalid_expression')\n    ...\n        tree = ast.parse(expression, mode='eval')\n    ...\n    require(len(list(ast.walk(tree))) <= 30, 'expression_too_complex')\n    operations = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul, ast.Div: operator.truediv}\n    def visit(node):\n        if isinstance(node, ast.Constant) and type(node.value) in (int, float):\n            ...\n                value = Fraction(ast.get_source_segment(expression,node).replace('_',''))\n            ...\n        elif isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.USub, ast.UAdd)):\n            value = visit(node.operand) * (-1 if isinstance(node.op, ast.USub) else 1)\n        elif isinstance(node, ast.BinOp) and type(node.op) in operations:\n            ...\n                value = operations[type(node.op)](visit(node.left), visit(node.right))\n            ...\n        else:\n            raise MeshError('operation_not_allowed')\n        require(math.isfinite(value) and abs(value) <= 1e12, 'arithmetic_out_of_range')\n        return value\n    return visit(tree.body)"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "arithmetic_out_of_range"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "It raises MeshError('arithmetic_out_of_range'): each constant is range-checked as soon as it is visited, and 1e13 exceeds 1e12 before the subtraction happens.",
+      "MeshError arithmetic_out_of_range (from the left operand)."
+    ],
+    "fail": [
+      "It returns Fraction(0, 1), i.e. exactly 0.",
+      "It raises invalid_numeric_literal because 1e13 is a float.",
+      "operation_not_allowed."
+    ]
+  }
+}
