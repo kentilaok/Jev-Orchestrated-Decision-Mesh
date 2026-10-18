@@ -1,11 +1,29 @@
 cff-version: 1.2.0
-message: "If you use CIDM, please cite this software and its documented validation scope."
+message: "If you use CIDM or build on its design, please cite it as below (and a GitHub star is appreciated)."
 type: software
 title: "Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM)"
+abstract: >-
+  CIDM is a training-free orchestration design in which Jev, a typed decision
+  model, governs a five-unit network of existing frontier models: it chooses
+  each bounded operation, receives every completed unit output, and decides
+  whether to forward, repair, escalate, retrieve evidence or request a separate
+  check. Execution is bounded by single-use capability permits, spend caps,
+  hash-linked journals and release audits. The repository contains the research
+  thesis, the reference implementation and its recorded live evidence.
 authors:
   - family-names: "Caber"
     given-names: "Kenneth Vic A."
+    alias: "Ken Caber"
     website: "https://github.com/kentilaok"
+version: "2026.10.18"
+date-released: "2026-10-18"
+keywords:
+  - AI orchestration
+  - model routing
+  - decision mesh
+  - Jev
+  - agent safety
+  - capability permits
 repository-code: "https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh"
 url: "https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh"
 license: MIT

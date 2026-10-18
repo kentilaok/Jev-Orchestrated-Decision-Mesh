@@ -180,6 +180,25 @@ The executable demo is a structured-record calculation. [Extension boundaries](d
 
 See the [technical thesis](docs/THESIS.md), [research context](docs/RESEARCH-CONTEXT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [CITATION.cff](CITATION.cff). Code and documentation are released under the [MIT license](LICENSE).
 
+## How to cite
+
+If you use CIDM, build on its design (Jev governing a five-unit decision mesh with permits, caps and release audits), or index or redistribute this work, please cite it:
+
+> Caber, Kenneth Vic A. (2026). *Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM).* https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh
+
+```bibtex
+@software{caber_cidm_2026,
+  author = {Caber, Kenneth Vic A.},
+  title  = {Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM)},
+  year   = {2026},
+  url    = {https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh}
+}
+```
+
+GitHub's **Cite this repository** button (from [CITATION.cff](CITATION.cff)) gives the same citation in other formats. The CIDM concept and architecture were first published in this repository on 23 September 2026.
+
+**Just using it or learning from it?** No citation needed: a ⭐ on the repository is thanks enough.
+
 
 ## Recovery-first CIDM
 

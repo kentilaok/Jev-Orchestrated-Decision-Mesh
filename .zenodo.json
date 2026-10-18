@@ -1,0 +1,14 @@
+{
+  "title": "Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM) — research thesis and reference implementation",
+  "upload_type": "software",
+  "description": "<p>CIDM is a training-free orchestration design in which Jev, a typed decision model from TypeSafe AI, governs a five-unit network of existing frontier models. Jev chooses each bounded operation, receives every completed unit output, and decides whether to forward, repair, escalate, retrieve evidence or request a separate check. Execution is bounded by single-use capability permits, spend caps, hash-linked journals and release audits.</p><p>This archive contains the research thesis (<code>docs/COMPLETE-THESIS.md</code>, <code>docs/THESIS.md</code>), the reference implementation and its recorded live evidence. The concept and architecture were first published in this repository on 23 September 2026.</p>",
+  "creators": [
+    {"name": "Caber, Kenneth Vic A."}
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": ["AI orchestration", "model routing", "decision mesh", "Jev", "agent safety", "capability permits"],
+  "related_identifiers": [
+    {"identifier": "https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh", "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}
