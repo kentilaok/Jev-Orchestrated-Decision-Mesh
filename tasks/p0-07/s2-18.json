@@ -1,18 +1,14 @@
 {
   "id": "s2-18",
   "stratum": "S2",
-  "title": "Largest sum calculate accepts",
+  "title": "Blended worker rate and the run totals",
   "request": {
-    "goal": "calculate is given expressions of the form \"1+1+...+1\" (n ones, no spaces). What is the largest n for which it returns a value instead of raising expression_too_complex? Use CPython 3.11+ ast semantics.",
+    "goal": "summarize_calls is given these calls: [{\"role\": \"worker\", \"usage\": {\"total_tokens\": 20000, \"cost\": 0.04}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.02}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.0002}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 4000, \"cost\": null}}] (null is None). Give the worker role's blended_usd_per_million_tokens, and the summary's total_tokens and total_cost_usd.",
     "context": "",
     "sources": {
       "code": {
-        "title": "scripts/atomic_mesh.py excerpt (calculate)",
-        "text": "def calculate(expression):\n    require(isinstance(expression, str) and 0 < len(expression) <= 120, 'invalid_expression')\n    ...\n        tree = ast.parse(expression, mode='eval')\n    ...\n    require(len(list(ast.walk(tree))) <= 30, 'expression_too_complex')\n    operations = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul, ast.Div: operator.truediv}\n    def visit(node):\n        if isinstance(node, ast.Constant) and type(node.value) in (int, float):\n            ...\n                value = Fraction(ast.get_source_segment(expression,node).replace('_',''))\n            ...\n        elif isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.USub, ast.UAdd)):\n            value = visit(node.operand) * (-1 if isinstance(node.op, ast.USub) else 1)\n        elif isinstance(node, ast.BinOp) and type(node.op) in operations:\n            ...\n                value = operations[type(node.op)](visit(node.left), visit(node.right))\n            ...\n        else:\n            raise MeshError('operation_not_allowed')\n        require(math.isfinite(value) and abs(value) <= 1e12, 'arithmetic_out_of_range')\n        return value\n    return visit(tree.body)"
-      },
-      "ast": {
-        "title": "Python ast note",
-        "text": "ast.parse(\"1+1\", mode=\"eval\") gives Expression(body=BinOp(left=Constant(1), op=Add(), right=Constant(1))). ast.walk yields every node reachable through fields, including operator nodes such as Add."
+        "title": "scripts/metrics.py excerpt (per-role totals)",
+        "text": "        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n            'unknown_token_calls':sum(not _nonnegative(v) for v in totals),\n            'unknown_cost_calls':sum(not _nonnegative(v) for v in charges),\n        }\n        tokens=roles[role]['tokens'];cost=roles[role]['cost_usd']\n        roles[role]['blended_usd_per_million_tokens']=(cost/tokens*1_000_000\n                                                        if tokens is not None and cost is not None\n                                                        and tokens>0 else None)\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    total_cost=(sum(role['cost_usd'] for role in roles.values())\n                if all(role['cost_usd'] is not None for role in roles.values()) else None)"
       }
     },
     "active_project": false,
@@ -21,22 +17,24 @@
   },
   "acceptance": {
     "must_match": [
-      "^\\W*(?:exactly |only |just )?(?:(?:n|answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*))?(?:10|ten)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:10|ten)\\b(?!\\.\\d)|(?<![\\w.])(?:10|ten)[*`\"\\']*\\s+[*`\"\\']*(?:of (?:the|all) \\w+ )?(?:ones)"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|blended(?:_usd_per_million_tokens)?(?: rate)?|worker(?: rate| blended)?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])2\\.40*(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|blended(?:_usd_per_million_tokens)?(?: rate)?|worker(?: rate| blended)?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])2\\.40*(?!\\d)",
+      "\\b(?:answer(?: is)?|it(?:'s| is)|total_tokens)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])32000(?:\\.0+)?(?!\\d)",
+      "total_cost(?:_usd)?\\W{1,8}(?:is\\W+|=\\W*|:\\W*)?\\W*none\\b"
     ],
     "must_not_match": [
-      "^\\W*(?:(?:n|answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)?(?!(?:10|ten)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(`.])(?<!not )(?<!to )\\b(?:answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?!(?:10|ten)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:10|ten)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)[*`\"\\']*\\s+[*`\"\\']*(?:ones)"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|blended(?:_usd_per_million_tokens)?(?: rate)?|worker(?: rate| blended)?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])(?!(?<![\\d.])2\\.40*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])|(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|blended(?:_usd_per_million_tokens)?(?: rate)?|worker(?: rate| blended)?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])2\\.40*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])",
+      "(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|total_tokens)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])32000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])"
     ]
   },
   "examples": {
     "pass": [
-      "n = 10. ast.walk counts Expression + (n-1) BinOp + (n-1) Add + n Constant = 3n - 1 nodes; 3 x 10 - 1 = 29 <= 30, but n = 11 gives 32.",
-      "The largest accepted sum has 10 ones."
+      "Worker blended rate 2.4 USD per million tokens (0.06 / 25,000 x 1,000,000). total_tokens = 32000, because every token count is known; total_cost_usd is None, because the checker cost is unknown.",
+      "`blended_usd_per_million_tokens` = 2.4; `total_tokens` = 32,000; `total_cost_usd` = None."
     ],
     "fail": [
-      "15: BinOps plus constants are 2n - 1 <= 30.",
-      "30.",
-      "11.",
-      "Ten ones give 29 nodes, but the limit is inclusive, so the largest n is 11."
+      "blended 2.4; total_tokens None; total_cost_usd None.",
+      "blended 2.4; total_tokens 32000; total_cost_usd 0.0602.",
+      "blended 0.0000024; total_tokens 32000; total_cost_usd None."
     ]
   }
 }

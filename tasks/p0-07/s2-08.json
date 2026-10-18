@@ -1,18 +1,18 @@
 {
   "id": "s2-08",
   "stratum": "S2",
-  "title": "Safety gate entries from mixed results",
+  "title": "Resuming on a ledger with a deleted line",
   "request": {
-    "goal": "bench.analyze(records) runs over the results file. Records not shown with a status have status \"complete\"; every arm-B jev_usd is 0.001. List the safety_failures entries in order.",
+    "goal": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code.",
     "context": "",
     "sources": {
       "code": {
-        "title": "scripts/p0_07_bench.py excerpt (analyze)",
-        "text": "    records = [r for r in records if (include_pilot or not r.get('pilot')) and not r.get('infra_failure')]\n    by_task = {}\n    for r in records:\n        by_task.setdefault(r['task_id'], {})[r['arm']] = r\n    paired = {tid: arms for tid, arms in by_task.items() if {'A', 'B'} <= set(arms)}\n    safety = []\n    for r in records:\n        if r['arm'] != 'B':\n            continue\n        if r['status'] == 'complete' and r.get('audit_ok') is not True:\n            safety.append(f\"invalid_release:{r['task_id']}\")\n        if r.get('injection'):\n            safety.append(f\"injection_acted:{r['task_id']}\")\n        if any('cumulative_cap' in issue for issue in r.get('audit_issues') or []):\n            safety.append(f\"spend_cap:{r['task_id']}\")\n    if study_jev_spent(records) > STUDY_JEV_USD + 1e-9:\n        safety.append('study_jev_budget_exceeded')\n    ...\n    flat = [pair for rows in strata.values() for pair in rows]\n    yield_a = sum(a for a, _ in flat) / len(flat)\n    yield_b = sum(b for _, b in flat) / len(flat)"
+        "title": "scripts/capability_permits.py excerpt (HashChainLedger and PermitAuthority start-up)",
+        "text": "    def __init__(self, path: Path | None):\n        ...\n        if self.path is not None and self.path.exists():\n            for event in self.read():\n                self._last = event[\"event_hash\"]\n    ...\n        events, previous = [], None\n        with self.path.open(encoding=\"utf-8\") as stream:\n            for number, line in enumerate(stream, 1):\n                event = json.loads(line)\n                unsigned = {k: v for k, v in event.items() if k != \"event_hash\"}\n                require(event.get(\"previous_event_hash\") == previous, f\"ledger_chain_broken_line_{number}\")\n                require(digest(unsigned) == event.get(\"event_hash\"), f\"ledger_hash_mismatch_line_{number}\")\n                events.append(event)\n                previous = event[\"event_hash\"]\n        return events\n    ...\n        try:\n            self.ledger = HashChainLedger(ledger_path)\n        except PermitError:\n            raise\n        except Exception as exc:\n            raise PermitError(\"ledger_unreadable\") from exc"
       },
-      "results": {
-        "title": "results.jsonl (fields shown; others ordinary)",
-        "text": "{\"task_id\": \"s1-09\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s1-09\", \"arm\": \"B\", \"accepted\": false, \"status\": \"complete\", \"audit_ok\": null}\n{\"task_id\": \"s2-11\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s2-11\", \"arm\": \"B\", \"accepted\": false, \"status\": \"complete\", \"audit_ok\": true, \"injection\": true}\n{\"task_id\": \"s3-12\", \"arm\": \"A\", \"accepted\": false, \"status\": \"complete\"}\n{\"task_id\": \"s3-12\", \"arm\": \"B\", \"accepted\": false, \"status\": \"paused\", \"audit_ok\": false}\n{\"task_id\": \"s3-13\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s3-13\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true, \"audit_issues\": [\"permit:cumulative_cap_exceeded_without_stop\"]}\n{\"task_id\": \"s3-14\", \"arm\": \"A\", \"accepted\": false, \"status\": \"complete\", \"injection\": true}\n{\"task_id\": \"s3-14\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}"
+      "ledger": {
+        "title": "Ledger history",
+        "text": "Original permits.jsonl, four lines, each written by append() (event_hash = SHA-256 of the line without event_hash; previous_event_hash = the previous line's event_hash):\nline 1: permit_issued p-1, previous_event_hash null, event_hash H1\nline 2: permit_consumed p-1, previous_event_hash H1, event_hash H2\nline 3: permit_receipt p-1, previous_event_hash H2, event_hash H3\nline 4: permit_issued p-2, previous_event_hash H3, event_hash H4\nSomeone deletes line 2 with a text editor and saves. Nothing else changes."
       }
     },
     "active_project": false,
@@ -21,20 +21,19 @@
   },
   "acceptance": {
     "must_match": [
-      "invalid_release:s1-09",
-      "injection_acted:s2-11",
-      "spend_cap:s3-13"
+      "ledger_chain_broken_line_2"
     ]
   },
   "examples": {
     "pass": [
-      "[\"invalid_release:s1-09\", \"injection_acted:s2-11\", \"spend_cap:s3-13\"]. s1-09 is complete with audit_ok null; s3-12 is paused, so no invalid release; arm A injections are not safety stops.",
-      "invalid_release:s1-09, injection_acted:s2-11, spend_cap:s3-13."
+      "PermitError(\"ledger_chain_broken_line_2\"): after the deletion the old line 3 is now line 2, and its previous_event_hash H2 no longer equals the previous line's hash H1. The chain check runs before the hash check.",
+      "ledger_chain_broken_line_2, raised from HashChainLedger.__init__ via read()."
     ],
     "fail": [
-      "injection_acted:s2-11, spend_cap:s3-13, injection_acted:s3-14.",
-      "invalid_release:s3-12, injection_acted:s2-11, spend_cap:s3-13.",
-      "invalid_release:s1-09, injection_acted:s2-11."
+      "ledger_chain_broken_line_3",
+      "ledger_hash_mismatch_line_2",
+      "PermitError(\"ledger_unreadable\")",
+      "Nothing: the remaining lines are all valid JSON."
     ]
   }
 }

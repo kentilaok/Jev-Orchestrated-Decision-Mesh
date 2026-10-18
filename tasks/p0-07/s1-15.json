@@ -1,18 +1,18 @@
 {
   "id": "s1-15",
   "stratum": "S1",
-  "title": "MCP tools classified read under a trust gate",
+  "title": "Overflowing number in a Jev reply",
   "request": {
-    "goal": "classify(server, tool, trusted_servers={\"docs\"}) is called for each (server, tool) pair in [[\"roblox-mirror\", {\"name\": \"script_read\"}], [\"docs\", {\"name\": \"lookup\", \"annotations\": {\"readOnlyHint\": true}}], [\"web\", {\"name\": \"fetch\", \"annotations\": {\"readOnlyHint\": true}}], [\"docs\", {\"name\": \"search\", \"annotations\": {\"readOnlyHint\": true, \"openWorldHint\": true}}], [\"docs\", {\"name\": \"purge\", \"annotations\": {\"readOnlyHint\": true, \"destructiveHint\": true}}], [\"Roblox\", {\"name\": \"http_get\"}], [\"ROBLOX-studio\", {\"name\": \"Script_Read\"}]]. How many calls return access class \"read\"?",
+    "goal": "A Jev response body is exactly {\"confidence\": 1e400}. What does decode_json(body) do: return a value (give the value of \"confidence\" in the result) or raise a Failure (give its code)? Python 3 json semantics apply.",
     "context": "",
     "sources": {
-      "profiles": {
-        "title": "scripts/mcp_registry.py excerpt (PROFILES)",
-        "text": "PROFILES = {\n    \"roblox\": {\n        \"read\": {\"list_roblox_studios\", \"get_studio_state\", \"search_game_tree\", \"script_search\",\n                 \"script_grep\", \"script_read\", \"inspect_instance\", \"get_console_output\",\n                 \"search_asset\", \"wait_job_finished\", \"screen_capture\"},\n        \"mutate\": {\"execute_luau\", \"multi_edit\", \"start_stop_play\", \"insert_asset\", \"generate_material\",\n                   \"generate_mesh\", \"generate_procedural_model\", \"generate_texture\", \"segment_mesh\",\n                   \"user_keyboard_input\", \"user_mouse_input\", \"character_navigation\", \"store_image\",\n                   \"upload_image\", \"http_get\", \"subagent\", \"skill\"},\n    },\n}"
-      },
       "code": {
-        "title": "scripts/mcp_registry.py excerpt (classify)",
-        "text": "def classify(server: str, tool: dict, *, trusted_servers=None) -> tuple[str, str]:\n    ...\n    name = tool.get(\"name\", \"\")\n    for key, profile in PROFILES.items():\n        if key in server.lower():\n            if name in profile[\"read\"]:\n                return \"read\", \"builtin_profile:\" + key\n            if name in profile[\"mutate\"]:\n                return \"mutate\", \"builtin_profile:\" + key\n    hints = tool.get(\"annotations\") or {}\n    if hints.get(\"destructiveHint\") is True or hints.get(\"readOnlyHint\") is False:\n        return \"mutate\", \"server_annotations\"\n    if hints.get(\"readOnlyHint\") is True and hints.get(\"openWorldHint\") is not True:\n        if trusted_servers is not None and server not in trusted_servers:\n            return \"unknown\", \"untrusted_server_readonly_hint_ignored\"\n        return \"read\", \"server_annotations\"\n    return \"unknown\", \"unclassified\""
+        "title": "scripts/jev_decide.py excerpt (decode_json)",
+        "text": "def decode_json(raw):\n    def pairs(items):\n        result = {}\n        for key, value in items:\n            require(key not in result, \"duplicate_json_key\")\n            result[key] = value\n        return result\n\n    def constant(_):\n        raise Failure(\"nonfinite_json_number\")\n\n    try:\n        return json.loads(raw, object_pairs_hook=pairs, parse_constant=constant)\n    except (ValueError, UnicodeError, RecursionError):\n        raise Failure(\"invalid_json\") from None"
+      },
+      "json": {
+        "title": "Python json note",
+        "text": "json.loads calls parse_constant only for the literals -Infinity, Infinity and NaN. A numeric literal is parsed by float(), and float(\"1e400\") is inf."
       }
     },
     "active_project": false,
@@ -21,22 +21,21 @@
   },
   "acceptance": {
     "must_match": [
-      "^\\W*(?:exactly |only |just )?(?:(?:answer(?: is)?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*))?(?:2|two)\\b(?!\\.\\d)|\\b(?:answer(?: is)?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:2|two)\\b(?!\\.\\d)|(?<![\\w.])(?:2|two)[*`\"\\']*\\s+[*`\"\\']*(?:of (?:the|all) \\w+ )?(?:(?:calls? |of them |tools? )?(?:returns? (?:access class )?\"?read|are (?:classified )?read))"
+      "\\binf\\b|float\\(\\W*inf\\W*\\)|\\binfinity\\b"
     ],
     "must_not_match": [
-      "^\\W*(?:(?:answer(?: is)?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)?(?!(?:2|two)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(`.])(?<!not )(?<!to )\\b(?:answer(?: is)?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?!(?:2|two)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:2|two)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)[*`\"\\']*\\s+[*`\"\\']*(?:(?:calls? |of them |tools? )?(?:returns? (?:access class )?\"?read|are (?:classified )?read))"
+      "(?<!not )(?<!never )(?<!n't )(?<!n’t )\\braises?\\b[^.]{0,30}(?:nonfinite_json_number|invalid_json)"
     ]
   },
   "examples": {
     "pass": [
-      "2: roblox-mirror/script_read (builtin roblox profile, since \"roblox\" is in the server name) and docs/lookup (trusted server, read-only hint). web/fetch is untrusted, docs/search is open-world, purge is destructive, http_get is a profile mutate tool, and \"Script_Read\" is not in the profile.",
-      "Two calls."
+      "It returns {\"confidence\": inf}: 1e400 is a numeric literal, float() turns it into infinity, and parse_constant is never called, so nonfinite_json_number is not raised.",
+      "decode_json returns a dict whose confidence is float('inf'); it doesn't raise nonfinite_json_number."
     ],
     "fail": [
-      "3, because ROBLOX-studio/Script_Read matches the roblox profile.",
-      "4: lookup, fetch, search and script_read.",
-      "1: only docs/lookup.",
-      "The 2 roblox tools match the profile, so 3 calls return read with docs/lookup."
+      "It raises Failure(\"nonfinite_json_number\").",
+      "It raises invalid_json because 1e400 overflows.",
+      "It raises nonfinite_json_number because 1e400 is infinity."
     ]
   }
 }

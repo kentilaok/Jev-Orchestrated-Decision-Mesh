@@ -1,22 +1,14 @@
 {
   "id": "s2-04",
   "stratum": "S2",
-  "title": "Resumed spend total with malformed receipts",
+  "title": "Release decision from mixed postconditions",
   "request": {
-    "goal": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?",
+    "goal": "run_checks runs five checks in this order (name, required, what its evaluator does): tests_green, required=True, returns status \"pass\"; lint_clean, required=False, returns status \"fail\"; files_declared, required=True, raises ValueError(\"workspace missing\"); no_concealed, required=True, returns status \"unresolved\"; build_ok, required=True, returns status \"fail\". Give the report's decision, and its failed and unresolved lists as they appear in report.as_dict().",
     "context": "",
     "sources": {
       "code": {
-        "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)",
-        "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
-      },
-      "ledger": {
-        "title": "permits.jsonl (receipt events only, in order)",
-        "text": "{\"kind\": \"permit_receipt\", \"permit_id\": \"p-1\", \"cost_usd\": 0.25}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-2\", \"cost_usd\": null}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-3\", \"cost_usd\": \"0.1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-4\", \"cost_usd\": 0.5}"
-      },
-      "note": {
-        "title": "Operator note",
-        "text": "Each of p-1..p-4 was issued and consumed before its receipt. The \"0.1\" receipt was hand-edited during an incident and re-chained."
+        "title": "scripts/postconditions.py excerpt (run_checks)",
+        "text": "    for check in checks:\n        try:\n            raw = check.evaluator(candidate, workspace)\n            ...\n            result = PostconditionResult(status=raw.status, evidence=raw.evidence,\n                                         reasoning=raw.reasoning, name=check.name)\n        except Exception as exc:\n            result = PostconditionResult(status=\"unresolved\", evidence={\"exception\": type(exc).__name__},\n                                         reasoning=\"evaluator raised: \" + str(exc)[:300],\n                                         name=check.name)\n        results.append(result)\n        if check.required:\n            if result.status == \"fail\":\n                failed.append(check.name)\n            elif result.status == \"unresolved\":\n                unresolved.append(check.name)\n    decision = \"release\" if not failed and not unresolved else \"withhold\"\n    return PostconditionReport(decision=decision, results=results,\n                               failed=failed, unresolved=unresolved)"
       }
     },
     "active_project": false,
@@ -25,24 +17,20 @@
   },
   "acceptance": {
     "must_match": [
-      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])0\\.750*(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])0\\.750*(?!\\d)"
-    ],
-    "must_not_match": [
-      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.750*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])|(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])0\\.750*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])"
+      "\\bwithhold\\b",
+      "failed\\W{1,8}\\[\\W*build_ok\\W*\\]",
+      "unresolved\\W{1,8}\\[\\W*files_declared\\W*,\\W*no_concealed\\W*\\]"
     ]
   },
   "examples": {
     "pass": [
-      "cumulative_cost_usd = 0.75: replay adds 0.25 and 0.5 and skips null and the string \"0.1\" (type is str). 0.75 < 0.8, so the next permit is issued.",
-      "0.75 USD after replay; issue() succeeds.",
-      "**cumulative_cost_usd after replay = 0.75; the next permit is ISSUED.** Counted: 0.25 (p-1) + 0.5 (p-4) = **0.75**. True spend is 0.25 + 0.1 + 0.5 = **0.85**, so replay under-counts.",
-      "**cumulative_cost_usd after replay: 0.75. The next permit is issued, not refused.** Total = 0.25 + 0.5 = **0.75**."
+      "decision \"withhold\"; failed = [\"build_ok\"]; unresolved = [\"files_declared\", \"no_concealed\"]. The raising evaluator becomes unresolved, and lint_clean is optional, so its fail is recorded but not listed.",
+      "`decision`: `withhold`, `failed`: `[build_ok]`, `unresolved`: `[files_declared, no_concealed]`."
     ],
     "fail": [
-      "0.85 including the 0.1 receipt, so the next permit is refused with cumulative_cap_exceeded.",
-      "Replay fails with invalid_receipt_cost.",
-      "0.25.",
-      "cumulative_cost_usd = 0.85, so the next permit is refused; without the \"0.1\" receipt it would be 0.75."
+      "decision \"withhold\"; failed = [\"lint_clean\", \"build_ok\"]; unresolved = [\"no_concealed\"].",
+      "decision \"withhold\"; failed = [\"files_declared\", \"build_ok\"]; unresolved = [\"no_concealed\"].",
+      "decision \"release\"; failed = []; unresolved = []."
     ]
   }
 }
