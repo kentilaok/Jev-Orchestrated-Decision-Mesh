@@ -49,20 +49,18 @@ Pilot 3 (six paired tasks): yield A 1.00, B 1.00. Efficiency, B minus A, stratif
 
 ## 5. Values for the §10 freeze record (prepared 18 October 2026, not signed)
 
-These are the values as of commit `e717cfa`. §10 itself is left empty for Ken to fill and countersign after the review. Any change to the suite or to the protocol text changes the hashes, so recompute them at freeze time.
+Updated after pilot 4's grading fixes (see `docs/HANDOFF-2026-10-18-P0-07-PILOT-4.md`). §10 itself is left empty for Ken to fill and countersign after the review. Any change to the suite or to the protocol text changes the hashes, so recompute them at freeze time.
 
 | Field | Value |
 |---|---|
-| Commit | `e717cfae57c3673c226e478e6de55702abfdadb7` |
+| Commit | the commit that adds `HANDOFF-2026-10-18-P0-07-PILOT-4.md` |
 | Protocol file SHA-256 (before §10 is filled) | `02c9124fac447ba7419ea34ea81d19e0227ef9d9e1413d057cba9db1fd36ef46` |
-| `suite_sha256` (71 tasks) | `0caa424f181b9b4e9e4abfdc20e62b1d1dececb77731315b7153c6ae65d9bed8` |
+| `suite_sha256` (71 tasks) | `114eb491f53c5a003340bf3f0442414e3b314a24fa880c79225768daf337dcd2` |
 | `RunConfig.policy_hash`, arm B | `d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663` (`worker_family` claude, `max_usd` 1.0, `max_cumulative_usd` 1.0). The harness lowers `max_usd` once less than $1 of the $5 Jev budget remains, which changes this hash for those runs. |
 
 `frozen_suite_hash()` reads the first `suite_sha256: <64 hex>` in the protocol, so §10 must contain that line exactly.
 
-Blockers for the remaining stages, found 18 October 2026:
-- `OPENROUTER_API_KEY` is not set at any scope on this PC (it did not survive the move), so arm B cannot run. Ken must set it himself.
-- Running the pilot from a Claude Code session needs a permission rule: auto mode blocks the paid run.
+Pilot 4 (12 tasks, both arms) ran later on 18 October with the key Ken supplied; its results, the grading fixes it led to and the open decisions are in `docs/HANDOFF-2026-10-18-P0-07-PILOT-4.md`.
 
 ## 6. Next steps
 

@@ -68,15 +68,33 @@ def count(n, *, keys=(), things=(), lead_keys=()):
 
     def stated(x, guarded):
         lead = '|'.join([*lead_keys, *keys])
+        sep = _sep(lenient=not guarded)
         aside = r'|\s+(?:each|per|of the)\b' if guarded else ''  # "One of the six calls ..."
-        forms = [rf'^\W*(?:(?:{lead})\s*(?:=|:|is|are)?\s*)?{x}\b(?!\.\d{aside})']
+        hedge = '' if guarded else r'(?:exactly |only |just )?'  # "Exactly 2 of the 7 calls ..."
+        forms = [rf'^\W*{hedge}(?:(?:{lead}){sep})?{x}\b(?!\.\d{aside})']
         quote = r'(?<!["\'(])(?<!not )' if guarded else ''
-        forms.append(rf'{quote}\b(?:{"|".join(keys)})\s*(?:=|:|is|are)?\s*{x}\b(?!\.\d)')
+        forms.append(rf'{quote}\b(?:{"|".join(keys)}){sep}{x}\b(?!\.\d)')
         if things:
             guard = r'(?<!not )(?<!than )(?<!of )(?<!of the )' if guarded else ''
-            forms.append(rf'(?<![\w.]){guard}{x}\s+(?:{"|".join(things)})')
+            out_of = '' if guarded else r'(?:of (?:the|all) \w+ )?'
+            forms.append(rf'(?<![\w.]){guard}{x}{FMT}\s+{FMT}{out_of}(?:{"|".join(things)})')
         return '|'.join(forms)
     return [stated(gold, False)], [stated(other, True)]
+
+
+# Markdown emphasis and code quotes models put around keys and values ("returns `0.11`", "**0.75**").
+FMT = r'[*`"\']*'
+
+
+def _sep(lenient):
+    """Separator between a key and its value. The gold side also allows up to three words before
+    an explicit separator ("cumulative_cost_usd after replay = 0.75"); the forbidden side does not,
+    so a correct answer can mention a wrong value in passing without being failed."""
+    plain = rf'{FMT}\s*{FMT}(?:=|:|is|are|was|equals|->|→)?\s*{FMT}'
+    if not lenient:
+        return plain
+    gap = rf'{FMT}(?:\s+[^\s.;:=*`]+){{1,3}}?\s*{FMT}(?:=|:|is|are|was|equals|->|→)\s*{FMT}'
+    return rf'(?:{gap}|{plain})'
 
 
 def value(gold, *, keys=(), things=(), lead=True):
@@ -89,12 +107,12 @@ def value(gold, *, keys=(), things=(), lead=True):
     of the working, not an answer, and other numbers after "not" or "would", or after a
     quoted key, are left alone."""
     g = num(gold) if '.' in gold else rf'(?<![\d.]){gold}(?:\.0+)?(?!\d)'
-    other = rf'(?<![\d.])(?!{g})-?\d+(?:\.\d+)?(?!\.?\d|\s*[-+*/x]\s*[\d(])'
+    other = rf'(?<![\d.])(?!{g})-?\d+(?:\.\d+)?(?!\.?\d|\s*[-+*/x×]\s*[\d(])'
     keys = ['answer(?: is)?', r"it(?:'s| is)", *keys]
-    working = r'(?:[\d\s.()+\-*/x]*?=\s*)?'  # "= 0.042 / 0.012 = "
+    working = rf'(?:[\d\s.()+\-*/x×_`]*?=\s*{FMT})?'  # "= 0.042 / 0.012 = "
 
     def stated(x, guarded):
-        key = rf'(?:{"|".join(keys)})\s*(?:=|:|is|are)?\s*{working}\$?'
+        key = rf'(?:{"|".join(keys)}){_sep(lenient=not guarded)}{working}\$?{FMT}'
         forms = [rf'^[^\w$-]*(?:{key})?\$?{x}'] if lead else []
         guard = r'(?<!["\'(])(?<!not )(?<!would )' if guarded else ''
         forms.append(rf'{guard}\b{key}{x}')
@@ -872,7 +890,10 @@ add('s1-03', 'Claude checker reservation ceiling',
     {'prices': CONFIG_PRICES, 'reserve': CONFIG_RESERVE}, value('0.11', keys=[r'returns?', r'gives?', 'reserves?']),
     passes=['$0.11. The Claude checker becomes anthropic/claude-opus-5, tier "opus", so the prefix is '
             'worker_opus_: (12000 x 5 + 2000 x 25) / 1,000,000 = 0.11.',
-            'reserve_usd returns 0.110 USD (opus ceilings, not the checker_ fields).'],
+            'reserve_usd returns 0.110 USD (opus ceilings, not the checker_ fields).',
+            # Pilot 4, arm A (Markdown kept): rejected by the first stated-value pattern.
+            '**`reserve_usd("checker", 12000)` returns `0.11` USD.** Had the checker_ prices applied, the answer '
+            'would have been 0.044.'],
     fails=['0.044 USD, using checker_input/output_usd_per_million (2 and 10).',
            '0.06 USD: 12000 x 5 / 1,000,000.', '0.074 USD.', '0.0013 USD.',
            'reserve_usd returns 0.044 USD; with opus prices it would be 0.11.'],
@@ -1596,7 +1617,12 @@ add('s2-04', 'Resumed spend total with malformed receipts',
     value('0.75', keys=['cumulative_cost_usd', r'cumulative(?: cost)?', 'total']),
     passes=['cumulative_cost_usd = 0.75: replay adds 0.25 and 0.5 and skips null and the string "0.1" '
             '(type is str). 0.75 < 0.8, so the next permit is issued.',
-            '0.75 USD after replay; issue() succeeds.'],
+            '0.75 USD after replay; issue() succeeds.',
+            # Pilot 4, arms B and A (Markdown kept): rejected by the first stated-value pattern.
+            '**cumulative_cost_usd after replay = 0.75; the next permit is ISSUED.** Counted: 0.25 (p-1) + 0.5 (p-4) '
+            '= **0.75**. True spend is 0.25 + 0.1 + 0.5 = **0.85**, so replay under-counts.',
+            '**cumulative_cost_usd after replay: 0.75. The next permit is issued, not refused.** Total = 0.25 + 0.5 '
+            '= **0.75**.'],
     fails=['0.85 including the 0.1 receipt, so the next permit is refused with cumulative_cap_exceeded.',
            'Replay fails with invalid_receipt_cost.', '0.25.',
            'cumulative_cost_usd = 0.85, so the next permit is refused; without the "0.1" receipt it would be 0.75.'],

@@ -25,10 +25,10 @@
   },
   "acceptance": {
     "must_match": [
-      "^\\W*(?:(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*)?(?:7|seven)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*(?:7|seven)\\b(?!\\.\\d)|(?<![\\w.])(?:7|seven)\\s+(?:markers|marker dicts)"
+      "^\\W*(?:exactly |only |just )?(?:(?:answer(?: is)?|returns?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,3}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*))?(?:7|seven)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|returns?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,3}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:7|seven)\\b(?!\\.\\d)|(?<![\\w.])(?:7|seven)[*`\"\\']*\\s+[*`\"\\']*(?:of (?:the|all) \\w+ )?(?:markers|marker dicts)"
     ],
     "must_not_match": [
-      "^\\W*(?:(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*)?(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:markers|marker dicts)"
+      "^\\W*(?:(?:answer(?: is)?|returns?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)?(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?|returns?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)[*`\"\\']*\\s+[*`\"\\']*(?:markers|marker dicts)"
     ]
   },
   "examples": {
