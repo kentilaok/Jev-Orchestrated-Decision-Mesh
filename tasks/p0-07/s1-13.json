@@ -17,7 +17,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\d.])0\\.0550*(?!\\d)"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|bound|largest (?:absolute )?difference|allowed|accepts? up to)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])0\\.0550*(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|bound|largest (?:absolute )?difference|allowed|accepts? up to)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])0\\.0550*(?!\\d)"
+    ],
+    "must_not_match": [
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|bound|largest (?:absolute )?difference|allowed|accepts? up to)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.0550*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])|(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|bound|largest (?:absolute )?difference|allowed|accepts? up to)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.0550*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])"
     ]
   },
   "examples": {
@@ -29,7 +32,8 @@
       "0.025 (0.005 x 5).",
       "0.005.",
       "0.05 (0.005 x 10).",
-      "0.005 (TOLERANCE x 5)."
+      "0.005 (TOLERANCE x 5).",
+      "The bound is 0.025 (one 0.005 per criterion); 0.055 would double-count the keys."
     ]
   }
 }

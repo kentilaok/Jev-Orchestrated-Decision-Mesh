@@ -25,7 +25,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\d.])0\\.750*(?!\\d)"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])0\\.750*(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])0\\.750*(?!\\d)"
+    ],
+    "must_not_match": [
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.750*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])|(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|cumulative_cost_usd|cumulative(?: cost)?|total)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.750*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])"
     ]
   },
   "examples": {
@@ -36,7 +39,8 @@
     "fail": [
       "0.85 including the 0.1 receipt, so the next permit is refused with cumulative_cap_exceeded.",
       "Replay fails with invalid_receipt_cost.",
-      "0.25."
+      "0.25.",
+      "cumulative_cost_usd = 0.85, so the next permit is refused; without the \"0.1\" receipt it would be 0.75."
     ]
   }
 }

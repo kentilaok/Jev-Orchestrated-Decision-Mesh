@@ -25,8 +25,12 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\d.])0\\.50*(?!\\d)",
-      "\\b100000\\b"
+      "\\b(?:answer(?: is)?|it(?:'s| is)|cap|max_cumulative_usd|enforces)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])0\\.50*(?!\\d)",
+      "\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])100000(?:\\.0+)?(?!\\d)|(?<![\\d.])100000(?:\\.0+)?(?!\\d)\\s*(?:tokens)\\b"
+    ],
+    "must_not_match": [
+      "(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|cap|max_cumulative_usd|enforces)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.50*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])",
+      "(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])|(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])\\s*(?:tokens)\\b"
     ]
   },
   "examples": {
@@ -37,7 +41,8 @@
     "fail": [
       "Cap 2.0 from the config file; max_jev_tokens 50000.",
       "Cap 0.5; max_jev_tokens 50000 (set explicitly).",
-      "Cap 0.4 (max_usd); 100000 tokens."
+      "Cap 0.4 (max_usd); 100000 tokens.",
+      "Cap 2.0 (the 0.5 flag is ignored when a config file is given); max_jev_tokens 100000."
     ]
   }
 }

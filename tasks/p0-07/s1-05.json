@@ -17,7 +17,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\d.])1000(\\.0+)?(?!\\d)"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|stored(?: value)?|stores?|is stored as|cap is|float\\('1_000'\\) is)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])1000(?:\\.0+)?(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|stored(?: value)?|stores?|is stored as|cap is|float\\('1_000'\\) is)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])1000(?:\\.0+)?(?!\\d)"
+    ],
+    "must_not_match": [
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|stored(?: value)?|stores?|is stored as|cap is|float\\('1_000'\\) is)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])(?!(?<![\\d.])1000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])|(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|stored(?: value)?|stores?|is stored as|cap is|float\\('1_000'\\) is)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])1000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])"
     ]
   },
   "examples": {
@@ -28,6 +31,7 @@
     "fail": [
       "argparse rejects it: 1_000 is not a valid float.",
       "It stores 1.0.",
+      "It is stored as 1.0: the underscore ends the number, and 1000 would need no underscore.",
       "It is rejected with \"max-cumulative-usd must be a positive finite number\"."
     ]
   }

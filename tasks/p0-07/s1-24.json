@@ -17,7 +17,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\d.])0\\.250*(?!\\d)"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|orchestration_ratio|ratio)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])0\\.250*(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|orchestration_ratio|ratio)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])0\\.250*(?!\\d)"
+    ],
+    "must_not_match": [
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|orchestration_ratio|ratio)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.250*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])|(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|orchestration_ratio|ratio)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.250*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])"
     ]
   },
   "examples": {
@@ -28,7 +31,8 @@
     "fail": [
       "None, because one call has unknown tokens.",
       "0.2 (3000 / 15000).",
-      "4.0 (12000 / 3000)."
+      "4.0 (12000 / 3000).",
+      "orchestration_ratio is 0.2 (3000 / 15000); 0.25 would leave the checker out."
     ]
   }
 }

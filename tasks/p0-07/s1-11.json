@@ -17,7 +17,10 @@
   },
   "acceptance": {
     "must_match": [
-      "\\b48120\\b"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|input_tokens|returns?|gives?)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])48120(?:\\.0+)?(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|input_tokens|returns?|gives?)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])48120(?:\\.0+)?(?!\\d)"
+    ],
+    "must_not_match": [
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|input_tokens|returns?|gives?)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])(?!(?<![\\d.])48120(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])|(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|input_tokens|returns?|gives?)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])48120(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])"
     ]
   },
   "examples": {
@@ -29,7 +32,8 @@
       "120, the uncached count.",
       "3120.",
       "45120.",
-      "48920 including output."
+      "48920 including output.",
+      "input_tokens is 120 (uncached); 48120 would include the cache counters."
     ]
   }
 }

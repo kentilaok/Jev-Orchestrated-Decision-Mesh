@@ -25,8 +25,12 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\d.])3\\.50*(?!\\d)",
-      "(?<![\\d.])0\\.030*(\\d*)?(?![1-9])"
+      "\\b(?:answer(?: is)?|it(?:'s| is)|cost_multiplier|multiplier)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])3\\.50*(?!\\d)",
+      "\\b(?:answer(?: is)?|it(?:'s| is)|cost_per_quality_gain_usd|cost per quality gain)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])0\\.030*(?!\\d)"
+    ],
+    "must_not_match": [
+      "(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|cost_multiplier|multiplier)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])3\\.50*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])",
+      "(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|cost_per_quality_gain_usd|cost per quality gain)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])0\\.030*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])"
     ]
   },
   "examples": {
@@ -37,7 +41,8 @@
     "fail": [
       "cost_multiplier 3.5; cost_per_quality_gain_usd None, because the baseline passed (no failed checks) and the gain is 0.",
       "cost_multiplier 2.5; 0.018.",
-      "3.5 and 0.042."
+      "3.5 and 0.042.",
+      "cost_multiplier 2.5 (0.030 / 0.012); cost_per_quality_gain_usd 0.03, with 3.5 being the total ratio."
     ]
   }
 }

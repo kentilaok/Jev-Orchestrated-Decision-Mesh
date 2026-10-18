@@ -17,7 +17,10 @@
   },
   "acceptance": {
     "must_match": [
-      "\\b100000\\b"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens|ends up as|becomes?|stays?|remains?|value)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])100000(?:\\.0+)?(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens|ends up as|becomes?|stays?|remains?|value)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])100000(?:\\.0+)?(?!\\d)"
+    ],
+    "must_not_match": [
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens|ends up as|becomes?|stays?|remains?|value)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?)?\\$?(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])|(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens|ends up as|becomes?|stays?|remains?|value)\\s*(?:=|:|is|are)?\\s*(?:[\\d\\s.()+\\-*/x]*?=\\s*)?\\$?(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x]\\s*[\\d(])"
     ]
   },
   "examples": {
@@ -28,7 +31,8 @@
     "fail": [
       "It stays 50000, because the value was set explicitly and only an untouched default doubles.",
       "About 90000 (1.8x the GPT-6 size).",
-      "It becomes 50,000."
+      "It becomes 50,000.",
+      "It stays 50000; it would only become 100000 if the default were untouched."
     ]
   }
 }
