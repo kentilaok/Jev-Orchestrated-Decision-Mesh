@@ -1,6 +1,8 @@
 # Handoff — CIDM bug fixes, 12 replacement tasks, review pending (19 October 2026)
 
-For the next session working on P0-07. Read this first. Background: `docs/HANDOFF-2026-10-18-P0-07-PILOT-4.md` (pilot 4, grading check in §7) and `docs/P0-07-BENCHMARK-PROTOCOL.md`.
+> **Superseded for next steps:** read `docs/HANDOFF-2026-10-19-P0-07-STUDY-IN-PROGRESS.md` first (study paused on the Claude usage limit, how to resume). This file remains the record of the review fixes (§5a), the freeze (§5b) and the study notes (§5c).
+
+For the next session working on P0-07. Background: `docs/HANDOFF-2026-10-18-P0-07-PILOT-4.md` (pilot 4, grading check in §7) and `docs/P0-07-BENCHMARK-PROTOCOL.md`.
 
 ## 1. Where things are now
 
