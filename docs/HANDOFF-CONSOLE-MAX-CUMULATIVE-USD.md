@@ -56,6 +56,8 @@ The broker-side RunConfig override order of precedence is explicit:
 
 QA round 2 (commit 342b850: PASS WITH NITS). Fixed: static regression test for the Save-handler guard (mutation-checked: dropping either check fails it); `_drive` also patches `frontier_providers.build_provider` and `Gateway` to raise, so a refactor cannot turn the offline test into a live call; `start_resume_job` rejects a non-dict bundle/policy or invalid cap with HTTP 400 before `mkdir` (no orphan resume folder).
 
+QA round 3 (commit c517c16: PASS WITH NITS). Fixed in f229447: the malformed-checkpoint test now asserts no `-resume-` folder is created, and checkpoint cap errors are prefixed `checkpoint policy:`. Round-4 nits (assert the message prefix; this line) were folded into the P0-03 branch.
+
 Not fixed (nits, logged): the Resume confirm does not show which cap will apply (help text says it); clearing a set cap to blank does not ask for confirmation; a 400-digit JSON integer returns HTTP 500 instead of 400 (nothing saved); a hand-edited invalid cap in the state file blocks the Console until fixed by hand; an int cap from a CLI `--config` file (`5`) hashes differently from the Console's float (`5.0`), so such a run cannot be resumed from the Console.
 
 ## 5. Open items

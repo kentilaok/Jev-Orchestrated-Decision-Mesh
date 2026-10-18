@@ -1,0 +1,13 @@
+{
+  "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+  "context": "",
+  "sources": {
+    "records": {
+      "title": "Synthetic production records",
+      "text": "segment A, kind production, items 240, defects 12\nsegment B, kind production, items 160, defects 8\nsegment T, kind trial, items 100, defects 30"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

@@ -1,0 +1,265 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "context",
+        "title": "Accepted carried context"
+      },
+      {
+        "id": "outstanding",
+        "title": "Outstanding project stages"
+      },
+      {
+        "id": "brief",
+        "title": "Approved project brief"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "context",
+          "outstanding",
+          "brief"
+        ],
+        "data": {
+          "summary": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+            "context": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+            "outstanding": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+            "brief": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465"
+          }
+        },
+        "artifact_hash": "5b29972a60df585267e2555d93715df5c40fe5493675fd52c054f47d82c6c447",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Prioritized plan returned as the structured artifact, with source IDs cited, the predecessor hash preserved, and two blocked stages disclosed.",
+        "source_ids": [
+          "request",
+          "context",
+          "outstanding",
+          "brief"
+        ],
+        "data": {
+          "summary": "Prioritized implementation plan for the first release of the customer support portal: sign-in, then account recovery, then support request creation, then request status reading, with a release check gating on keyboard navigation and screen-reader support. Two stages remain blocked: account recovery acceptance criteria and the accessibility verification method.",
+          "claims": [
+            "Scope is a first release of a customer support portal for existing customers; implementation has not started (context).",
+            "Required capabilities per the brief: sign in, recover an account, open a support request, read request status.",
+            "Accessibility is release-blocking: the first release must work with keyboard navigation and screen readers (brief).",
+            "Priority 1 is sign-in, since recovery and request flows depend on an authenticated identity.",
+            "Priority 2 is account recovery, blocked until its acceptance criteria are defined (outstanding).",
+            "Priority 3 is opening a support request; Priority 4 is reading request status, which depends on request creation.",
+            "Priority 5 is a release check covering keyboard navigation and screen-reader support across all four flows.",
+            "The accessibility verification method is undefined (outstanding), so the release check cannot yet be stated as a pass/fail gate.",
+            "New-customer registration is out of scope; brief and context cover existing customers only."
+          ],
+          "unresolved": [
+            "Account recovery acceptance criteria are undefined, so that work item cannot be sized or accepted.",
+            "Accessibility verification method is undefined: tooling, assistive-technology matrix, and pass threshold are unspecified.",
+            "No stated recovery channel (email, phone, support-agent assisted) or identity-proofing bar for recovery.",
+            "No stated support-request fields, status values, or notification behavior for status reading.",
+            "No timeline, team capacity, or platform/browser targets given, so priority order is dependency-based rather than schedule-based."
+          ],
+          "parent_hashes": [
+            "5b29972a60df585267e2555d93715df5c40fe5493675fd52c054f47d82c6c447"
+          ],
+          "source_hashes": {
+            "request": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+            "context": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+            "outstanding": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+            "brief": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465"
+          }
+        },
+        "artifact_hash": "e786ab2f5da9e4735c3d07e210eb3293b5fc4355010cc9de6ce9f62673cec63e",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+        "text": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check."
+      },
+      {
+        "id": "context",
+        "hash": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+        "text": "The team has approved a first release for existing customers. Implementation work has not started."
+      },
+      {
+        "id": "outstanding",
+        "hash": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+        "text": "Define account recovery acceptance criteria\nDefine accessibility verification"
+      },
+      {
+        "id": "brief",
+        "hash": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465",
+        "text": "Customers should be able to sign in, recover an account, open a support request, and read the request status. The first release must work with keyboard navigation and screen readers."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "e786ab2f5da9e4735c3d07e210eb3293b5fc4355010cc9de6ce9f62673cec63e"
+      }
+    ],
+    "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+    "selected_worker": {
+      "id": "sonnet_medium",
+      "model": "anthropic/claude-sonnet-5",
+      "effort": "medium"
+    },
+    "candidate": {
+      "text": "Prioritized implementation plan for the customer support portal first release, rebuilt as a fresh candidate per repair request. Sources cited, required predecessor hash preserved, and both blocked stages (account recovery acceptance criteria, accessibility verification method) disclosed as unresolved rather than assumed.",
+      "data": {
+        "summary": "Prioritized plan for the first release of the customer support portal, covering existing customers only: (1) sign-in, (2) account recovery, (3) open a support request, (4) read request status, (5) a release-gating accessibility check for keyboard navigation and screen readers across all four flows. Account recovery and the accessibility verification method remain undefined and block full acceptance of priorities 2 and 5.",
+        "claims": [
+          "Scope is the first release of a customer support portal for existing customers; implementation has not started (context).",
+          "Required capabilities per the brief: sign in, recover an account, open a support request, read request status.",
+          "The brief makes keyboard navigation and screen-reader support release-blocking for the first release.",
+          "Priority 1: sign-in, because account recovery, request creation, and status reading all require an authenticated identity.",
+          "Priority 2: account recovery, sequenced after sign-in but held at not-ready status because its acceptance criteria are undefined (outstanding).",
+          "Priority 3: open a support request, sequenced after sign-in since request creation needs an authenticated customer.",
+          "Priority 4: read request status, sequenced after request creation since a request must exist before its status can be read.",
+          "Priority 5: a release check verifying keyboard navigation and screen-reader support across sign-in, recovery, request creation, and status reading.",
+          "The release check in Priority 5 cannot be stated as a pass/fail gate yet because the accessibility verification method is undefined (outstanding).",
+          "New-customer registration is explicitly out of scope; both the brief and context describe existing customers only.",
+          "This plan is a repaired candidate produced after a prior version was rejected; no new acceptance criteria were supplied with the rejection, so the same two stages remain blocked."
+        ],
+        "unresolved": [
+          "Account recovery acceptance criteria are undefined, so Priority 2 cannot be sized, scheduled, or marked accepted.",
+          "Accessibility verification method is undefined: no stated tooling, assistive-technology test matrix, or pass/fail threshold for Priority 5.",
+          "No recovery channel (email, phone, agent-assisted) or identity-proofing bar is specified for account recovery.",
+          "No support-request fields, status values, or notification behavior are specified for request creation and status reading.",
+          "No timeline, team capacity, or browser/platform targets are given, so ordering here is dependency-based, not schedule-based.",
+          "The repair feedback did not specify failed_criteria or missing_evidence, so it is unclear what distinguished this candidate from the rejected one beyond re-issuing it."
+        ],
+        "parent_hashes": [
+          "e786ab2f5da9e4735c3d07e210eb3293b5fc4355010cc9de6ce9f62673cec63e"
+        ],
+        "source_hashes": {
+          "request": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+          "context": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+          "outstanding": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+          "brief": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465"
+        }
+      },
+      "source_ids": [
+        "request",
+        "context",
+        "outstanding",
+        "brief"
+      ],
+      "five_scores": [
+        4,
+        4,
+        3,
+        4,
+        3
+      ],
+      "self_probability": 0.55
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": {
+      "verdict": "repair_required",
+      "failed_criteria": [],
+      "reason": "Jev requested a new candidate after this worker output.",
+      "missing_evidence": []
+    },
+    "remaining_budget": {
+      "jev_calls_remaining": 23,
+      "jev_tokens_remaining": 25233,
+      "jev_api_usd_remaining": 0.998979568,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "fb58096813f56395b4cda267e157f6e9bc33deb7762e3c833ffff0b27528c7c5",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 1,
+            "check_attempt": 0,
+            "candidate_hash": "fb58096813f56395b4cda267e157f6e9bc33deb7762e3c833ffff0b27528c7c5",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

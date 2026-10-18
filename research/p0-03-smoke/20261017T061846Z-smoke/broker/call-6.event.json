@@ -1,0 +1,38 @@
+{
+  "id": "call-6",
+  "role": "jev",
+  "status": "ok",
+  "requested_model": "typesafe/jev-1.13",
+  "returned_model": "typesafe/jev-1.13-20260917",
+  "provider": "TypeSafe",
+  "request_hash": "80385461349ba3fb23bf88ad4b5c6a0ccb188ac77236fa818ce7ee83b01898ee",
+  "policy_hash": "9fc5fa28de04579c2f54f0e2aec98607d938e38f0571c945329357cd3e365a12",
+  "reserved_usd": 0.000378,
+  "followup_jev_reserved_usd": 0.0,
+  "admission_reserved_calls": 1,
+  "followup_jev_required": false,
+  "reasoning_effort": null,
+  "usage": {
+    "input_tokens": 2598,
+    "output_tokens": 59,
+    "total_tokens": 2657,
+    "total_tokens_source": "derived_input_plus_output",
+    "cached_input_tokens": null,
+    "reasoning_tokens": null,
+    "cost": 0.000109116
+  },
+  "usage_raw": {
+    "input_tokens": 2598,
+    "output_tokens": 59,
+    "cost": 0.000109116
+  },
+  "latency_ms": 625.0,
+  "provider_request_id": "gen-dec-1792217961-53Qtbf9nMRYZ6jXMhfHO",
+  "started_at": "2026-10-17T06:19:21.551Z",
+  "ended_at": "2026-10-17T06:19:22.179Z",
+  "usage_semantics": {
+    "cached_input_tokens": "subset_of_input_tokens",
+    "reasoning_tokens": "subset_of_output_tokens"
+  },
+  "warnings": []
+}

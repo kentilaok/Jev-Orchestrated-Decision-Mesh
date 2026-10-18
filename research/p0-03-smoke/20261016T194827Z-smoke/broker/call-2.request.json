@@ -1,0 +1,154 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "context",
+        "title": "Accepted carried context"
+      },
+      {
+        "id": "outstanding",
+        "title": "Outstanding project stages"
+      },
+      {
+        "id": "brief",
+        "title": "Approved project brief"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+        "text": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check."
+      },
+      {
+        "id": "context",
+        "hash": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+        "text": "The team has approved a first release for existing customers. Implementation work has not started."
+      },
+      {
+        "id": "outstanding",
+        "hash": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+        "text": "Define account recovery acceptance criteria\nDefine accessibility verification"
+      },
+      {
+        "id": "brief",
+        "hash": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465",
+        "text": "Customers should be able to sign in, recover an account, open a support request, and read the request status. The first release must work with keyboard navigation and screen readers."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+    "candidate": {
+      "text": "Input and evidence identities preserved.",
+      "data": {
+        "summary": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check.",
+        "claims": [],
+        "unresolved": [],
+        "parent_hashes": [],
+        "source_hashes": {
+          "request": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+          "context": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+          "outstanding": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+          "brief": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465"
+        }
+      },
+      "source_ids": [
+        "request",
+        "context",
+        "outstanding",
+        "brief"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 29,
+      "jev_tokens_remaining": 48633,
+      "jev_api_usd_remaining": 0.999943888,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "5b29972a60df585267e2555d93715df5c40fe5493675fd52c054f47d82c6c447",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "5b29972a60df585267e2555d93715df5c40fe5493675fd52c054f47d82c6c447",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      }
+    }
+  }
+}

@@ -39,13 +39,14 @@ class FrontierProvider(Protocol):
     def usage(self, run_id: str) -> dict: ...
 
 
-def _run_status_command(argv: list[str], *, timeout: float = 20, runner=None) -> dict:
+def _run_status_command(argv: list[str], *, timeout: float = 20, runner=None, env=None) -> dict:
     """Run a read-only status command without a shell; never raise."""
     if runner is not None:
         return runner(argv, timeout)
     try:
         proc = subprocess.run(argv, capture_output=True, text=True, timeout=timeout,
-                              encoding="utf-8", errors="replace", shell=False)
+                              encoding="utf-8", errors="replace", shell=False,
+                              env=None if env is None else dict(env))
     except FileNotFoundError:
         return {"ok": False, "returncode": None, "stdout": "", "stderr": "command_not_found"}
     except subprocess.TimeoutExpired:
@@ -77,6 +78,14 @@ def _cost_from_usage(usage: Any) -> float | None:
     if not math.isfinite(value) or value < 0:
         return None
     return float(value)
+
+
+def _cost_from_response(response: Any) -> float | None:
+    """Cost of a successful adapter response. ClaudeCliAdapter reports
+    `api_equivalent_cost_usd` at the top level; older shapes put it in usage."""
+    if isinstance(response, dict) and "api_equivalent_cost_usd" in response:
+        return _cost_from_usage({"api_equivalent_cost_usd": response["api_equivalent_cost_usd"]})
+    return _cost_from_usage(response.get("usage") if isinstance(response, dict) else None)
 
 
 def _request_scope(provider_id: str, request: dict) -> dict:
@@ -124,7 +133,7 @@ class _BoundedProvider:
                                         request["schema"], request["workspace"])
             outcome = {"status": "ok", "run_id": run_id, "artifact_hash": digest(response["artifact"]),
                        "usage": response.get("usage"),
-                       "cost_usd": _cost_from_usage(response.get("usage")),
+                       "cost_usd": _cost_from_response(response),
                        "identity_verification": response.get("identity_verification")}
             response = {**response, "run_id": run_id, "permit_id": permit_id, "provider": self.provider_id}
             return response
@@ -177,7 +186,8 @@ class ClaudeCodeProvider(_BoundedProvider):
         if not installed:
             return {"provider": self.provider_id, "installed": False, "logged_in": False,
                     "billing": "unknown", "detail": "Claude Code CLI not found"}
-        result = _run_status_command([self.executable, "auth", "status", "--json"], runner=self.runner)
+        result = _run_status_command([self.executable, "auth", "status", "--json"], runner=self.runner,
+                                     env=self.env)
         try:
             data = json.loads(result["stdout"])
         except ValueError:
@@ -330,7 +340,11 @@ class PermittedAdapter:
         basis, self._basis = self._basis, None
         request = {"model": model, "effort": effort, "prompt": prompt, "schema": schema,
                    "workspace": str(workspace)}
-        permit_id = self.authority.issue("frontier.run", _request_scope(self.provider.provider_id, request), basis)
+        try:
+            permit_id = self.authority.issue("frontier.run", _request_scope(self.provider.provider_id, request), basis)
+        except Exception as error:
+            error.ran = False  # refused before launch; the broker records usage as not_launched
+            raise
         return self.provider.run(request, permit_id)
 
 

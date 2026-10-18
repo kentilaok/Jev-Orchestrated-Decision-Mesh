@@ -27,6 +27,15 @@ PROJECT_UNITS = (
     Unit('hidden3', 'Reconcile', 'Check the proposed work against requirements, predecessors, and source evidence.'),
     Unit('output', 'Output', 'Deliver a concise supported result and state material unresolved issues.'),
 )
+# Worker artifact contract. Live Claude runs (P0-03 slice 3c) read the earlier
+# "preserve predecessor hashes, and disclose unresolved issues" as "copy the
+# parent's own parent_hashes" and "list every caveat", so both are stated exactly.
+ARTIFACT_CONTRACT = (
+    'Return only the structured artifact and cite source IDs. '
+    'Set data.parent_hashes to exactly required_parent_hashes and data.source_hashes to exactly '
+    'required_source_hashes; accepted_parent.data.parent_hashes belong to the parent and are not compared. '
+    'Put assumptions and caveats in claims. List in data.unresolved only material open issues that block '
+    'accepting this result, and leave it empty when there are none; never hide such an issue.')
 
 
 def validate_spec(spec):
@@ -237,6 +246,8 @@ class NativeTransitionBroker:
                            'actual_effort': response.get('actual_effort'),
                            'identity_verification': response.get('identity_verification'),
                            'usage': response.get('usage'), 'status': 'ok',
+                           'session_id': response.get('session_id'),
+                           'permit_id': response.get('permit_id'),
                            'artifact_hash': artifact_hash})
         return response['artifact']
 
@@ -365,13 +376,16 @@ class NativeTransitionBroker:
                 shape = False
         if not shape:
             return {'native_shape': False}
-        prior_unresolved = (any(packet['artifact']['data'].get('unresolved', [])
-                                for packet in parents) if output else False)
-        return {'native_shape': True,
-                'source_hashes_match': data['source_hashes'] == self._source_hashes(sources, sources),
-                'parent_hashes_match': data['parent_hashes'] == expected_parents,
-                'prior_units_resolved': not prior_unresolved if output else True,
-                'output_has_no_unresolved': not data['unresolved'] if output else True}
+        checks = {'native_shape': True,
+                  'source_hashes_match': data['source_hashes'] == self._source_hashes(sources, sources),
+                  'parent_hashes_match': data['parent_hashes'] == expected_parents}
+        # The resolution checks apply only to the released output; intermediate units
+        # omit them rather than report an unevaluated check as passed.
+        if output:
+            checks['prior_units_resolved'] = not any(packet['artifact']['data'].get('unresolved', [])
+                                                     for packet in parents)
+            checks['output_has_no_unresolved'] = not data['unresolved']
+        return checks
 
     def run(self, spec, resume=None):
         """Run one request; `resume` continues a persisted recovery checkpoint.
@@ -440,7 +454,7 @@ class NativeTransitionBroker:
                                  'goal': goal, 'context': context, 'sources': sources,
                                  'required_source_hashes': self._source_hashes(sources, sources),
                                  'required_parent_hashes': [],
-                                 'format': 'Return the requested structured artifact. State unresolved issues.'})
+                                 'format': ARTIFACT_CONTRACT})
                 short = self.config.short_route()
                 self._short_basis = {'kind': 'host_short_classification',
                                      'snapshot_hash': normalized['snapshot_hash'],
@@ -492,8 +506,7 @@ class NativeTransitionBroker:
                                          'required_parent_hashes': expected,
                                          'required_source_hashes': self._source_hashes(sources, sources),
                                          'repair_feedback': feedback,
-                                         'format': 'Return only the structured artifact. Cite source IDs, '
-                                                   'preserve predecessor hashes, and disclose unresolved issues.'})
+                                         'format': ARTIFACT_CONTRACT})
                         return self._codex('worker', worker_route['model'], worker_route['effort'],
                                            prompt, artifact_schema(sources))
                     def validate(unit, candidate, parents):
@@ -711,6 +724,8 @@ def _build_cli_parser() -> argparse.ArgumentParser:
                         help=('P0-06 spend cap: cumulative USD across the permit ledger that, '
                               'once reached, refuses new permits with cumulative_cap_exceeded. '
                               'Overrides any value in --config. Omit to keep the --config value (no cap by default).'))
+    parser.add_argument('--claude-executable',
+                        help='Claude host only: path to the Claude Code CLI (default: claude on PATH)')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--live', action='store_true',
                       help='Explicitly permit Codex plan calls and separately billed Jev API calls')
@@ -724,6 +739,7 @@ def main():
     args = parser.parse_args()
     require(not args.arsenal_calibration_ledger or args.arsenal_shadow,
             'calibration_requires_shadow_observer')
+    require(not args.claude_executable or args.host == 'claude', 'claude_executable_requires_claude_host')
     spec = json.loads(args.task.read_text(encoding='utf-8-sig'))
     normalized = validate_spec(spec)
     arsenal_observer = None
@@ -786,6 +802,8 @@ def main():
                else {'astra_explicitly_authorized': config.astra_explicitly_authorized})
     if args.secret_env_names:
         options['secret_env_names'] = args.secret_env_names
+    if args.claude_executable:
+        options['executable'] = args.claude_executable
     provider = build_provider(args.host, authority, **options)
     coverage = None
     if not args.skip_route_preflight:
@@ -798,7 +816,8 @@ def main():
             result = {'status': 'route_preflight_failed', 'route': normalized['classification']['scope'],
                       'gate_policy': args.gate_policy, 'host': args.host, 'answer': None,
                       'task_hash': normalized['snapshot_hash'], 'route_coverage': coverage,
-                      'calls': [], 'simulation': False, 'training_performed': False}
+                      'calls': [], 'simulation': False, 'training_performed': False,
+                      'config_policy_hash': config.policy_hash}
             (args.out / 'result.json').write_text(json.dumps(result, indent=2, allow_nan=False),
                                                   encoding='utf-8')
             print(packed({'status': result['status'], 'route': result['route'], 'answer': None,
@@ -834,6 +853,7 @@ def main():
                   'reset_active_unit_rounds': args.reset_recovery_rounds, 'operator': args.operator}
     result = broker.run(spec, resume=resume)
     result['host'] = args.host
+    result['config_policy_hash'] = config.policy_hash
     result['route_coverage'] = coverage if coverage is not None else {'status': 'skipped'}
     provider_events = copy.deepcopy(gateway.calls) if gateway is not None else []
     result['jev_provider_events'] = provider_events

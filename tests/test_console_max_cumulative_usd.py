@@ -192,7 +192,7 @@ class ConsoleResumeKeepsOriginalCapTests(unittest.TestCase):
         for policy in ("x", ["a"], {"max_cumulative_usd": "abc"}, {"max_cumulative_usd": True},
                        {"max_cumulative_usd": -1}):
             with self.subTest(policy=policy):
-                with self.assertRaises(ValueError):
+                with self.assertRaisesRegex(ValueError, r"^checkpoint"):
                     self._resume_argv(policy)
                 self.assertEqual(self.resume_dirs, [])
 
