@@ -234,6 +234,22 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(len(checks),2)
         self.assertNotEqual(checks[0]['candidate_hash'],checks[1]['candidate_hash'])
 
+    def test_repair_feedback_names_the_broken_artifact_rule(self):
+        demo=DemoPipeline(DEMO); seen=[]
+        def producer(unit,parents,feedback,route):
+            candidate=demo.produce(unit,parents,feedback,route)
+            if unit.id=='hidden1':
+                seen.append(feedback)
+                if len(seen)==1: candidate['text']='x'*1201
+            return candidate
+        def judge(phase,options,state):
+            result=fake_judge(phase,options,state)
+            if phase=='after_worker' and 'forward' not in options: result['choice']='repair'
+            return result
+        result=build(judge,producer=producer).run()
+        self.assertEqual(result['status'],'complete')
+        self.assertEqual(seen[1]['failed_criteria'],['artifact_schema_valid','artifact_text_limit'])
+
     def test_failed_precheck_can_repair_before_spending_checker_call(self):
         demo=DemoPipeline(DEMO); attempts={}
         def producer(unit,parents,feedback,route):

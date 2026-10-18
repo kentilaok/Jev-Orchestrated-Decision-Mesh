@@ -47,6 +47,23 @@ CHECK_SCHEMA = {
 }
 
 
+# Content checks of a Jev answer (jev_decide.validate_response) that a fresh answer can pass.
+JEV_RETRYABLE_CONTENT = frozenset({
+    "choice_not_most_probable", "invalid_probability_sum", "invalid_probability_value",
+    "invalid_probability_options", "invalid_choice_value", "invalid_confidence",
+    "answer_keys_mismatch", "answer_type_mismatch",
+})
+
+
+def _summed_usage(first, second):
+    """Usage of a retried Jev decision: both attempts' counters and cost, unknown stays unknown."""
+    def add(key):
+        a, b = first.get(key), second.get(key)
+        return a + b if a is not None and b is not None else None
+    return {**second, **{key: add(key) for key in ("input_tokens", "output_tokens", "total_tokens",
+                                                   "cached_input_tokens", "reasoning_tokens", "cost")}}
+
+
 def _utc_now():
     return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
@@ -305,11 +322,30 @@ class Gateway:
         require(phase in instructions, "unknown_network_phase")
         payload = {"model": self.config.jev_model, "state": state,
                    "questions": {"next": {"type": "choice", "instructions": instructions[phase], "criteria": options}}}
-        response, event = self.call("jev", payload)
+        before = len(self.calls)
+        try:
+            response, event = self.call("jev", payload)
+            failed = None
+        except MeshError:
+            # A Jev answer whose content fails validation (its probabilities are rounded
+            # independently, so e.g. choice 0.39 vs 0.40 trips the 0.001 tolerance) is asked
+            # once more. The failed attempt stays billed and logged, and its usage is added to
+            # the decision so budgets stay exact. Identity, usage, budget and transport
+            # failures are never retried.
+            failed = self.calls[-1] if len(self.calls) == before + 1 else None
+            if not (failed and (failed.get("error") or {}).get("code") in JEV_RETRYABLE_CONTENT
+                    and failed["usage"]["cost"] is not None and self.spent < self.config.max_usd):
+                raise
+            self.blocked = False
+            response, event = self.call("jev", payload)
         answer = response["answers"]["next"]
-        return {"choice": answer["choice"], "model": response["model"], "live": True,
-                "probabilities": answer["probabilities"], "confidence": answer["confidence"],
-                "api_event": event["id"], "usage": event["usage"]}
+        usage = event["usage"] if failed is None else _summed_usage(failed["usage"], event["usage"])
+        decision = {"choice": answer["choice"], "model": response["model"], "live": True,
+                    "probabilities": answer["probabilities"], "confidence": answer["confidence"],
+                    "api_event": event["id"], "usage": usage}
+        if failed is not None:
+            decision["retried_after"] = {"api_event": failed["id"], "code": failed["error"]["code"]}
+        return decision
 
     def high_check(self, state):
         instructions = (

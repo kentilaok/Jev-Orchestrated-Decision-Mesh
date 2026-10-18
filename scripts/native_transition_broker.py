@@ -35,7 +35,9 @@ ARTIFACT_CONTRACT = (
     'Set data.parent_hashes to exactly required_parent_hashes and data.source_hashes to exactly '
     'required_source_hashes; accepted_parent.data.parent_hashes belong to the parent and are not compared. '
     'Put assumptions and caveats in claims. List in data.unresolved only material open issues that block '
-    'accepting this result, and leave it empty when there are none; never hide such an issue.')
+    'accepting this result, and leave it empty when there are none; never hide such an issue. '
+    'Limits: text and data.summary at most 1200 characters each, at most 12 claims of at most 500 '
+    'characters, at most 8 unresolved items of at most 300 characters; a longer artifact is rejected.')
 
 
 def validate_spec(spec):

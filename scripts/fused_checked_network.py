@@ -12,7 +12,7 @@ import copy
 import uuid
 
 from atomic_mesh import MeshError, fingerprint, packed, require
-from checked_network import CheckedNetwork, blind
+from checked_network import CheckedNetwork, blind, failed_criteria
 
 
 class FusedCheckedNetwork(CheckedNetwork):
@@ -203,7 +203,7 @@ class FusedCheckedNetwork(CheckedNetwork):
         if receipt is not None:
             return copy.deepcopy(receipt['result'])
         return {'verdict': 'repair_required',
-                'failed_criteria': [k for k, passed in checks.items() if not passed],
+                'failed_criteria': failed_criteria(checks, getattr(self, '_contract_error', None)),
                 'reason': 'Jev requested a fresh candidate after this result.',
                 'missing_evidence': []}
 
@@ -335,12 +335,14 @@ class FusedCheckedNetwork(CheckedNetwork):
         unit = self.units[index]
         self.integrity()
         candidate_view = candidate
+        self._contract_error = None
         try:
             self.validate_artifact(candidate)
             checks = self.validator(unit, copy.deepcopy(candidate), copy.deepcopy(self.committed))
             checks['artifact_schema_valid'] = True
         except MeshError as error:
             checks = {'artifact_schema_valid': False}
+            self._contract_error = str(error)
             candidate_view = {'invalid_response': True, 'contract_error': str(error),
                               'raw_return_hash': fingerprint(candidate),
                               'raw_return_preview': packed(candidate)[:600],

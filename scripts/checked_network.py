@@ -28,6 +28,12 @@ def blind(value):
     return copy.deepcopy(value)
 
 
+def failed_criteria(checks,contract_error=None):
+    """Failed hard checks for repair feedback, plus the exact artifact contract rule when the
+    candidate broke one (e.g. artifact_text_limit), so the worker knows what to change."""
+    return [k for k,v in checks.items() if not v]+([contract_error] if contract_error else [])
+
+
 class PlaceholderWorker:
     description='Registered gate computation; execution is owned by the checked network broker.'
 
@@ -162,12 +168,14 @@ class CheckedNetwork:
             candidate=self.invoke('producer',action,gate,lambda:self.producer(unit,copy.deepcopy(self.committed),
                                                                               feedback,copy.deepcopy(self.active_route)))
             candidate_view=candidate
+            contract_error=None
             try:
                 self.validate_artifact(candidate)
                 checks=self.validator(unit,copy.deepcopy(candidate),copy.deepcopy(self.committed))
                 checks['artifact_schema_valid']=True
             except MeshError as error:
                 checks={'artifact_schema_valid':False}
+                contract_error=str(error)
                 candidate_view={'invalid_response':True,'contract_error':str(error),
                                 'raw_return_hash':fingerprint(candidate),
                                 'raw_return_preview':packed(candidate)[:600],
@@ -200,12 +208,12 @@ class CheckedNetwork:
                 self.commit_candidate(unit,index,candidate,candidate_hash,parents,checks,None,gate,'after_worker')
                 return 'forwarded'
             if choice=='repair':
-                feedback={'verdict':'repair_required','failed_criteria':[k for k,v in checks.items() if not v],
+                feedback={'verdict':'repair_required','failed_criteria':failed_criteria(checks,contract_error),
                           'reason':'Jev requested a new candidate after this worker output.','missing_evidence':[]}
                 continue
             if choice=='escalate':
                 min_route_rank=route_rank+1
-                feedback={'verdict':'repair_required','failed_criteria':[k for k,v in checks.items() if not v],
+                feedback={'verdict':'repair_required','failed_criteria':failed_criteria(checks,contract_error),
                           'reason':'Jev requested a higher resource worker route.','missing_evidence':[]}
                 continue
             if choice=='retrieve_evidence': return 'needs_evidence'

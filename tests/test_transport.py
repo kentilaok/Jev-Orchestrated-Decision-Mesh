@@ -436,6 +436,43 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(gateway.calls[0]['usage']['total_tokens'],16)
         self.assertTrue(gateway.blocked)
 
+    def test_jev_answer_failing_a_content_check_is_asked_once_more(self):
+        gateway = self.gateway()
+        rounded = decision_response()
+        rounded["answers"]["next"].update(choice="stop", probabilities={"compute": 0.51, "stop": 0.49})
+        with patch.object(gateway, "_request", side_effect=[rounded, decision_response()]) as request:
+            decision = gateway.network_judge("authorize_unit", {"compute": "Compute", "stop": "Stop"},
+                                             {"unit": "input"})
+        self.assertEqual(request.call_count, 2)
+        self.assertEqual(decision["choice"], "compute")
+        self.assertEqual(decision["retried_after"], {"api_event": "call-1", "code": "choice_not_most_probable"})
+        self.assertEqual([e["status"] for e in gateway.calls], ["failed", "ok"])
+        # Both attempts are billed and counted in the decision the broker budgets with.
+        self.assertEqual((decision["usage"]["input_tokens"], decision["usage"]["output_tokens"]), (20, 12))
+        self.assertAlmostEqual(decision["usage"]["cost"], 0.00002)
+        self.assertAlmostEqual(gateway.spent, 0.00002)
+        self.assertFalse(gateway.blocked)
+
+    def test_jev_retry_happens_at_most_once(self):
+        gateway = self.gateway()
+        rounded = decision_response()
+        rounded["answers"]["next"].update(choice="stop", probabilities={"compute": 0.51, "stop": 0.49})
+        with patch.object(gateway, "_request", return_value=rounded) as request:
+            with self.assertRaisesRegex(MeshError, "provider_call_failed"):
+                gateway.network_judge("authorize_unit", {"compute": "Compute", "stop": "Stop"}, {"unit": "input"})
+        self.assertEqual(request.call_count, 2)
+        self.assertTrue(gateway.blocked)
+
+    def test_jev_identity_failure_is_not_retried(self):
+        gateway = self.gateway()
+        wrong = decision_response()
+        wrong["model"] = "typesafe/jev-9.9"
+        with patch.object(gateway, "_request", return_value=wrong) as request:
+            with self.assertRaisesRegex(MeshError, "provider_call_failed"):
+                gateway.network_judge("authorize_unit", {"compute": "Compute", "stop": "Stop"}, {"unit": "input"})
+        self.assertEqual(request.call_count, 1)
+        self.assertEqual(gateway.calls[0]["error"]["code"], "response_model_mismatch")
+
     def test_worker_and_checker_role_caps_are_independent(self):
         gateway=self.gateway(RunConfig(max_worker_calls=1,max_checker_calls=0))
         with patch.object(gateway,"_request",return_value=chat_response()) as request:
