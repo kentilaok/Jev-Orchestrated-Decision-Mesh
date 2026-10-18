@@ -8,7 +8,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from atomic_mesh import MeshError  # noqa: E402
-from claude_cli_adapter import ClaudeCliAdapter, ClaudeCliError  # noqa: E402
+from claude_cli_adapter import ClaudeCliAdapter, ClaudeCliError, ClaudeUsageLimitError  # noqa: E402
 from config import RunConfig  # noqa: E402
 from native_transition_broker import NativeTransitionBroker  # noqa: E402
 from transport import Gateway  # noqa: E402
@@ -129,6 +129,16 @@ class AdapterTests(Base):
             self.assertEqual(str(caught.exception), code)
             self.assertTrue(caught.exception.ran)
             self.assertEqual(caught.exception.usage['input_tokens'], 1320)
+
+    def test_usage_limit_refusal_has_its_own_code(self):
+        # As printed by `claude -p` on 18 Oct 2026 when the Pro session limit was hit.
+        payload = dict(cli_result(), is_error=True, subtype='success', api_error_status=429,
+                       api_error='usage_limit_reached', result="You've hit your session limit")
+        with self.assertRaises(ClaudeUsageLimitError) as caught:
+            StubCli(payload, returncode=1).run('claude-sonnet-5', 'low', 'x', SCHEMA, self.folder)
+        self.assertEqual(str(caught.exception), 'claude_usage_limit')
+        self.assertIsInstance(caught.exception, ClaudeCliError)
+        self.assertIsNotNone(caught.exception.usage)
 
     def test_unlisted_route_rejected_before_launch(self):
         adapter = StubCli(cli_result())

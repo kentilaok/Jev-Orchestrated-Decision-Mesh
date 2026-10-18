@@ -279,6 +279,35 @@ class CliTests(unittest.TestCase):
                                       env={}, launch=launch)
         self.assertTrue(outcome['infra_failure'])
 
+    def test_usage_limit_marks_arm_b_as_infrastructure(self):
+        def launch(command, **kwargs):
+            out = Path(command[command.index('--out') + 1]); out.mkdir(parents=True)
+            cfg = RunConfig.from_dict(json.loads(Path(command[command.index('--config') + 1]).read_text()))
+            (out / 'result.json').write_text(json.dumps({
+                'status': 'failed', 'answer': None, 'config_policy_hash': cfg.policy_hash,
+                'calls': [{'role': 'worker', 'status': 'failed', 'error_type': 'ClaudeUsageLimitError'}],
+                'jev_provider_events': [], 'jev_api_cost_usd': 0.0}), encoding='utf-8')
+            return subprocess.CompletedProcess(command, 2)
+        with tempfile.TemporaryDirectory() as tmp:
+            outcome = bench.run_arm_b(task('s2-01'), Path(tmp) / 'b', claude_executable='c', max_usd=1.0,
+                                      env={}, launch=launch)
+        self.assertTrue(outcome['infra_failure'])
+        self.assertTrue(outcome['usage_limit'])
+
+    def test_usage_limit_stops_the_run_and_is_rerun_later(self):
+        limited = SchemaError('claude_usage_limit')
+        code, out = self.main('--pilot', '--task', 's1-01', '--task', 's3-01', '--arm', 'A',
+                              adapter=FakeAdapter([limited] * 4))
+        self.assertEqual(code, 3)
+        self.assertIn('claude_usage_limit', out)
+        rows = bench.read_results(self.results)
+        self.assertEqual(len(rows), 1)  # stopped after the first refusal
+        self.assertTrue(rows[0]['infra_failure'] and rows[0]['usage_limit'])
+        code, _ = self.main('--pilot', '--task', 's1-01', '--task', 's3-01', '--arm', 'A')
+        self.assertEqual(code, 0)
+        rows = bench.read_results(self.results)
+        self.assertEqual(sorted(r['task_id'] for r in rows if not r.get('infra_failure')), ['s1-01', 's3-01'])
+
     def test_jev_budget_stops_arm_b_before_launch(self):
         self.results.parent.mkdir(parents=True)
         self.results.write_text(json.dumps(rec('old', 'S1', 'B', True, jev_usd=4.995, pilot=True)) + '\n',

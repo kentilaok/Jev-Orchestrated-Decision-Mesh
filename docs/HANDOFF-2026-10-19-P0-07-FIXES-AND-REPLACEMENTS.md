@@ -123,6 +123,20 @@ Command: `python scripts/p0_07_bench.py run --results runs/p0-07/results-study.j
 
 **Real misses so far (not grading):** s1-20 B (the checker withheld the answer), s2-18 B (the worker gave 2400.0000000000005 instead of 2.4).
 
+More grading false rejects later in the run: **s1-01 A and s1-01 B**. Both answers were correct (100000). Both restated the input inside a constructor call, `RunConfig(worker_family="claude", max_jev_tokens=50000)`, and the forbidden side read it as a second answer. The 18 October fix covers a restated value after a backtick or `.`, but not after `(` or `, `. That makes 4 so far, 2 per arm. More CIDM failures: F1 also on s3-22 and s3-02 (10 in total); F2 (Jev chose `retrieve_evidence` although the evidence was present) on s2-06, s2-21 and s2-01; F3 (repair loop hit `jev_token_budget_exceeded`) on s2-10.
+
+**F1 fix, built during the study but not used by it:** branch `feature/p0-07-f1-context-cap` (`e187462`) raises the unit state cap to 22,000 bytes (`MAX_UNIT_STATE_BYTES`), 6,000 bytes inside Jev's 28,000-byte guard. The failing states were about 16-18.3 KB, mostly `recent_accepted`. It is for the follow-up run.
+
+### Usage-limit stop and harness fix (19 October, Ken's decision)
+
+- **What happened:** the Claude Pro session limit hit at 19:59 UTC on 18 October (CLI: `api_error_status 429`, `usage_limit_reached`, "resets 7:40am Asia/Singapore"). The harness recorded the next 10 runs as real failures: s3-20, s2-12, s1-14, s2-15 and s3-18, both arms each, all within 30 seconds, with zero work done. I stopped the study at 92 records. No safety stop applies: the arm-B audits flagged `receipt_without_cost`, but the safety rule covers released (`complete`) runs only.
+- **Data fix:** records 82-91 now carry `infra_failure: true`, `infra_reason: claude_usage_limit_429` and a note. The untouched original is `runs/p0-07/results-study.before-infra-relabel.jsonl` (SHA-256 `9e6afe54…b638`). The protocol already treats rate-limit pauses as no deviation (§6), and the harness excludes and re-runs infrastructure failures. Records 0-81 are unchanged and genuine.
+- **Harness fix (a disclosed deviation from frozen `a09b651`; harness and adapter error labelling only):**
+  - `claude_cli_adapter.py`: a CLI result with `api_error_status 429` or `api_error usage_limit_reached` now raises `ClaudeUsageLimitError("claude_usage_limit")`, a subclass of `ClaudeCliError`. Every existing handler behaves as before. The only change is the error's name in a call that fails either way. CIDM's decisions, gates, prompts and limits are untouched.
+  - `p0_07_bench.py`: in either arm, a usage-limit refusal is an infrastructure failure (`usage_limit: true`), and `run` stops with exit code 3 instead of moving on to the next task. Run folders get a short suffix if the same name already exists.
+  - Tests: adapter (the real 429 payload), arm B classification, and stop-then-rerun. 753 pass, 5 skipped. The suite hash and freeze gate are unchanged.
+- **Resume:** re-run the same `run` command after the limit resets. It re-runs the 10 relabeled pairs and then continues. Each later limit hit costs at most one infrastructure record, then a stop.
+
 ## 6. Standing rules (also in Claude's memory)
 
 - Ask Ken before every paid run; say the scope and the rough cost.

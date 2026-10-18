@@ -41,6 +41,14 @@ class ClaudeCliError(CodexCliError):
     """
 
 
+class ClaudeUsageLimitError(ClaudeCliError):
+    """The CLI refused the call because the account hit its usage limit (HTTP 429).
+
+    A subclass, so every handler of ClaudeCliError behaves as before; the class
+    name is what the broker logs as error_type, which lets callers tell an
+    account limit apart from a failed task."""
+
+
 def _count(value):
     if type(value) is not int or value < 0:
         raise ClaudeCliError("invalid_usage_counter")
@@ -160,6 +168,8 @@ class ClaudeCliAdapter:
             raise ClaudeCliError("unexpected_claude_output")
         usage = _usage(result.get("usage"))
         try:
+            if result.get("api_error_status") == 429 or result.get("api_error") == "usage_limit_reached":
+                raise ClaudeUsageLimitError("claude_usage_limit")
             if returncode != 0 or result.get("is_error") is not False or result.get("subtype") != "success":
                 raise ClaudeCliError("claude_call_failed")
             served = result.get("modelUsage")
