@@ -1,6 +1,6 @@
-# P0-07 benchmark protocol (DRAFT, not frozen)
+# P0-07 benchmark protocol (decisions recorded, not frozen)
 
-**Status:** draft for Ken's decisions. Nothing here is preregistered until §9 is filled in, signed and dated, and the file hash is recorded in §10. No paid run may use this protocol before then.
+**Status:** §9 decisions recorded on 18 October 2026 under Ken's standing delegation ("proceed with merge and next stage decisions"). Nothing here is preregistered until the task suite exists, Ken countersigns, and §10 records the file and suite hashes. No paid study run may use this protocol before then.
 **Parent gate:** P0-07 in `PRODUCTION-REQUIREMENTS-HANDOFF-2026-10-08.md` §3. Method follows `THESIS.md` "Falsifiable evaluation protocol".
 **Depends on:** P0-03 (live execution). The P0-03 smoke run supplies the per-task cost estimate needed for the budget in §6.
 
@@ -27,7 +27,7 @@ Three strata, as P0-07 requires. Tasks are written and frozen before any evaluat
 | Stratum | Definition | Pass is decided by |
 |---|---|---|
 | **S1 Simple deterministic** | Single-step, self-contained, one correct answer | Deterministic validator |
-| **S2 Multi-stage / recovery** | Needs several units; at least one task in three is built to trigger a repair, retrieval or pause/resume | Deterministic validator where possible, blind human grading otherwise |
+| **S2 Multi-stage / recovery** | Needs several units; at least one task in three is built to trigger a repair, retrieval or pause/resume | Deterministic validator (decision 4: no human grading) |
 | **S3 Unknown / misleading source** | Source package contains a stale, contradictory or injected document | Validator for the answer, plus a check that the misleading content was not acted on |
 
 Tasks are coding-project tasks in this repo's domain, not synthetic arithmetic (P0-07 excludes toy fixtures). Each task ships with a frozen source package, a gold answer or acceptance test, and a stratum label.
@@ -54,7 +54,7 @@ Unknown usage is reported as unknown, never as zero.
 - Paired by task. Primary analysis: one-sided non-inferiority test on the difference in qualified yield (B minus A) at the margin δ chosen in §9, alpha 0.05 one-sided, with a 95% paired stratified bootstrap interval (seed recorded).
 - Per-stratum results are reported, but the non-inferiority decision is on the pooled primary outcome unless §9 says otherwise.
 - Every run is kept, including failures and negative findings.
-- Grading is blind to arm. An independent reviewer, not the author of the task suite, signs off on grades before unblinding.
+- Grading is deterministic (§9 decision 4), so it is blind to arm by construction. Ken reviews the frozen task suite and its acceptance checks before countersigning; no grade is changed after a run.
 
 ## 6. Sample size and budget
 
@@ -66,7 +66,7 @@ Sample size for a binary non-inferiority comparison, assuming both arms have tru
 | 15 percentage points | 71 |
 | 20 percentage points | 40 |
 
-Per-task cost is unknown until P0-03 runs. Budget = tasks × arms × measured per-task cost, plus headroom, set in §9 after the smoke run.
+Measured in P0-03 (passing run `20261017T062818Z-smoke`, one five-unit task): Jev $0.0014 and 10 calls, Claude 4 worker calls at about $0.27 API-equivalent, 70 s wall clock. Budget follows in §9. The yield assumption p = 0.85 stays an assumption: one passing smoke run does not estimate it.
 
 ## 7. Stop / go rules
 
@@ -80,17 +80,17 @@ Per-task cost is unknown until P0-03 runs. Budget = tasks × arms × measured pe
 
 It covers Claude CLI workers only, on this repo's task domain, at the frozen config. It says nothing about Codex, other task distributions, or subscription-bill savings (the CLI reports an API-equivalent estimate, not the plan charge).
 
-## 9. Decisions needed from Ken (fill in, then freeze)
+## 9. Decisions
 
-| # | Decision | Proposal | Ken's choice |
+| # | Decision | Decided | Reason |
 |---|---|---|---|
-| 1 | Non-inferiority margin δ | 15 pp (71 tasks per arm) | |
-| 2 | Include arm C (no-Jev rules)? | No for V1; adds a third arm's cost | |
-| 3 | Task split across S1/S2/S3 | Equal thirds | |
-| 4 | Who authors tasks, who grades | Tasks authored before any run; grader is a fresh reviewer who did not author them | |
-| 5 | Worker model and effort for arms A and B | Decide after P0-03 smoke run | |
-| 6 | Total OpenRouter budget | Set after P0-03 measures per-task cost | |
-| 7 | Replicates per task | 1, since 71+ tasks already dominates cost | |
+| 1 | Non-inferiority margin δ | **15 pp → 71 tasks per arm** | 20 pp is too loose for a quality claim; 10 pp (158 tasks) costs over twice the Claude usage for a first V1 study. |
+| 2 | Include arm C (no-Jev rules)? | **No** | Not needed for the non-inferiority question; can be a later study. |
+| 3 | Task split across S1/S2/S3 | **24 / 24 / 23** (equal thirds of 71) | P0-07 asks for all three classes; no stratum is privileged. |
+| 4 | Who authors tasks, who grades | **Every task has a deterministic acceptance check; no human grading.** Tasks are written by the assistant before any study run; Ken reviews the frozen suite before countersigning. | Deterministic checks remove grader bias and need no blind grader. Task review by Ken replaces grader independence. |
+| 5 | Worker model and effort | **B:** Jev chooses among the frozen Claude routes (as in P0-03). **A:** `claude-opus-5`, effort `medium`, tools disabled, same task text, sources and artifact contract, up to 2 extra attempts only when the output fails the schema. | CIDM's route varies by Jev decision, so A gets a fixed strong route rather than a mirror of B. |
+| 6 | Budget | **OpenRouter (Jev) hard stop $5.00** for the whole study; **Claude `max_cumulative_usd` $1.00 per run**; expected Claude usage about $30 API-equivalent (subscription usage, not billed). | Measured P0-03 costs × 71 tasks × 2 arms, with headroom. Pro plan rate limits may spread runs over several days; pauses are not a protocol deviation. |
+| 7 | Replicates per task | **1** | 71 paired tasks already dominate cost. |
 
 ## 10. Freeze record
 
