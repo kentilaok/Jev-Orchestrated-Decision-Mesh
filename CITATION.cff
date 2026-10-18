@@ -16,6 +16,14 @@ authors:
     alias: "Ken Caber"
     website: "https://github.com/kentilaok"
 version: "2026.10.18"
+doi: "10.5281/zenodo.23448223"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23448223"
+    description: "Concept DOI (all versions, resolves to the latest)"
+  - type: doi
+    value: "10.5281/zenodo.23448224"
+    description: "Version 2026.10.18 archive"
 date-released: "2026-10-18"
 keywords:
   - AI orchestration

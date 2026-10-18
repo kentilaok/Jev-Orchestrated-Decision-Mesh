@@ -2,6 +2,8 @@
 
 **Caber Interstitial Decision Mesh (CIDM)**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23448223.svg)](https://doi.org/10.5281/zenodo.23448223)
+
 **Training-free AI orchestration · Five-unit checked reference implementation**
 
 Jev is a model from [TypeSafe AI](https://typesafe.ai/blog/introducing-system-one-models-and-jev); CIDM is an independent orchestration design built around its typed decisions.
@@ -184,18 +186,20 @@ See the [technical thesis](docs/THESIS.md), [research context](docs/RESEARCH-CON
 
 If you use CIDM, build on its design (Jev governing a five-unit decision mesh with permits, caps and release audits), or index or redistribute this work, please cite it:
 
-> Caber, Kenneth Vic A. (2026). *Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM).* https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh
+> Caber, Kenneth Vic A. (2026). *Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM).* Zenodo. https://doi.org/10.5281/zenodo.23448223
 
 ```bibtex
 @software{caber_cidm_2026,
   author = {Caber, Kenneth Vic A.},
   title  = {Jev-Orchestrated Decision Mesh: Caber Interstitial Decision Mesh (CIDM)},
   year   = {2026},
+  publisher = {Zenodo},
+  doi    = {10.5281/zenodo.23448223},
   url    = {https://github.com/kentilaok/Jev-Orchestrated-Decision-Mesh}
 }
 ```
 
-GitHub's **Cite this repository** button (from [CITATION.cff](CITATION.cff)) gives the same citation in other formats. The CIDM concept and architecture were first published in this repository on 23 September 2026.
+GitHub's **Cite this repository** button (from [CITATION.cff](CITATION.cff)) gives the same citation in other formats. The CIDM concept and architecture were first published in this repository on 23 September 2026 and archived on Zenodo on 18 October 2026 ([version DOI 10.5281/zenodo.23448224](https://doi.org/10.5281/zenodo.23448224)).
 
 **Just using it or learning from it?** No citation needed: a ⭐ on the repository is thanks enough.
 
