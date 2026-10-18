@@ -106,6 +106,23 @@ Step §4.1 and §4.2 are done. Opus 5.5 ran the §5 brief read-only. It found **
 
 **Next:** §4.5, the study run. It is paid, so **ask Ken first**: about $30 of Claude API-equivalent usage plus up to $5 on OpenRouter. Also confirm he rotated the OpenRouter key. Do not edit the suite or the protocol above §10 from here on.
 
+## 5c. Study run (started 19 October, Ken's go-ahead)
+
+Command: `python scripts/p0_07_bench.py run --results runs/p0-07/results-study.jsonl`, with the key loaded inline. The log is `runs/p0-07/study.log`. The run is resumable: re-run the same command to continue.
+
+**Ken's decision (19 October): keep the study on the frozen code** (commit `a09b651`). No CIDM or suite changes until the study ends. Findings are fixed afterwards, for a follow-up run.
+
+**CIDM finding F1: `unit_context_too_large`.** The Jev decision state has a hard cap of 16,000 bytes in `scripts/checked_network.py:82`, and in `scripts/fused_checked_network.py:322` and `:357`. Tasks with several 1,200-character sources, plus the candidate answer and the checker result, go over it. The unit then halts with `status: failed` and nothing is released. Audits stay clean. Seen so far on s3-09 B and s2-20 B. It counts as an arm-B quality failure in the frozen result. **After the study:** patch it, for example by sending Jev source hashes and sizes instead of full source text, or by raising the cap. Then add a test and run a follow-up on the affected tasks.
+
+**Grading false rejects found during the study** (frozen grading stays the primary result; a corrected regrade of both arms is reported alongside as a labeled sensitivity analysis):
+
+| Run | Correct answer that was rejected | Cause |
+|---|---|---|
+| s1-24 B | `orchestration_ratio = jev_tokens / worker_tokens = 3000 / 12000 = 0.25.` | `value()` working pattern allows only digits and operators, not variable names. |
+| s2-18 A | `worker blended_usd_per_million_tokens = **2.4** … (jev 3000 + worker 25000 + checker 4000) …` | Bare key `worker` matches "worker 25000" in the breakdown. |
+
+**Real misses so far (not grading):** s1-20 B (the checker withheld the answer), s2-18 B (the worker gave 2400.0000000000005 instead of 2.4).
+
 ## 6. Standing rules (also in Claude's memory)
 
 - Ask Ken before every paid run; say the scope and the rough cost.
