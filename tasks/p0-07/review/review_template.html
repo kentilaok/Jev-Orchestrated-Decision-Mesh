@@ -1,0 +1,227 @@
+<title>P0-07 Suite Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<style>
+/* Layout: a reviewer's ledger. Sticky filter bar, one row per task, details open in place. */
+:root {
+  --bg: #f6f7f5; --panel: #ffffff; --fg: #1d2420; --muted: #5d6862; --line: #dde2de;
+  --accent: #2f6b55; --accent-soft: #e3efe9;
+  --ok: #2f6b55; --ok-soft: #e3efe9; --bad: #a3402e; --bad-soft: #f7e6e2; --warn: #8a6410; --warn-soft: #f6edd8;
+  --code-bg: #eef1ee;
+  --display: "Fraunces", Georgia, serif; --body: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141917; --panel: #1c2320; --fg: #e4ebe7; --muted: #9aa7a0; --line: #2e3833;
+  --accent: #7cc4a6; --accent-soft: #20352c; --ok: #7cc4a6; --ok-soft: #20352c; --bad: #f0947f; --bad-soft: #3a2420;
+  --warn: #e3bd6a; --warn-soft: #382f1b; --code-bg: #232c28; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141917; --panel: #1c2320; --fg: #e4ebe7; --muted: #9aa7a0; --line: #2e3833;
+  --accent: #7cc4a6; --accent-soft: #20352c; --ok: #7cc4a6; --ok-soft: #20352c; --bad: #f0947f; --bad-soft: #3a2420;
+  --warn: #e3bd6a; --warn-soft: #382f1b; --code-bg: #232c28; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--body); }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font: 600 clamp(26px, 4vw, 34px)/1.15 var(--display); margin: 0 0 6px; text-wrap: balance }
+.lede { color: var(--muted); max-width: 68ch; margin: 0 }
+.how { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 22px 0 }
+.how div { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; min-width: 0 }
+.how b { display: block; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px }
+.how p { margin: 0; font-size: 14px }
+.meta { font: 12px var(--mono); color: var(--muted); overflow-wrap: anywhere }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--bg); padding: 10px 0; border-bottom: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.bar button, .bar input { font: 500 13px var(--body); border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 6px; padding: 6px 10px }
+.bar button[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent) }
+.bar input { flex: 1 1 180px; min-width: 0 }
+.bar .tally { margin-left: auto; font: 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums }
+button:focus-visible, input:focus-visible, summary:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.list { display: grid; gap: 8px; margin-top: 14px }
+details.task { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; min-width: 0 }
+details.task[data-mark="ok"] { border-left: 4px solid var(--ok) }
+details.task[data-mark="flag"] { border-left: 4px solid var(--bad) }
+summary { list-style: none; cursor: pointer; padding: 12px 14px; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: baseline }
+summary::-webkit-details-marker { display: none }
+.tid { font: 500 13px var(--mono); color: var(--accent) }
+.ttl { font-weight: 600; min-width: 0 }
+.chip { font: 500 11px var(--mono); padding: 2px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap }
+.chip.flag { background: var(--bad-soft); color: var(--bad) } .chip.ok { background: var(--ok-soft); color: var(--ok) }
+.body { padding: 0 14px 16px; display: grid; gap: 14px; min-width: 0 }
+.body h3 { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px }
+.goal { margin: 0; max-width: 75ch }
+.ex { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px }
+.ex > div { min-width: 0 }
+.ex ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px }
+.ex li { padding: 7px 10px; border-radius: 6px; font-size: 14px }
+.pass li { background: var(--ok-soft) } .fail li { background: var(--bad-soft) }
+.pass h3 { color: var(--ok) } .fail h3 { color: var(--bad) }
+details.src { border: 1px solid var(--line); border-radius: 6px }
+details.src summary { display: block; padding: 7px 10px; font-size: 13px; font-weight: 500 }
+pre { margin: 0; padding: 10px; background: var(--code-bg); font: 12.5px/1.5 var(--mono); overflow-x: auto; white-space: pre; border-radius: 0 0 6px 6px }
+.checks code { display: block; font: 12px/1.5 var(--mono); background: var(--code-bg); padding: 6px 8px; border-radius: 4px; overflow-x: auto; white-space: pre; margin-bottom: 4px }
+.checks .lbl { font-size: 13px; color: var(--muted); margin: 6px 0 3px }
+.review { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start }
+.review button { font: 500 13px var(--body); border-radius: 6px; padding: 6px 12px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); cursor: pointer }
+.review button.ok[aria-pressed="true"] { background: var(--ok); color: var(--bg); border-color: var(--ok) }
+.review button.flag[aria-pressed="true"] { background: var(--bad); color: var(--bg); border-color: var(--bad) }
+.review textarea { flex: 1 1 260px; min-width: 0; font: 14px var(--body); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; background: var(--panel); color: var(--fg); min-height: 36px }
+.export { margin-top: 28px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px }
+.export h2 { font: 600 20px var(--display); margin: 0 0 6px }
+.export p { margin: 0 0 10px; color: var(--muted); max-width: 70ch }
+.export textarea { width: 100%; min-height: 120px; font: 12.5px var(--mono); background: var(--code-bg); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 8px }
+.export button { font: 500 14px var(--body); background: var(--accent); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer; margin-top: 8px }
+.rec { padding: 9px 12px; border-radius: 6px; font-size: 14px; background: var(--ok-soft) }
+.rec.flag { background: var(--warn-soft) } .rec.flag b { color: var(--warn) } .rec.ok b { color: var(--ok) }
+.rec .pil { font: 12px var(--mono); color: var(--muted); margin-top: 4px }
+.picks { margin: 0 0 18px; padding: 14px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; display: grid; gap: 8px }
+.picks p { margin: 0; max-width: 72ch } .picks .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.picks button { font: 500 14px var(--body); background: var(--accent); color: var(--bg); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer }
+.picks .meta { margin: 0 }
+@media (max-width: 520px) { summary { grid-template-columns: 1fr auto } .tid { grid-column: 1 / -1 } }
+</style>
+
+<div class="wrap">
+  <h1>P0-07 task suite: your review</h1>
+  <p class="lede">These are the __COUNT__ questions the benchmark will ask both CIDM and the plain Claude agent. Before you lock them (§10), check that each question is fair, that the right answer is really right, and that the grading would catch a wrong one.</p>
+
+  <div class="how">
+    <div><b>Strata</b><p>S1: one direct question. S2: needs several sources combined. S3: includes a stale, contradictory or planted document that tries to mislead.</p></div>
+    <div><b>Green / red</b><p>Green answers must pass the automatic grading; red ones must fail. The build already proves both for every task.</p></div>
+    <div><b>What to check</b><p>Is the question clear? Is the green answer correct? Is any reasonable correct wording missing from what passes? Mark each task OK or Question.</p></div>
+  </div>
+  <section class="picks" aria-label="Claude's picks">
+    <p><b>Claude's picks:</b> __OKN__ OK, __FLAGN__ Question. Every right answer was checked by running the real code. The questions marked Question are the ones whose grading I tightened today and that no real model has answered yet. In the pilot, half of those wrongly failed a correct answer until I fixed them.</p>
+    <p>These picks are mine, and I wrote the questions. If you adopt them, the freeze record should say that the review was delegated to the author.</p>
+    <div class="row"><button type="button" id="usepicks">Use Claude's picks</button><span class="meta">Fills only the tasks you have not marked yet.</span></div>
+  </section>
+  <p class="meta">suite_sha256 __HASH__</p>
+
+  <div class="bar" role="toolbar" aria-label="Filter tasks">
+    <button type="button" data-f="all" aria-pressed="true">All</button>
+    <button type="button" data-f="S1" aria-pressed="false">S1</button>
+    <button type="button" data-f="S2" aria-pressed="false">S2</button>
+    <button type="button" data-f="S3" aria-pressed="false">S3</button>
+    <button type="button" data-f="todo" aria-pressed="false">Not reviewed</button>
+    <button type="button" data-f="flag" aria-pressed="false">Questions</button>
+    <input id="q" type="search" placeholder="Search id, title or text" aria-label="Search tasks">
+    <span class="tally" id="tally"></span>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <section class="export">
+    <h2>Send me your notes</h2>
+    <p>Your marks stay in this browser only. When you're done, copy this summary and paste it into the chat. I'll fix any flagged task and recompute the hashes before the freeze.</p>
+    <textarea id="summary" readonly aria-label="Review summary"></textarea>
+    <button type="button" id="copy">Copy summary</button>
+  </section>
+</div>
+
+<script>
+const TASKS = __DATA__;
+const KEY = 'p007-review-__HASH__';
+let marks = {};
+try { marks = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { marks = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(marks)); } catch (e) {} };
+let filter = 'all';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const list = document.getElementById('list');
+
+function render() {
+  list.innerHTML = TASKS.map(t => {
+    const m = marks[t.id] || {};
+    const chip = m.mark === 'ok' ? '<span class="chip ok">OK</span>' : m.mark === 'flag' ? '<span class="chip flag">Question</span>' : '<span class="chip">' + t.stratum + '</span>';
+    const srcs = t.sources.map(s => '<details class="src"><summary>' + esc(s.title) + '</summary><pre>' + esc(s.text) + '</pre></details>').join('');
+    const codes = a => a.map(p => '<code>' + esc(p) + '</code>').join('');
+    return '<details class="task" id="' + t.id + '" data-mark="' + (m.mark || '') + '">' +
+      '<summary><span class="tid">' + t.id + '</span><span class="ttl">' + esc(t.title) + '</span>' + chip + '</summary>' +
+      '<div class="body">' +
+        '<div class="rec ' + t.rec + '"><b>Claude\'s pick: ' + (t.rec === 'ok' ? 'OK' : 'Question') + '</b> ' + esc(t.recnote) +
+          (t.pilot ? '<div class="pil">Pilot 4: plain agent ' + esc(t.pilot.A || 'not run') + ' · CIDM ' + esc(t.pilot.B || 'not run') + '</div>' : '') + '</div>' +
+        '<div><h3>Question</h3><p class="goal">' + esc(t.goal) + '</p></div>' +
+        '<div class="ex"><div class="pass"><h3>Must pass</h3><ul>' + t.pass.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' +
+        '<div class="fail"><h3>Must fail (traps)</h3><ul>' + t.fail.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div></div>' +
+        '<div><h3>Sources the model sees (' + t.sources.length + ')</h3><div style="display:grid;gap:6px">' + srcs + '</div></div>' +
+        '<details class="src checks"><summary>Grading rules (regex, on the lower-cased answer)</summary><div style="padding:8px 10px">' +
+          '<div class="lbl">Every one of these must match</div>' + codes(t.must) +
+          (t.mustnot.length ? '<div class="lbl">None of these may match</div>' + codes(t.mustnot) : '') +
+          (t.inj.length ? '<div class="lbl">Injection canary (answer must not end with it)</div>' + codes(t.inj) : '') +
+        '</div></details>' +
+        '<div class="review"><button type="button" class="ok" data-id="' + t.id + '" data-m="ok" aria-pressed="' + (m.mark === 'ok') + '">OK</button>' +
+          '<button type="button" class="flag" data-id="' + t.id + '" data-m="flag" aria-pressed="' + (m.mark === 'flag') + '">Question</button>' +
+          '<textarea id="note-' + t.id + '" data-id="' + t.id + '" placeholder="Note (optional)" aria-label="Note for ' + t.id + '">' + esc(m.note || '') + '</textarea></div>' +
+      '</div></details>';
+  }).join('');
+  apply();
+}
+
+function apply() {
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  let shown = 0;
+  for (const t of TASKS) {
+    const m = (marks[t.id] || {}).mark;
+    const okF = filter === 'all' || filter === t.stratum || (filter === 'todo' && !m) || (filter === 'flag' && m === 'flag');
+    const okQ = !q || (t.id + ' ' + t.title + ' ' + t.goal).toLowerCase().includes(q);
+    const el = document.getElementById(t.id);
+    el.hidden = !(okF && okQ);
+    if (!el.hidden) shown++;
+  }
+  const ok = TASKS.filter(t => (marks[t.id] || {}).mark === 'ok').length;
+  const fl = TASKS.filter(t => (marks[t.id] || {}).mark === 'flag').length;
+  document.getElementById('tally').textContent = shown + ' shown · ' + ok + ' OK · ' + fl + ' questions · ' + (TASKS.length - ok - fl) + ' left';
+  summary();
+}
+
+function summary() {
+  const ok = TASKS.filter(t => (marks[t.id] || {}).mark === 'ok').map(t => t.id);
+  const lines = ['P0-07 review of suite __HASH__'.slice(0, 40) + '…', 'OK: ' + ok.length + '/' + TASKS.length];
+  for (const t of TASKS) {
+    const m = marks[t.id] || {};
+    if (m.mark === 'flag' || (m.note && m.note.trim())) lines.push((m.mark === 'flag' ? 'QUESTION ' : 'note ') + t.id + ': ' + (m.note || '').trim());
+  }
+  const left = TASKS.filter(t => !(marks[t.id] || {}).mark).map(t => t.id);
+  if (left.length) lines.push('Not reviewed: ' + left.join(', '));
+  document.getElementById('summary').value = lines.join('\n');
+}
+
+list.addEventListener('click', e => {
+  const b = e.target.closest('.review button'); if (!b) return;
+  const id = b.dataset.id, m = marks[id] || (marks[id] = {});
+  m.mark = m.mark === b.dataset.m ? '' : b.dataset.m;
+  save();
+  const el = document.getElementById(id);
+  el.dataset.mark = m.mark;
+  el.querySelectorAll('.review button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.m === m.mark)));
+  const chip = el.querySelector('summary .chip');
+  const t = TASKS.find(x => x.id === id);
+  chip.className = 'chip' + (m.mark ? ' ' + m.mark : '');
+  chip.textContent = m.mark === 'ok' ? 'OK' : m.mark === 'flag' ? 'Question' : t.stratum;
+  apply();
+});
+list.addEventListener('input', e => {
+  if (e.target.tagName !== 'TEXTAREA') return;
+  const id = e.target.dataset.id; (marks[id] || (marks[id] = {})).note = e.target.value; save(); summary();
+});
+document.querySelector('.bar').addEventListener('click', e => {
+  const b = e.target.closest('button[data-f]'); if (!b) return;
+  filter = b.dataset.f;
+  document.querySelectorAll('.bar button[data-f]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  apply();
+});
+document.getElementById('q').addEventListener('input', apply);
+document.getElementById('usepicks').addEventListener('click', () => {
+  for (const t of TASKS) {
+    const m = marks[t.id] || (marks[t.id] = {});
+    if (m.mark) continue;
+    m.mark = t.rec;
+    if (t.rec === 'flag' && !(m.note || '').trim()) m.note = 'Claude: run a grading check with a model first.';
+  }
+  save(); render();
+  document.getElementById('usepicks').textContent = 'Picks applied';
+});
+document.getElementById('copy').addEventListener('click', () => {
+  const ta = document.getElementById('summary'), btn = document.getElementById('copy');
+  navigator.clipboard.writeText(ta.value).then(() => { btn.textContent = 'Copied'; }, () => { ta.focus(); ta.select(); btn.textContent = 'Select all and copy'; });
+});
+render();
+</script>

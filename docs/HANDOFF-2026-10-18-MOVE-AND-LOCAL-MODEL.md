@@ -2,6 +2,8 @@
 
 For the next session working on CIDM. Read this first, then `docs/HANDOFF-P0-07-PILOT.md`.
 
+> **P0-07 status here is out of date.** For P0-07, read `docs/HANDOFF-2026-10-18-P0-07-PILOT-4.md` instead: it records pilot 4, the grading fixes, the review picks and the decisions still open. Sections 1 and 3 (folder move, offline local model) are still current.
+
 ## 1. Where things are now
 
 | What | State |
