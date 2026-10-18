@@ -12,7 +12,7 @@ import copy
 import uuid
 
 from atomic_mesh import MeshError, fingerprint, packed, require
-from checked_network import CheckedNetwork, blind, failed_criteria
+from checked_network import MAX_UNIT_STATE_BYTES, CheckedNetwork, blind, failed_criteria
 
 
 class FusedCheckedNetwork(CheckedNetwork):
@@ -319,7 +319,7 @@ class FusedCheckedNetwork(CheckedNetwork):
             options = self._options(index, attempt, candidate, checks, receipt, check_attempt)
             state = self.state(unit, candidate, checks, check)
             state['attempt'] = attempt
-            require(len(packed(state).encode()) <= 16000, 'unit_context_too_large')
+            require(len(packed(state).encode()) <= MAX_UNIT_STATE_BYTES, 'unit_context_too_large')
             choice, decision_id = self.mesh.gate('after_sol_high_fused', options, state)
             self.mesh.record('post_checker_decision', unit_id=unit.id, choice=choice,
                              gate_id=decision_id, receipt=receipt)
@@ -354,7 +354,7 @@ class FusedCheckedNetwork(CheckedNetwork):
         state = self.state(unit, candidate_view, checks)
         state['attempt'] = attempt
         state['repair_feedback'] = feedback
-        require(len(packed(state).encode()) <= 16000, 'unit_context_too_large')
+        require(len(packed(state).encode()) <= MAX_UNIT_STATE_BYTES, 'unit_context_too_large')
         choice, gate = self.mesh.gate('after_worker_fused', options, state)
         self.mesh.record('post_worker_decision', unit_id=unit.id, choice=choice,
                          gate_id=gate, candidate_hash=fingerprint(candidate), hard_checks=checks)
