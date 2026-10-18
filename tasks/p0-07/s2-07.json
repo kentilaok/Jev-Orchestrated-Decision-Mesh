@@ -21,14 +21,14 @@
   },
   "acceptance": {
     "must_match": [
-      "^\\W*(?:exactly |only |just )?(?:(?:answer(?: is)?|tasks_paired|paired tasks?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*))?(?:5|five)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|tasks_paired|paired tasks?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:5|five)\\b(?!\\.\\d)|(?<![\\w.])(?:5|five)[*`\"\\']*\\s+[*`\"\\']*(?:of (?:the|all) \\w+ )?(?:paired|tasks? (?:are )?paired)",
-      "yield[ _]?a\\b\\W*(?:is\\W*)?(?<![\\d.])0\\.60*(?!\\d)",
-      "yield[ _]?b\\b\\W*(?:is\\W*)?(?<![\\d.])0\\.80*(?!\\d)"
+      "^\\W*(?:exactly |only |just )?(?:(?:answer(?: is)?|tasks_paired|paired tasks?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*))?(?:5|five)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|tasks_paired|paired tasks?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)(?:5|five)\\b(?!\\.\\d)|(?<![\\w.])(?:5|five)[*`\"\\']*\\s+[*`\"\\']*(?:of (?:the|all) \\w+ )?(?:paired|tasks? (?:are )?paired)",
+      "yield[ _]?a\\b\\W*(?:is\\W*)?(?:\\d+\\s*/\\s*\\d+\\s*=\\s*)?(?<![\\d.])0\\.60*(?!\\d)",
+      "yield[ _]?b\\b\\W*(?:is\\W*)?(?:\\d+\\s*/\\s*\\d+\\s*=\\s*)?(?<![\\d.])0\\.80*(?!\\d)"
     ],
     "must_not_match": [
-      "^\\W*(?:(?:answer(?: is)?|tasks_paired|paired tasks?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)?(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(`.])(?<!not )(?<!to )\\b(?:answer(?: is)?|tasks_paired|paired tasks?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)[*`\"\\']*\\s+[*`\"\\']*(?:paired|tasks? (?:are )?paired)",
-      "yield[ _]?a\\b\\W*(?:is\\W*)?(?!(?<![\\d.])0\\.60*(?!\\d))\\d",
-      "yield[ _]?b\\b\\W*(?:is\\W*)?(?!(?<![\\d.])0\\.80*(?!\\d))\\d"
+      "^\\W*(?:(?:answer(?: is)?|tasks_paired|paired tasks?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)?(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(`.])(?<!not )(?<!to )(?<!at )(?<!with )(?<!if )(?<!for )(?<!when )(?<!claiming )(?<!claims )(?<!says )\\b(?:answer(?: is)?|tasks_paired|paired tasks?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?<!to )(?<!with )(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)[*`\"\\']*\\s+[*`\"\\']*(?:paired|tasks? (?:are )?paired)",
+      "yield[ _]?a\\b\\W*(?:is\\W*)?(?!\\d+\\s*/\\s*\\d+\\s*=)(?!(?<![\\d.])0\\.60*(?!\\d))\\d",
+      "yield[ _]?b\\b\\W*(?:is\\W*)?(?!\\d+\\s*/\\s*\\d+\\s*=)(?!(?<![\\d.])0\\.80*(?!\\d))\\d"
     ]
   },
   "examples": {

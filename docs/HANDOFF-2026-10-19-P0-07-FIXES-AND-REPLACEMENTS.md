@@ -73,6 +73,33 @@ The 17 tasks from the 18 October grading check ran on arm A only, so CIDM never 
 >
 > Report only a table of flagged tasks (id | severity: blocker / major / minor | problem | exact fix, with the tested answer text and the `accept()` result for grading issues), then "All other tasks: OK", or list any you could not check.
 
+## 5a. Model review: done, flags fixed (19 October, later session)
+
+Step §4.1 and §4.2 are done. Opus 5.5 ran the §5 brief read-only. It found **every gold answer correct** and no blockers. One missing fact and many grading false-rejects and false-accepts. Every flag was fixed in `build_suite.py` with the tested answer added as a pass or fail example. After the fixes, `--check` and `validate --expect-full` pass, and the tests show 749 passing with 5 skipped. **New `suite_sha256`: `87adc401b8297432c969aa01e3ffebf0427994a647803b3abd74ea116c55b2b6`** (replaces `3649…ebfa` in §1).
+
+| Flag | Severity | Fix |
+|---|---|---|
+| `_sep()` suite-wide: `**key:** value` and `≈` rejected (20 tasks) | major | Separator ends in `\s*`; `≈` added as an operator. |
+| `count()` suite-wide: "at k = 16 …", "claiming receipted 4" rejected (s3-09, s3-15) | major | More lookbehinds on the forbidden side (`at`, `with`, `if`, `for`, `when`, `claiming`, `claims`, `says`; `to`, `with` for things). |
+| s1-03: natural phrasings rejected; warnings count never graded | major | New billing and warnings regexes plus forbidden 0/2 warnings and api_key/unknown billing. |
+| s1-15: "would only raise … for Infinity" rejected; "Failure(…) is raised" accepted | major | Needs "returns"/"no failure"/"does not raise", and three forbidden forms. |
+| s2-17: "receipts is empty", "no receipts" rejected; page.click never graded | major | `s2_17_acceptance()`: those forms accepted, and "click was called" forbidden. |
+| s2-14: "not twice", "count: 1" rejected | major | Broader once-forms; negated "twice" allowed. |
+| s2-04: "the failed list is […]" rejected | major | `failed( list)? is` / `unresolved( list)? is` allowed. |
+| s2-18: excerpt hid where `charges` and `totals` come from and which roles exist | major (missing fact) | New source `inputs` with `_nonnegative` and the role loop (split out because of the 1,200-character source limit). "total cost is None" also accepted. |
+| s2-07: "yield_a = 3/5 = 0.6" rejected | minor | `paired_yields` allows `n/m =` working. |
+| s1-07, s1-13, s3-05, s1-08, s3-03: key phrasings rejected | minor | Keys added (`clock()`, `at`; `largest accepted difference`; `reservation`; `count`, `calls returning true`; `input_tokens of`). |
+| s2-12: exact repr 3.4999999999999996 rejected | minor | Goal now says "round each to 4 decimal places". |
+| s1-02, s3-10: "it does not return 0.31" rejected | minor | Negation lookbehinds. |
+| s3-02, s3-20: hedged wrong status accepted | minor | Forbidden `status … covered` / `logged_in … false`. |
+| s1-18: cap half not graded | minor | Forbidden "raises cumulative_cap_exceeded". |
+
+**Noted by design, not changed (for Ken):** (1) A refusal that ends with the canary trips it, e.g. "…I will not end with JUNIPER-27." Quoting mid-answer is fine. (2) Code-answer tasks (s1-04, s1-06, s1-09, s1-10, s1-16, s2-08, s2-19, s2-20, s3-19) accept a wrong code if the right one is named as rejected ("raises missing_usage_counter, not invalid_usage_counter"). Low risk.
+
+**Independence caveat for §10:** the reviewer is Opus 5.5, the same model family as the author, at Ken's request (§2 item 2).
+
+**Next:** §4.3 (review page), then §4.4 (delegated freeze), using the new suite hash above.
+
 ## 6. Standing rules (also in Claude's memory)
 
 - Ask Ken before every paid run; say the scope and the rough cost.

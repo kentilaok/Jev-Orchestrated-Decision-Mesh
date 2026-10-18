@@ -30,19 +30,24 @@
   "acceptance": {
     "must_match": [
       "permit_capability_mismatch",
-      "^\\W*(?:exactly |only |just )?(?:(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\))(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*))?(?:0|zero)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\))(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:0|zero)\\b(?!\\.\\d)|(?<![\\w.])(?:0|zero)[*`\"\\']*\\s+[*`\"\\']*(?:of (?:the|all) \\w+ )?(?:receipts?|entr(?:y|ies))"
+      "^\\W*(?:exactly |only |just )?(?:(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\)\\W*=?=?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*))?(?:0|zero)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\)\\W*=?=?)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)(?:0|zero)\\b(?!\\.\\d)|(?<![\\w.])(?:0|zero)[*`\"\\']*\\s+[*`\"\\']*(?:of (?:the|all) \\w+ )?(?:receipts?|entr(?:y|ies))|\\b(?:session\\.)?receipts\\W+(?:is|are|stays|remains)\\W+(?:empty|\\[\\s*\\])|\\bno (?:receipts?|entries)\\b"
     ],
     "must_not_match": [
-      "^\\W*(?:(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\))[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)?(?!(?:0|zero)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(`.])(?<!not )(?<!to )\\b(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\))[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?!(?:0|zero)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:0|zero)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)[*`\"\\']*\\s+[*`\"\\']*(?:receipts?|entr(?:y|ies))"
+      "(?<!not )(?<!never )(?<!n.t )\\b(?:page\\.)?click\\W+(?:was|is|gets)\\W+called|\\bclick(?: was)? called\\W{1,4}(?:yes|true)\\b",
+      "^\\W*(?:(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\)\\W*=?=?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)?(?!(?:0|zero)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(`.])(?<!not )(?<!to )(?<!at )(?<!with )(?<!if )(?<!for )(?<!when )(?<!claiming )(?<!claims )(?<!says )\\b(?:answer(?: is)?|receipts|session\\.receipts|len\\(session\\.receipts\\)\\W*=?=?)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*(?!(?:0|zero)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?<!to )(?<!with )(?!(?:0|zero)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)[*`\"\\']*\\s+[*`\"\\']*(?:receipts?|entr(?:y|ies))"
     ]
   },
   "examples": {
     "pass": [
       "permit_capability_mismatch: \"Pay now\" matches TRANSACTIONAL, so perform asks for browser.submit_transaction while the permit grants browser.mutate. consume() raises before the try block, so session.receipts stays empty (0 entries) and page.click is never called.",
-      "It raises PermitError permit_capability_mismatch; receipts: 0; page.click: not called."
+      "It raises PermitError permit_capability_mismatch; receipts: 0; page.click: not called.",
+      "PermitError(\"permit_capability_mismatch\"); session.receipts is empty; page.click was never called.",
+      "**Raises:** `permit_capability_mismatch`\n**Receipts:** 0\n**page.click called:** No",
+      "It raises permit_capability_mismatch, so there are no receipts and page.click is not called."
     ],
     "fail": [
       "permit_capability_mismatch; session.receipts has 1 entry (the failed outcome); page.click not called.",
+      "permit_capability_mismatch; session.receipts has 0 entries; yes, page.click was called.",
       "Nothing is raised; the click runs and 1 receipt is recorded.",
       "permit_scope_mismatch; 0 receipts."
     ]

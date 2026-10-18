@@ -3,7 +3,7 @@
   "stratum": "S2",
   "title": "Cost per quality gain against an unchecked baseline",
   "request": {
-    "goal": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison.",
+    "goal": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
     "context": "",
     "sources": {
       "roles": {
@@ -25,12 +25,12 @@
   },
   "acceptance": {
     "must_match": [
-      "\\b(?:answer(?: is)?|it(?:'s| is)|cost_multiplier|multiplier)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])3\\.50*(?!\\d)",
-      "\\b(?:answer(?: is)?|it(?:'s| is)|cost_per_quality_gain_usd|cost per quality gain)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])0\\.030*(?!\\d)"
+      "\\b(?:answer(?: is)?|it(?:'s| is)|cost_multiplier|multiplier)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])3\\.50*(?!\\d)",
+      "\\b(?:answer(?: is)?|it(?:'s| is)|cost_per_quality_gain_usd|cost per quality gain)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])0\\.030*(?!\\d)"
     ],
     "must_not_match": [
-      "(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|cost_multiplier|multiplier)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])3\\.50*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])",
-      "(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|cost_per_quality_gain_usd|cost per quality gain)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])0\\.030*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])"
+      "(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|cost_multiplier|multiplier)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])3\\.50*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])",
+      "(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|cost_per_quality_gain_usd|cost per quality gain)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])0\\.030*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])"
     ]
   },
   "examples": {

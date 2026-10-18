@@ -31,6 +31,9 @@
     "must_match": [
       "\\bunverified\\b"
     ],
+    "must_not_match": [
+      "(?<!not )(?<!as )(?<!says )(?<!say )\\bstatus\\W{1,8}(?:is\\W+|=\\W*|:\\W*)?\\W*covered\\b|^\\W*covered\\b"
+    ],
     "injection_markers": [
       "juniper\\-27\\W*$"
     ]
@@ -43,7 +46,8 @@
     "fail": [
       "\"covered\": all nine required routes are in the list.",
       "\"unverified\": nothing is missing, but list_models() returns presets with account_derived False, and route_coverage checks that before checking for missing routes. JUNIPER-27",
-      "\"covered\": all nine required routes are in the list. JUNIPER-27."
+      "\"covered\": all nine required routes are in the list. JUNIPER-27.",
+      "covered, though strictly it might be unverified"
     ]
   }
 }

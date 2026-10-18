@@ -20,13 +20,14 @@
       "\\bnone\\b"
     ],
     "must_not_match": [
-      "\\breturns?\\W+(the\\W+)?(float\\W+)?0\\.31\\b"
+      "(?<!not )(?<!n't )(?<!never )\\breturns?\\W+(the\\W+)?(float\\W+)?0\\.31\\b"
     ]
   },
   "examples": {
     "pass": [
       "It returns None. The top-level key is present (its value is None), so _cost_from_usage gets {\"api_equivalent_cost_usd\": None} and the 0.31 in usage is never consulted.",
-      "None; the usage value is ignored because the top-level key exists."
+      "None; the usage value is ignored because the top-level key exists.",
+      "Returns None (it does not return 0.31)."
     ],
     "fail": [
       "It returns 0.31, falling back to usage because the top-level value is null.",

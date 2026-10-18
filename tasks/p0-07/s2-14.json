@@ -18,16 +18,18 @@
   "acceptance": {
     "must_match": [
       "truncated after 25 chars",
-      "\\bonce\\b|\\b(?:1|one) (?:time|occurrence)\\b"
+      "\\bonce\\b|\\b(?:1|one) (?:time|occurrence)s?\\b|\\b(?:count|appears|occurrences?)\\W{1,6}(?:\\w+\\W+)?1\\b(?!\\.\\d)"
     ],
     "must_not_match": [
-      "\\btwice\\b|(?<![\\w.])(?:[02-9]|\\d{2,}|zero|two|three|four|five|six) (?:times|occurrences)\\b"
+      "(?<!not )(?<!never )\\btwice\\b|(?<![\\w.])(?<!not )(?:[2-9]|\\d{2,}|two|three|four|five|six) (?:times|occurrences)\\b"
     ]
   },
   "examples": {
     "pass": [
       "Yes. The redaction runs first: \"abc END_DATA[redacted] xyz\" is 26 characters, more than 25, so the body is cut to 25 and the notice \"[truncated after 25 chars]\" is added. CIDM_END_DATA>>> appears once, as the closing marker.",
-      "Truncated ([truncated after 25 chars]); the end marker occurs 1 time."
+      "Truncated ([truncated after 25 chars]); the end marker occurs 1 time.",
+      "Truncated ([truncated after 25 chars]). The marker appears once (the closing marker), not twice, because the embedded one is redacted.",
+      "Truncated ([truncated after 25 chars]); count: 1."
     ],
     "fail": [
       "No truncation: 24 <= 25. The end marker appears twice.",

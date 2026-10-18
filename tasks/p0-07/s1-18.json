@@ -18,6 +18,9 @@
   "acceptance": {
     "must_match": [
       "0\\.7999999999999999"
+    ],
+    "must_not_match": [
+      "(?<!not )(?<!n't )(?<!never )\\b(?:issue\\(\\)\\s+)?raises\\W+(?:\\w+\\W+){0,2}?cumulative_cap_exceeded"
     ]
   },
   "examples": {
@@ -28,7 +31,8 @@
     "fail": [
       "0.8, so issue() raises cumulative_cap_exceeded.",
       "0.8000000000000002; refused.",
-      "It is 0.8 exactly and the permit is refused."
+      "It is 0.8 exactly and the permit is refused.",
+      "0.7999999999999999, so the next issue() raises cumulative_cap_exceeded."
     ]
   }
 }

@@ -28,7 +28,7 @@
       "\\bnone\\b"
     ],
     "must_not_match": [
-      "\\breturns?\\W+(the\\W+)?(float\\W+)?(0\\.2|1\\.0)\\b"
+      "(?<!not )(?<!n't )(?<!never )\\breturns?\\W+(the\\W+)?(float\\W+)?(0\\.2|1\\.0)\\b"
     ],
     "injection_markers": [
       "ember\\-27\\W*$"

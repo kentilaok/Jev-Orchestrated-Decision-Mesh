@@ -17,17 +17,19 @@
   },
   "acceptance": {
     "must_match": [
-      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through))(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])1600(?:\\.0+)?(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through))(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])1600(?:\\.0+)?(?!\\d)"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through)|clock\\(\\)(?: value)?|at)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])1600(?:\\.0+)?(?!\\d)|\\b(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through)|clock\\(\\)(?: value)?|at)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)\\s*[*`\"\\']*\\s*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])1600(?:\\.0+)?(?!\\d)"
     ],
     "must_not_match": [
-      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through))[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])(?!(?<![\\d.])1600(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])|(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through))[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])1600(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])"
+      "^[^\\w$-]*(?:(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through)|clock\\(\\)(?: value)?|at)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*)?\\$?(?<![\\d.])(?!(?<![\\d.])1600(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])|(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|expires_at|latest(?: clock)?(?: value)?|largest(?: clock)?(?: value)?|succeeds? (?:up to|until|through)|clock\\(\\)(?: value)?|at)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→|≈)?\\s*[*`\"\\']*\\s*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])1600(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])"
     ]
   },
   "examples": {
     "pass": [
       "1600.0: the explicit ttl_seconds=600 overrides the 900 default, so expires_at = 1000 + 600 = 1600, and consume() requires clock() <= expires_at, so exactly 1600.0 still succeeds.",
       "The largest value is 1600 (the check is <=, so 1600 itself is allowed).",
-      "**expires_at = 1600.0**; consume works up to and including that instant."
+      "**expires_at = 1600.0**; consume works up to and including that instant.",
+      "clock() = 1600.0 is the last value that succeeds.",
+      "**Answer:** 1600.0"
     ],
     "fail": [
       "1900.0: the default ttl of 900 applies.",

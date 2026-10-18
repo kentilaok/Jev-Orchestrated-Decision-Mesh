@@ -21,21 +21,28 @@
   },
   "acceptance": {
     "must_match": [
-      "\\binf\\b|float\\(\\W*inf\\W*\\)|\\binfinity\\b"
+      "\\binf\\b|float\\(\\W*inf\\W*\\)|\\binfinity\\b",
+      "\\breturns?\\b|\\bno failure\\b|(?:does not|doesn't|doesn’t|won't|never|not) raise"
     ],
     "must_not_match": [
-      "(?<!not )(?<!never )(?<!n't )(?<!n’t )\\braises?\\b[^.]{0,30}(?:nonfinite_json_number|invalid_json)"
+      "(?<!not )(?<!never )(?<!n't )(?<!n’t )(?<!only )(?<!would )\\b(?:raises?|raised)\\b[^.;(]{0,30}(?:nonfinite_json_number|invalid_json)(?!\\W+only\\b)",
+      "(?:failure|error)\\W{0,3}(?:\\w+\\W+){0,2}?(?:nonfinite_json_number|invalid_json)\\W+(?:is|gets|will be)\\W+raised",
+      "^\\W*(?:result\\W+)?(?:it\\W+)?(?:raises\\W+(?:a\\W+)?)?failure\\b"
     ]
   },
   "examples": {
     "pass": [
       "It returns {\"confidence\": inf}: 1e400 is a numeric literal, float() turns it into infinity, and parse_constant is never called, so nonfinite_json_number is not raised.",
-      "decode_json returns a dict whose confidence is float('inf'); it doesn't raise nonfinite_json_number."
+      "decode_json returns a dict whose confidence is float('inf'); it doesn't raise nonfinite_json_number.",
+      "It does not raise. decode_json would only raise nonfinite_json_number for the literal Infinity; here confidence is inf.",
+      "No Failure: decode_json returns {\"confidence\": inf}. (It raises nonfinite_json_number only for the literals Infinity, -Infinity and NaN.)"
     ],
     "fail": [
       "It raises Failure(\"nonfinite_json_number\").",
       "It raises invalid_json because 1e400 overflows.",
-      "It raises nonfinite_json_number because 1e400 is infinity."
+      "It raises nonfinite_json_number because 1e400 is infinity.",
+      "Failure(\"nonfinite_json_number\") is raised, since 1e400 overflows to inf.",
+      "Result: Failure — code nonfinite_json_number (1e400 parses to inf)."
     ]
   }
 }

@@ -17,22 +17,30 @@
   },
   "acceptance": {
     "must_match": [
-      "(?:^|\\bbilling\\W{1,6}(?:is\\W+|stays\\W+|remains\\W+|=\\W*|:\\W*)?)\\W*subscription\\b"
+      "\\bbilling\\b[^.;\\n]{0,40}?\\bsubscription\\b|\\bsubscription\\b[^.;\\n]{0,25}\\bbilling\\b|^\\W*subscription\\b",
+      "(?<![\\w.])(?:1|one|a single|single|exactly one)\\W+(?:\\w+\\W+)?warnings?\\b|\\bwarnings\\b\\W{0,6}(?:\\w+\\W+){0,3}?(?:1|one)\\b(?!\\.\\d)|len\\(\\W*warnings\\W*\\)\\W*(?:==|=|is)\\W*1\\b"
     ],
     "must_not_match": [
-      "\\bbilling\\W{1,6}(?:is\\W+|becomes\\W+|=\\W*|:\\W*)?\\W*api_key\\b"
+      "\\bbilling\\W{1,6}(?:is\\W+|becomes\\W+|=\\W*|:\\W*)?\\W*api_key\\b",
+      "\\bbilling\\b(?:\\W+\\w+){0,2}?\\W+(?:is|=|:|becomes|be)\\W+(?:api_key|unknown)\\b",
+      "\\b(?:no|zero|0|two|2)\\W+warnings?\\b|\\bwarnings\\W{1,6}(?:has\\W+|is\\W+|=\\W*|:\\W*)?\\W*(?:0|2|none|empty|\\[\\s*\\])(?![\\w.])"
     ]
   },
   "examples": {
     "pass": [
       "billing is \"subscription\": authMethod is \"claude.ai\". The API key only adds one warning; it does not change billing. warnings has 1 entry.",
       "`billing`: `\"subscription\"`, with 1 warning about ANTHROPIC_API_KEY.",
-      "Subscription. The key in the environment produces a single warning, and billing is not api_key."
+      "Subscription. The key in the environment produces a single warning, and billing is not api_key.",
+      "The billing value is \"subscription\" and warnings has 1 entry.",
+      "Billing would be 'subscription', with one warning."
     ],
     "fail": [
       "billing is \"api_key\", because ANTHROPIC_API_KEY is set; 1 warning.",
       "billing: unknown; no warnings.",
-      "The status says billing = api_key and warns that the subscription may not be used."
+      "The status says billing = api_key and warns that the subscription may not be used.",
+      "billing: subscription; warnings: 0 entries.",
+      "billing is subscription, warnings: 2",
+      "billing would be api_key instead of the subscription; 1 warning"
     ]
   }
 }

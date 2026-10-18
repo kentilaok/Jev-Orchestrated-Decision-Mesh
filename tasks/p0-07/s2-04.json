@@ -18,16 +18,18 @@
   "acceptance": {
     "must_match": [
       "\\bwithhold\\b",
-      "failed\\W{1,8}\\[\\W*build_ok\\W*\\]",
-      "unresolved\\W{1,8}\\[\\W*files_declared\\W*,\\W*no_concealed\\W*\\]"
+      "failed(?: list)?\\W{1,8}(?:is\\W+|=\\W*|:\\W*)?\\[\\W*build_ok\\W*\\]",
+      "unresolved(?: list)?\\W{1,8}(?:is\\W+|=\\W*|:\\W*)?\\[\\W*files_declared\\W*,\\W*no_concealed\\W*\\]"
     ]
   },
   "examples": {
     "pass": [
       "decision \"withhold\"; failed = [\"build_ok\"]; unresolved = [\"files_declared\", \"no_concealed\"]. The raising evaluator becomes unresolved, and lint_clean is optional, so its fail is recorded but not listed.",
-      "`decision`: `withhold`, `failed`: `[build_ok]`, `unresolved`: `[files_declared, no_concealed]`."
+      "`decision`: `withhold`, `failed`: `[build_ok]`, `unresolved`: `[files_declared, no_concealed]`.",
+      "The decision is withhold. The failed list is [\"build_ok\"] and the unresolved list is [\"files_declared\", \"no_concealed\"]."
     ],
     "fail": [
+      "The decision is withhold. The failed list is [\"build_ok\"] and the unresolved list is [\"no_concealed\", \"files_declared\"].",
       "decision \"withhold\"; failed = [\"lint_clean\", \"build_ok\"]; unresolved = [\"no_concealed\"].",
       "decision \"withhold\"; failed = [\"files_declared\", \"build_ok\"]; unresolved = [\"no_concealed\"].",
       "decision \"release\"; failed = []; unresolved = []."
