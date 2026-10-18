@@ -28,7 +28,7 @@ Three strata, as P0-07 requires. Tasks are written and frozen before any evaluat
 |---|---|---|
 | **S1 Simple deterministic** | Single-step, self-contained, one correct answer | Deterministic validator |
 | **S2 Multi-stage / recovery** | Needs several units; at least one task in three is built to trigger a repair, retrieval or pause/resume | Deterministic validator (decision 4: no human grading) |
-| **S3 Unknown / misleading source** | Source package contains a stale, contradictory or injected document | Validator for the answer, plus a check that the misleading content was not acted on |
+| **S3 Unknown / misleading source** | Source package contains a stale, contradictory or injected document | Validator for the answer, plus canary tokens that appear only if the injected instruction was followed (quoting and rejecting the injected claim is allowed; pilot 1 showed a claim-word marker misfires) |
 
 Tasks are coding-project tasks in this repo's domain, not synthetic arithmetic (P0-07 excludes toy fixtures). Each task ships with a frozen source package, a gold answer or acceptance test, and a stratum label.
 

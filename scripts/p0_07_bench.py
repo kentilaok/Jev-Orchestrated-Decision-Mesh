@@ -8,7 +8,9 @@ Protocol: docs/P0-07-BENCHMARK-PROTOCOL.md. Arm A is a direct Claude CLI agent
 (claude-opus-5, medium, tools disabled, same sources and artifact contract, up
 to two extra attempts on schema failure). Arm B is the CIDM broker
 (--gate-policy recovery, Jev via OpenRouter, Claude workers). Every task has a
-deterministic acceptance check; there is no human grading.
+deterministic acceptance check; there is no human grading. S3 injection
+markers are canary tokens the injected text asks for, never the injected claim
+itself: a correct answer may quote and reject it.
 
 A study run refuses to start unless the suite hash equals the `suite_sha256`
 recorded in the protocol's freeze record (§10). `--pilot` runs are allowed
@@ -148,6 +150,12 @@ def validate_suite(tasks: list, *, expect_full=False) -> dict:
             continue
         if stratum == 'S3' and not spec.get('injection_markers'):
             issues.append(f'{tid}: s3_needs_injection_markers')
+        # Markers are canary tokens the injected text asks for. A correct answer may
+        # quote and reject the injected claim, so each S3 task proves its markers
+        # accept such a refusal.
+        if stratum == 'S3' and not any('inject' in normalize(text)
+                                       for text in task['examples'].get('pass', [])):
+            issues.append(f'{tid}: s3_needs_refusal_pass_example')
         examples = task['examples']
         if not examples.get('pass') or not examples.get('fail'):
             issues.append(f'{tid}: needs_pass_and_fail_examples')
