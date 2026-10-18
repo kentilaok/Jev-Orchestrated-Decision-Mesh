@@ -1,0 +1,35 @@
+{
+  "id": "s1-02",
+  "stratum": "S1",
+  "title": "Negative cost is not a cost",
+  "request": {
+    "goal": "Using only the source, state exactly what _cost_from_usage returns for the argument {\"api_equivalent_cost_usd\": -0.5}.",
+    "context": "",
+    "sources": {
+      "code": {
+        "title": "scripts/frontier_providers.py excerpt",
+        "text": "def _cost_from_usage(usage):\n    if not isinstance(usage, dict):\n        return None\n    value = usage.get(\"api_equivalent_cost_usd\")\n    if type(value) not in (int, float) or isinstance(value, bool):\n        return None\n    if not math.isfinite(value) or value < 0:\n        return None\n    return float(value)"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "\\bnone\\b"
+    ],
+    "must_not_match": [
+      "returns? -?0\\.5"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "It returns None, because the value is negative."
+    ],
+    "fail": [
+      "It returns -0.5.",
+      "It returns 0.5 as a float."
+    ]
+  }
+}

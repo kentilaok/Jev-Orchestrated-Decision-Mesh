@@ -1,0 +1,32 @@
+{
+  "id": "s1-01",
+  "stratum": "S1",
+  "title": "Claude-family Jev token default",
+  "request": {
+    "goal": "Using only the config source, state the max_jev_tokens value a RunConfig gets when worker_family is \"claude\" and max_jev_tokens is not set explicitly.",
+    "context": "",
+    "sources": {
+      "config": {
+        "title": "scripts/config.py excerpt",
+        "text": "max_jev_tokens: int = 50000\n...\ndef __post_init__(self):\n    family = FAMILIES[self.worker_family]\n    if self.worker_family == \"claude\":\n        # Claude artifacts make Jev states larger, so the untouched Jev token default doubles.\n        if self.max_jev_tokens == 50000:\n            object.__setattr__(self, \"max_jev_tokens\", 100000)"
+      }
+    },
+    "active_project": false,
+    "unresolved_stages": [],
+    "classification": "short"
+  },
+  "acceptance": {
+    "must_match": [
+      "\\b100000\\b"
+    ]
+  },
+  "examples": {
+    "pass": [
+      "The Claude family gets max_jev_tokens = 100,000 (the 50,000 default doubles)."
+    ],
+    "fail": [
+      "max_jev_tokens stays 50000.",
+      "It becomes 75000."
+    ]
+  }
+}
