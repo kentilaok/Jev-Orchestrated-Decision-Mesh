@@ -25,18 +25,19 @@
   },
   "acceptance": {
     "must_match": [
-      "\\b(?:answer(?: is)?|it(?:'s| is)|cap|max_cumulative_usd|enforces)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,3}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])0\\.50*(?!\\d)",
-      "\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,3}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])100000(?:\\.0+)?(?!\\d)|(?<![\\d.])100000(?:\\.0+)?(?!\\d)\\s*(?:tokens)\\b"
+      "\\b(?:answer(?: is)?|it(?:'s| is)|cap|max_cumulative_usd|enforces)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])0\\.50*(?!\\d)",
+      "\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens)(?:[*`\"\\']*(?:\\s+[^\\s.;:=*`]+){1,4}?\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)\\s*[*`\"\\']*|[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*)(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])100000(?:\\.0+)?(?!\\d)|(?<![\\d.])100000(?:\\.0+)?(?!\\d)\\s*(?:tokens)\\b"
     ],
     "must_not_match": [
-      "(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|cap|max_cumulative_usd|enforces)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])0\\.50*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])",
-      "(?<![\"\\'(])(?<!not )(?<!would )\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])|(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])\\s*(?:tokens)\\b"
+      "(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|cap|max_cumulative_usd|enforces)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])0\\.50*(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])",
+      "(?<![\"\\'(`.])(?<!not )(?<!would )(?<!to )\\b(?:answer(?: is)?|it(?:'s| is)|max_jev_tokens)[*`\"\\']*\\s*[*`\"\\']*(?:=|:|is|are|was|equals|->|→)?\\s*[*`\"\\']*(?:[\\d\\s.()+\\-*/x×_`]*?=\\s*[*`\"\\']*)?\\$?[*`\"\\']*(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])|(?<![\\d.])(?!(?<![\\d.])100000(?:\\.0+)?(?!\\d))-?\\d+(?:\\.\\d+)?(?!\\.?\\d|\\s*[-+*/x×]\\s*[\\d(])\\s*(?:tokens)\\b"
     ]
   },
   "examples": {
     "pass": [
       "The PermitAuthority cap is 0.5 USD (the flag overrides the 2.0 in the file) and max_jev_tokens is 100,000: the explicit 50000 equals the default, so the Claude family doubles it.",
-      "cap 0.50, max_jev_tokens 100000."
+      "cap 0.50, max_jev_tokens 100000.",
+      "**max_cumulative_usd enforced by PermitAuthority: 0.5 USD** The flag overwrites the `2.0` in run.json. **max_jev_tokens used by the run: 100000** run.json sets `max_jev_tokens: 50000`, which equals the field default, so `__post_init__` hits the `if self.max_jev_tokens == 50000` branch and rewrites it."
     ],
     "fail": [
       "Cap 2.0 from the config file; max_jev_tokens 50000.",
