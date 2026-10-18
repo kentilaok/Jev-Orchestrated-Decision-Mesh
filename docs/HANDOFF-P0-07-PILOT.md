@@ -47,7 +47,24 @@ Pilot 3 (six paired tasks): yield A 1.00, B 1.00. Efficiency, B minus A, stratif
 - Single-value checks (s1-01, s1-03, s1-05, s1-11, s1-13, s1-22, s1-24, s2-04, s2-06, s2-12, s2-22, s3-03, s3-05) use `value()`, which works like `count()`. The value must open the answer or follow a key (`input_tokens is 48120`), including after shown working (`cost_multiplier = 0.042 / 0.012 = 3.5`). No other number may stand in those positions. A number followed by an operator counts as working, not as the answer. Numbers after "not" or "would", or after a quoted key, are allowed. The two-value tasks (s2-06, s2-12) tie each value to its own field and accept no unlabelled leading number. Each task has a new fail example that mentions the gold value but states a wrong one, for example "It stays 50000; it would only become 100000 if the default were untouched" (s1-01).
 - The regex checks favour exact tokens. Those patterns are worth reading.
 
-## 5. Next steps
+## 5. Values for the §10 freeze record (prepared 18 October 2026, not signed)
+
+These are the values as of commit `e717cfa`. §10 itself is left empty for Ken to fill and countersign after the review. Any change to the suite or to the protocol text changes the hashes, so recompute them at freeze time.
+
+| Field | Value |
+|---|---|
+| Commit | `e717cfae57c3673c226e478e6de55702abfdadb7` |
+| Protocol file SHA-256 (before §10 is filled) | `02c9124fac447ba7419ea34ea81d19e0227ef9d9e1413d057cba9db1fd36ef46` |
+| `suite_sha256` (71 tasks) | `0caa424f181b9b4e9e4abfdc20e62b1d1dececb77731315b7153c6ae65d9bed8` |
+| `RunConfig.policy_hash`, arm B | `d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663` (`worker_family` claude, `max_usd` 1.0, `max_cumulative_usd` 1.0). The harness lowers `max_usd` once less than $1 of the $5 Jev budget remains, which changes this hash for those runs. |
+
+`frozen_suite_hash()` reads the first `suite_sha256: <64 hex>` in the protocol, so §10 must contain that line exactly.
+
+Blockers for the remaining stages, found 18 October 2026:
+- `OPENROUTER_API_KEY` is not set at any scope on this PC (it did not survive the move), so arm B cannot run. Ken must set it himself.
+- Running the pilot from a Claude Code session needs a permission rule: auto mode blocks the paid run.
+
+## 6. Next steps
 
 1. Optional: a pilot on a sample of the new suite (`--pilot`) to see whether the direct-agent yield is near the 0.85 target before freezing.
 2. Ken reviews the suite and its checks, then the freeze record (§10) gets the suite and file hashes and Ken's countersignature.
