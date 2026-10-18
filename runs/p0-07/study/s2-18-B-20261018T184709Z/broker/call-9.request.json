@@ -1,0 +1,358 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "summarize_calls is given these calls: [{\"role\": \"worker\", \"usage\": {\"total_tokens\": 20000, \"cost\": 0.04}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.02}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.0002}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 4000, \"cost\": null}}] (null is None). Give the worker role's blended_usd_per_million_tokens, and the summary's total_tokens and total_cost_usd.",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "inputs",
+        "title": "scripts/metrics.py excerpt (per-role inputs)"
+      },
+      {
+        "id": "code",
+        "title": "scripts/metrics.py excerpt (per-role totals, continued)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Worker role: tokens=25000, cost_usd=0.06 \u2192 blended_usd_per_million_tokens = 0.06/25000*1e6 = 2400.0. Summary total_tokens = 25000+3000+4000 = 32000 (all roles have tokens). Summary total_cost_usd = None, because checker's cost is null and total_cost requires all roles to have non-null cost_usd.",
+        "source_ids": [
+          "request",
+          "inputs",
+          "code"
+        ],
+        "data": {
+          "summary": "Worker blended rate = 2400 USD/million tokens (cost 0.06 / tokens 25000 *1e6). Overall total_tokens=32000 (sums cleanly since every role has token data). Overall total_cost_usd=None because checker's cost is null, and the code only sums total_cost_usd when all roles have non-null cost_usd.",
+          "claims": [
+            "Worker entries: tokens 20000+5000=25000, cost 0.04+0.02=0.06, both nonnegative so role totals are defined.",
+            "Worker blended_usd_per_million_tokens = cost/tokens*1e6 = 0.06/25000*1,000,000 = 2400.0.",
+            "Jev role: tokens=3000, cost=0.0002 (both defined).",
+            "Checker role: tokens=4000, cost=None (cost is null, so checker cost_usd is None per code, though token value is nonnegative).",
+            "Summary total_tokens = sum across worker(25000)+jev(3000)+checker(4000) = 32000, since all roles have non-null tokens.",
+            "Summary total_cost_usd = None, since code requires all(role['cost_usd'] is not None) and checker's cost_usd is None."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "54d2d402254be409ae4e8e2714c97b1bde8b03cd2db94c70c200928d2d75d12b"
+          ],
+          "source_hashes": {
+            "code": "87905e810cdb54cf6b131eaf8fbce79220938ce2cdd42fb8c2006273ba4bae01",
+            "inputs": "694ea4c52dc513d661228f0209c0e83f1e3f073e9a5ae3c1f96f620c35e8d3a2",
+            "request": "3aa5af54b9f8715950604bdd838abbca7f5e7f3b5dffcafee2cf648238c79f3e"
+          }
+        },
+        "artifact_hash": "addf17a91593afa1ba4e2d18282f4628bdbe87a28a6a5a2d68cf85ecb08db9d4",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Worker role: tokens=25000, cost_usd=0.04+0.02 \u2192 blended_usd_per_million_tokens = 2400.0000000000005 (float artifact; 2400 USD/million). Summary total_tokens = 25000+3000+4000 = 32000. Summary total_cost_usd = None, since the checker's cost is null, making checker cost_usd None and failing the all-roles guard.",
+        "source_ids": [
+          "request",
+          "inputs",
+          "code"
+        ],
+        "data": {
+          "claims": [
+            "Worker entries: tokens 20000+5000=25000; both nonnegative, so tokens=25000.",
+            "Worker charges 0.04+0.02 sum to 0.060000000000000005 in IEEE-754 float, so cost_usd is that rather than exactly 0.06.",
+            "Worker blended_usd_per_million_tokens = cost/tokens*1e6 = 2400.0000000000005 (2400.0 to practical precision).",
+            "Jev role: tokens=3000, cost=0.0002, both defined.",
+            "Checker role: tokens=4000; cost is None, which fails _nonnegative, so checker cost_usd=None and its blended rate is None.",
+            "Summary total_tokens = 25000+3000+4000 = 32000, since every role has non-null tokens.",
+            "Summary total_cost_usd = None, because the all(...) guard fails on checker's None cost_usd."
+          ],
+          "parent_hashes": [
+            "addf17a91593afa1ba4e2d18282f4628bdbe87a28a6a5a2d68cf85ecb08db9d4"
+          ],
+          "source_hashes": {
+            "code": "87905e810cdb54cf6b131eaf8fbce79220938ce2cdd42fb8c2006273ba4bae01",
+            "inputs": "694ea4c52dc513d661228f0209c0e83f1e3f073e9a5ae3c1f96f620c35e8d3a2",
+            "request": "3aa5af54b9f8715950604bdd838abbca7f5e7f3b5dffcafee2cf648238c79f3e"
+          },
+          "summary": "Worker: tokens 25000, cost 0.04+0.02 (float 0.060000000000000005), blended_usd_per_million_tokens = cost/tokens*1e6 = 2400.0000000000005, i.e. 2400 USD per million. Summary total_tokens = 25000+3000+4000 = 32000, since all three roles have non-null tokens. Summary total_cost_usd = None: the checker's cost is null, _nonnegative rejects it, so checker cost_usd is None and the all(...) guard on total_cost fails. Parent's values confirmed; only refinement is the float-representation detail on the blended rate.",
+          "unresolved": []
+        },
+        "artifact_hash": "f1175f86a3f7956ae1577233c2907bf3bbcec921321b72647bb0d42e2c08aa4e",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "Accepted. Worker blended_usd_per_million_tokens = 2400.0000000000005 (float artifact of 0.04+0.02 = 0.060000000000000005 divided by 25000 tokens; 2400 USD/million). Summary total_tokens = 25000+3000+4000 = 32000. Summary total_cost_usd = None \u2014 the checker's null cost fails `_nonnegative`, making checker cost_usd None and failing the all-roles guard. No unresolved issues.",
+        "source_ids": [
+          "request",
+          "inputs",
+          "code"
+        ],
+        "data": {
+          "summary": "Verified. Worker: tokens 20000+5000=25000 (both nonnegative); cost 0.04+0.02 = 0.060000000000000005 in IEEE-754; blended_usd_per_million_tokens = cost/tokens*1e6 = 2400.0000000000005, i.e. 2400 USD/million. Summary total_tokens = 25000+3000+4000 = 32000, since jev (3000) and checker (4000) tokens are both nonnegative, so no role has null tokens. Summary total_cost_usd = None: checker's cost is None, _nonnegative rejects it (type check fails), so checker cost_usd is None and the all(...) guard on total_cost short-circuits to None. Parent's three answers match the code path exactly, including the float-representation note on the blended rate. No blocking issues.",
+          "claims": [
+            "Worker tokens: all(_nonnegative) holds for [20000, 5000], so tokens=25000.",
+            "Worker charges [0.04, 0.02] are both nonnegative floats; sum is 0.060000000000000005 under IEEE-754.",
+            "tokens is not None, cost is not None, tokens>0, so blended = 0.060000000000000005/25000*1e6 = 2400.0000000000005.",
+            "jev: tokens=3000, cost_usd=0.0002, blended defined; not needed for the asked answers but does not affect guards.",
+            "checker: totals [4000] pass, so tokens=4000; charges [None] fail _nonnegative (type(None) not in (int,float)), so cost_usd=None and blended=None.",
+            "total_tokens guard passes for all three roles: 25000+3000+4000 = 32000.",
+            "total_cost guard fails on checker cost_usd=None, so total_cost_usd = None.",
+            "Roles dict is keyed over the fixed tuple ('jev','worker','checker'), so all three are always present in both guards."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "f1175f86a3f7956ae1577233c2907bf3bbcec921321b72647bb0d42e2c08aa4e"
+          ],
+          "source_hashes": {
+            "code": "87905e810cdb54cf6b131eaf8fbce79220938ce2cdd42fb8c2006273ba4bae01",
+            "inputs": "694ea4c52dc513d661228f0209c0e83f1e3f073e9a5ae3c1f96f620c35e8d3a2",
+            "request": "3aa5af54b9f8715950604bdd838abbca7f5e7f3b5dffcafee2cf648238c79f3e"
+          }
+        },
+        "artifact_hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "3aa5af54b9f8715950604bdd838abbca7f5e7f3b5dffcafee2cf648238c79f3e",
+        "text": "summarize_calls is given these calls: [{\"role\": \"worker\", \"usage\": {\"total_tokens\": 20000, \"cost\": 0.04}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.02}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.0002}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 4000, \"cost\": null}}] (null is None). Give the worker role's blended_usd_per_million_tokens, and the summary's total_tokens and total_cost_usd."
+      },
+      {
+        "id": "inputs",
+        "hash": "694ea4c52dc513d661228f0209c0e83f1e3f073e9a5ae3c1f96f620c35e8d3a2",
+        "text": "def _nonnegative(value):\n    return type(value) in (int,float) and math.isfinite(value) and value>=0\n...\n    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]"
+      },
+      {
+        "id": "code",
+        "hash": "87905e810cdb54cf6b131eaf8fbce79220938ce2cdd42fb8c2006273ba4bae01",
+        "text": "        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n            'unknown_token_calls':sum(not _nonnegative(v) for v in totals),\n            'unknown_cost_calls':sum(not _nonnegative(v) for v in charges),\n        }\n        tokens=roles[role]['tokens'];cost=roles[role]['cost_usd']\n        roles[role]['blended_usd_per_million_tokens']=(cost/tokens*1_000_000\n                                                        if tokens is not None and cost is not None\n                                                        and tokens>0 else None)\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    total_cost=(sum(role['cost_usd'] for role in roles.values())\n                if all(role['cost_usd'] is not None for role in roles.values()) else None)"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 22,
+      "jev_tokens_remaining": 65028,
+      "jev_api_usd_remaining": 0.998553394,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d28aa5eb2b59ff52c0f16a0c8d8700cb1ec1d122e6c4a698d4ef5b2002af2286"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

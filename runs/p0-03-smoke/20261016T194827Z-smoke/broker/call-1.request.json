@@ -1,0 +1,102 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "context",
+        "title": "Accepted carried context"
+      },
+      {
+        "id": "outstanding",
+        "title": "Outstanding project stages"
+      },
+      {
+        "id": "brief",
+        "title": "Approved project brief"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+        "text": "Prepare a prioritized implementation plan for a customer support portal, including account recovery, accessibility, and a release check."
+      },
+      {
+        "id": "context",
+        "hash": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+        "text": "The team has approved a first release for existing customers. Implementation work has not started."
+      },
+      {
+        "id": "outstanding",
+        "hash": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+        "text": "Define account recovery acceptance criteria\nDefine accessibility verification"
+      },
+      {
+        "id": "brief",
+        "hash": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465",
+        "text": "Customers should be able to sign in, recover an account, open a support request, and read the request status. The first release must work with keyboard navigation and screen readers."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 30,
+      "jev_tokens_remaining": 50000,
+      "jev_api_usd_remaining": 1.0,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

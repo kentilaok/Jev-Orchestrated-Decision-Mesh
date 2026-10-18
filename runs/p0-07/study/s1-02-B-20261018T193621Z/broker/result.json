@@ -1,0 +1,88 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "`_cost_from_response` returns `None`.\n\nTrace: the response is a dict containing the key `\"api_equivalent_cost_usd\"` (value `None`), so the top-level branch fires: it calls `_cost_from_usage({\"api_equivalent_cost_usd\": None})` \u2014 the nested `usage.api_equivalent_cost_usd: 0.31` is never consulted. Inside `_cost_from_usage`, `value = None`; since `type(None) not in (int, float)`, the function returns `None` immediately.",
+  "task_hash": "66fe1604052d4e13b730cd0347f8024fa44e1507abc6f712a7cea57a7c0a93f0",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "66fe1604052d4e13b730cd0347f8024fa44e1507abc6f712a7cea57a7c0a93f0",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "31fc0f7a175c56ce38fcf52fe1d1434ff101b32af16b6325c50372f4293e0d78",
+    "code": "692c3dc53193745ee5647715762f50e04335a50bc3fdafd4c0545e85c0acafb1"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 11633,
+        "cached_input_tokens": 9311,
+        "cache_write_input_tokens": 2320,
+        "output_tokens": 1046,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "79a5418f-5f8d-4f1e-b38a-be86f67b05dc",
+      "permit_id": "814526de42f4494a9c6ce522b1e56231",
+      "artifact_hash": "db3ede58e358b9e0f41266433089e61550d1e5bfd9201f960d6060fd63033edb"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "db3ede58e358b9e0f41266433089e61550d1e5bfd9201f960d6060fd63033edb",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 11633,
+    "frontier_output_tokens": 1046,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

@@ -1,0 +1,1 @@
+{"answer":"2 of the 7 calls return access class \"read\": [\"roblox-mirror\",\"script_read\"] and [\"docs\",\"lookup\"].","calls":1,"route":"short_self_contained","status":"complete"}

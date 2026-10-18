@@ -1,0 +1,282 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator.",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "requirement",
+        "title": "Spend-cap requirement"
+      },
+      {
+        "id": "code",
+        "title": "ledger.py"
+      },
+      {
+        "id": "test",
+        "title": "Test output"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "The failure originates in `cap_reached` (ledger.py), which uses `spent > cap`. The requirement counts reaching the cap exactly as reached, so the operator must be `>=`: `return spent >= cap`. With that change, `issue(ledger, cap=1.0)` at `spent = 1.0` raises `PermitError(\"cumulative_cap_exceeded\")` and `test_refuses_at_exact_cap` passes. `issue` itself needs no change.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "test"
+        ],
+        "data": {
+          "summary": "`cap_reached` in ledger.py uses `spent > cap`, which treats exact equality as not-reached; the requirement says reaching the cap exactly counts as reached, so test_refuses_at_exact_cap (spent=1.0, cap=1.0) sees no PermitError. Corrected operator: `>=` \u2014 i.e. `return spent >= cap`.",
+          "claims": [
+            "Faulty function: cap_reached(spent, cap) in ledger.py; issue() is correct and only propagates the wrong predicate.",
+            "Corrected comparison operator is >= (return spent >= cap).",
+            "Assumes float comparison is acceptable as written; no tolerance/rounding handling was specified in the requirement."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "27d47c7dc809b42b28a38140e8c6f670108b528dbabab34e734aadfcdd3312f7"
+          ],
+          "source_hashes": {
+            "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+            "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+            "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+            "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+          }
+        },
+        "artifact_hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "The failure originates in `cap_reached` (ledger.py), which uses `spent > cap`. The requirement counts reaching the cap exactly as reached, so the operator must be `>=`: `return spent >= cap`. With that change, `issue(ledger, cap=1.0)` at `spent = 1.0` raises `PermitError(\"cumulative_cap_exceeded\")` and `test_refuses_at_exact_cap` passes. `issue` itself needs no change.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "test"
+        ],
+        "data": {
+          "summary": "cap_reached in ledger.py uses `spent > cap`, which treats reaching the cap exactly as not reached. The requirement states reaching the cap exactly counts as reached, so test_refuses_at_exact_cap (spent=1.0, cap=1.0) gets no PermitError. Corrected operator: >= (`return spent >= cap`). issue() needs no change.",
+          "claims": [
+            "Faulty function: cap_reached(spent, cap) in ledger.py; issue() is correct and merely propagates the wrong predicate.",
+            "Corrected comparison operator is >=, i.e. return spent >= cap.",
+            "With >=, issue(ledger, cap=1.0) at spent=1.0 raises PermitError(\"cumulative_cap_exceeded\") and test_refuses_at_exact_cap passes.",
+            "Assumes exact float comparison is acceptable; no tolerance or rounding behaviour was specified in the requirement."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+          ],
+          "source_hashes": {
+            "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+            "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+            "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+            "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+          }
+        },
+        "artifact_hash": "a0517283fb73da836b7135143172496842ec9c3692f0f17ab231e40d4b42515e",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "Parent result accepted. The failing comparison is in `cap_reached` (ledger.py): `spent > cap` treats the exact-cap case as not reached, contrary to the requirement that reaching the cap exactly counts as reached. Corrected operator: `>=` \u2014 `return spent >= cap`. At `spent = 1.0`, `cap = 1.0` this raises `PermitError(\"cumulative_cap_exceeded\")`, so `test_refuses_at_exact_cap` passes; `issue` is correct as written. Caveat carried forward: exact float comparison is assumed acceptable, since no tolerance was specified. No open issues.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "test"
+        ],
+        "data": {
+          "summary": "Verified the parent result against the requirement, code and test output. The faulty predicate is cap_reached in ledger.py (`spent > cap`), which excludes the exact-cap case the requirement counts as reached; the corrected operator is >= (`return spent >= cap`). With that change issue(ledger, cap=1.0) at spent=1.0 raises PermitError(\"cumulative_cap_exceeded\") and test_refuses_at_exact_cap passes. issue() is correct and only propagates the wrong predicate. Parent claims are accurate and complete; nothing blocks acceptance.",
+          "claims": [
+            "Accepted: faulty function is cap_reached(spent, cap) in ledger.py; issue() needs no change and only propagates the predicate.",
+            "Accepted: corrected comparison operator is >=, i.e. return spent >= cap.",
+            "Confirmed against test output: spent=1.0, cap=1.0 yields False under `>`, so no PermitError is raised; under `>=` it raises PermitError(\"cumulative_cap_exceeded\") and the test passes.",
+            "Requirement wording \"reaching the cap exactly counts as reached\" directly licenses the inclusive operator.",
+            "Assumption carried over: exact float comparison is acceptable; the requirement specifies no tolerance or rounding behaviour.",
+            "No other comparison exists in the supplied code, so the fix is a single one-token change."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "a0517283fb73da836b7135143172496842ec9c3692f0f17ab231e40d4b42515e"
+          ],
+          "source_hashes": {
+            "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+            "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+            "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+            "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+          }
+        },
+        "artifact_hash": "92210e11291fa4446430270a72f51f07a7be51ba4f858721c2b8a22ff7c14f1c",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+        "text": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator."
+      },
+      {
+        "id": "requirement",
+        "hash": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+        "text": "No new permit may be issued once the receipted cost has reached the cap. Reaching the cap exactly counts as reached."
+      },
+      {
+        "id": "code",
+        "hash": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+        "text": "def cap_reached(spent, cap):\n    return spent > cap\n\ndef issue(ledger, cap):\n    if cap_reached(ledger.spent, cap):\n        raise PermitError(\"cumulative_cap_exceeded\")\n    return ledger.new_permit()"
+      },
+      {
+        "id": "test",
+        "hash": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22",
+        "text": "FAIL: test_refuses_at_exact_cap\n    ledger.spent = 1.0; issue(ledger, cap=1.0)\nAssertionError: PermitError not raised"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "92210e11291fa4446430270a72f51f07a7be51ba4f858721c2b8a22ff7c14f1c"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Faulty function: `cap_reached` in ledger.py. It tests `spent > cap`, which excludes the exact-cap case the requirement counts as reached. Corrected comparison operator: `>=` \u2014 `return spent >= cap`. At spent = 1.0, cap = 1.0 this makes `issue` raise `PermitError(\"cumulative_cap_exceeded\")`, so `test_refuses_at_exact_cap` passes; `issue` itself is correct and only propagates the predicate. Caveat: exact float comparison is assumed acceptable, since no tolerance was specified. No open issues.",
+      "data": {
+        "summary": "The failure is caused by cap_reached in ledger.py, which tests `spent > cap` and so treats the exact-cap case as not reached, contrary to the requirement that reaching the cap exactly counts as reached. The corrected comparison operator is >= (`return spent >= cap`). With that change, spent=1.0 against cap=1.0 makes issue() raise PermitError(\"cumulative_cap_exceeded\"), matching test_refuses_at_exact_cap. issue() is correct as written and merely propagates the predicate. Caveat: exact float comparison is assumed acceptable, as no tolerance was specified.",
+        "claims": [
+          "Faulty function: cap_reached(spent, cap) in ledger.py; the predicate `spent > cap` excludes the exact-cap case.",
+          "Corrected comparison operator: >= , i.e. `return spent >= cap`.",
+          "Test evidence: spent=1.0, cap=1.0 is False under `>`, so no PermitError is raised; under `>=` issue() raises PermitError(\"cumulative_cap_exceeded\") and test_refuses_at_exact_cap passes.",
+          "Requirement wording \"Reaching the cap exactly counts as reached\" licenses the inclusive operator.",
+          "issue() needs no change; it only propagates the wrong predicate.",
+          "Assumption: exact float comparison is acceptable; the requirement specifies no tolerance or rounding.",
+          "No other comparison exists in the supplied code, so the fix is a single one-token change."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "92210e11291fa4446430270a72f51f07a7be51ba4f858721c2b8a22ff7c14f1c"
+        ],
+        "source_hashes": {
+          "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+          "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+          "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+          "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+        }
+      },
+      "source_ids": [
+        "request",
+        "requirement",
+        "code",
+        "test"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.97
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 21,
+      "jev_tokens_remaining": 63768,
+      "jev_api_usd_remaining": 0.998504212,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "output",
+            "candidate_hash": "f68682c93d79f79f2cf0a2910fbf5d7c9b6965d93a7ddf69d8f0f31c730e4dc9",
+            "check_hash": null,
+            "successor": "user",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "output",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "f68682c93d79f79f2cf0a2910fbf5d7c9b6965d93a7ddf69d8f0f31c730e4dc9",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

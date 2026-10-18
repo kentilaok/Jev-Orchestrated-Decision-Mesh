@@ -1,0 +1,199 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "requirement",
+        "title": "Spend-cap requirement"
+      },
+      {
+        "id": "code",
+        "title": "ledger.py"
+      },
+      {
+        "id": "test",
+        "title": "Test output"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "test"
+        ],
+        "data": {
+          "summary": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+            "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+            "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+            "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+          }
+        },
+        "artifact_hash": "27d47c7dc809b42b28a38140e8c6f670108b528dbabab34e734aadfcdd3312f7",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+        "text": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator."
+      },
+      {
+        "id": "requirement",
+        "hash": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+        "text": "No new permit may be issued once the receipted cost has reached the cap. Reaching the cap exactly counts as reached."
+      },
+      {
+        "id": "code",
+        "hash": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+        "text": "def cap_reached(spent, cap):\n    return spent > cap\n\ndef issue(ledger, cap):\n    if cap_reached(ledger.spent, cap):\n        raise PermitError(\"cumulative_cap_exceeded\")\n    return ledger.new_permit()"
+      },
+      {
+        "id": "test",
+        "hash": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22",
+        "text": "FAIL: test_refuses_at_exact_cap\n    ledger.spent = 1.0; issue(ledger, cap=1.0)\nAssertionError: PermitError not raised"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "27d47c7dc809b42b28a38140e8c6f670108b528dbabab34e734aadfcdd3312f7"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "summary": "`cap_reached` in ledger.py uses `spent > cap`, which treats exact equality as not-reached; the requirement says reaching the cap exactly counts as reached, so test_refuses_at_exact_cap (spent=1.0, cap=1.0) sees no PermitError. Corrected operator: `>=` \u2014 i.e. `return spent >= cap`.",
+        "claims": [
+          "Faulty function: cap_reached(spent, cap) in ledger.py; issue() is correct and only propagates the wrong predicate.",
+          "Corrected comparison operator is >= (return spent >= cap).",
+          "Assumes float comparison is acceptable as written; no tolerance/rounding handling was specified in the requirement."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "27d47c7dc809b42b28a38140e8c6f670108b528dbabab34e734aadfcdd3312f7"
+        ],
+        "source_hashes": {
+          "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+          "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+          "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+          "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+        }
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.97,
+      "source_ids": [
+        "request",
+        "requirement",
+        "code",
+        "test"
+      ],
+      "text": "The failure originates in `cap_reached` (ledger.py), which uses `spent > cap`. The requirement counts reaching the cap exactly as reached, so the operator must be `>=`: `return spent >= cap`. With that change, `issue(ledger, cap=1.0)` at `spent = 1.0` raises `PermitError(\"cumulative_cap_exceeded\")` and `test_refuses_at_exact_cap` passes. `issue` itself needs no change."
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 27,
+      "jev_tokens_remaining": 92272,
+      "jev_api_usd_remaining": 0.999682606,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

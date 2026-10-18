@@ -1,0 +1,20 @@
+{
+  "goal": "ClaudeCodeProvider.status() runs with ANTHROPIC_API_KEY set to a non-empty value in its environment. `claude auth status --json` prints {\"loggedIn\": true, \"authMethod\": \"claude.ai\", \"apiProvider\": \"firstParty\", \"subscriptionType\": \"max\", \"orgId\": \"org-7f3\"}. What \"billing\" value does status() report, and how many entries are in \"warnings\"?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/frontier_providers.py excerpt (ClaudeCodeProvider.status)",
+      "text": "    def status(self) -> dict:\n        installed = self.runner is not None or bool(shutil.which(self.executable))\n        ...\n        result = _run_status_command([self.executable, \"auth\", \"status\", \"--json\"], runner=self.runner,\n                                     env=self.env)\n        try:\n            data = json.loads(result[\"stdout\"])\n        except ValueError:\n            data = None\n        ...\n        method = data.get(\"authMethod\")\n        api_key_env = bool(self.env.get(\"ANTHROPIC_API_KEY\"))\n        billing = (\"subscription\" if method == \"claude.ai\" else\n                   \"api_key\" if method in (\"api_key\", \"apiKey\", \"console\") else \"unknown\")\n        warnings = []\n        if api_key_env:\n            warnings.append(\"ANTHROPIC_API_KEY is set; Claude Code may bill the API key instead of the subscription.\")\n        return {\"provider\": self.provider_id, \"installed\": True,\n                \"logged_in\": data.get(\"loggedIn\") is True, \"auth_method\": method,\n                \"api_provider\": data.get(\"apiProvider\"), \"subscription_type\": data.get(\"subscriptionType\"),\n                \"billing\": billing, \"account_ref\": _opaque(data.get(\"orgId\")),\n                \"warnings\": warnings}"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "71d34a04ae210eed36464d6a0d5ade37a0795a1b9ae2030e4cd443a7622887e5",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

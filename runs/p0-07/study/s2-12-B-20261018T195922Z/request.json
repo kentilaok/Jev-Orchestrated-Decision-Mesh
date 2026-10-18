@@ -1,0 +1,21 @@
+{
+  "goal": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+  "context": "",
+  "sources": {
+    "roles": {
+      "title": "scripts/metrics.py excerpt (summarize_calls)",
+      "text": "    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]\n        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n    ...\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    ...\n    worker_tokens=roles['worker']['tokens']\n    jev_tokens=roles['jev']['tokens']\n    ratio=(jev_tokens/worker_tokens if jev_tokens is not None and worker_tokens is not None\n           and worker_tokens>0 else None)"
+    },
+    "compare": {
+      "title": "scripts/metrics.py excerpt (comparison)",
+      "text": "    if baseline is not None:\n        baseline_cost=baseline.get('reported_cost')\n        baseline_checks=baseline.get('quality_checks')\n        baseline_pass=(baseline.get('status')=='complete' and isinstance(baseline_checks,dict)\n                       and bool(baseline_checks) and all(baseline_checks.values()))\n        quality_gain=(int(quality_pass)-int(baseline_pass) if type(quality_pass) is bool else None)\n        cost_multiplier=(total_cost/baseline_cost if _nonnegative(total_cost)\n                         and _nonnegative(baseline_cost) and baseline_cost>0 else None)\n        comparison={'baseline_cost_usd':baseline_cost if _nonnegative(baseline_cost) else None,\n                    'cost_multiplier':cost_multiplier,'quality_baseline':baseline_pass,\n                    'quality_cidm':quality_pass,'quality_gain_binary':quality_gain,\n                    'cost_per_quality_gain_usd':((total_cost-baseline_cost)/quality_gain\n                                                  if cost_multiplier is not None and quality_gain is not None\n                                                  and quality_gain>0 else None)}"
+    },
+    "inputs": {
+      "title": "Inputs",
+      "text": "calls = [{\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.002}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 12000, \"cost\": 0.03}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.01}}]\nbaseline = {\"status\": \"complete\", \"reported_cost\": 0.012, \"quality_checks\": {}}"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

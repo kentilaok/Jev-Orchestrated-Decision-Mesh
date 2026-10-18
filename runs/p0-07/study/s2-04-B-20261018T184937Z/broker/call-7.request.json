@@ -1,0 +1,330 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "run_checks runs five checks in this order (name, required, what its evaluator does): tests_green, required=True, returns status \"pass\"; lint_clean, required=False, returns status \"fail\"; files_declared, required=True, raises ValueError(\"workspace missing\"); no_concealed, required=True, returns status \"unresolved\"; build_ok, required=True, returns status \"fail\". Give the report's decision, and its failed and unresolved lists as they appear in report.as_dict().",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/postconditions.py excerpt (run_checks)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "run_checks runs five checks in this order (name, required, what its evaluator does): tests_green, required=True, returns status \"pass\"; lint_clean, required=False, returns status \"fail\"; files_declared, required=True, raises ValueError(\"workspace missing\"); no_concealed, required=True, returns status \"unresolved\"; build_ok, required=True, returns status \"fail\". Give the report's decision, and its failed and unresolved lists as they appear in report.as_dict().",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634",
+            "code": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1"
+          }
+        },
+        "artifact_hash": "de51129f1e8b520cc24704c305d0218d245e0f530bfc43872baf044a4ed823be",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "decision \"withhold\"; failed [\"build_ok\"]; unresolved [\"files_declared\", \"no_concealed\"]. [code][request]",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "claims": [
+            "tests_green returns \"pass\" and is required, so it enters neither list.",
+            "lint_clean returns \"fail\" but required=False, so it is excluded from failed; only required checks are tallied.",
+            "files_declared raises ValueError, caught by the except branch, which builds a result with status \"unresolved\"; since it is required, its name joins unresolved.",
+            "no_concealed returns \"unresolved\" and is required, so it joins unresolved after files_declared, preserving check order.",
+            "build_ok returns \"fail\" and is required, so failed == [\"build_ok\"].",
+            "decision is \"withhold\" because failed and unresolved are both non-empty.",
+            "Assumption: report.as_dict() serializes the failed and unresolved fields verbatim as lists of check names in append order; the as_dict implementation is not in the excerpt."
+          ],
+          "parent_hashes": [
+            "de51129f1e8b520cc24704c305d0218d245e0f530bfc43872baf044a4ed823be"
+          ],
+          "source_hashes": {
+            "code": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1",
+            "request": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634"
+          },
+          "summary": "decision: \"withhold\"; failed: [\"build_ok\"]; unresolved: [\"files_declared\", \"no_concealed\"]. lint_clean's failure is dropped because required=False. files_declared's raised ValueError is caught and recorded as status \"unresolved\" (evidence {\"exception\": \"ValueError\"}), so it lands in unresolved rather than failed. tests_green passes. decision is \"withhold\" since failed and unresolved are non-empty.",
+          "unresolved": []
+        },
+        "artifact_hash": "c576676a59b79d039e61cfbc080f80d4717810b6a0756e3038d3bb89ab6e05f7",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "decision \"withhold\"; failed [\"build_ok\"]; unresolved [\"files_declared\", \"no_concealed\"]. [code][request]",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "decision: \"withhold\"; failed: [\"build_ok\"]; unresolved: [\"files_declared\", \"no_concealed\"]. tests_green passes. lint_clean's \"fail\" is dropped because required=False (only required checks are tallied). files_declared's ValueError is caught by the except branch and recorded as status \"unresolved\" with evidence {\"exception\": \"ValueError\"}, so it joins unresolved, not failed. no_concealed returns \"unresolved\" and follows it in check order. build_ok is the only required \"fail\". decision is \"withhold\" because failed and unresolved are both non-empty.",
+          "claims": [
+            "tests_green returns \"pass\" and is required, so it enters neither list.",
+            "lint_clean returns \"fail\" but required=False, so the required-only tally excludes it from failed.",
+            "files_declared raises ValueError; the except branch builds a result with status \"unresolved\" and evidence {\"exception\": \"ValueError\"}, so its name joins unresolved rather than failed.",
+            "no_concealed returns \"unresolved\" and is required, joining unresolved after files_declared, preserving check order.",
+            "build_ok returns \"fail\" and is required, so failed == [\"build_ok\"].",
+            "decision is \"withhold\" since the release branch requires both failed and unresolved to be empty.",
+            "Assumption: report.as_dict() serializes failed and unresolved verbatim as lists of check names in append order; as_dict is not in the excerpt."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "c576676a59b79d039e61cfbc080f80d4717810b6a0756e3038d3bb89ab6e05f7"
+          ],
+          "source_hashes": {
+            "request": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634",
+            "code": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1"
+          }
+        },
+        "artifact_hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634",
+        "text": "run_checks runs five checks in this order (name, required, what its evaluator does): tests_green, required=True, returns status \"pass\"; lint_clean, required=False, returns status \"fail\"; files_declared, required=True, raises ValueError(\"workspace missing\"); no_concealed, required=True, returns status \"unresolved\"; build_ok, required=True, returns status \"fail\". Give the report's decision, and its failed and unresolved lists as they appear in report.as_dict()."
+      },
+      {
+        "id": "code",
+        "hash": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1",
+        "text": "    for check in checks:\n        try:\n            raw = check.evaluator(candidate, workspace)\n            ...\n            result = PostconditionResult(status=raw.status, evidence=raw.evidence,\n                                         reasoning=raw.reasoning, name=check.name)\n        except Exception as exc:\n            result = PostconditionResult(status=\"unresolved\", evidence={\"exception\": type(exc).__name__},\n                                         reasoning=\"evaluator raised: \" + str(exc)[:300],\n                                         name=check.name)\n        results.append(result)\n        if check.required:\n            if result.status == \"fail\":\n                failed.append(check.name)\n            elif result.status == \"unresolved\":\n                unresolved.append(check.name)\n    decision = \"release\" if not failed and not unresolved else \"withhold\"\n    return PostconditionReport(decision=decision, results=results,\n                               failed=failed, unresolved=unresolved)"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 24,
+      "jev_tokens_remaining": 80738,
+      "jev_api_usd_remaining": 0.999206914,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "_summary(description) returns: \"Fetch a page.Returns HTML!\"\n\nReasoning: text=\" \".join(text.split()) collapses all whitespace runs to single spaces and strips leading/trailing, yielding \"Fetch a page.Returns HTML! Use it with care.\" (no space exists between \"page.\" and \"Returns\" in the original string, so they stay joined). re.split on (?<=[.!?])\\s with maxsplit=1 splits at the first punctuation mark that is followed by whitespace \u2014 the period after \"page\" is NOT followed by whitespace (immediately followed by \"Returns\"), so it's skipped; the first qualifying split point is after \"HTML!\" (followed by a space before \"Use\"). first = \"Fetch a page.Returns HTML!\", length 26 \u2264 limit 160, so it's returned unmodified.",
+  "task_hash": "d3ffb34db3e5e7147d51b8dcbb756b0779d895105b5e667b03a298587399ca69",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "d3ffb34db3e5e7147d51b8dcbb756b0779d895105b5e667b03a298587399ca69",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "d38262bae6562cb9ac5895f3f49747c0f58766940b8c98e2d4b232dd79cd4cf7",
+    "code": "27d55f60da49065afb6e09516097d32305ceeab4de1056777925a3468ddc36b3"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 11326,
+        "cached_input_tokens": 9311,
+        "cache_write_input_tokens": 2013,
+        "output_tokens": 1466,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "674f720d-06b5-46ec-88cf-12ff61b6ce79",
+      "permit_id": "730114ee1e4b4724b7ca7df1efe6b9b8",
+      "artifact_hash": "1d260d60e85d8b671e03fafa98dad9ab8507c964e1af58338077e581855d42fc"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "1d260d60e85d8b671e03fafa98dad9ab8507c964e1af58338077e581855d42fc",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 11326,
+    "frontier_output_tokens": 1466,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

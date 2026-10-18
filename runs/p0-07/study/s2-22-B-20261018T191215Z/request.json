@@ -1,0 +1,25 @@
+{
+  "goal": "A PermitAuthority with max_cumulative_usd=0.6 authorizes three Claude worker runs through ClaudeCodeProvider .run, one permit each, in the order given in \"runs\". What is cumulative_cost_usd after the third run, and is a fourth permit issued or refused?",
+  "context": "",
+  "sources": {
+    "run": {
+      "title": "scripts/frontier_providers.py excerpt (_BoundedProvider.run)",
+      "text": "    def run(self, request: dict, permit_id: str) -> dict:\n        scope = _request_scope(self.provider_id, request)\n        self.authority.consume(permit_id, \"frontier.run\", scope)\n        ...\n        outcome: dict[str, Any] = {\"status\": \"failed\", \"run_id\": run_id}\n        try:\n            ...\n            response = self.adapter.run(request[\"model\"], request[\"effort\"], request[\"prompt\"],\n                                        request[\"schema\"], request[\"workspace\"])\n            outcome = {\"status\": \"ok\", \"run_id\": run_id, \"artifact_hash\": digest(response[\"artifact\"]),\n                       \"usage\": response.get(\"usage\"),\n                       \"cost_usd\": _cost_from_response(response),\n            ...\n        except Exception as error:\n            error_usage = getattr(error, \"usage\", None)\n            outcome = {\"status\": \"cancelled\" if cancel.is_set() else \"failed\", \"run_id\": run_id,\n                       \"error\": str(error)[:200], \"usage\": error_usage,\n                       \"cost_usd\": _cost_from_usage(error_usage)}\n            raise\n        finally:\n            ...\n            self.authority.receipt(permit_id, outcome)"
+    },
+    "cost": {
+      "title": "scripts/frontier_providers.py excerpt",
+      "text": "def _cost_from_usage(usage: Any) -> float | None:\n    ...\n    if not isinstance(usage, dict):\n        return None\n    value = usage.get(\"api_equivalent_cost_usd\")\n    if type(value) not in (int, float) or isinstance(value, bool):\n        return None\n    if not math.isfinite(value) or value < 0:\n        return None\n    return float(value)\n\n\ndef _cost_from_response(response: Any) -> float | None:\n    \"\"\"Cost of a successful adapter response. ClaudeCliAdapter reports\n    `api_equivalent_cost_usd` at the top level; older shapes put it in usage.\"\"\"\n    if isinstance(response, dict) and \"api_equivalent_cost_usd\" in response:\n        return _cost_from_usage({\"api_equivalent_cost_usd\": response[\"api_equivalent_cost_usd\"]})\n    return _cost_from_usage(response.get(\"usage\") if isinstance(response, dict) else None)"
+    },
+    "cap": {
+      "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)",
+      "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
+    },
+    "runs": {
+      "title": "Adapter results",
+      "text": "run 1: returns {\"artifact\": {...}, \"api_equivalent_cost_usd\": 0.30}\nrun 2: raises an error whose .usage is {\"api_equivalent_cost_usd\": 0.25}\nrun 3: returns {\"artifact\": {...}, \"api_equivalent_cost_usd\": null, \"usage\": {\"api_equivalent_cost_usd\": 0.4}}"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

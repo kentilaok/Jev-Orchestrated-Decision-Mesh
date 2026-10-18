@@ -1,0 +1,20 @@
+{
+  "goal": "authority = PermitAuthority(default_ttl_seconds=900, clock=clock). While clock() returns 1000.0, a permit is issued with issue(capability, scope, basis, ttl_seconds=600). Later consume() is called with the matching capability and scope. What is the largest clock() value at which that consume() still succeeds?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/capability_permits.py excerpt (ttl and expiry)",
+      "text": "    def __init__(self, ledger_path: Path | None = None, *, default_ttl_seconds: float = 900,\n                 clock=time.time, max_cumulative_usd: float | None = None):\n        ...\n        self.default_ttl = default_ttl_seconds\n        self.clock = clock\n    ...\n        ttl = self.default_ttl if ttl_seconds is None else ttl_seconds\n        require(0 < ttl <= 86_400, \"invalid_permit_ttl\")\n        ...\n        now = self.clock()\n        ...\n            \"issued_at\": now, \"expires_at\": now + ttl,\n    ...\n    def consume(self, permit_id: str, capability: str, scope: dict) -> dict:\n        ...\n            require(grant[\"scope_hash\"] == digest(scope), \"permit_scope_mismatch\")\n            require(self.clock() <= grant[\"expires_at\"], \"permit_expired\")"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "71e834d4177c27b40b217159503f2237c903b34dd1ffa69b418f774a2fd9784e",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

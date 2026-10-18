@@ -1,0 +1,299 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "transport",
+        "title": "scripts/transport.py excerpt (Gateway.call admission)"
+      },
+      {
+        "id": "reserve",
+        "title": "scripts/config.py excerpt (reserve_usd)"
+      },
+      {
+        "id": "prices",
+        "title": "scripts/config.py excerpt (families and price fields)"
+      },
+      {
+        "id": "state",
+        "title": "Run state"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "transport",
+          "reserve",
+          "prices",
+          "state"
+        ],
+        "data": {
+          "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+            "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+          }
+        },
+        "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+        "text": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit."
+      },
+      {
+        "id": "transport",
+        "hash": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+        "text": "MAX_REQUEST_BYTES = 24000\n...\n        data = packed(payload).encode()\n        ...\n        role_calls=sum(event[\"role\"]==role for event in self.calls)\n        role_limit={\"jev\":self.config.max_jev_calls,\"worker\":self.config.max_worker_calls,\n                    \"checker\":self.config.max_checker_calls}[role]\n        require(role_calls < role_limit,\"role_call_budget_exhausted\")\n        if role==\"jev\":\n            known_jev_tokens=sum(event[\"usage\"][\"total_tokens\"] or 0 for event in self.calls\n                                 if event[\"role\"]==\"jev\")\n            require(known_jev_tokens < self.config.max_jev_tokens,\"jev_token_budget_exhausted\")\n        reserve = self.config.reserve_usd(role, len(data), payload[\"model\"] if role == \"worker\" else None)\n        needs_followup = role == \"checker\" or followup_required\n        followup_reserve = self.config.reserve_usd(\"jev\", MAX_REQUEST_BYTES) if needs_followup else 0.0\n        admission_calls = 2 if needs_followup else 1\n        require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls\n                and self.spent + reserve + followup_reserve <= self.config.max_usd, \"call_or_cost_budget_exhausted\")"
+      },
+      {
+        "id": "reserve",
+        "hash": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+        "text": "    def reserve_usd(self, role, request_bytes, model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        _require(type(request_bytes) is int and request_bytes >= 0, \"invalid_request_size\")\n        if role == \"worker\":\n            selected = self.worker_model if model is None else model\n            _require(any(route[\"model\"] == selected for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n        else:\n            _require(model is None or model == getattr(self, role + \"_model\"), \"reservation_model_mismatch\")\n            selected = None if role == \"jev\" else self.checker_model\n        if selected is None:\n            prefix = \"jev_\"\n        elif role == \"checker\" and self.worker_family == \"gpt6\":\n            prefix = \"checker_\"\n        else:\n            tier = TIER_OF_MODEL[selected]\n            prefix = \"worker_\" if tier == \"sol\" else \"worker_\" + tier + \"_\"\n        return (request_bytes * getattr(self, prefix + \"input_usd_per_million\")\n                + self.max_output_tokens * getattr(self, prefix + \"output_usd_per_million\")) / 1_000_000"
+      },
+      {
+        "id": "prices",
+        "hash": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+        "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+      },
+      {
+        "id": "state",
+        "hash": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db",
+        "text": "RunConfig: all defaults (worker_family gpt6, max_usd 1.50, max_calls 40, max_checker_calls 10).\nGateway state before the call: 38 calls recorded (all worker calls, all ok), spent = 1.462 USD, blocked = False.\nNext call: role \"checker\", model \"openai/gpt-6-sol\", effort \"high\"; packed request is exactly 9,000 bytes."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 28,
+      "jev_tokens_remaining": 94189,
+      "jev_api_usd_remaining": 0.99975934,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

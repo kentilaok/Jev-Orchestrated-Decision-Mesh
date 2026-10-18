@@ -1,0 +1,1 @@
+{"answer":"input_tokens = 120 + 3000 + 45000 = 48120.","calls":1,"route":"short_self_contained","status":"complete"}

@@ -1,0 +1,1 @@
+{"answer":"allowed = 0.055 (i.e., 0.005*(1+sum(range(5))))","calls":1,"route":"short_self_contained","status":"complete"}

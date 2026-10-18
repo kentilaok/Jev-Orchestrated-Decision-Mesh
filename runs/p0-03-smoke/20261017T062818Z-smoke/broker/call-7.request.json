@@ -1,0 +1,328 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "records",
+        "title": "Synthetic production records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "records"
+        ],
+        "data": {
+          "summary": "Report production defects per 1,000 items, excluding trial records, with source support.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+            "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+          }
+        },
+        "artifact_hash": "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Production defect rate: 50.0 per 1,000 items (20 defects / 400 items; segments A and B). Trial segment T excluded.",
+        "source_ids": [
+          "request",
+          "records"
+        ],
+        "data": {
+          "summary": "Excluding the trial segment, production records show 20 defects across 400 items, a rate of 50.0 defects per 1,000 items.",
+          "claims": [
+            "Production segments are A (240 items, 12 defects) and B (160 items, 8 defects), per records.",
+            "Segment T (100 items, 30 defects) is kind trial and is excluded per the request.",
+            "Pooled production totals: 400 items, 20 defects.",
+            "Rate = 20 / 400 * 1000 = 50.0 defects per 1,000 items.",
+            "Assumption: 'items' is the correct exposure denominator and segments are non-overlapping.",
+            "Rate is pooled, not an average of per-segment rates; both agree here since A and B are each 50.0."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8"
+          ],
+          "source_hashes": {
+            "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+            "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+          }
+        },
+        "artifact_hash": "8118470f4a4feed665b3e1e82181d32077d626940191748c41edb070519b7be1",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Production defect rate: 50.0 per 1,000 items (20 defects / 400 items; segments A and B). Trial segment T excluded. Sources: request, records.",
+        "source_ids": [
+          "request",
+          "records"
+        ],
+        "data": {
+          "summary": "Excluding the trial segment, production records show 20 defects across 400 items, a rate of 50.0 defects per 1,000 items.",
+          "claims": [
+            "Production segments are A (240 items, 12 defects) and B (160 items, 8 defects), per records.",
+            "Segment T (100 items, 30 defects) is kind trial and is excluded per the request.",
+            "Pooled production totals: 400 items, 20 defects.",
+            "Rate = 20 / 400 * 1000 = 50.0 defects per 1,000 items.",
+            "Assumption: 'items' is the correct exposure denominator and segments are non-overlapping.",
+            "Rate is pooled, not an average of per-segment rates; both agree here since A and B are each 50.0."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "8118470f4a4feed665b3e1e82181d32077d626940191748c41edb070519b7be1"
+          ],
+          "source_hashes": {
+            "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+            "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+          }
+        },
+        "artifact_hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+        "text": "Report production defects per 1,000 items, excluding trial records, with source support."
+      },
+      {
+        "id": "records",
+        "hash": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5",
+        "text": "segment A, kind production, items 240, defects 12\nsegment B, kind production, items 160, defects 8\nsegment T, kind trial, items 100, defects 30"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 24,
+      "jev_tokens_remaining": 83503,
+      "jev_api_usd_remaining": 0.999323044,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "952817e54117a9c13b587cd5853392d33ff4ac7c017912d612276dd097af97de"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

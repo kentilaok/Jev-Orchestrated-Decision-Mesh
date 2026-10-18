@@ -1,0 +1,1 @@
+{"answer":"All three records share signature \"sig-q\" and are all verified. run_id values are \"r1\", \"r1\", and missing (coerced to the string \"None\"), giving verified_runs = {\"r1\",\"None\"}, size 2. Since len(verified_runs) >= 2 but < 3, the single lesson's confidence is \"medium\".","calls":1,"route":"short_self_contained","status":"complete"}

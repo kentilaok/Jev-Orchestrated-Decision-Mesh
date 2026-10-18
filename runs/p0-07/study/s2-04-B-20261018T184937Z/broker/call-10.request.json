@@ -1,0 +1,256 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "run_checks runs five checks in this order (name, required, what its evaluator does): tests_green, required=True, returns status \"pass\"; lint_clean, required=False, returns status \"fail\"; files_declared, required=True, raises ValueError(\"workspace missing\"); no_concealed, required=True, returns status \"unresolved\"; build_ok, required=True, returns status \"fail\". Give the report's decision, and its failed and unresolved lists as they appear in report.as_dict().",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/postconditions.py excerpt (run_checks)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "decision \"withhold\"; failed [\"build_ok\"]; unresolved [\"files_declared\", \"no_concealed\"]. [code][request]",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "claims": [
+            "tests_green returns \"pass\" and is required, so it enters neither list.",
+            "lint_clean returns \"fail\" but required=False, so it is excluded from failed; only required checks are tallied.",
+            "files_declared raises ValueError, caught by the except branch, which builds a result with status \"unresolved\"; since it is required, its name joins unresolved.",
+            "no_concealed returns \"unresolved\" and is required, so it joins unresolved after files_declared, preserving check order.",
+            "build_ok returns \"fail\" and is required, so failed == [\"build_ok\"].",
+            "decision is \"withhold\" because failed and unresolved are both non-empty.",
+            "Assumption: report.as_dict() serializes the failed and unresolved fields verbatim as lists of check names in append order; the as_dict implementation is not in the excerpt."
+          ],
+          "parent_hashes": [
+            "de51129f1e8b520cc24704c305d0218d245e0f530bfc43872baf044a4ed823be"
+          ],
+          "source_hashes": {
+            "code": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1",
+            "request": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634"
+          },
+          "summary": "decision: \"withhold\"; failed: [\"build_ok\"]; unresolved: [\"files_declared\", \"no_concealed\"]. lint_clean's failure is dropped because required=False. files_declared's raised ValueError is caught and recorded as status \"unresolved\" (evidence {\"exception\": \"ValueError\"}), so it lands in unresolved rather than failed. tests_green passes. decision is \"withhold\" since failed and unresolved are non-empty.",
+          "unresolved": []
+        },
+        "artifact_hash": "c576676a59b79d039e61cfbc080f80d4717810b6a0756e3038d3bb89ab6e05f7",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "decision \"withhold\"; failed [\"build_ok\"]; unresolved [\"files_declared\", \"no_concealed\"]. [code][request]",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "decision: \"withhold\"; failed: [\"build_ok\"]; unresolved: [\"files_declared\", \"no_concealed\"]. tests_green passes. lint_clean's \"fail\" is dropped because required=False (only required checks are tallied). files_declared's ValueError is caught by the except branch and recorded as status \"unresolved\" with evidence {\"exception\": \"ValueError\"}, so it joins unresolved, not failed. no_concealed returns \"unresolved\" and follows it in check order. build_ok is the only required \"fail\". decision is \"withhold\" because failed and unresolved are both non-empty.",
+          "claims": [
+            "tests_green returns \"pass\" and is required, so it enters neither list.",
+            "lint_clean returns \"fail\" but required=False, so the required-only tally excludes it from failed.",
+            "files_declared raises ValueError; the except branch builds a result with status \"unresolved\" and evidence {\"exception\": \"ValueError\"}, so its name joins unresolved rather than failed.",
+            "no_concealed returns \"unresolved\" and is required, joining unresolved after files_declared, preserving check order.",
+            "build_ok returns \"fail\" and is required, so failed == [\"build_ok\"].",
+            "decision is \"withhold\" since the release branch requires both failed and unresolved to be empty.",
+            "Assumption: report.as_dict() serializes failed and unresolved verbatim as lists of check names in append order; as_dict is not in the excerpt."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "c576676a59b79d039e61cfbc080f80d4717810b6a0756e3038d3bb89ab6e05f7"
+          ],
+          "source_hashes": {
+            "request": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634",
+            "code": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1"
+          }
+        },
+        "artifact_hash": "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "Accepted. decision \"withhold\"; failed [\"build_ok\"]; unresolved [\"files_declared\", \"no_concealed\"]. [code][request]",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "Verified: the parent result is correct and accepted. decision: \"withhold\"; failed: [\"build_ok\"]; unresolved: [\"files_declared\", \"no_concealed\"]. Both traps are handled right: lint_clean's \"fail\" is dropped because the tally sits under `if check.required` and required=False; files_declared's ValueError is caught by the except branch, which builds a result with status \"unresolved\" (evidence {\"exception\": \"ValueError\"}), so it lands in unresolved rather than failed. no_concealed follows it in iteration order, giving the stated ordering. build_ok is the only required \"fail\". Since failed and unresolved are both non-empty, the ternary selects \"withhold\". No material open issues; the only caveat is that as_dict() is not in the excerpt, so its verbatim serialization of the two lists is assumed.",
+          "claims": [
+            "tests_green: status \"pass\", required=True - enters neither list.",
+            "lint_clean: status \"fail\" but required=False; the tally is inside `if check.required`, so it is excluded from failed.",
+            "files_declared raises ValueError; the except branch yields status \"unresolved\" with evidence {\"exception\": \"ValueError\"}, so it joins unresolved, not failed.",
+            "no_concealed: status \"unresolved\", required=True - appended after files_declared, preserving check order.",
+            "build_ok: status \"fail\", required=True - failed == [\"build_ok\"].",
+            "decision == \"withhold\" because both failed and unresolved are non-empty (release needs both empty).",
+            "Assumption: as_dict() serializes failed/unresolved verbatim as check-name lists in append order; as_dict is not shown in the excerpt."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "df8b723ca607a2c0e6c0ab8dd54fe5e8ec976d0907e1e904fe230606366ef2ef"
+          ],
+          "source_hashes": {
+            "request": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634",
+            "code": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1"
+          }
+        },
+        "artifact_hash": "d6d15c1b35b501737a4b9e5d839bf915c7870906020bb1d19cfcf8b18efc7721",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634",
+        "text": "run_checks runs five checks in this order (name, required, what its evaluator does): tests_green, required=True, returns status \"pass\"; lint_clean, required=False, returns status \"fail\"; files_declared, required=True, raises ValueError(\"workspace missing\"); no_concealed, required=True, returns status \"unresolved\"; build_ok, required=True, returns status \"fail\". Give the report's decision, and its failed and unresolved lists as they appear in report.as_dict()."
+      },
+      {
+        "id": "code",
+        "hash": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1",
+        "text": "    for check in checks:\n        try:\n            raw = check.evaluator(candidate, workspace)\n            ...\n            result = PostconditionResult(status=raw.status, evidence=raw.evidence,\n                                         reasoning=raw.reasoning, name=check.name)\n        except Exception as exc:\n            result = PostconditionResult(status=\"unresolved\", evidence={\"exception\": type(exc).__name__},\n                                         reasoning=\"evaluator raised: \" + str(exc)[:300],\n                                         name=check.name)\n        results.append(result)\n        if check.required:\n            if result.status == \"fail\":\n                failed.append(check.name)\n            elif result.status == \"unresolved\":\n                unresolved.append(check.name)\n    decision = \"release\" if not failed and not unresolved else \"withhold\"\n    return PostconditionReport(decision=decision, results=results,\n                               failed=failed, unresolved=unresolved)"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "d6d15c1b35b501737a4b9e5d839bf915c7870906020bb1d19cfcf8b18efc7721"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "claims": [
+          "tests_green: status \"pass\", required=True - appears in neither list.",
+          "lint_clean: status \"fail\" but required=False; the tally sits under `if check.required`, so it is excluded.",
+          "files_declared raises ValueError; the except branch builds status \"unresolved\" with evidence {\"exception\": \"ValueError\"}, so it joins unresolved, not failed.",
+          "no_concealed: status \"unresolved\", required=True - appended after files_declared, preserving check order.",
+          "build_ok: status \"fail\", required=True - failed == [\"build_ok\"].",
+          "decision == \"withhold\" since \"release\" requires both failed and unresolved empty.",
+          "Assumption: as_dict() serializes failed/unresolved verbatim as name lists in append order; as_dict is not in the excerpt."
+        ],
+        "parent_hashes": [
+          "d6d15c1b35b501737a4b9e5d839bf915c7870906020bb1d19cfcf8b18efc7721"
+        ],
+        "source_hashes": {
+          "code": "87962e514e4705d84c530ab6ff49ee2ae89f3968d0f864de5ecd336041ffc7a1",
+          "request": "57feb78e519af0b2365d984b18b1aeecc246040ee1f56fe7c14450f703551634"
+        },
+        "summary": "decision: \"withhold\"; failed: [\"build_ok\"]; unresolved: [\"files_declared\", \"no_concealed\"]. Both traps resolve correctly: lint_clean's \"fail\" is dropped because the tally is guarded by `if check.required` and it is required=False; files_declared's ValueError is caught by the except branch, which constructs a result with status \"unresolved\" (evidence {\"exception\": \"ValueError\"}), so it lands in unresolved rather than failed. no_concealed is appended next, giving that order. build_ok is the only required \"fail\". With failed and unresolved both non-empty, the ternary yields \"withhold\". Only caveat: as_dict() is not shown, so verbatim serialization of the two lists is assumed.",
+        "unresolved": []
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.95,
+      "source_ids": [
+        "request",
+        "code"
+      ],
+      "text": "decision \"withhold\"; failed [\"build_ok\"]; unresolved [\"files_declared\", \"no_concealed\"]. lint_clean's fail is not counted (required=False); files_declared's ValueError becomes an \"unresolved\" result. [code][request]"
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 21,
+      "jev_tokens_remaining": 65031,
+      "jev_api_usd_remaining": 0.998557258,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "output",
+            "candidate_hash": "c60b300342c2d3c1f06091db0ae835558c8cbe4bf1909e721372abf51d734e6f",
+            "check_hash": null,
+            "successor": "user",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "output",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "c60b300342c2d3c1f06091db0ae835558c8cbe4bf1909e721372abf51d734e6f",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

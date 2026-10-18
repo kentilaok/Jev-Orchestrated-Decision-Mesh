@@ -1,0 +1,17 @@
+{
+  "goal": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/p0_03_audit.py excerpt (_audit_spend)",
+      "text": "    jev_events = result.get('jev_provider_events') or []\n    jev_cost = result.get('jev_api_cost_usd')\n    costs = [(e.get('usage') or {}).get('cost') if isinstance(e.get('usage'), dict) else None\n             for e in jev_events]\n    known = sum(c for c in costs if _is_cost(c))\n    if known > config.max_usd:\n        issues.append('jev_spend_over_max_usd')\n    if any(not _is_cost(c) for c in costs):\n        if jev_cost is not None:\n            issues.append('jev_cost_reported_despite_unknown_usage')\n    elif jev_events or jev_cost is not None:\n        if jev_cost is None or abs(jev_cost - known) > 1e-12:\n            issues.append('jev_cost_mismatch')\n    ...\n    accounting = result.get('accounting') or {}\n    unknown = sum(not _known_tokens(c.get('usage')) for c in frontier)\n    if accounting.get('frontier_calls_usage_unknown') != unknown:\n        issues.append('unknown_usage_count_mismatch')\n    if unknown:\n        if (accounting.get('frontier_input_tokens') is not None\n                or accounting.get('frontier_output_tokens') is not None):\n            issues.append('unknown_usage_summed_as_known')"
+    },
+    "inputs": {
+      "title": "Inputs",
+      "text": "result = {\"jev_provider_events\": [{\"usage\": {\"cost\": 0.0006, \"total_tokens\": 1800}}, {\"usage\": {\"total_tokens\": 900}}], \"jev_api_cost_usd\": 0.0006, \"calls\": [\"(non-empty)\"], \"accounting\": {\"frontier_calls_usage_unknown\": 0, \"frontier_input_tokens\": 4200, \"frontier_output_tokens\": 800}}\nfrontier = [{\"usage\": {\"input_tokens\": 4200, \"output_tokens\": 800}}, {\"usage\": null}]"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

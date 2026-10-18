@@ -1,0 +1,88 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "RunConfig.from_dict({\"worker_family\":\"claude\",\"max_jev_tokens\":50000}) yields max_jev_tokens = 100000.\n\nReasoning: from_dict validates keys then constructs RunConfig(worker_family=\"claude\", max_jev_tokens=50000). In __post_init__, since worker_family == \"claude\" and max_jev_tokens == 50000 (the untouched default), the code doubles it via object.__setattr__ to 100000, per the comment that Claude Jev states run ~1.8x larger than GPT-6 ones (P0-03 slice 3c).",
+  "task_hash": "55b808678bdd158f8cdcd673db0ee4006261f2cc295adc56968d2d12dbd5b722",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "55b808678bdd158f8cdcd673db0ee4006261f2cc295adc56968d2d12dbd5b722",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "9e61a7416d101f1744734288e9630a898c995451c576d47e54ec999fbbe6a44a",
+    "config": "a7ec33957b85e36480ead25ca4e3ba8d2e911bb29f5d0992a68f54a595dd0370"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 11608,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 11606,
+        "output_tokens": 964,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "7ef8fafd-993b-458d-bf3a-573bb3b1fb3d",
+      "permit_id": "2a01aa96a1564990a3846433ee6e6306",
+      "artifact_hash": "7d1289509bcbf7c779e0dfdbd7e0a5f7b6eab0f0eae09d05ce75b478c8dcbd56"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "7d1289509bcbf7c779e0dfdbd7e0a5f7b6eab0f0eae09d05ce75b478c8dcbd56",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 11608,
+    "frontier_output_tokens": 964,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

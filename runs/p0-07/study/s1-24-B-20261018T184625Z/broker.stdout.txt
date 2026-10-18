@@ -1,0 +1,1 @@
+{"answer":"orchestration_ratio = jev_tokens / worker_tokens = 3000 / 12000 = 0.25.","calls":1,"route":"short_self_contained","status":"complete"}

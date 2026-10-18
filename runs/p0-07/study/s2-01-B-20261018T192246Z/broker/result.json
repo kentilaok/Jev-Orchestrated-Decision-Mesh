@@ -1,0 +1,1527 @@
+{
+  "status": "paused_recoverable",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "4074f3094fee0758a41286972f7807b435cc415308ba9f7461296b5323106ff5",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "4074f3094fee0758a41286972f7807b435cc415308ba9f7461296b5323106ff5",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+    "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+    "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+    "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+    "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "compute",
+      "usage": {
+        "input_tokens": 2439,
+        "output_tokens": 31,
+        "total_tokens": 2470,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000102438
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 3291,
+        "output_tokens": 50,
+        "total_tokens": 3341,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000138222
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "sonnet_low",
+      "usage": {
+        "input_tokens": 5034,
+        "output_tokens": 91,
+        "total_tokens": 5125,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000211428
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 13595,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 13593,
+        "output_tokens": 2610,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "6138478f-d72a-41fb-bb32-516d8acc502c",
+      "permit_id": "8d117a16e31d4b788971e79a82cade65",
+      "artifact_hash": "8022c1c2945a2420c42898ff027856c09bf47dfe4ccfc85a5c680d3dd0843c4d"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "retrieve_evidence",
+      "usage": {
+        "input_tokens": 4740,
+        "output_tokens": 62,
+        "total_tokens": 4802,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.00019908
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "checkpoint_bundle": {
+    "path": "runs\\p0-07\\study\\s2-01-B-20261018T192246Z\\broker\\checkpoint.json",
+    "bundle_hash": "345c9d4e555d3e280bda68764ba08790e3ee45abaa74c49f30ac4410ed7d8f4d"
+  },
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+            "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+          }
+        },
+        "source_ids": [
+          "request",
+          "transport",
+          "reserve",
+          "prices",
+          "state"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    }
+  ],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "3d889d8996f81c4df991d3725f314641062c2f8491d3aa8f22f210a6a261cdd4",
+      "state": {
+        "goal": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "transport",
+            "title": "scripts/transport.py excerpt (Gateway.call admission)"
+          },
+          {
+            "id": "reserve",
+            "title": "scripts/config.py excerpt (reserve_usd)"
+          },
+          {
+            "id": "prices",
+            "title": "scripts/config.py excerpt (families and price fields)"
+          },
+          {
+            "id": "state",
+            "title": "Run state"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "text": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit."
+          },
+          {
+            "id": "transport",
+            "hash": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+            "text": "MAX_REQUEST_BYTES = 24000\n...\n        data = packed(payload).encode()\n        ...\n        role_calls=sum(event[\"role\"]==role for event in self.calls)\n        role_limit={\"jev\":self.config.max_jev_calls,\"worker\":self.config.max_worker_calls,\n                    \"checker\":self.config.max_checker_calls}[role]\n        require(role_calls < role_limit,\"role_call_budget_exhausted\")\n        if role==\"jev\":\n            known_jev_tokens=sum(event[\"usage\"][\"total_tokens\"] or 0 for event in self.calls\n                                 if event[\"role\"]==\"jev\")\n            require(known_jev_tokens < self.config.max_jev_tokens,\"jev_token_budget_exhausted\")\n        reserve = self.config.reserve_usd(role, len(data), payload[\"model\"] if role == \"worker\" else None)\n        needs_followup = role == \"checker\" or followup_required\n        followup_reserve = self.config.reserve_usd(\"jev\", MAX_REQUEST_BYTES) if needs_followup else 0.0\n        admission_calls = 2 if needs_followup else 1\n        require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls\n                and self.spent + reserve + followup_reserve <= self.config.max_usd, \"call_or_cost_budget_exhausted\")"
+          },
+          {
+            "id": "reserve",
+            "hash": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "text": "    def reserve_usd(self, role, request_bytes, model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        _require(type(request_bytes) is int and request_bytes >= 0, \"invalid_request_size\")\n        if role == \"worker\":\n            selected = self.worker_model if model is None else model\n            _require(any(route[\"model\"] == selected for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n        else:\n            _require(model is None or model == getattr(self, role + \"_model\"), \"reservation_model_mismatch\")\n            selected = None if role == \"jev\" else self.checker_model\n        if selected is None:\n            prefix = \"jev_\"\n        elif role == \"checker\" and self.worker_family == \"gpt6\":\n            prefix = \"checker_\"\n        else:\n            tier = TIER_OF_MODEL[selected]\n            prefix = \"worker_\" if tier == \"sol\" else \"worker_\" + tier + \"_\"\n        return (request_bytes * getattr(self, prefix + \"input_usd_per_million\")\n                + self.max_output_tokens * getattr(self, prefix + \"output_usd_per_million\")) / 1_000_000"
+          },
+          {
+            "id": "prices",
+            "hash": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+          },
+          {
+            "id": "state",
+            "hash": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db",
+            "text": "RunConfig: all defaults (worker_family gpt6, max_usd 1.50, max_calls 40, max_checker_calls 10).\nGateway state before the call: 38 calls recorded (all worker calls, all ok), spent = 1.462 USD, blocked = False.\nNext call: role \"checker\", model \"openai/gpt-6-sol\", effort \"high\"; packed request is exactly 9,000 bytes."
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "compute": 0.96,
+          "stop": 0.04
+        },
+        "confidence": 0.92,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 2439,
+          "output_tokens": 31,
+          "total_tokens": 2470,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000102438
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": null
+      },
+      "action_hash": "36da092d43000ec810bfb06b00cfc7be600f3a1d82357bb40af3840fccb3bc72",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+            "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+          }
+        },
+        "source_ids": [
+          "request",
+          "transport",
+          "reserve",
+          "prices",
+          "state"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "3d889d8996f81c4df991d3725f314641062c2f8491d3aa8f22f210a6a261cdd4",
+      "state": {
+        "goal": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "transport",
+            "title": "scripts/transport.py excerpt (Gateway.call admission)"
+          },
+          {
+            "id": "reserve",
+            "title": "scripts/config.py excerpt (reserve_usd)"
+          },
+          {
+            "id": "prices",
+            "title": "scripts/config.py excerpt (families and price fields)"
+          },
+          {
+            "id": "state",
+            "title": "Run state"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "text": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit."
+          },
+          {
+            "id": "transport",
+            "hash": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+            "text": "MAX_REQUEST_BYTES = 24000\n...\n        data = packed(payload).encode()\n        ...\n        role_calls=sum(event[\"role\"]==role for event in self.calls)\n        role_limit={\"jev\":self.config.max_jev_calls,\"worker\":self.config.max_worker_calls,\n                    \"checker\":self.config.max_checker_calls}[role]\n        require(role_calls < role_limit,\"role_call_budget_exhausted\")\n        if role==\"jev\":\n            known_jev_tokens=sum(event[\"usage\"][\"total_tokens\"] or 0 for event in self.calls\n                                 if event[\"role\"]==\"jev\")\n            require(known_jev_tokens < self.config.max_jev_tokens,\"jev_token_budget_exhausted\")\n        reserve = self.config.reserve_usd(role, len(data), payload[\"model\"] if role == \"worker\" else None)\n        needs_followup = role == \"checker\" or followup_required\n        followup_reserve = self.config.reserve_usd(\"jev\", MAX_REQUEST_BYTES) if needs_followup else 0.0\n        admission_calls = 2 if needs_followup else 1\n        require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls\n                and self.spent + reserve + followup_reserve <= self.config.max_usd, \"call_or_cost_budget_exhausted\")"
+          },
+          {
+            "id": "reserve",
+            "hash": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "text": "    def reserve_usd(self, role, request_bytes, model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        _require(type(request_bytes) is int and request_bytes >= 0, \"invalid_request_size\")\n        if role == \"worker\":\n            selected = self.worker_model if model is None else model\n            _require(any(route[\"model\"] == selected for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n        else:\n            _require(model is None or model == getattr(self, role + \"_model\"), \"reservation_model_mismatch\")\n            selected = None if role == \"jev\" else self.checker_model\n        if selected is None:\n            prefix = \"jev_\"\n        elif role == \"checker\" and self.worker_family == \"gpt6\":\n            prefix = \"checker_\"\n        else:\n            tier = TIER_OF_MODEL[selected]\n            prefix = \"worker_\" if tier == \"sol\" else \"worker_\" + tier + \"_\"\n        return (request_bytes * getattr(self, prefix + \"input_usd_per_million\")\n                + self.max_output_tokens * getattr(self, prefix + \"output_usd_per_million\")) / 1_000_000"
+          },
+          {
+            "id": "prices",
+            "hash": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+          },
+          {
+            "id": "state",
+            "hash": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db",
+            "text": "RunConfig: all defaults (worker_family gpt6, max_usd 1.50, max_calls 40, max_checker_calls 10).\nGateway state before the call: 38 calls recorded (all worker calls, all ok), spent = 1.462 USD, blocked = False.\nNext call: role \"checker\", model \"openai/gpt-6-sol\", effort \"high\"; packed request is exactly 9,000 bytes."
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "candidate": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+              "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+              "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+              "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+              "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+            }
+          },
+          "source_ids": [
+            "request",
+            "transport",
+            "reserve",
+            "prices",
+            "state"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.03,
+          "forward": 0.9,
+          "repair": 0.05,
+          "retrieve_evidence": 0.02
+        },
+        "confidence": 0.87,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 3291,
+          "output_tokens": 50,
+          "total_tokens": 3341,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000138222
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "post_worker_decision",
+      "version": 0,
+      "simulation": false,
+      "unit_id": "input",
+      "choice": "forward",
+      "gate_id": "e4",
+      "candidate_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e6",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "input",
+        "candidate_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+        "check_hash": null,
+        "successor": "hidden1",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "cb87fa5fd9a501ecea9f2ce4c114fbeb113bda613fa8a87d187915e2c4a5a680",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e7",
+      "kind": "checked_commit",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "input",
+      "packet": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+              "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+              "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+              "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+              "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+            }
+          },
+          "source_ids": [
+            "request",
+            "transport",
+            "reserve",
+            "prices",
+            "state"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e4"
+    },
+    {
+      "id": "e8",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "input",
+      "value": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+              "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+              "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+              "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+              "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+            }
+          },
+          "source_ids": [
+            "request",
+            "transport",
+            "reserve",
+            "prices",
+            "state"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e9",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "330acd4839862095268bd49b96fddfc039cdbed5b5203d5846b56942fe0bcfad",
+      "state": {
+        "goal": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "transport",
+            "title": "scripts/transport.py excerpt (Gateway.call admission)"
+          },
+          {
+            "id": "reserve",
+            "title": "scripts/config.py excerpt (reserve_usd)"
+          },
+          {
+            "id": "prices",
+            "title": "scripts/config.py excerpt (families and price fields)"
+          },
+          {
+            "id": "state",
+            "title": "Run state"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "transport",
+              "reserve",
+              "prices",
+              "state"
+            ],
+            "data": {
+              "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+                "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+                "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+                "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+                "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+              }
+            },
+            "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "text": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit."
+          },
+          {
+            "id": "transport",
+            "hash": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+            "text": "MAX_REQUEST_BYTES = 24000\n...\n        data = packed(payload).encode()\n        ...\n        role_calls=sum(event[\"role\"]==role for event in self.calls)\n        role_limit={\"jev\":self.config.max_jev_calls,\"worker\":self.config.max_worker_calls,\n                    \"checker\":self.config.max_checker_calls}[role]\n        require(role_calls < role_limit,\"role_call_budget_exhausted\")\n        if role==\"jev\":\n            known_jev_tokens=sum(event[\"usage\"][\"total_tokens\"] or 0 for event in self.calls\n                                 if event[\"role\"]==\"jev\")\n            require(known_jev_tokens < self.config.max_jev_tokens,\"jev_token_budget_exhausted\")\n        reserve = self.config.reserve_usd(role, len(data), payload[\"model\"] if role == \"worker\" else None)\n        needs_followup = role == \"checker\" or followup_required\n        followup_reserve = self.config.reserve_usd(\"jev\", MAX_REQUEST_BYTES) if needs_followup else 0.0\n        admission_calls = 2 if needs_followup else 1\n        require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls\n                and self.spent + reserve + followup_reserve <= self.config.max_usd, \"call_or_cost_budget_exhausted\")"
+          },
+          {
+            "id": "reserve",
+            "hash": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "text": "    def reserve_usd(self, role, request_bytes, model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        _require(type(request_bytes) is int and request_bytes >= 0, \"invalid_request_size\")\n        if role == \"worker\":\n            selected = self.worker_model if model is None else model\n            _require(any(route[\"model\"] == selected for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n        else:\n            _require(model is None or model == getattr(self, role + \"_model\"), \"reservation_model_mismatch\")\n            selected = None if role == \"jev\" else self.checker_model\n        if selected is None:\n            prefix = \"jev_\"\n        elif role == \"checker\" and self.worker_family == \"gpt6\":\n            prefix = \"checker_\"\n        else:\n            tier = TIER_OF_MODEL[selected]\n            prefix = \"worker_\" if tier == \"sol\" else \"worker_\" + tier + \"_\"\n        return (request_bytes * getattr(self, prefix + \"input_usd_per_million\")\n                + self.max_output_tokens * getattr(self, prefix + \"output_usd_per_million\")) / 1_000_000"
+          },
+          {
+            "id": "prices",
+            "hash": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+          },
+          {
+            "id": "state",
+            "hash": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db",
+            "text": "RunConfig: all defaults (worker_family gpt6, max_usd 1.50, max_calls 40, max_checker_calls 10).\nGateway state before the call: 38 calls recorded (all worker calls, all ok), spent = 1.462 USD, blocked = False.\nNext call: role \"checker\", model \"openai/gpt-6-sol\", effort \"high\"; packed request is exactly 9,000 bytes."
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "sonnet_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.02,
+          "opus_low": 0,
+          "opus_medium": 0,
+          "opus_xhigh": 0.01,
+          "sonnet_high": 0.05,
+          "sonnet_low": 0.84,
+          "sonnet_medium": 0.06,
+          "sonnet_xhigh": 0.02
+        },
+        "confidence": 0.82,
+        "api_event": "call-3",
+        "usage": {
+          "input_tokens": 5034,
+          "output_tokens": 91,
+          "total_tokens": 5125,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000211428
+        }
+      }
+    },
+    {
+      "id": "e10",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden1",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "input",
+            "hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "sonnet_low",
+          "model": "anthropic/claude-sonnet-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "749c5aed35a2adec0348d867204b197905018743a714c4b538d312d59e2ae996",
+      "gate_id": "e9"
+    },
+    {
+      "id": "e11",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden1",
+      "value": {
+        "text": "Gateway.call refuses the next checker call. Both the call-count and cost checks run: admission_calls=2 (checker needs a jev followup) gives 38+2=40<=max_calls(40), OK. But spent+reserve+followup_reserve = 1.462+0.038+0.0013=1.5013 > max_usd 1.50, so the cost check fails first (combined via `and`, so the require fires on this condition) raising MeshError \"call_or_cost_budget_exhausted\". The reserved total that breaks the limit is $0.0393 (checker reserve $0.038 + jev followup reserve $0.0013), pushing cumulative spent+reserved to $1.5013 against the $1.50 ceiling.",
+        "data": {
+          "summary": "Refused: reserve_usd(checker,9000B)=0.038 + followup jev reserve 0.0013 = 0.0393 total reservation; spent 1.462+0.0393=1.5013 > max_usd 1.50, triggering MeshError 'call_or_cost_budget_exhausted' in Gateway.call's final require. Call-count check (38+2<=40) passes; role budget (0 checker calls<10) passes.",
+          "claims": [
+            "Assumed FAMILIES['gpt6'] (not shown, elided by '...') keeps checker_model as 'openai/gpt-6-sol', consistent with the stated next call's model field.",
+            "Assumed __post_init__ does not change checker_model away from 'openai/gpt-6-sol' since worker_family='gpt6' and the field already equals that default sentinel.",
+            "checker role always sets needs_followup=True regardless of followup_required flag, per 'needs_followup = role == \"checker\" or followup_required'.",
+            "reserve_usd(checker,...) uses prefix 'checker_' because role=='checker' and worker_family=='gpt6', giving (9000*2.0+2000*10.0)/1e6=0.038 USD.",
+            "followup jev reserve uses MAX_REQUEST_BYTES=24000 bytes: (24000*0.05+2000*0.05)/1e6=0.0013 USD.",
+            "admission_calls=2 for checker (needs_followup true): 38+2=40<=max_calls 40, this check alone would pass.",
+            "The combined require() tests calls-budget AND cost-budget together; cost sub-condition fails, so the whole require fails with code 'call_or_cost_budget_exhausted' (the code does not distinguish which sub-check failed).",
+            "Role-level checker budget (role_calls=0 < max_checker_calls=10) is satisfied and not the blocking constraint.",
+            "gateway.blocked is False per state, not a contributing factor."
+          ],
+          "unresolved": [
+            "FAMILIES['gpt6'] entry is not shown in the prices excerpt (only 'claude' family is shown explicitly); checker_model resolution is inferred, not directly verified from code."
+          ],
+          "parent_hashes": [
+            "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+          ],
+          "source_hashes": {
+            "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db",
+            "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68"
+          }
+        },
+        "source_ids": [
+          "request",
+          "transport",
+          "reserve",
+          "prices",
+          "state"
+        ],
+        "five_scores": [
+          4,
+          4,
+          3,
+          4,
+          3
+        ],
+        "self_probability": 0.72
+      }
+    },
+    {
+      "id": "e12",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "8022c1c2945a2420c42898ff027856c09bf47dfe4ccfc85a5c680d3dd0843c4d",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "8022c1c2945a2420c42898ff027856c09bf47dfe4ccfc85a5c680d3dd0843c4d",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "330acd4839862095268bd49b96fddfc039cdbed5b5203d5846b56942fe0bcfad",
+      "state": {
+        "goal": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "transport",
+            "title": "scripts/transport.py excerpt (Gateway.call admission)"
+          },
+          {
+            "id": "reserve",
+            "title": "scripts/config.py excerpt (reserve_usd)"
+          },
+          {
+            "id": "prices",
+            "title": "scripts/config.py excerpt (families and price fields)"
+          },
+          {
+            "id": "state",
+            "title": "Run state"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "transport",
+              "reserve",
+              "prices",
+              "state"
+            ],
+            "data": {
+              "summary": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+                "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+                "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+                "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+                "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db"
+              }
+            },
+            "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+            "text": "Using the code and the run state, decide whether Gateway.call admits the next checker call. If it is refused, give the MeshError code and the reserved total that breaks the limit."
+          },
+          {
+            "id": "transport",
+            "hash": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68",
+            "text": "MAX_REQUEST_BYTES = 24000\n...\n        data = packed(payload).encode()\n        ...\n        role_calls=sum(event[\"role\"]==role for event in self.calls)\n        role_limit={\"jev\":self.config.max_jev_calls,\"worker\":self.config.max_worker_calls,\n                    \"checker\":self.config.max_checker_calls}[role]\n        require(role_calls < role_limit,\"role_call_budget_exhausted\")\n        if role==\"jev\":\n            known_jev_tokens=sum(event[\"usage\"][\"total_tokens\"] or 0 for event in self.calls\n                                 if event[\"role\"]==\"jev\")\n            require(known_jev_tokens < self.config.max_jev_tokens,\"jev_token_budget_exhausted\")\n        reserve = self.config.reserve_usd(role, len(data), payload[\"model\"] if role == \"worker\" else None)\n        needs_followup = role == \"checker\" or followup_required\n        followup_reserve = self.config.reserve_usd(\"jev\", MAX_REQUEST_BYTES) if needs_followup else 0.0\n        admission_calls = 2 if needs_followup else 1\n        require(not self.blocked and len(self.calls) + admission_calls <= self.config.max_calls\n                and self.spent + reserve + followup_reserve <= self.config.max_usd, \"call_or_cost_budget_exhausted\")"
+          },
+          {
+            "id": "reserve",
+            "hash": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+            "text": "    def reserve_usd(self, role, request_bytes, model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        _require(type(request_bytes) is int and request_bytes >= 0, \"invalid_request_size\")\n        if role == \"worker\":\n            selected = self.worker_model if model is None else model\n            _require(any(route[\"model\"] == selected for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n        else:\n            _require(model is None or model == getattr(self, role + \"_model\"), \"reservation_model_mismatch\")\n            selected = None if role == \"jev\" else self.checker_model\n        if selected is None:\n            prefix = \"jev_\"\n        elif role == \"checker\" and self.worker_family == \"gpt6\":\n            prefix = \"checker_\"\n        else:\n            tier = TIER_OF_MODEL[selected]\n            prefix = \"worker_\" if tier == \"sol\" else \"worker_\" + tier + \"_\"\n        return (request_bytes * getattr(self, prefix + \"input_usd_per_million\")\n                + self.max_output_tokens * getattr(self, prefix + \"output_usd_per_million\")) / 1_000_000"
+          },
+          {
+            "id": "prices",
+            "hash": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+          },
+          {
+            "id": "state",
+            "hash": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db",
+            "text": "RunConfig: all defaults (worker_family gpt6, max_usd 1.50, max_calls 40, max_checker_calls 10).\nGateway state before the call: 38 calls recorded (all worker calls, all ok), spent = 1.462 USD, blocked = False.\nNext call: role \"checker\", model \"openai/gpt-6-sol\", effort \"high\"; packed request is exactly 9,000 bytes."
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "selected_worker": {
+          "id": "sonnet_low",
+          "model": "anthropic/claude-sonnet-5",
+          "effort": "low"
+        },
+        "candidate": {
+          "text": "Gateway.call refuses the next checker call. Both the call-count and cost checks run: admission_calls=2 (checker needs a jev followup) gives 38+2=40<=max_calls(40), OK. But spent+reserve+followup_reserve = 1.462+0.038+0.0013=1.5013 > max_usd 1.50, so the cost check fails first (combined via `and`, so the require fires on this condition) raising MeshError \"call_or_cost_budget_exhausted\". The reserved total that breaks the limit is $0.0393 (checker reserve $0.038 + jev followup reserve $0.0013), pushing cumulative spent+reserved to $1.5013 against the $1.50 ceiling.",
+          "data": {
+            "summary": "Refused: reserve_usd(checker,9000B)=0.038 + followup jev reserve 0.0013 = 0.0393 total reservation; spent 1.462+0.0393=1.5013 > max_usd 1.50, triggering MeshError 'call_or_cost_budget_exhausted' in Gateway.call's final require. Call-count check (38+2<=40) passes; role budget (0 checker calls<10) passes.",
+            "claims": [
+              "Assumed FAMILIES['gpt6'] (not shown, elided by '...') keeps checker_model as 'openai/gpt-6-sol', consistent with the stated next call's model field.",
+              "Assumed __post_init__ does not change checker_model away from 'openai/gpt-6-sol' since worker_family='gpt6' and the field already equals that default sentinel.",
+              "checker role always sets needs_followup=True regardless of followup_required flag, per 'needs_followup = role == \"checker\" or followup_required'.",
+              "reserve_usd(checker,...) uses prefix 'checker_' because role=='checker' and worker_family=='gpt6', giving (9000*2.0+2000*10.0)/1e6=0.038 USD.",
+              "followup jev reserve uses MAX_REQUEST_BYTES=24000 bytes: (24000*0.05+2000*0.05)/1e6=0.0013 USD.",
+              "admission_calls=2 for checker (needs_followup true): 38+2=40<=max_calls 40, this check alone would pass.",
+              "The combined require() tests calls-budget AND cost-budget together; cost sub-condition fails, so the whole require fails with code 'call_or_cost_budget_exhausted' (the code does not distinguish which sub-check failed).",
+              "Role-level checker budget (role_calls=0 < max_checker_calls=10) is satisfied and not the blocking constraint.",
+              "gateway.blocked is False per state, not a contributing factor."
+            ],
+            "unresolved": [
+              "FAMILIES['gpt6'] entry is not shown in the prices excerpt (only 'claude' family is shown explicitly); checker_model resolution is inferred, not directly verified from code."
+            ],
+            "parent_hashes": [
+              "872cb61aee29893a2e97cdaa59d2e1d16626f567286ebb14d80f4e41e001277a"
+            ],
+            "source_hashes": {
+              "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+              "request": "39da842940959026ed20b04445305492723d991451db5ea3513b48c0799c19b7",
+              "reserve": "3acbd0f4eb785a47ce21b55a517383e1ae5f20d688db37bdc79e4f3e48ba5cca",
+              "state": "869cf98a2294f08e9372b6878d2ce54300ecad9d05c9a2d6ea9436ca607bb6db",
+              "transport": "daa18795d88b3ee55864d233ec48b90d4dceb2eee1ffab9111daead9e625ad68"
+            }
+          },
+          "source_ids": [
+            "request",
+            "transport",
+            "reserve",
+            "prices",
+            "state"
+          ],
+          "five_scores": [
+            4,
+            4,
+            3,
+            4,
+            3
+          ],
+          "self_probability": 0.72
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "retrieve_evidence",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.17,
+          "escalate": 0.03,
+          "forward": 0.33,
+          "repair": 0.13,
+          "retrieve_evidence": 0.34
+        },
+        "confidence": 0.18,
+        "api_event": "call-4",
+        "usage": {
+          "input_tokens": 4740,
+          "output_tokens": 62,
+          "total_tokens": 4802,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.00019908
+        }
+      }
+    },
+    {
+      "id": "e13",
+      "kind": "post_worker_decision",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "choice": "retrieve_evidence",
+      "gate_id": "e12",
+      "candidate_hash": "8022c1c2945a2420c42898ff027856c09bf47dfe4ccfc85a5c680d3dd0843c4d",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e14",
+      "kind": "recovery_checkpoint",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "checkpoint": {
+        "checkpoint_id": "c8ac22908338e40131075b1ccb535c7ffb1f89e41833c5f8a4b30bfa98049382",
+        "status": "paused_recoverable",
+        "active_unit": "hidden1",
+        "active_index": 1,
+        "completed_units": [
+          "input"
+        ],
+        "recovery_kind": "retrieve_evidence",
+        "reason": "Additional original evidence is required before this unit can continue.",
+        "recovery_round": 0,
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "mesh_state_hash": "330acd4839862095268bd49b96fddfc039cdbed5b5203d5846b56942fe0bcfad",
+        "event_cursor": 13
+      }
+    }
+  ],
+  "recovery_rounds": {},
+  "checkpoint": {
+    "checkpoint_id": "c8ac22908338e40131075b1ccb535c7ffb1f89e41833c5f8a4b30bfa98049382",
+    "status": "paused_recoverable",
+    "active_unit": "hidden1",
+    "active_index": 1,
+    "completed_units": [
+      "input"
+    ],
+    "recovery_kind": "retrieve_evidence",
+    "reason": "Additional original evidence is required before this unit can continue.",
+    "recovery_round": 0,
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "mesh_state_hash": "330acd4839862095268bd49b96fddfc039cdbed5b5203d5846b56942fe0bcfad",
+    "event_cursor": 13
+  },
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 4,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 13595,
+    "frontier_output_tokens": 2610,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0.0006511679999999999,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "df539ed1c786fb45d98bdae05d4449df845746a0e551ee4472626ed7b17716d3",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00043175,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2439,
+        "output_tokens": 31,
+        "total_tokens": 2470,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000102438
+      },
+      "usage_raw": {
+        "input_tokens": 2439,
+        "output_tokens": 31,
+        "cost": 0.000102438
+      },
+      "latency_ms": 641.0,
+      "provider_request_id": "gen-dec-1792351367-7VbPur1qPLqpDwhpJrsV",
+      "started_at": "2026-10-18T19:22:46.468Z",
+      "ended_at": "2026-10-18T19:22:47.104Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "729a823e595c3c4af3c1fcfde66eb555ffdfbbc69ff4baf90df4769caa4f3fdb",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.000516,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3291,
+        "output_tokens": 50,
+        "total_tokens": 3341,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000138222
+      },
+      "usage_raw": {
+        "input_tokens": 3291,
+        "output_tokens": 50,
+        "cost": 0.000138222
+      },
+      "latency_ms": 547.0,
+      "provider_request_id": "gen-dec-1792351368-vpnRzalp94BpYiLKmxpy",
+      "started_at": "2026-10-18T19:22:47.109Z",
+      "ended_at": "2026-10-18T19:22:47.656Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "9a2929719951116bed0a6bfc06bb2360ffd9fa3ae1afc258cd16c6dc596c4c10",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00064975,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 5034,
+        "output_tokens": 91,
+        "total_tokens": 5125,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000211428
+      },
+      "usage_raw": {
+        "input_tokens": 5034,
+        "output_tokens": 91,
+        "cost": 0.000211428
+      },
+      "latency_ms": 547.0,
+      "provider_request_id": "gen-dec-1792351369-VzGyrBe2EE0sY5hPaZgo",
+      "started_at": "2026-10-18T19:22:47.661Z",
+      "ended_at": "2026-10-18T19:22:48.210Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-4",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "5f7bdee2f1faf9d2263521bed068e51371f47eb773a65579382c3d19b7ed1764",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00068285,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4740,
+        "output_tokens": 62,
+        "total_tokens": 4802,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.00019908
+      },
+      "usage_raw": {
+        "input_tokens": 4740,
+        "output_tokens": 62,
+        "cost": 0.00019908
+      },
+      "latency_ms": 562.0,
+      "provider_request_id": "gen-dec-1792351402-FdTb2Jz4EFNXQZda7Yt2",
+      "started_at": "2026-10-18T19:23:20.769Z",
+      "ended_at": "2026-10-18T19:23:21.344Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    }
+  ]
+}

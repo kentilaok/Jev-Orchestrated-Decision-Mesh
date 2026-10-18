@@ -1,0 +1,1 @@
+{"answer":"**p-7c2** \u2014 issued (line 4) and consumed (line 8) with no `permit_receipt` line. p-1a0 and p-9d4 are both receipted (0.12 and 0.08 USD). Parent result confirmed. [request, ledger]","calls":14,"route":"broad_or_uncertain","status":"complete"}

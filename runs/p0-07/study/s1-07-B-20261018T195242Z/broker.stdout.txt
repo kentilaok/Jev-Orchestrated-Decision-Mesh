@@ -1,0 +1,1 @@
+{"answer":"expires_at = issued_at(1000.0) + ttl_seconds(600) = 1600.0. consume() requires clock() <= expires_at, so the largest clock() value at which consume() still succeeds is 1600.0.","calls":1,"route":"short_self_contained","status":"complete"}

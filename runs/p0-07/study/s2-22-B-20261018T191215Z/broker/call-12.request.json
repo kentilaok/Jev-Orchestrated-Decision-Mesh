@@ -1,0 +1,304 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A PermitAuthority with max_cumulative_usd=0.6 authorizes three Claude worker runs through ClaudeCodeProvider .run, one permit each, in the order given in \"runs\". What is cumulative_cost_usd after the third run, and is a fourth permit issued or refused?",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "run",
+        "title": "scripts/frontier_providers.py excerpt (_BoundedProvider.run)"
+      },
+      {
+        "id": "cost",
+        "title": "scripts/frontier_providers.py excerpt"
+      },
+      {
+        "id": "cap",
+        "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)"
+      },
+      {
+        "id": "runs",
+        "title": "Adapter results"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "run",
+          "cost",
+          "cap",
+          "runs"
+        ],
+        "data": {
+          "summary": "A PermitAuthority with max_cumulative_usd=0.6 authorizes three Claude worker runs through ClaudeCodeProvider .run, one permit each, in the order given in \"runs\". What is cumulative_cost_usd after the third run, and is a fourth permit issued or refused?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "a6b258c89583e28d0baeac346e7848c3ed9edac66266d58a7c80d760f281ff36",
+            "run": "a0cccf17fc386dde0e743d6f7203a07134c8684acab98537f2adf93d062a8434",
+            "cost": "692c3dc53193745ee5647715762f50e04335a50bc3fdafd4c0545e85c0acafb1",
+            "cap": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "runs": "bde0481cf6239f2c7a2194e45ccb65a4bad934c852edeb2c5a6f5111b5786422"
+          }
+        },
+        "artifact_hash": "614d4827343e0219288b3185b255fd23a90cfbd9a9923b0eae95d915d773d71b",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "After three runs, cumulative_cost_usd = 0.55, and a fourth permit would be issued (0.55 < 0.6 cap).",
+        "source_ids": [
+          "request",
+          "run",
+          "cost",
+          "cap",
+          "runs"
+        ],
+        "data": {
+          "summary": "Run1 cost 0.30 (top-level api_equivalent_cost_usd) added via receipt -> cumulative 0.30. Run2 fails; error.usage.api_equivalent_cost_usd=0.25 captured by _cost_from_usage and added -> cumulative 0.55. Run3 succeeds but top-level api_equivalent_cost_usd is null: _cost_from_response sees the key present and calls _cost_from_usage({'api_equivalent_cost_usd': None}), which returns None (type(None) not in (int,float)) rather than falling back to the nested usage dict's 0.4 -> no addition. Final cumulative_cost_usd = 0.55. Each permit issue() only raises PermitError when cumulative_cost_usd >= max_cumulative_usd (0.6) at issue time; since 0.55 < 0.6, a fourth permit would be issued, not refused.",
+          "claims": [
+            "Assumes all three permits were issued before their respective runs and only the stated sequence of issue/run/receipt occurred, with no other concurrent receipts affecting cumulative_cost_usd.",
+            "Assumes 'runs' order (run1, run2, run3) matches permit issuance order exactly as given, with no interleaving.",
+            "Run3's null top-level api_equivalent_cost_usd is a quirk: _cost_from_response checks key presence, not value validity, so it never falls through to the nested usage dict despite that dict having a valid 0.4 value.",
+            "Run2's failure path still contributes cost because _cost_from_usage is applied to error.usage, which is a valid dict with a finite non-negative value.",
+            "The cap check in issue() uses >= not >, so cumulative must equal or exceed 0.6 to refuse; 0.55 is strictly below, so refusal does not occur."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "614d4827343e0219288b3185b255fd23a90cfbd9a9923b0eae95d915d773d71b"
+          ],
+          "source_hashes": {
+            "cap": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "cost": "692c3dc53193745ee5647715762f50e04335a50bc3fdafd4c0545e85c0acafb1",
+            "request": "a6b258c89583e28d0baeac346e7848c3ed9edac66266d58a7c80d760f281ff36",
+            "run": "a0cccf17fc386dde0e743d6f7203a07134c8684acab98537f2adf93d062a8434",
+            "runs": "bde0481cf6239f2c7a2194e45ccb65a4bad934c852edeb2c5a6f5111b5786422"
+          }
+        },
+        "artifact_hash": "67aeba5bc688364ef214bc6b1929f2e2aa120be8fb7abaf98ac46681b10484df",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "After three runs, cumulative_cost_usd = 0.55, and a fourth permit would be issued (0.55 < 0.6 cap).",
+        "source_ids": [
+          "request",
+          "run",
+          "cost",
+          "cap",
+          "runs"
+        ],
+        "data": {
+          "summary": "Run1 cost 0.30 (top-level api_equivalent_cost_usd) added via receipt -> cumulative 0.30. Run2 fails; error.usage.api_equivalent_cost_usd=0.25 captured by _cost_from_usage and added -> cumulative 0.55. Run3 succeeds but top-level api_equivalent_cost_usd is null: _cost_from_response sees the key present and calls _cost_from_usage({'api_equivalent_cost_usd': None}), which returns None (type(None) not in (int,float)) rather than falling back to the nested usage dict's 0.4 -> no addition. Final cumulative_cost_usd = 0.55. Each permit issue() only raises PermitError when cumulative_cost_usd >= max_cumulative_usd (0.6) at issue time; since 0.55 < 0.6, a fourth permit would be issued, not refused.",
+          "claims": [
+            "Assumes all three permits were issued before their respective runs and only the stated sequence of issue/run/receipt occurred, with no other concurrent receipts affecting cumulative_cost_usd.",
+            "Assumes 'runs' order (run1, run2, run3) matches permit issuance order exactly as given, with no interleaving.",
+            "Run3's null top-level api_equivalent_cost_usd is a quirk: _cost_from_response checks key presence, not value validity, so it never falls through to the nested usage dict despite that dict having a valid 0.4 value.",
+            "Run2's failure path still contributes cost because _cost_from_usage is applied to error.usage, which is a valid dict with a finite non-negative value.",
+            "The cap check in issue() uses >= not >, so cumulative must equal or exceed 0.6 to refuse; 0.55 is strictly below, so refusal does not occur."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "67aeba5bc688364ef214bc6b1929f2e2aa120be8fb7abaf98ac46681b10484df"
+          ],
+          "source_hashes": {
+            "request": "a6b258c89583e28d0baeac346e7848c3ed9edac66266d58a7c80d760f281ff36",
+            "run": "a0cccf17fc386dde0e743d6f7203a07134c8684acab98537f2adf93d062a8434",
+            "cost": "692c3dc53193745ee5647715762f50e04335a50bc3fdafd4c0545e85c0acafb1",
+            "cap": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "runs": "bde0481cf6239f2c7a2194e45ccb65a4bad934c852edeb2c5a6f5111b5786422"
+          }
+        },
+        "artifact_hash": "60cb4dc9ec2e697d16288ef5876178bce650c3bedc3438aca5dbac9716238928",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "a6b258c89583e28d0baeac346e7848c3ed9edac66266d58a7c80d760f281ff36",
+        "text": "A PermitAuthority with max_cumulative_usd=0.6 authorizes three Claude worker runs through ClaudeCodeProvider .run, one permit each, in the order given in \"runs\". What is cumulative_cost_usd after the third run, and is a fourth permit issued or refused?"
+      },
+      {
+        "id": "run",
+        "hash": "a0cccf17fc386dde0e743d6f7203a07134c8684acab98537f2adf93d062a8434",
+        "text": "    def run(self, request: dict, permit_id: str) -> dict:\n        scope = _request_scope(self.provider_id, request)\n        self.authority.consume(permit_id, \"frontier.run\", scope)\n        ...\n        outcome: dict[str, Any] = {\"status\": \"failed\", \"run_id\": run_id}\n        try:\n            ...\n            response = self.adapter.run(request[\"model\"], request[\"effort\"], request[\"prompt\"],\n                                        request[\"schema\"], request[\"workspace\"])\n            outcome = {\"status\": \"ok\", \"run_id\": run_id, \"artifact_hash\": digest(response[\"artifact\"]),\n                       \"usage\": response.get(\"usage\"),\n                       \"cost_usd\": _cost_from_response(response),\n            ...\n        except Exception as error:\n            error_usage = getattr(error, \"usage\", None)\n            outcome = {\"status\": \"cancelled\" if cancel.is_set() else \"failed\", \"run_id\": run_id,\n                       \"error\": str(error)[:200], \"usage\": error_usage,\n                       \"cost_usd\": _cost_from_usage(error_usage)}\n            raise\n        finally:\n            ...\n            self.authority.receipt(permit_id, outcome)"
+      },
+      {
+        "id": "cost",
+        "hash": "692c3dc53193745ee5647715762f50e04335a50bc3fdafd4c0545e85c0acafb1",
+        "text": "def _cost_from_usage(usage: Any) -> float | None:\n    ...\n    if not isinstance(usage, dict):\n        return None\n    value = usage.get(\"api_equivalent_cost_usd\")\n    if type(value) not in (int, float) or isinstance(value, bool):\n        return None\n    if not math.isfinite(value) or value < 0:\n        return None\n    return float(value)\n\n\ndef _cost_from_response(response: Any) -> float | None:\n    \"\"\"Cost of a successful adapter response. ClaudeCliAdapter reports\n    `api_equivalent_cost_usd` at the top level; older shapes put it in usage.\"\"\"\n    if isinstance(response, dict) and \"api_equivalent_cost_usd\" in response:\n        return _cost_from_usage({\"api_equivalent_cost_usd\": response[\"api_equivalent_cost_usd\"]})\n    return _cost_from_usage(response.get(\"usage\") if isinstance(response, dict) else None)"
+      },
+      {
+        "id": "cap",
+        "hash": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+        "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
+      },
+      {
+        "id": "runs",
+        "hash": "bde0481cf6239f2c7a2194e45ccb65a4bad934c852edeb2c5a6f5111b5786422",
+        "text": "run 1: returns {\"artifact\": {...}, \"api_equivalent_cost_usd\": 0.30}\nrun 2: raises an error whose .usage is {\"api_equivalent_cost_usd\": 0.25}\nrun 3: returns {\"artifact\": {...}, \"api_equivalent_cost_usd\": null, \"usage\": {\"api_equivalent_cost_usd\": 0.4}}"
+      }
+    ],
+    "last_issue": {
+      "recovery_kind": "replan",
+      "unit_id": "hidden3",
+      "prior_outcome": "repair_limit",
+      "recovery_round": 1,
+      "feedback": {
+        "verdict": "repair_required",
+        "failed_criteria": [],
+        "reason": "Fresh bounded replan after repair_limit.",
+        "missing_evidence": [],
+        "recovery_round": 1
+      }
+    },
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "60cb4dc9ec2e697d16288ef5876178bce650c3bedc3438aca5dbac9716238928"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "sonnet_low",
+      "model": "anthropic/claude-sonnet-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Confirmed: after three runs, cumulative_cost_usd = 0.55, and a fourth permit would be issued (not refused) since 0.55 < 0.6 cap.",
+      "data": {
+        "summary": "Verified the parent's trace: run1 adds 0.30 via top-level api_equivalent_cost_usd (cumulative 0.30). Run2 fails but error.usage.api_equivalent_cost_usd=0.25 is still captured by _cost_from_usage in the except branch and added via receipt (cumulative 0.55). Run3's top-level api_equivalent_cost_usd is null: _cost_from_response sees the key present (truthy membership check) and calls _cost_from_usage({'api_equivalent_cost_usd': None}), which fails the type(int,float) check and returns None, so receipt() skips the add (cost is None) rather than falling back to the nested usage dict's 0.4. Final cumulative_cost_usd = 0.55. issue() only raises PermitError when cumulative_cost_usd >= max_cumulative_usd (0.6); each of the three issue() calls occurred at 0.0, 0.30, and 0.55 respectively, all < 0.6, so all three permits were issued, and a hypothetical fourth permit at cumulative=0.55 would also be issued, not refused.",
+        "claims": [
+          "Confirms the parent's reading of _cost_from_response: presence of the 'api_equivalent_cost_usd' key short-circuits the nested usage fallback even when the value is null, so run3 contributes 0 despite usage.api_equivalent_cost_usd=0.4 being valid.",
+          "Confirms receipt() only adds cost when outcome['cost_usd'] is not None, matching cost_usd=None for run3 after _cost_from_response returns None.",
+          "Confirms the except-branch outcome for run2 sets cost_usd via _cost_from_usage(error.usage), which is 0.25, a valid finite non-negative float, so it is added on receipt despite the run failing.",
+          "Confirms issue()'s cap check is '>=' not '>', and that each of the three issue() calls (at cumulative 0.0, 0.30, 0.55) is strictly below 0.6, so none of the three permits \u2014 nor a hypothetical fourth \u2014 would be refused.",
+          "Assumes, per the stated order, that no other concurrent receipts affect cumulative_cost_usd and that the three runs/permits occur strictly in the given sequence with no interleaving, as the parent also assumed."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "60cb4dc9ec2e697d16288ef5876178bce650c3bedc3438aca5dbac9716238928"
+        ],
+        "source_hashes": {
+          "cap": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+          "cost": "692c3dc53193745ee5647715762f50e04335a50bc3fdafd4c0545e85c0acafb1",
+          "request": "a6b258c89583e28d0baeac346e7848c3ed9edac66266d58a7c80d760f281ff36",
+          "run": "a0cccf17fc386dde0e743d6f7203a07134c8684acab98537f2adf93d062a8434",
+          "runs": "bde0481cf6239f2c7a2194e45ccb65a4bad934c852edeb2c5a6f5111b5786422"
+        }
+      },
+      "source_ids": [
+        "request",
+        "run",
+        "cost",
+        "cap",
+        "runs"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        4,
+        5
+      ],
+      "self_probability": 0.92
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": {
+      "verdict": "repair_required",
+      "failed_criteria": [],
+      "reason": "Fresh bounded replan after repair_limit.",
+      "missing_evidence": [],
+      "recovery_round": 1
+    },
+    "remaining_budget": {
+      "jev_calls_remaining": 19,
+      "jev_tokens_remaining": 40216,
+      "jev_api_usd_remaining": 0.997520824,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden3",
+            "candidate_hash": "99d7de5651cdd285dca893d424211356be685f54752d7f8605e3a6ca5377d3ac",
+            "check_hash": null,
+            "successor": "output",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "99d7de5651cdd285dca893d424211356be685f54752d7f8605e3a6ca5377d3ac",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

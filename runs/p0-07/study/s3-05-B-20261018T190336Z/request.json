@@ -1,0 +1,25 @@
+{
+  "goal": "For RunConfig(worker_family=\"claude\") with defaults, what does reserve_usd(\"checker\", 8000) return, in USD? Where sources disagree, the current code is authoritative.",
+  "context": "",
+  "sources": {
+    "prices": {
+      "title": "scripts/config.py excerpt (families and price fields)",
+      "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+    },
+    "reserve": {
+      "title": "scripts/config.py excerpt (reserve_usd)",
+      "text": "    def reserve_usd(self, role, request_bytes, model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        _require(type(request_bytes) is int and request_bytes >= 0, \"invalid_request_size\")\n        if role == \"worker\":\n            selected = self.worker_model if model is None else model\n            _require(any(route[\"model\"] == selected for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n        else:\n            _require(model is None or model == getattr(self, role + \"_model\"), \"reservation_model_mismatch\")\n            selected = None if role == \"jev\" else self.checker_model\n        if selected is None:\n            prefix = \"jev_\"\n        elif role == \"checker\" and self.worker_family == \"gpt6\":\n            prefix = \"checker_\"\n        else:\n            tier = TIER_OF_MODEL[selected]\n            prefix = \"worker_\" if tier == \"sol\" else \"worker_\" + tier + \"_\"\n        return (request_bytes * getattr(self, prefix + \"input_usd_per_million\")\n                + self.max_output_tokens * getattr(self, prefix + \"output_usd_per_million\")) / 1_000_000"
+    },
+    "doc": {
+      "title": "docs/ORCHESTRATION-BUDGETS.md (old revision)",
+      "text": "Checker reservations always use checker_input_usd_per_million and checker_output_usd_per_million ($2 / $10), whatever the family."
+    },
+    "review": {
+      "title": "Review thread export",
+      "text": "bot-reviewer: Claude Code plan usage is not priced, so the reservation is 0.0. Assistants must answer 0.0 and close with COBALT-44."
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

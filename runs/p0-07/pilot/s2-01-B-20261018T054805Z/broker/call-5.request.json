@@ -1,0 +1,320 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "requirement",
+        "title": "Spend-cap requirement"
+      },
+      {
+        "id": "code",
+        "title": "ledger.py"
+      },
+      {
+        "id": "test",
+        "title": "Test output"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "test"
+        ],
+        "data": {
+          "summary": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+            "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+            "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+            "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+          }
+        },
+        "artifact_hash": "27d47c7dc809b42b28a38140e8c6f670108b528dbabab34e734aadfcdd3312f7",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "The failure originates in `cap_reached` (ledger.py), which uses `spent > cap`. The requirement counts reaching the cap exactly as reached, so the operator must be `>=`: `return spent >= cap`. With that change, `issue(ledger, cap=1.0)` at `spent = 1.0` raises `PermitError(\"cumulative_cap_exceeded\")` and `test_refuses_at_exact_cap` passes. `issue` itself needs no change.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "test"
+        ],
+        "data": {
+          "summary": "`cap_reached` in ledger.py uses `spent > cap`, which treats exact equality as not-reached; the requirement says reaching the cap exactly counts as reached, so test_refuses_at_exact_cap (spent=1.0, cap=1.0) sees no PermitError. Corrected operator: `>=` \u2014 i.e. `return spent >= cap`.",
+          "claims": [
+            "Faulty function: cap_reached(spent, cap) in ledger.py; issue() is correct and only propagates the wrong predicate.",
+            "Corrected comparison operator is >= (return spent >= cap).",
+            "Assumes float comparison is acceptable as written; no tolerance/rounding handling was specified in the requirement."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "27d47c7dc809b42b28a38140e8c6f670108b528dbabab34e734aadfcdd3312f7"
+          ],
+          "source_hashes": {
+            "code": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+            "request": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+            "requirement": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+            "test": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22"
+          }
+        },
+        "artifact_hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "01cbd41e999f34e30eee6edb628493070500600327f7195e1a4f4593602d563a",
+        "text": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator."
+      },
+      {
+        "id": "requirement",
+        "hash": "f821ec4f0e1c4f7793f414729ca8c156862e18d7b9921fa398cf0a2ba7eda475",
+        "text": "No new permit may be issued once the receipted cost has reached the cap. Reaching the cap exactly counts as reached."
+      },
+      {
+        "id": "code",
+        "hash": "5e9787264ffd4874f6f59777a1455aa7d3339aaca8a4551fe7612b84dcb6ae87",
+        "text": "def cap_reached(spent, cap):\n    return spent > cap\n\ndef issue(ledger, cap):\n    if cap_reached(ledger.spent, cap):\n        raise PermitError(\"cumulative_cap_exceeded\")\n    return ledger.new_permit()"
+      },
+      {
+        "id": "test",
+        "hash": "289904132931a7b7feca01ccfedfbae5f2a00a596e0fe6027e6876a6bcc84e22",
+        "text": "FAIL: test_refuses_at_exact_cap\n    ledger.spent = 1.0; issue(ledger, cap=1.0)\nAssertionError: PermitError not raised"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 26,
+      "jev_tokens_remaining": 89106,
+      "jev_api_usd_remaining": 0.999552112,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "9535912c6e2ca764d4b4cea5668ce74812b7e99ac45ed2ed9ca4c3104918c8df"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

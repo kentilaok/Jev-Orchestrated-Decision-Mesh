@@ -1,0 +1,18 @@
+{"task_id": "s3-05", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s3-03", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s3-15", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-07", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-19", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s1-08", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-14", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-01", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s1-13", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-22", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s2-14", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-06", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s1-24", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-05", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-16", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-12", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-22", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"status": "done", "runs": 17}

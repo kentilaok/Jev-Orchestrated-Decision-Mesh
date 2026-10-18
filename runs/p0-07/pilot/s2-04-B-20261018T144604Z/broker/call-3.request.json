@@ -1,0 +1,288 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl (receipt events only, in order)"
+      },
+      {
+        "id": "note",
+        "title": "Operator note"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger",
+          "note"
+        ],
+        "data": {
+          "summary": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7",
+            "code": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "ledger": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+            "note": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73"
+          }
+        },
+        "artifact_hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7",
+        "text": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?"
+      },
+      {
+        "id": "code",
+        "hash": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+        "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
+      },
+      {
+        "id": "ledger",
+        "hash": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+        "text": "{\"kind\": \"permit_receipt\", \"permit_id\": \"p-1\", \"cost_usd\": 0.25}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-2\", \"cost_usd\": null}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-3\", \"cost_usd\": \"0.1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-4\", \"cost_usd\": 0.5}"
+      },
+      {
+        "id": "note",
+        "hash": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73",
+        "text": "Each of p-1..p-4 was issued and consumed before its receipt. The \"0.1\" receipt was hand-edited during an incident and re-chained."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 28,
+      "jev_tokens_remaining": 95641,
+      "jev_api_usd_remaining": 0.999820324,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"answer":"reserve_usd(\"checker\", 12000) returns $0.11 for RunConfig(worker_family=\"claude\") with all other fields default.","calls":1,"route":"short_self_contained","status":"complete"}

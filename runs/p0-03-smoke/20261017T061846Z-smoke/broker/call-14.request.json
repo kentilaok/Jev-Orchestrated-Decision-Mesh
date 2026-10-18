@@ -1,0 +1,274 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "records",
+        "title": "Synthetic production records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "records"
+        ],
+        "data": {
+          "summary": "Report production defects per 1,000 items, excluding trial records, with source support.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+            "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+          }
+        },
+        "artifact_hash": "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Computed production-only defect rate per 1,000 items from records, excluding trial segment T, per repair request.",
+        "source_ids": [
+          "request",
+          "records"
+        ],
+        "data": {
+          "summary": "Production defect rate: 50 defects per 1,000 items (20 defects / 400 items across segments A and B). Trial segment T (100 items, 30 defects) excluded per request scope.",
+          "claims": [
+            "Segment A: production, 240 items, 12 defects (source: records)",
+            "Segment B: production, 160 items, 8 defects (source: records)",
+            "Segment T excluded: kind=trial, 100 items, 30 defects (source: records)",
+            "Combined production totals: 400 items, 20 defects (source: records)",
+            "Defect rate = (20/400)*1000 = 50.0 per 1,000 items (source: records, derived per request)",
+            "Request scope confirmed: 'Report production defects per 1,000 items, excluding trial records, with source support.' (source: request)"
+          ],
+          "unresolved": [
+            "No explicit definition of 'defect' provided beyond raw counts in records; assumed records' defect counts are final and require no further adjustment.",
+            "No confidence interval or variance requested, so none computed."
+          ],
+          "parent_hashes": [
+            "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8"
+          ],
+          "source_hashes": {
+            "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+            "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+          }
+        },
+        "artifact_hash": "3c63069c48b178aec1383500d5c879b0d0e653e4280100a10f2efbb8f2ac8de5",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Production-only defect rate from the records, with trial segment T excluded per request scope: 20 defects / 400 items = 50.0 defects per 1,000 items. Both production segments happen to share that same rate individually. Parent hash set to the required predecessor; both source hashes preserved as required.",
+        "source_ids": [
+          "request",
+          "records"
+        ],
+        "data": {
+          "claims": [
+            "Request scope: report production defects per 1,000 items, excluding trial records (source: request)",
+            "Segment A: kind production, 240 items, 12 defects (source: records)",
+            "Segment B: kind production, 160 items, 8 defects (source: records)",
+            "Segment T: kind trial, 100 items, 30 defects \u2014 excluded from the rate per request scope (source: records)",
+            "Combined production totals: 400 items, 20 defects (source: records, summed)",
+            "Production defect rate = (20 / 400) * 1000 = 50.0 defects per 1,000 items (derived from records)",
+            "Including trial data would change the result (50 defects / 500 items = 100.0 per 1,000), so the exclusion is material (derived from records)"
+          ],
+          "parent_hashes": [
+            "3c63069c48b178aec1383500d5c879b0d0e653e4280100a10f2efbb8f2ac8de5"
+          ],
+          "source_hashes": {
+            "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5",
+            "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376"
+          },
+          "summary": "Production defect rate is 50.0 defects per 1,000 items: 20 defects across 400 items from segments A (240 items, 12 defects) and B (160 items, 8 defects). Trial segment T (100 items, 30 defects) is excluded per request scope; including it would have yielded 100.0 per 1,000.",
+          "unresolved": [
+            "'Defect' is not defined in the sources; the records' defect counts are taken as final with no adjustment.",
+            "No variance, confidence interval, or per-segment breakdown of rates was requested, so none is reported (A alone: 50.0; B alone: 50.0).",
+            "Records are labeled synthetic, so the figure is not a claim about any real production line."
+          ]
+        },
+        "artifact_hash": "914439d4709aea53b892e98fcab8345ffc11eb04ae23920208f810c90157f0d9",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+        "text": "Report production defects per 1,000 items, excluding trial records, with source support."
+      },
+      {
+        "id": "records",
+        "hash": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5",
+        "text": "segment A, kind production, items 240, defects 12\nsegment B, kind production, items 160, defects 8\nsegment T, kind trial, items 100, defects 30"
+      }
+    ],
+    "last_issue": {
+      "recovery_kind": "replan",
+      "unit_id": "hidden3",
+      "prior_outcome": "repair_limit",
+      "recovery_round": 1,
+      "feedback": {
+        "verdict": "repair_required",
+        "failed_criteria": [],
+        "reason": "Fresh bounded replan after repair_limit.",
+        "missing_evidence": [],
+        "recovery_round": 1
+      }
+    },
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "914439d4709aea53b892e98fcab8345ffc11eb04ae23920208f810c90157f0d9"
+      }
+    ],
+    "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "summary": "Production defect rate is 50.0 defects per 1,000 items: 20 defects across 400 production items from segment A (240 items, 12 defects) and segment B (160 items, 8 defects). Trial segment T (100 items, 30 defects) is excluded per request scope; including it would have yielded 100.0 per 1,000. Parent hash corrected to the required predecessor 914439d4.",
+        "claims": [
+          "Request scope: report production defects per 1,000 items, excluding trial records (source: request)",
+          "Segment A: kind production, 240 items, 12 defects (source: records)",
+          "Segment B: kind production, 160 items, 8 defects (source: records)",
+          "Segment T: kind trial, 100 items, 30 defects - excluded per request scope (source: records)",
+          "Combined production totals: 400 items, 20 defects (derived from records)",
+          "Production defect rate = (20 / 400) * 1000 = 50.0 defects per 1,000 items (derived from records)",
+          "Each production segment individually also yields 50.0 per 1,000 (12/240 and 8/160) (derived from records)",
+          "Including trial data would give 50 defects / 500 items = 100.0 per 1,000, so the exclusion is material (derived from records)",
+          "Prior artifact carried parent hash 3c63069c, not the required predecessor 914439d4; corrected here (source: request/control inputs)"
+        ],
+        "unresolved": [
+          "'Defect' is not defined in the sources; record defect counts are taken as final with no adjustment.",
+          "No variance or confidence interval was requested or computable from the three aggregate rows.",
+          "Records are labeled synthetic, so the figure is not a claim about any real production line.",
+          "Repair feedback listed no failed criteria or missing evidence, so the only identified defect was the parent-hash mismatch."
+        ],
+        "parent_hashes": [
+          "914439d4709aea53b892e98fcab8345ffc11eb04ae23920208f810c90157f0d9"
+        ],
+        "source_hashes": {
+          "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+          "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+        }
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        4,
+        5
+      ],
+      "self_probability": 0.9,
+      "source_ids": [
+        "request",
+        "records"
+      ],
+      "text": "Production-only defect rate: 20 defects / 400 items = 50.0 defects per 1,000 items, from segments A (240 items, 12 defects) and B (160 items, 8 defects). Trial segment T (100 items, 30 defects) is excluded per request scope; including it would yield 100.0 per 1,000. The accepted parent artifact's arithmetic and sourcing check out; its sole defect was the parent hash (3c63069c) not matching the required predecessor (914439d4), which is corrected here. Both required source hashes are preserved unchanged."
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": {
+      "verdict": "repair_required",
+      "failed_criteria": [],
+      "reason": "Fresh bounded replan after repair_limit.",
+      "missing_evidence": [],
+      "recovery_round": 1
+    },
+    "remaining_budget": {
+      "jev_calls_remaining": 17,
+      "jev_tokens_remaining": 3083,
+      "jev_api_usd_remaining": 0.998068042,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden3",
+            "candidate_hash": "3afe8d57541499655db15de6290afb16d07f2244d96a5907bfad664a1618c6dd",
+            "check_hash": null,
+            "successor": "output",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "3afe8d57541499655db15de6290afb16d07f2244d96a5907bfad664a1618c6dd",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

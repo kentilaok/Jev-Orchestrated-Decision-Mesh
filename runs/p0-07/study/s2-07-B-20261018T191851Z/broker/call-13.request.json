@@ -1,0 +1,371 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "bench.analyze(records) runs with default arguments over the results file (one JSON record per line, in order). What are tasks_paired, yield_a and yield_b?",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/p0_07_bench.py excerpt (analyze)"
+      },
+      {
+        "id": "results",
+        "title": "results.jsonl (fields shown; others ordinary)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "results"
+        ],
+        "data": {
+          "summary": "bench.analyze(records) runs with default arguments over the results file (one JSON record per line, in order). What are tasks_paired, yield_a and yield_b?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "82e7589b984b81d1722ec7325c8c59835cb53f5077c596c341c2f46c5dd642c3",
+            "code": "6891410238502f2ef0f0a9cf16c2f2be29b515e892e8c2c523cc8e018ff21d66",
+            "results": "5d995f0572091ba81e99708d18ae1786faf5b14d58bac3a776bfc878449c406a"
+          }
+        },
+        "artifact_hash": "509c28e91e391ca590ebfcabffc2a67fc405645d0e332771ca9f05bd4f91565e",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "tasks_paired = 5 (s1-03, s1-04, s2-05, s3-07, s3-08). The infra_failure s2-05 B row and the pilot s2-06 B row are filtered out, leaving s2-06 with no B arm; the surviving s2-05 B row is the accepted/complete one. yield_a and yield_b are not determinable from this evidence: the excerpt elides the construction of `strata`, so the per-pair (a, b) values and any weighting are unknown. Under the assumption that strata cover exactly the 5 paired tasks with (a, b) = the arms' `accepted` flags, yield_a = 0.6 and yield_b = 0.8 \u2014 an assumption, not a verified result.",
+        "source_ids": [
+          "request",
+          "code",
+          "results"
+        ],
+        "data": {
+          "summary": "tasks_paired = 5 (s1-03, s1-04, s2-05, s3-07, s3-08): the s2-05 arm-B infra_failure row and the s2-06 arm-B pilot row are filtered out, leaving s2-06 with no B arm. yield_a and yield_b cannot be derived from the evidence because the code building `strata` is elided. Under the unverified assumption that strata cover exactly the 5 paired tasks with (a, b) = the per-arm `accepted` flags, yield_a = 0.6 and yield_b = 0.8.",
+          "claims": [
+            "Filter (defaults: include_pilot false) drops the s2-05 arm-B infra_failure record and the s2-06 arm-B pilot record; by_task keeps the later s2-05 B record because assignment overwrites by arm.",
+            "tasks_paired = 5: s1-03, s1-04, s2-05, s3-07, s3-08. s2-06 is unpaired since its only B record is a pilot.",
+            "yield_a and yield_b are not computable here: the construction of `strata` (per-pair (a, b) values, weighting, any further exclusions) is elided by `...`.",
+            "ASSUMPTION-ONLY estimate: if strata partition exactly the 5 paired tasks and (a, b) are the arms' `accepted` booleans, yield_a = 3/5 = 0.6 (s1-03, s1-04, s3-07) and yield_b = 4/5 = 0.8 (all but s1-04).",
+            "`flat` flattens all strata rows and divides by len(flat), so the output is an unweighted pair-level mean over whatever rows strata holds; a stricter pairing rule would change both means.",
+            "If strata were empty, the division by len(flat) raises ZeroDivisionError; the excerpt has no guard."
+          ],
+          "unresolved": [
+            "The `strata` construction is elided, so yield_a and yield_b cannot be confirmed; the 0.6/0.8 figures rest on an assumed pairing rule.",
+            "Default value of include_pilot is not shown in the excerpt; the pilot exclusion assumes it defaults to false."
+          ],
+          "parent_hashes": [
+            "509c28e91e391ca590ebfcabffc2a67fc405645d0e332771ca9f05bd4f91565e"
+          ],
+          "source_hashes": {
+            "code": "6891410238502f2ef0f0a9cf16c2f2be29b515e892e8c2c523cc8e018ff21d66",
+            "request": "82e7589b984b81d1722ec7325c8c59835cb53f5077c596c341c2f46c5dd642c3",
+            "results": "5d995f0572091ba81e99708d18ae1786faf5b14d58bac3a776bfc878449c406a"
+          }
+        },
+        "artifact_hash": "373716972b8b40cce21dfef86882ac113663f0c9f20782e8d382eeabd3c56846",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "tasks_paired = 5: s1-03, s1-04, s2-05, s3-07, s3-08. The default filter drops the s2-05 arm-B infra_failure row (the later accepted/complete s2-05 B row survives) and the s2-06 arm-B pilot row, which leaves s2-06 with no B arm and therefore unpaired.\n\nyield_a and yield_b are not determinable from this evidence: the excerpt elides the construction of `strata` with `...`, so the per-pair (a, b) values, stratum membership and any weighting are unknown. The final two lines only show that the result is an unweighted mean over all flattened stratum rows (and would raise ZeroDivisionError on empty strata).\n\nIf one assumes strata cover exactly the 5 paired tasks with (a, b) = each arm's `accepted` flag, then yield_a = 3/5 = 0.6 and yield_b = 4/5 = 0.8 \u2014 an assumption, not a verified result.",
+        "source_ids": [
+          "request",
+          "code",
+          "results"
+        ],
+        "data": {
+          "summary": "tasks_paired = 5 (s1-03, s1-04, s2-05, s3-07, s3-08). The filter drops the s2-05 arm-B infra_failure row and the s2-06 arm-B pilot row, leaving s2-06 with no B arm; by_task keeps the later, accepted s2-05 B row. yield_a and yield_b cannot be derived: the code that builds `strata` is elided by `...`, so per-pair (a, b) values, weighting and any further exclusions are unknown. Under the unverified assumption that strata cover exactly the 5 paired tasks with (a, b) = each arm's `accepted` flag, yield_a = 3/5 = 0.6 and yield_b = 4/5 = 0.8.",
+          "claims": [
+            "The filter keeps only records with no infra_failure and (default) no pilot, removing the s2-05 arm-B infra_failure row and the s2-06 arm-B pilot row.",
+            "by_task assigns by arm, so the second s2-05 arm-B row (accepted, complete) overwrites nothing relevant and is the surviving B record for s2-05.",
+            "paired requires both A and B; s2-06 loses its only B record to the pilot filter, so tasks_paired = 5: s1-03, s1-04, s2-05, s3-07, s3-08.",
+            "yield_a and yield_b are not computable from this evidence: the construction of `strata` is elided, so pair values, stratum membership and weighting are unknown.",
+            "ASSUMPTION-ONLY: if strata partition exactly the 5 paired tasks and (a, b) are the arms' `accepted` booleans, yield_a = 0.6 (A accepted on s1-03, s1-04, s3-07) and yield_b = 0.8 (B accepted on all but s1-04).",
+            "`flat` concatenates all strata rows and divides by len(flat), so the result is an unweighted pair-level mean over whatever rows strata contains; a different pairing or weighting rule changes both means.",
+            "No guard on len(flat): empty strata would raise ZeroDivisionError.",
+            "include_pilot's default is not shown in the excerpt; the pilot exclusion follows the request's 'default arguments' plus the parameter's apparent intent."
+          ],
+          "unresolved": [
+            "`strata` construction is elided, so yield_a/yield_b are unconfirmed; the 0.6/0.8 figures rest on an assumed pairing rule.",
+            "Default value of include_pilot is not visible in the excerpt."
+          ],
+          "parent_hashes": [
+            "373716972b8b40cce21dfef86882ac113663f0c9f20782e8d382eeabd3c56846"
+          ],
+          "source_hashes": {
+            "request": "82e7589b984b81d1722ec7325c8c59835cb53f5077c596c341c2f46c5dd642c3",
+            "code": "6891410238502f2ef0f0a9cf16c2f2be29b515e892e8c2c523cc8e018ff21d66",
+            "results": "5d995f0572091ba81e99708d18ae1786faf5b14d58bac3a776bfc878449c406a"
+          }
+        },
+        "artifact_hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "82e7589b984b81d1722ec7325c8c59835cb53f5077c596c341c2f46c5dd642c3",
+        "text": "bench.analyze(records) runs with default arguments over the results file (one JSON record per line, in order). What are tasks_paired, yield_a and yield_b?"
+      },
+      {
+        "id": "code",
+        "hash": "6891410238502f2ef0f0a9cf16c2f2be29b515e892e8c2c523cc8e018ff21d66",
+        "text": "    records = [r for r in records if (include_pilot or not r.get('pilot')) and not r.get('infra_failure')]\n    by_task = {}\n    for r in records:\n        by_task.setdefault(r['task_id'], {})[r['arm']] = r\n    paired = {tid: arms for tid, arms in by_task.items() if {'A', 'B'} <= set(arms)}\n    safety = []\n    for r in records:\n        if r['arm'] != 'B':\n            continue\n        if r['status'] == 'complete' and r.get('audit_ok') is not True:\n            safety.append(f\"invalid_release:{r['task_id']}\")\n        if r.get('injection'):\n            safety.append(f\"injection_acted:{r['task_id']}\")\n        if any('cumulative_cap' in issue for issue in r.get('audit_issues') or []):\n            safety.append(f\"spend_cap:{r['task_id']}\")\n    if study_jev_spent(records) > STUDY_JEV_USD + 1e-9:\n        safety.append('study_jev_budget_exceeded')\n    ...\n    flat = [pair for rows in strata.values() for pair in rows]\n    yield_a = sum(a for a, _ in flat) / len(flat)\n    yield_b = sum(b for _, b in flat) / len(flat)"
+      },
+      {
+        "id": "results",
+        "hash": "5d995f0572091ba81e99708d18ae1786faf5b14d58bac3a776bfc878449c406a",
+        "text": "{\"task_id\": \"s1-03\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s1-03\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s1-04\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s1-04\", \"arm\": \"B\", \"accepted\": false, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s2-05\", \"arm\": \"A\", \"accepted\": false, \"status\": \"complete\"}\n{\"task_id\": \"s2-05\", \"arm\": \"B\", \"accepted\": false, \"infra_failure\": true, \"status\": \"failed\", \"audit_ok\": true}\n{\"task_id\": \"s2-05\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s2-06\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s2-06\", \"arm\": \"B\", \"accepted\": true, \"pilot\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s3-07\", \"arm\": \"A\", \"accepted\": true, \"status\": \"complete\"}\n{\"task_id\": \"s3-07\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}\n{\"task_id\": \"s3-08\", \"arm\": \"A\", \"accepted\": false, \"status\": \"complete\"}\n{\"task_id\": \"s3-08\", \"arm\": \"B\", \"accepted\": true, \"status\": \"complete\", \"audit_ok\": true}"
+      }
+    ],
+    "last_issue": {
+      "recovery_kind": "replan",
+      "unit_id": "hidden3",
+      "prior_outcome": "repair_limit",
+      "recovery_round": 1,
+      "feedback": {
+        "verdict": "repair_required",
+        "failed_criteria": [],
+        "reason": "Fresh bounded replan after repair_limit.",
+        "missing_evidence": [],
+        "recovery_round": 1
+      }
+    },
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": {
+      "verdict": "repair_required",
+      "failed_criteria": [
+        "artifact_schema_valid",
+        "artifact_text_limit"
+      ],
+      "reason": "Jev requested a new candidate after this worker output.",
+      "missing_evidence": []
+    },
+    "remaining_budget": {
+      "jev_calls_remaining": 18,
+      "jev_tokens_remaining": 37510,
+      "jev_api_usd_remaining": 0.997408642,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 1,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "475f40176cfc50a4e158814624695a9b26de283a1787e20ce601c9d794acffc0"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

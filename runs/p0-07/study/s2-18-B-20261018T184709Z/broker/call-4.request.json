@@ -1,0 +1,189 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "summarize_calls is given these calls: [{\"role\": \"worker\", \"usage\": {\"total_tokens\": 20000, \"cost\": 0.04}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.02}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.0002}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 4000, \"cost\": null}}] (null is None). Give the worker role's blended_usd_per_million_tokens, and the summary's total_tokens and total_cost_usd.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "inputs",
+        "title": "scripts/metrics.py excerpt (per-role inputs)"
+      },
+      {
+        "id": "code",
+        "title": "scripts/metrics.py excerpt (per-role totals, continued)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "inputs",
+          "code"
+        ],
+        "data": {
+          "summary": "summarize_calls is given these calls: [{\"role\": \"worker\", \"usage\": {\"total_tokens\": 20000, \"cost\": 0.04}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.02}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.0002}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 4000, \"cost\": null}}] (null is None). Give the worker role's blended_usd_per_million_tokens, and the summary's total_tokens and total_cost_usd.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "3aa5af54b9f8715950604bdd838abbca7f5e7f3b5dffcafee2cf648238c79f3e",
+            "inputs": "694ea4c52dc513d661228f0209c0e83f1e3f073e9a5ae3c1f96f620c35e8d3a2",
+            "code": "87905e810cdb54cf6b131eaf8fbce79220938ce2cdd42fb8c2006273ba4bae01"
+          }
+        },
+        "artifact_hash": "54d2d402254be409ae4e8e2714c97b1bde8b03cd2db94c70c200928d2d75d12b",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "3aa5af54b9f8715950604bdd838abbca7f5e7f3b5dffcafee2cf648238c79f3e",
+        "text": "summarize_calls is given these calls: [{\"role\": \"worker\", \"usage\": {\"total_tokens\": 20000, \"cost\": 0.04}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.02}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.0002}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 4000, \"cost\": null}}] (null is None). Give the worker role's blended_usd_per_million_tokens, and the summary's total_tokens and total_cost_usd."
+      },
+      {
+        "id": "inputs",
+        "hash": "694ea4c52dc513d661228f0209c0e83f1e3f073e9a5ae3c1f96f620c35e8d3a2",
+        "text": "def _nonnegative(value):\n    return type(value) in (int,float) and math.isfinite(value) and value>=0\n...\n    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]"
+      },
+      {
+        "id": "code",
+        "hash": "87905e810cdb54cf6b131eaf8fbce79220938ce2cdd42fb8c2006273ba4bae01",
+        "text": "        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n            'unknown_token_calls':sum(not _nonnegative(v) for v in totals),\n            'unknown_cost_calls':sum(not _nonnegative(v) for v in charges),\n        }\n        tokens=roles[role]['tokens'];cost=roles[role]['cost_usd']\n        roles[role]['blended_usd_per_million_tokens']=(cost/tokens*1_000_000\n                                                        if tokens is not None and cost is not None\n                                                        and tokens>0 else None)\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    total_cost=(sum(role['cost_usd'] for role in roles.values())\n                if all(role['cost_usd'] is not None for role in roles.values()) else None)"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "54d2d402254be409ae4e8e2714c97b1bde8b03cd2db94c70c200928d2d75d12b"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "sonnet_low",
+      "model": "anthropic/claude-sonnet-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Worker role: tokens=25000, cost_usd=0.06 \u2192 blended_usd_per_million_tokens = 0.06/25000*1e6 = 2400.0. Summary total_tokens = 25000+3000+4000 = 32000 (all roles have tokens). Summary total_cost_usd = None, because checker's cost is null and total_cost requires all roles to have non-null cost_usd.",
+      "data": {
+        "summary": "Worker blended rate = 2400 USD/million tokens (cost 0.06 / tokens 25000 *1e6). Overall total_tokens=32000 (sums cleanly since every role has token data). Overall total_cost_usd=None because checker's cost is null, and the code only sums total_cost_usd when all roles have non-null cost_usd.",
+        "claims": [
+          "Worker entries: tokens 20000+5000=25000, cost 0.04+0.02=0.06, both nonnegative so role totals are defined.",
+          "Worker blended_usd_per_million_tokens = cost/tokens*1e6 = 0.06/25000*1,000,000 = 2400.0.",
+          "Jev role: tokens=3000, cost=0.0002 (both defined).",
+          "Checker role: tokens=4000, cost=None (cost is null, so checker cost_usd is None per code, though token value is nonnegative).",
+          "Summary total_tokens = sum across worker(25000)+jev(3000)+checker(4000) = 32000, since all roles have non-null tokens.",
+          "Summary total_cost_usd = None, since code requires all(role['cost_usd'] is not None) and checker's cost_usd is None."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "54d2d402254be409ae4e8e2714c97b1bde8b03cd2db94c70c200928d2d75d12b"
+        ],
+        "source_hashes": {
+          "code": "87905e810cdb54cf6b131eaf8fbce79220938ce2cdd42fb8c2006273ba4bae01",
+          "inputs": "694ea4c52dc513d661228f0209c0e83f1e3f073e9a5ae3c1f96f620c35e8d3a2",
+          "request": "3aa5af54b9f8715950604bdd838abbca7f5e7f3b5dffcafee2cf648238c79f3e"
+        }
+      },
+      "source_ids": [
+        "request",
+        "inputs",
+        "code"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.95
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 27,
+      "jev_tokens_remaining": 91004,
+      "jev_api_usd_remaining": 0.999629392,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "addf17a91593afa1ba4e2d18282f4628bdbe87a28a6a5a2d68cf85ecb08db9d4",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "addf17a91593afa1ba4e2d18282f4628bdbe87a28a6a5a2d68cf85ecb08db9d4",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

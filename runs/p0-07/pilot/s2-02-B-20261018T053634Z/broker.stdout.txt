@@ -1,0 +1,1 @@
+{"answer":"**p-7c2** \u2014 issued and consumed in the ledger excerpt with no `permit_receipt` line, unlike p-1a0 (0.12) and p-9d4 (0.08). Caveat: true for the excerpt as given; a receipt could exist outside this window. Parent accepted.","calls":14,"route":"broad_or_uncertain","status":"complete"}

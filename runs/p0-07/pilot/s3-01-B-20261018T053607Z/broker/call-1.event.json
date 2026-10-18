@@ -1,0 +1,36 @@
+{
+  "id": "call-1",
+  "role": "jev",
+  "status": "failed",
+  "requested_model": "typesafe/jev-1.13",
+  "returned_model": null,
+  "provider": null,
+  "request_hash": "de6959a686a6362661c212baff86d7c2fec08de7f39c7e44ba7024232313c749",
+  "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "reserved_usd": 0.0002319,
+  "followup_jev_reserved_usd": 0.0,
+  "admission_reserved_calls": 1,
+  "followup_jev_required": false,
+  "reasoning_effort": null,
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "total_tokens_source": null,
+    "cached_input_tokens": null,
+    "reasoning_tokens": null,
+    "cost": null
+  },
+  "usage_raw": null,
+  "latency_ms": 16.0,
+  "provider_request_id": null,
+  "started_at": "2026-10-18T05:36:07.670Z",
+  "ended_at": "2026-10-18T05:36:07.690Z",
+  "usage_semantics": {
+    "cached_input_tokens": "subset_of_input_tokens",
+    "reasoning_tokens": "subset_of_output_tokens"
+  },
+  "error": {
+    "code": "network_error"
+  }
+}

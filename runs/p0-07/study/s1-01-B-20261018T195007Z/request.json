@@ -1,0 +1,20 @@
+{
+  "goal": "A run-config file contains exactly {\"worker_family\": \"claude\", \"max_jev_tokens\": 50000}. Using only the config source, state the max_jev_tokens value of RunConfig.from_dict(that object).",
+  "context": "",
+  "sources": {
+    "config": {
+      "title": "scripts/config.py excerpt",
+      "text": "@dataclass(frozen=True)\nclass RunConfig:\n    ...\n    worker_family: str = \"gpt6\"\n    ...\n    max_jev_tokens: int = 50000\n    ...\n    def __post_init__(self):\n        ...\n        family = FAMILIES[self.worker_family]\n        if self.worker_family == \"claude\":\n            ...\n            # Claude artifacts make Jev states about 1.8x larger than GPT-6 ones\n            # (P0-03 slice 3c), so the untouched Jev token default doubles.\n            if self.max_jev_tokens == 50000:\n                object.__setattr__(self, \"max_jev_tokens\", 100000)\n    ...\n    @classmethod\n    def from_dict(cls, value):\n        _require(type(value) is dict, \"configuration_must_be_object\")\n        allowed = {field.name for field in fields(cls)}\n        _require(all(type(k) is str for k in value) and set(value) <= allowed, \"unknown_configuration_fields\")\n        return cls(**value)"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "55b808678bdd158f8cdcd673db0ee4006261f2cc295adc56968d2d12dbd5b722",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

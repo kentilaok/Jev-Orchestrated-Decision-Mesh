@@ -1,0 +1,141 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (HashChainLedger and PermitAuthority start-up)"
+      },
+      {
+        "id": "ledger",
+        "title": "Ledger history"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73",
+        "text": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code."
+      },
+      {
+        "id": "code",
+        "hash": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+        "text": "    def __init__(self, path: Path | None):\n        ...\n        if self.path is not None and self.path.exists():\n            for event in self.read():\n                self._last = event[\"event_hash\"]\n    ...\n        events, previous = [], None\n        with self.path.open(encoding=\"utf-8\") as stream:\n            for number, line in enumerate(stream, 1):\n                event = json.loads(line)\n                unsigned = {k: v for k, v in event.items() if k != \"event_hash\"}\n                require(event.get(\"previous_event_hash\") == previous, f\"ledger_chain_broken_line_{number}\")\n                require(digest(unsigned) == event.get(\"event_hash\"), f\"ledger_hash_mismatch_line_{number}\")\n                events.append(event)\n                previous = event[\"event_hash\"]\n        return events\n    ...\n        try:\n            self.ledger = HashChainLedger(ledger_path)\n        except PermitError:\n            raise\n        except Exception as exc:\n            raise PermitError(\"ledger_unreadable\") from exc"
+      },
+      {
+        "id": "ledger",
+        "hash": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02",
+        "text": "Original permits.jsonl, four lines, each written by append() (event_hash = SHA-256 of the line without event_hash; previous_event_hash = the previous line's event_hash):\nline 1: permit_issued p-1, previous_event_hash null, event_hash H1\nline 2: permit_consumed p-1, previous_event_hash H1, event_hash H2\nline 3: permit_receipt p-1, previous_event_hash H2, event_hash H3\nline 4: permit_issued p-2, previous_event_hash H3, event_hash H4\nSomeone deletes line 2 with a text editor and saves. Nothing else changes."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "candidate": {
+      "text": "Input and evidence identities preserved.",
+      "data": {
+        "summary": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code.",
+        "claims": [],
+        "unresolved": [],
+        "parent_hashes": [],
+        "source_hashes": {
+          "request": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73",
+          "code": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+          "ledger": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02"
+        }
+      },
+      "source_ids": [
+        "request",
+        "code",
+        "ledger"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 29,
+      "jev_tokens_remaining": 98358,
+      "jev_api_usd_remaining": 0.999932338,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "77665682263cdc1601d0b5cdda674e1344c2b684ba143fa07dab7bebd3e8ecd8",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "77665682263cdc1601d0b5cdda674e1344c2b684ba143fa07dab7bebd3e8ecd8",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      }
+    }
+  }
+}

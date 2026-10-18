@@ -1,0 +1,1 @@
+{"answer":"_usage raises ClaudeCliError(\"invalid_usage_counter\"), not \"missing_usage_counter\". Execution order: uncached=_count(5) ok, write=_count(0) ok (key absent defaults to 0), then read=_count(-2) fails because -2<0, raising invalid_usage_counter before the output_tokens-missing check is ever reached.","calls":1,"route":"short_self_contained","status":"complete"}

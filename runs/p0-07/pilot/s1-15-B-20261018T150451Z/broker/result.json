@@ -1,0 +1,89 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "2 of the 7 calls return access class \"read\": [\"roblox-mirror\",\"script_read\"] and [\"docs\",\"lookup\"].",
+  "task_hash": "d037d67fe5dab9e13de12647d88479c74341490e93c908e045f3c611bab4fe25",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "d037d67fe5dab9e13de12647d88479c74341490e93c908e045f3c611bab4fe25",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "a3c3dedce264753233a2556a65d393695ee6b03f7c46bdbc66235bf765ffe23a",
+    "profiles": "a411a05c6361b6386ff883e927a02063bf7bbfb483c5eaee6753302f37093a04",
+    "code": "be0c6671e4bf2f6c22eb6432cc83bc3ae370bdc901241eab25a071edab3511ee"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 27637,
+        "cached_input_tokens": 12735,
+        "cache_write_input_tokens": 14898,
+        "output_tokens": 2823,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "ca56fcfa-9bcb-4feb-8a9b-60c7fcd299ea",
+      "permit_id": "a15c2991d1d64e18a5b65e2c6a666a0d",
+      "artifact_hash": "225660af96dea6c3452e25fdb25f9455ada2e44041be8f7c8776972b41426acf"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "225660af96dea6c3452e25fdb25f9455ada2e44041be8f7c8776972b41426acf",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 27637,
+    "frontier_output_tokens": 2823,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

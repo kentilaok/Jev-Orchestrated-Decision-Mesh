@@ -1,0 +1,342 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code.",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (HashChainLedger and PermitAuthority start-up)"
+      },
+      {
+        "id": "ledger",
+        "title": "Ledger history"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73",
+            "code": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+            "ledger": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02"
+          }
+        },
+        "artifact_hash": "77665682263cdc1601d0b5cdda674e1344c2b684ba143fa07dab7bebd3e8ecd8",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "The constructor raises PermitError(\"ledger_chain_broken_line_2\").\n\nDeleting the original line 2 leaves line 1 (prev null, hash H1) followed by the old line 3, whose previous_event_hash is H2. read() has previous = H1 at that point, so the chain require() fails on line number 2. PermitAuthority re-raises PermitError untouched, so the code is not remapped to ledger_unreadable, and the hash-integrity check never fires since the remaining lines are byte-identical to what append() wrote.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "PermitAuthority(ledger_path) raises PermitError(\"ledger_chain_broken_line_2\"). Deleting original line 2 makes the old line 3 the new line 2; its previous_event_hash is H2 while read() carries previous = H1 from line 1, so the chain require() fails at number 2. PermitAuthority's `except PermitError: raise` re-raises it unchanged, so it is not remapped to ledger_unreadable, and the hash-mismatch check never fires because the surviving lines' own event_hash values are untouched.",
+          "claims": [
+            "Deleting original line 2 makes original line 3 (permit_receipt p-1, previous_event_hash H2) the new line 2, while read() has previous = H1 from line 1.",
+            "The chain check require(event.get('previous_event_hash') == previous, f'ledger_chain_broken_line_{number}') therefore fails at number == 2.",
+            "Assumption: require() raises PermitError with the given code; PermitAuthority's `except PermitError: raise` re-raises it unchanged rather than wrapping it as ledger_unreadable.",
+            "The per-line hash check is not reached and would pass anyway: the surviving lines' own event_hash values are unmodified, so no ledger_hash_mismatch is raised.",
+            "HashChainLedger.__init__ calls read() because the path exists, so the failure surfaces during PermitAuthority construction, not at first use."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "77665682263cdc1601d0b5cdda674e1344c2b684ba143fa07dab7bebd3e8ecd8"
+          ],
+          "source_hashes": {
+            "code": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+            "ledger": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02",
+            "request": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73"
+          }
+        },
+        "artifact_hash": "415bdcbef7286a96813cef277a9810bab75eb2f504e91e265bf2861eb747002f",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "The constructor raises PermitError(\"ledger_chain_broken_line_2\").\n\nDeleting the original line 2 leaves line 1 (previous_event_hash null, event_hash H1) followed by the old line 3, whose previous_event_hash is H2. At that point read() still carries previous = H1, so the chain require() fails on line number 2. PermitAuthority re-raises PermitError unchanged, so the code is not remapped to ledger_unreadable, and the hash-integrity check never fires since the remaining lines are byte-identical to what append() wrote.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "PermitAuthority(ledger_path) raises PermitError(\"ledger_chain_broken_line_2\"). Deleting the original line 2 promotes the old line 3 (permit_receipt p-1, previous_event_hash H2) to line 2, but read() holds previous = H1 from line 1, so the chain require() fails at number == 2. PermitAuthority's `except PermitError: raise` re-raises it unchanged, so it is not remapped to ledger_unreadable; the per-line hash check is never reached and would pass anyway since the surviving lines' event_hash values are untouched. __init__ calls read() because the path exists, so the error surfaces at construction.",
+          "claims": [
+            "Deleting original line 2 makes original line 3 (permit_receipt p-1, previous_event_hash H2) the new line 2, while read() has previous = H1 from line 1.",
+            "The chain check require(event.get('previous_event_hash') == previous, f'ledger_chain_broken_line_{number}') therefore fails at number == 2.",
+            "Assumption: require() raises PermitError with the given code; PermitAuthority's `except PermitError: raise` re-raises it unchanged rather than wrapping it as ledger_unreadable.",
+            "The per-line hash check is not reached and would pass anyway: the surviving lines' own event_hash values are unmodified, so no ledger_hash_mismatch is raised.",
+            "HashChainLedger.__init__ calls read() because the path exists, so the failure surfaces during PermitAuthority construction, not at first use.",
+            "Line 1 passes both checks: its previous_event_hash is null, matching the initial previous = None."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "415bdcbef7286a96813cef277a9810bab75eb2f504e91e265bf2861eb747002f"
+          ],
+          "source_hashes": {
+            "code": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+            "ledger": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02",
+            "request": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73"
+          }
+        },
+        "artifact_hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73",
+        "text": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code."
+      },
+      {
+        "id": "code",
+        "hash": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+        "text": "    def __init__(self, path: Path | None):\n        ...\n        if self.path is not None and self.path.exists():\n            for event in self.read():\n                self._last = event[\"event_hash\"]\n    ...\n        events, previous = [], None\n        with self.path.open(encoding=\"utf-8\") as stream:\n            for number, line in enumerate(stream, 1):\n                event = json.loads(line)\n                unsigned = {k: v for k, v in event.items() if k != \"event_hash\"}\n                require(event.get(\"previous_event_hash\") == previous, f\"ledger_chain_broken_line_{number}\")\n                require(digest(unsigned) == event.get(\"event_hash\"), f\"ledger_hash_mismatch_line_{number}\")\n                events.append(event)\n                previous = event[\"event_hash\"]\n        return events\n    ...\n        try:\n            self.ledger = HashChainLedger(ledger_path)\n        except PermitError:\n            raise\n        except Exception as exc:\n            raise PermitError(\"ledger_unreadable\") from exc"
+      },
+      {
+        "id": "ledger",
+        "hash": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02",
+        "text": "Original permits.jsonl, four lines, each written by append() (event_hash = SHA-256 of the line without event_hash; previous_event_hash = the previous line's event_hash):\nline 1: permit_issued p-1, previous_event_hash null, event_hash H1\nline 2: permit_consumed p-1, previous_event_hash H1, event_hash H2\nline 3: permit_receipt p-1, previous_event_hash H2, event_hash H3\nline 4: permit_issued p-2, previous_event_hash H3, event_hash H4\nSomeone deletes line 2 with a text editor and saves. Nothing else changes."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 24,
+      "jev_tokens_remaining": 79095,
+      "jev_api_usd_remaining": 0.999137908,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "269d0143ad2427b2098c7c4f973e0e00078871c0dd3a70ea33664e6ca29d2791"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

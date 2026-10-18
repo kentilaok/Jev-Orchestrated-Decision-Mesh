@@ -1,0 +1,16 @@
+[
+  {
+    "status": "ok",
+    "session_id": "a8af6bef-6c58-48b7-8be7-661df0c8bd0e",
+    "identity_verification": "reported_match",
+    "usage": {
+      "input_tokens": 18845,
+      "cached_input_tokens": 7734,
+      "cache_write_input_tokens": 11107,
+      "output_tokens": 5112,
+      "reasoning_output_tokens": null,
+      "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+    },
+    "api_equivalent_cost_usd": 0.242757
+  }
+]

@@ -1,0 +1,141 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/p0_03_audit.py excerpt (_audit_spend)"
+      },
+      {
+        "id": "inputs",
+        "title": "Inputs"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+        "text": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order."
+      },
+      {
+        "id": "code",
+        "hash": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+        "text": "    jev_events = result.get('jev_provider_events') or []\n    jev_cost = result.get('jev_api_cost_usd')\n    costs = [(e.get('usage') or {}).get('cost') if isinstance(e.get('usage'), dict) else None\n             for e in jev_events]\n    known = sum(c for c in costs if _is_cost(c))\n    if known > config.max_usd:\n        issues.append('jev_spend_over_max_usd')\n    if any(not _is_cost(c) for c in costs):\n        if jev_cost is not None:\n            issues.append('jev_cost_reported_despite_unknown_usage')\n    elif jev_events or jev_cost is not None:\n        if jev_cost is None or abs(jev_cost - known) > 1e-12:\n            issues.append('jev_cost_mismatch')\n    ...\n    accounting = result.get('accounting') or {}\n    unknown = sum(not _known_tokens(c.get('usage')) for c in frontier)\n    if accounting.get('frontier_calls_usage_unknown') != unknown:\n        issues.append('unknown_usage_count_mismatch')\n    if unknown:\n        if (accounting.get('frontier_input_tokens') is not None\n                or accounting.get('frontier_output_tokens') is not None):\n            issues.append('unknown_usage_summed_as_known')"
+      },
+      {
+        "id": "inputs",
+        "hash": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e",
+        "text": "result = {\"jev_provider_events\": [{\"usage\": {\"cost\": 0.0006, \"total_tokens\": 1800}}, {\"usage\": {\"total_tokens\": 900}}], \"jev_api_cost_usd\": 0.0006, \"calls\": [\"(non-empty)\"], \"accounting\": {\"frontier_calls_usage_unknown\": 0, \"frontier_input_tokens\": 4200, \"frontier_output_tokens\": 800}}\nfrontier = [{\"usage\": {\"input_tokens\": 4200, \"output_tokens\": 800}}, {\"usage\": null}]"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "candidate": {
+      "text": "Input and evidence identities preserved.",
+      "data": {
+        "summary": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+        "claims": [],
+        "unresolved": [],
+        "parent_hashes": [],
+        "source_hashes": {
+          "request": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+          "code": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+          "inputs": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e"
+        }
+      },
+      "source_ids": [
+        "request",
+        "code",
+        "inputs"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 29,
+      "jev_tokens_remaining": 98307,
+      "jev_api_usd_remaining": 0.999930196,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      }
+    }
+  }
+}

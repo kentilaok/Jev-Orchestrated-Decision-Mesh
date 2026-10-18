@@ -1,0 +1,79 @@
+{
+  "status": "failed",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "f5f9d6cb39e342332ce5b28cfcbed9e3746ae42b46ef2e97f5031141ca316bb2",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "f5f9d6cb39e342332ce5b28cfcbed9e3746ae42b46ef2e97f5031141ca316bb2",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "00381b0ec9093886fe75e6c42b7d75a1becac307dc1b326489391aaaaa6f89f5",
+    "context": "050c1a006bc3f60d1a9e6841741c0655842253ed14aef0fc8c8fed47bcd778d0",
+    "outstanding": "778d3256950e28dd0ec40a93a97b3753e30f736ceb84bd395b2a0d3ab27eaf59",
+    "brief": "1c91c604abb21fd0d70b8a06eeb81fadf683da4023b7c191c25b877b28e46465"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "status": "failed",
+      "usage": null,
+      "error_type": "MeshError"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "eb4bf173c98cb4b969c055b528ec33ad0922b78c5340541781d25796d899c66e",
+  "committed": [],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "halt",
+      "version": 0,
+      "simulation": false,
+      "error": "MeshError: jev_call_failed"
+    }
+  ],
+  "recovery_rounds": {},
+  "error": "jev_call_failed",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 0,
+    "consumed": 0,
+    "receipted": 0,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 1,
+    "frontier_child_calls": 0,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 0,
+    "frontier_output_tokens": 0,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "cdc93fd06c6f7952170b9f5b5372773b5fced018f1a6a118e1b33d6d0de58cd9",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

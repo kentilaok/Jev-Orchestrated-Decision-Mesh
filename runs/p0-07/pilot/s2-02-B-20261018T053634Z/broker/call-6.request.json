@@ -1,0 +1,203 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl (excerpt)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "data": {
+          "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "data": {
+          "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+          "claims": [
+            "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+        "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+      },
+      {
+        "id": "ledger",
+        "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+        "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+      "data": {
+        "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+        "claims": [
+          "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+          "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+          "Answer: permit_id = p-7c2.",
+          "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+        ],
+        "source_hashes": {
+          "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+          "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+        }
+      },
+      "source_ids": [
+        "request",
+        "ledger"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        4,
+        5
+      ],
+      "self_probability": 0.95
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 25,
+      "jev_tokens_remaining": 86359,
+      "jev_api_usd_remaining": 0.999440518,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "slice": "p0-03-3b",
+  "mode": "smoke",
+  "started_at": "20261017T061846Z",
+  "preflight": {
+    "ok": true,
+    "checks": {
+      "task": {
+        "ok": true,
+        "route": "broad_or_uncertain",
+        "task_hash": "dce20938374067c3eca520f695d0e12af3d320c64ef00d4021db34a6730660bc"
+      },
+      "models_pinned": {
+        "ok": true,
+        "jev_model": "typesafe/jev-1.13",
+        "pinned_jev_model": "typesafe/jev-1.13",
+        "worker_routes": [
+          "sonnet_low",
+          "sonnet_medium",
+          "sonnet_high",
+          "sonnet_xhigh",
+          "opus_low",
+          "opus_medium",
+          "opus_high",
+          "opus_xhigh"
+        ],
+        "checker": [
+          "anthropic/claude-opus-5",
+          "high"
+        ]
+      },
+      "jev_cap": {
+        "ok": true,
+        "max_usd": 1.0,
+        "ceiling_usd": 1.0
+      },
+      "cumulative_cap": {
+        "ok": true,
+        "max_cumulative_usd": 1.0,
+        "ceiling_usd": 1.0
+      },
+      "openrouter_key": {
+        "ok": true,
+        "present": true
+      },
+      "claude_cli": {
+        "ok": true,
+        "installed": true,
+        "logged_in": true,
+        "auth_method": "claude.ai",
+        "billing": "subscription",
+        "subscription_type": "pro",
+        "warnings": [],
+        "detail": null
+      }
+    }
+  },
+  "config_policy_hash": "9fc5fa28de04579c2f54f0e2aec98607d938e38f0571c945329357cd3e365a12",
+  "command": [
+    "C:\\Users\\caber\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\scripts\\native_transition_broker.py",
+    "--task",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\examples\\p0-03-smoke.request.json",
+    "--out",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\runs\\p0-03-smoke\\20261017T061846Z-smoke\\broker",
+    "--host",
+    "claude",
+    "--gate-policy",
+    "recovery",
+    "--config",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\runs\\p0-03-smoke\\20261017T061846Z-smoke\\config.json",
+    "--max-cumulative-usd",
+    "1.0",
+    "--claude-executable",
+    "claude",
+    "--live"
+  ],
+  "session_env_removed": [
+    "ANTHROPIC_BASE_URL",
+    "CLAUDECODE",
+    "CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+    "CLAUDE_AGENT_SDK_VERSION",
+    "CLAUDE_CODE_ACCOUNT_UUID",
+    "CLAUDE_CODE_CHILD_SESSION",
+    "CLAUDE_CODE_DESKTOP_APP_VERSION",
+    "CLAUDE_CODE_DISABLE_CRON",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE",
+    "CLAUDE_CODE_EAGER_FLUSH",
+    "CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES",
+    "CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL",
+    "CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING",
+    "CLAUDE_CODE_ENTRYPOINT",
+    "CLAUDE_CODE_HOST_SESSION_ID",
+    "CLAUDE_CODE_MESSAGING_SOCKET",
+    "CLAUDE_CODE_MESSAGING_TOKEN",
+    "CLAUDE_CODE_OAUTH_SCOPES",
+    "CLAUDE_CODE_ORGANIZATION_UUID",
+    "CLAUDE_CODE_REPORT_FINDINGS",
+    "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+    "CLAUDE_CODE_SESSION_ATTENDED",
+    "CLAUDE_CODE_SESSION_ID",
+    "CLAUDE_CODE_SIMPLE",
+    "CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+    "CLAUDE_CODE_TERMINAL_MCP_TOOLS",
+    "CLAUDE_CODE_USER_EMAIL",
+    "CLAUDE_PID",
+    "CLAUDE_PREVIEW_CLASSIFIER_FLOOR"
+  ],
+  "status": "ran",
+  "broker_exit_code": 2,
+  "result_status": "failed",
+  "jev_api_cost_usd": 0.002122134,
+  "audit": {
+    "ok": true,
+    "issues": [],
+    "evidence": {
+      "status": "failed",
+      "route": "broad_or_uncertain",
+      "task_hash": "dce20938374067c3eca520f695d0e12af3d320c64ef00d4021db34a6730660bc",
+      "source_hashes": {
+        "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+        "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+      },
+      "policy_hash": "9fc5fa28de04579c2f54f0e2aec98607d938e38f0571c945329357cd3e365a12",
+      "run_config_policy_hash": "9fc5fa28de04579c2f54f0e2aec98607d938e38f0571c945329357cd3e365a12",
+      "result_sha256": "8d352c7f1cf64df806e9d2c98dc23bdabc15aa7559f16c33718fb2257f5d39b1",
+      "journal_sha256": "196ecb538539de1c09cc2fa981c610b984c5f31cb69b412131a69d5463d53ef0",
+      "permits_sha256": "dbddfb7d6459b4ae2d4db6f4c8809cc22480d348e93e9f0c8bdbae5108b57ec7",
+      "usage_log_sha256": "23972d8aacab084658a4491816e2828c7bfec26797208b8af268da4b728d890f",
+      "jev_calls": 14,
+      "jev_request_ids": [
+        "gen-dec-1792217927-7KqQmz1uCvkSRCsP1GhF",
+        "gen-dec-1792217927-CCuXXlDX7pn5eOH9qZlg",
+        "gen-dec-1792217928-ZzsxROOb29rRIvLw4Tox",
+        "gen-dec-1792217945-XXgyUgUyv9GgSY11l3Hl",
+        "gen-dec-1792217946-n4GZnqOW6aQroRqqCod7",
+        "gen-dec-1792217961-53Qtbf9nMRYZ6jXMhfHO",
+        "gen-dec-1792217962-DFH0qDa9VWaIPdLFT7MQ",
+        "gen-dec-1792217975-0J7VHwuoPpckoZMLAwOM",
+        "gen-dec-1792217976-FW0hvhbX72EGuPwecH0n",
+        "gen-dec-1792217992-Q3FUM6DDpCxpeb75bEmO",
+        "gen-dec-1792217992-tmw5wWMyHsWdSEnhY86Y",
+        "gen-dec-1792218005-OGr7cqU4ZrEGyX3E2NTx",
+        "gen-dec-1792218006-Oi8dG6VN6HX92x1djqlg",
+        "gen-dec-1792218020-Nq8IWG53kjpdhF52arx2"
+      ],
+      "jev_api_cost_usd": 0.002122134,
+      "resumed_calls_carried": 0,
+      "frontier_calls": [
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-sonnet-5",
+          "actual_model": "claude-sonnet-5",
+          "identity_verification": "reported_match",
+          "session_id": "c7c29ad6-86cc-485a-840e-8852fa4c7283",
+          "permit_id": "e075a257517e4fe79b8c55e39dc3e485",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-sonnet-5",
+          "actual_model": "claude-sonnet-5",
+          "identity_verification": "reported_match",
+          "session_id": "5e59e6c3-35b3-4480-b675-989b2777b780",
+          "permit_id": "6b149e6659e04c1eab0915c33f7c2384",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-opus-5",
+          "actual_model": "claude-opus-5",
+          "identity_verification": "reported_match",
+          "session_id": "b1511ebd-69fd-4193-9f4c-3c07848d0e97",
+          "permit_id": "7c2ff262770d4b8e8ae6f2384231c715",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-opus-5",
+          "actual_model": "claude-opus-5",
+          "identity_verification": "reported_match",
+          "session_id": "b7e74855-85b1-407c-81ed-cb3625211cb0",
+          "permit_id": "7b687ccbe8cf4b5eb27b5d1ac3d32fcd",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-opus-5",
+          "actual_model": "claude-opus-5",
+          "identity_verification": "reported_match",
+          "session_id": "5d05e75a-2e26-402a-a8dd-1367a00d2ca2",
+          "permit_id": "ff6daca36b1f4705a03ed6ee8435d258",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        },
+        {
+          "role": "worker",
+          "status": "ok",
+          "requested_model": "claude-opus-5",
+          "actual_model": "claude-opus-5",
+          "identity_verification": "reported_match",
+          "session_id": "7005b754-8159-443b-9721-0cb39b710043",
+          "permit_id": "e97d26da7c4a4e7b91d00494ef77a666",
+          "carried_from_checkpoint": false,
+          "error_type": null,
+          "usage_status": null,
+          "usage_known": true
+        }
+      ],
+      "permits_consumed": 6,
+      "route_coverage": "unverified"
+    }
+  },
+  "expectation": {
+    "met": false,
+    "reasons": [
+      "run_not_complete:failed"
+    ]
+  }
+}

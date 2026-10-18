@@ -1,0 +1,24 @@
+{
+  "goal": "classify(server, tool, trusted_servers={\"docs\"}) is called for each (server, tool) pair in [[\"roblox-mirror\", {\"name\": \"script_read\"}], [\"docs\", {\"name\": \"lookup\", \"annotations\": {\"readOnlyHint\": true}}], [\"web\", {\"name\": \"fetch\", \"annotations\": {\"readOnlyHint\": true}}], [\"docs\", {\"name\": \"search\", \"annotations\": {\"readOnlyHint\": true, \"openWorldHint\": true}}], [\"docs\", {\"name\": \"purge\", \"annotations\": {\"readOnlyHint\": true, \"destructiveHint\": true}}], [\"Roblox\", {\"name\": \"http_get\"}], [\"ROBLOX-studio\", {\"name\": \"Script_Read\"}]]. How many calls return access class \"read\"?",
+  "context": "",
+  "sources": {
+    "profiles": {
+      "title": "scripts/mcp_registry.py excerpt (PROFILES)",
+      "text": "PROFILES = {\n    \"roblox\": {\n        \"read\": {\"list_roblox_studios\", \"get_studio_state\", \"search_game_tree\", \"script_search\",\n                 \"script_grep\", \"script_read\", \"inspect_instance\", \"get_console_output\",\n                 \"search_asset\", \"wait_job_finished\", \"screen_capture\"},\n        \"mutate\": {\"execute_luau\", \"multi_edit\", \"start_stop_play\", \"insert_asset\", \"generate_material\",\n                   \"generate_mesh\", \"generate_procedural_model\", \"generate_texture\", \"segment_mesh\",\n                   \"user_keyboard_input\", \"user_mouse_input\", \"character_navigation\", \"store_image\",\n                   \"upload_image\", \"http_get\", \"subagent\", \"skill\"},\n    },\n}"
+    },
+    "code": {
+      "title": "scripts/mcp_registry.py excerpt (classify)",
+      "text": "def classify(server: str, tool: dict, *, trusted_servers=None) -> tuple[str, str]:\n    ...\n    name = tool.get(\"name\", \"\")\n    for key, profile in PROFILES.items():\n        if key in server.lower():\n            if name in profile[\"read\"]:\n                return \"read\", \"builtin_profile:\" + key\n            if name in profile[\"mutate\"]:\n                return \"mutate\", \"builtin_profile:\" + key\n    hints = tool.get(\"annotations\") or {}\n    if hints.get(\"destructiveHint\") is True or hints.get(\"readOnlyHint\") is False:\n        return \"mutate\", \"server_annotations\"\n    if hints.get(\"readOnlyHint\") is True and hints.get(\"openWorldHint\") is not True:\n        if trusted_servers is not None and server not in trusted_servers:\n            return \"unknown\", \"untrusted_server_readonly_hint_ignored\"\n        return \"read\", \"server_annotations\"\n    return \"unknown\", \"unclassified\""
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "d037d67fe5dab9e13de12647d88479c74341490e93c908e045f3c611bab4fe25",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

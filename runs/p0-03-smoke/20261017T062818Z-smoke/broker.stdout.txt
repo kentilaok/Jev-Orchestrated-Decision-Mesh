@@ -1,0 +1,1 @@
+{"answer":"Verified: production defect rate is 50.0 defects per 1,000 items (20 defects / 400 items, segments A and B; trial segment T excluded). Sources: request, records.","calls":14,"route":"broad_or_uncertain","status":"complete"}

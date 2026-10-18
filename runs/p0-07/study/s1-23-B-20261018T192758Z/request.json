@@ -1,0 +1,20 @@
+{
+  "goal": "A Jev request with model \"typesafe/jev-1.13\", a non-empty state and one valid choice question is passed to validate_request(request, \"typesafe\"). Is it accepted? If not, give the Failure code.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/jev_decide.py excerpt (validate_request)",
+      "text": "ENDPOINTS = {\n    \"openrouter\": (\"https://openrouter.ai/api/alpha/decisions\", \"OPENROUTER_API_KEY\"),\n    \"typesafe\": (\"https://api.typesafe.ai/v1/systemone\", \"TYPESAFE_API_KEY\"),\n}\n...\ndef validate_request(request, provider):\n    require(isinstance(request, dict), \"request_must_be_object\")\n    require(set(request) == {\"model\", \"state\", \"questions\"}, \"invalid_request_fields\")\n    model = request[\"model\"]\n    prefix = r\"~?typesafe/\" if provider == \"openrouter\" else \"\"\n    require(isinstance(model, str) and re.fullmatch(prefix + r\"jev-[A-Za-z0-9._-]+\", model),\n            \"explicit_provider_jev_model_required\")\n    require(guidance(request[\"state\"]), \"state_must_be_nonempty\")"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "dd42fde908c4a2242d9ea4174e6083f08e06efd4f4429ce108f9e6d3248fc865",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

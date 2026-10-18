@@ -102,7 +102,7 @@ Step §4.1 and §4.2 are done. Opus 5.5 ran the §5 brief read-only. It found **
 
 ## 5b. Review page and freeze: done (19 October)
 
-- **§4.3:** `runs/p0-07/review.html` was rebuilt with suite `87adc401…b2b6`. `runs/` is gitignored, so it is a local record. Its picks from 18 October are **superseded** by the model review in §5a.
+- **§4.3:** `runs/p0-07/review.html` was rebuilt with suite `87adc401…b2b6`. (`runs/` was gitignored then; it has been tracked since later on 19 October.) Its picks from 18 October are **superseded** by the model review in §5a.
 - **§4.4:** the protocol is **frozen**. Ken told Claude to "do the delegated freeze" and then confirmed the retry. §10 holds the date, the signer (Claude under delegation, with statements (a) and (b)), commit `a09b651`, the protocol SHA-256 `0ab48387…3a08` (taken just before §10 was filled, with a recipe to reproduce it), the arm-B `policy_hash` `d7237472…5663`, and `suite_sha256` `87adc401…b2b6`.
 - **Checked offline:** `frozen_suite_hash()` returns the suite hash, and both `run` refusal checks (suite valid, hash matches) pass. No paid run was made. `test_study_run_refuses_an_unfrozen_suite` now patches the freeze record. The new `test_suite_on_disk_matches_the_freeze_record` fails if the suite ever drifts from §10. The tests show 750 passing with 5 skipped.
 

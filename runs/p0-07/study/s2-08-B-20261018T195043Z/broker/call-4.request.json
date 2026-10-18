@@ -1,0 +1,188 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (HashChainLedger and PermitAuthority start-up)"
+      },
+      {
+        "id": "ledger",
+        "title": "Ledger history"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73",
+            "code": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+            "ledger": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02"
+          }
+        },
+        "artifact_hash": "77665682263cdc1601d0b5cdda674e1344c2b684ba143fa07dab7bebd3e8ecd8",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73",
+        "text": "A broker resumes with PermitAuthority(ledger_path) on the edited file described in \"ledger\". What does the constructor raise? Give the exact PermitError code."
+      },
+      {
+        "id": "code",
+        "hash": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+        "text": "    def __init__(self, path: Path | None):\n        ...\n        if self.path is not None and self.path.exists():\n            for event in self.read():\n                self._last = event[\"event_hash\"]\n    ...\n        events, previous = [], None\n        with self.path.open(encoding=\"utf-8\") as stream:\n            for number, line in enumerate(stream, 1):\n                event = json.loads(line)\n                unsigned = {k: v for k, v in event.items() if k != \"event_hash\"}\n                require(event.get(\"previous_event_hash\") == previous, f\"ledger_chain_broken_line_{number}\")\n                require(digest(unsigned) == event.get(\"event_hash\"), f\"ledger_hash_mismatch_line_{number}\")\n                events.append(event)\n                previous = event[\"event_hash\"]\n        return events\n    ...\n        try:\n            self.ledger = HashChainLedger(ledger_path)\n        except PermitError:\n            raise\n        except Exception as exc:\n            raise PermitError(\"ledger_unreadable\") from exc"
+      },
+      {
+        "id": "ledger",
+        "hash": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02",
+        "text": "Original permits.jsonl, four lines, each written by append() (event_hash = SHA-256 of the line without event_hash; previous_event_hash = the previous line's event_hash):\nline 1: permit_issued p-1, previous_event_hash null, event_hash H1\nline 2: permit_consumed p-1, previous_event_hash H1, event_hash H2\nline 3: permit_receipt p-1, previous_event_hash H2, event_hash H3\nline 4: permit_issued p-2, previous_event_hash H3, event_hash H4\nSomeone deletes line 2 with a text editor and saves. Nothing else changes."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "77665682263cdc1601d0b5cdda674e1344c2b684ba143fa07dab7bebd3e8ecd8"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "summary": "PermitAuthority(ledger_path) raises PermitError(\"ledger_chain_broken_line_2\"). Deleting original line 2 makes the old line 3 the new line 2; its previous_event_hash is H2 while read() carries previous = H1 from line 1, so the chain require() fails at number 2. PermitAuthority's `except PermitError: raise` re-raises it unchanged, so it is not remapped to ledger_unreadable, and the hash-mismatch check never fires because the surviving lines' own event_hash values are untouched.",
+        "claims": [
+          "Deleting original line 2 makes original line 3 (permit_receipt p-1, previous_event_hash H2) the new line 2, while read() has previous = H1 from line 1.",
+          "The chain check require(event.get('previous_event_hash') == previous, f'ledger_chain_broken_line_{number}') therefore fails at number == 2.",
+          "Assumption: require() raises PermitError with the given code; PermitAuthority's `except PermitError: raise` re-raises it unchanged rather than wrapping it as ledger_unreadable.",
+          "The per-line hash check is not reached and would pass anyway: the surviving lines' own event_hash values are unmodified, so no ledger_hash_mismatch is raised.",
+          "HashChainLedger.__init__ calls read() because the path exists, so the failure surfaces during PermitAuthority construction, not at first use."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "77665682263cdc1601d0b5cdda674e1344c2b684ba143fa07dab7bebd3e8ecd8"
+        ],
+        "source_hashes": {
+          "code": "f8f07aa2d81b360ae0f916ee62a9cd30a0bfa99731c43d8597a9e8e5a92f3b2f",
+          "ledger": "8bd635c0a4e0ef7f73006116a19759aed161d00826bf428e17dca83364988d02",
+          "request": "b616d8c758d71dc1b2cb7b17fd6f942cee0c601bc344b75127a67f71322e9f73"
+        }
+      },
+      "five_scores": [
+        4,
+        5,
+        4,
+        5,
+        4
+      ],
+      "self_probability": 0.9,
+      "source_ids": [
+        "request",
+        "code",
+        "ledger"
+      ],
+      "text": "The constructor raises PermitError(\"ledger_chain_broken_line_2\").\n\nDeleting the original line 2 leaves line 1 (prev null, hash H1) followed by the old line 3, whose previous_event_hash is H2. read() has previous = H1 at that point, so the chain require() fails on line number 2. PermitAuthority re-raises PermitError untouched, so the code is not remapped to ledger_unreadable, and the hash-integrity check never fires since the remaining lines are byte-identical to what append() wrote."
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 27,
+      "jev_tokens_remaining": 91875,
+      "jev_api_usd_remaining": 0.999665932,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "415bdcbef7286a96813cef277a9810bab75eb2f504e91e265bf2861eb747002f",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "415bdcbef7286a96813cef277a9810bab75eb2f504e91e265bf2861eb747002f",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

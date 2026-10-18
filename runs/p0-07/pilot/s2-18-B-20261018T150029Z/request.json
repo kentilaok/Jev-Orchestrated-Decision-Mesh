@@ -1,0 +1,17 @@
+{
+  "goal": "calculate is given expressions of the form \"1+1+...+1\" (n ones, no spaces). What is the largest n for which it returns a value instead of raising expression_too_complex? Use CPython 3.11+ ast semantics.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/atomic_mesh.py excerpt (calculate)",
+      "text": "def calculate(expression):\n    require(isinstance(expression, str) and 0 < len(expression) <= 120, 'invalid_expression')\n    ...\n        tree = ast.parse(expression, mode='eval')\n    ...\n    require(len(list(ast.walk(tree))) <= 30, 'expression_too_complex')\n    operations = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul, ast.Div: operator.truediv}\n    def visit(node):\n        if isinstance(node, ast.Constant) and type(node.value) in (int, float):\n            ...\n                value = Fraction(ast.get_source_segment(expression,node).replace('_',''))\n            ...\n        elif isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.USub, ast.UAdd)):\n            value = visit(node.operand) * (-1 if isinstance(node.op, ast.USub) else 1)\n        elif isinstance(node, ast.BinOp) and type(node.op) in operations:\n            ...\n                value = operations[type(node.op)](visit(node.left), visit(node.right))\n            ...\n        else:\n            raise MeshError('operation_not_allowed')\n        require(math.isfinite(value) and abs(value) <= 1e12, 'arithmetic_out_of_range')\n        return value\n    return visit(tree.body)"
+    },
+    "ast": {
+      "title": "Python ast note",
+      "text": "ast.parse(\"1+1\", mode=\"eval\") gives Expression(body=BinOp(left=Constant(1), op=Add(), right=Constant(1))). ast.walk yields every node reachable through fields, including operator nodes such as Add."
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

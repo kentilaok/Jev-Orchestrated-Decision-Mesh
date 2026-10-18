@@ -1,0 +1,322 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "fields",
+        "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+      },
+      {
+        "id": "code",
+        "title": "scripts/experience_distiller.py excerpt (skill_name)"
+      },
+      {
+        "id": "records",
+        "title": "experience records (in order)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+          }
+        },
+        "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+          "claims": [
+            "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+            "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+            "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+            "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+            "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+          ],
+          "source_hashes": {
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+          }
+        },
+        "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+        "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+      },
+      {
+        "id": "fields",
+        "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+        "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+      },
+      {
+        "id": "code",
+        "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+        "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+      },
+      {
+        "id": "records",
+        "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+        "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 26,
+      "jev_tokens_remaining": 88174,
+      "jev_api_usd_remaining": 0.999512968,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

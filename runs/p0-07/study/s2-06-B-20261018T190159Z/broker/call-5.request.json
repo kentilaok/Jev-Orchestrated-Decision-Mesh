@@ -1,0 +1,326 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Using the broker and config code and the command, give the max_cumulative_usd the PermitAuthority enforces and the max_jev_tokens the run uses.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "broker",
+        "title": "scripts/native_transition_broker.py excerpt (main)"
+      },
+      {
+        "id": "config",
+        "title": "scripts/config.py excerpt"
+      },
+      {
+        "id": "command",
+        "title": "Operator command"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "broker",
+          "config",
+          "command"
+        ],
+        "data": {
+          "summary": "Using the broker and config code and the command, give the max_cumulative_usd the PermitAuthority enforces and the max_jev_tokens the run uses.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "31728ca0bd90a3265e26f7220efdd3e95f8acafae8b81ae2511611bd6801401e",
+            "broker": "b966095fee4101c984079a4c5327a498182912d248391192d5beea91222acc9b",
+            "config": "a7ec33957b85e36480ead25ca4e3ba8d2e911bb29f5d0992a68f54a595dd0370",
+            "command": "72fd1eeecb7d9f428957a30434802d5fc0224ad599ef40c60fabf29fe31b9cf0"
+          }
+        },
+        "artifact_hash": "843b6b9c7de5c7e183f8511342a27475703ccb08e7cd241829693185b2eed851",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "broker",
+          "config",
+          "command"
+        ],
+        "data": {
+          "summary": "max_cumulative_usd enforced by PermitAuthority = 0.5 (CLI --max-cumulative-usd overrides config's 2.0 before RunConfig construction). max_jev_tokens used = 100000 (config.py's 50000-default-doubling check fires even though 50000 was explicitly set in run.json, since it only compares value equality, not whether it was explicitly provided).",
+          "claims": [
+            "Broker code sets settings['max_cumulative_usd']=args.max_cumulative_usd when CLI flag is not None, before building RunConfig; CLI passed 0.5, overriding run.json's 2.0.",
+            "PermitAuthority is constructed with config.max_cumulative_usd, so it enforces 0.5, not 2.0.",
+            "config.py's __post_init__ doubles max_jev_tokens only when self.max_jev_tokens == 50000, the dataclass default; it cannot distinguish an explicitly-set 50000 from the unset default, so run.json's explicit 50000 still gets doubled to 100000.",
+            "Therefore the run uses max_jev_tokens=100000, not the 50000 written in run.json.",
+            "Assumption: RunConfig.from_dict successfully accepts the worker_family='claude' key injected by the broker alongside the json keys.",
+            "Potential blocking issue: run.json also includes a 'max_usd' key; if 'max_usd' is not among RunConfig's declared fields, from_dict's unknown_configuration_fields check would reject the whole config and the command would fail before producing any enforced values.",
+            "Evidence provided does not include the full RunConfig field list, so it cannot be confirmed whether 'max_usd' is a valid field; this is flagged as unresolved rather than assumed away."
+          ],
+          "unresolved": [
+            "Cannot confirm from given excerpts whether 'max_usd' is a declared RunConfig field; if not, from_dict raises unknown_configuration_fields and the command errors out before any max_cumulative_usd/max_jev_tokens values take effect."
+          ],
+          "parent_hashes": [
+            "843b6b9c7de5c7e183f8511342a27475703ccb08e7cd241829693185b2eed851"
+          ],
+          "source_hashes": {
+            "broker": "b966095fee4101c984079a4c5327a498182912d248391192d5beea91222acc9b",
+            "command": "72fd1eeecb7d9f428957a30434802d5fc0224ad599ef40c60fabf29fe31b9cf0",
+            "config": "a7ec33957b85e36480ead25ca4e3ba8d2e911bb29f5d0992a68f54a595dd0370",
+            "request": "31728ca0bd90a3265e26f7220efdd3e95f8acafae8b81ae2511611bd6801401e"
+          }
+        },
+        "artifact_hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "31728ca0bd90a3265e26f7220efdd3e95f8acafae8b81ae2511611bd6801401e",
+        "text": "Using the broker and config code and the command, give the max_cumulative_usd the PermitAuthority enforces and the max_jev_tokens the run uses."
+      },
+      {
+        "id": "broker",
+        "hash": "b966095fee4101c984079a4c5327a498182912d248391192d5beea91222acc9b",
+        "text": "    parser.add_argument('--config', type=Path)\n    parser.add_argument('--host', choices=('codex', 'claude'), default='codex',\n                        help='Worker host: Codex CLI (GPT-6 routes) or Claude Code CLI (Sonnet/Opus routes)')\n    ...\n    settings = json.loads(args.config.read_text(encoding='utf-8-sig')) if args.config else {}\n    family = 'claude' if args.host == 'claude' else 'gpt6'\n    require(settings.get('worker_family', family) == family, 'host_and_worker_family_mismatch')\n    if args.max_cumulative_usd is not None:\n        settings['max_cumulative_usd'] = args.max_cumulative_usd\n    config = RunConfig.from_dict({**settings, 'worker_family': family})\n    ...\n    authority = PermitAuthority(args.out / 'permits.jsonl',\n                                max_cumulative_usd=config.max_cumulative_usd)"
+      },
+      {
+        "id": "config",
+        "hash": "a7ec33957b85e36480ead25ca4e3ba8d2e911bb29f5d0992a68f54a595dd0370",
+        "text": "@dataclass(frozen=True)\nclass RunConfig:\n    ...\n    worker_family: str = \"gpt6\"\n    ...\n    max_jev_tokens: int = 50000\n    ...\n    def __post_init__(self):\n        ...\n        family = FAMILIES[self.worker_family]\n        if self.worker_family == \"claude\":\n            ...\n            # Claude artifacts make Jev states about 1.8x larger than GPT-6 ones\n            # (P0-03 slice 3c), so the untouched Jev token default doubles.\n            if self.max_jev_tokens == 50000:\n                object.__setattr__(self, \"max_jev_tokens\", 100000)\n    ...\n    @classmethod\n    def from_dict(cls, value):\n        _require(type(value) is dict, \"configuration_must_be_object\")\n        allowed = {field.name for field in fields(cls)}\n        _require(all(type(k) is str for k in value) and set(value) <= allowed, \"unknown_configuration_fields\")\n        return cls(**value)"
+      },
+      {
+        "id": "command",
+        "hash": "72fd1eeecb7d9f428957a30434802d5fc0224ad599ef40c60fabf29fe31b9cf0",
+        "text": "Config file run.json: {\"worker_family\": \"claude\", \"max_cumulative_usd\": 2.0, \"max_jev_tokens\": 50000, \"max_usd\": 0.4}\nCommand: python scripts/native_transition_broker.py --task t.json --out runs/x --host claude --config run.json --max-cumulative-usd 0.5 --live"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 26,
+      "jev_tokens_remaining": 87155,
+      "jev_api_usd_remaining": 0.999470212,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "697d5d064a36ea1b515fd9a0445126cc541d030b35cf6dd16b4d60c008d438a3"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

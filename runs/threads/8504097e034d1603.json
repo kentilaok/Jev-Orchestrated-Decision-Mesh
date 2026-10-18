@@ -1,0 +1,1651 @@
+{
+  "thread_id": "8504097e034d1603",
+  "created": 1791956074,
+  "turns": [
+    {
+      "ts": 1791956074,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791956074,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791956092,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791956092,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791959115,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791959115,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791962523,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791962523,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791962720,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791962720,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791962803,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791962803,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964139,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964139,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964349,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964350,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964426,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964426,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964589,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964589,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964722,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964722,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964932,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791964933,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791965251,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791965251,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966210,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966211,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966241,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966241,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966658,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966658,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966687,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791966688,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967381,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967381,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967447,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967447,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967472,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967472,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967501,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791967502,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791969656,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791969656,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791970417,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791970418,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791972786,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791972786,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791972883,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791972883,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791974869,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791974869,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791974946,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791974946,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791975202,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791975203,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791977868,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791977868,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791980598,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791980598,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791980658,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791980658,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791980860,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791980860,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791981639,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791981639,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791981729,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791981729,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791982289,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791982290,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791982323,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791982323,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791982503,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791982503,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791983341,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791983341,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791983410,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791983410,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791989012,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791989013,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990708,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990708,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990771,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990771,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990798,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990799,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990831,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990831,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990928,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791990928,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791991502,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791991502,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791992482,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791992482,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791992623,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791992623,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791998276,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791998277,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791998740,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791998740,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791998971,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791998971,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791999076,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791999076,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791999473,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791999473,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791999992,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1791999992,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792000573,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792000573,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792001949,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792001949,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792002030,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792002030,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792003388,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792003388,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792003894,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792003895,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792004255,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792004255,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792004592,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792004592,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792006628,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792006628,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792006812,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792006812,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792006919,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792006920,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792020833,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792020833,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792033973,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792033973,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792034736,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792034736,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792036848,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792036848,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792047308,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792047308,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792047985,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792047985,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792048167,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792048168,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792049878,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792049878,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792050860,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792050861,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051277,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051278,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051305,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051305,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051335,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051335,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051393,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792051394,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059492,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059492,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059518,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059518,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059542,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059542,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059665,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792059665,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792060833,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792060833,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792062368,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792062368,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792063371,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792063371,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792063747,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792063747,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792063910,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792063910,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792066935,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792066935,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792115499,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792115499,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792115526,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792115526,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792115765,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792115766,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792116230,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792116230,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792116262,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792116262,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792116527,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792116527,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117162,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117162,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117303,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117303,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117685,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117685,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117817,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792117817,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792119805,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792119805,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792119895,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792119896,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792120965,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792120965,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792121825,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792121826,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792121841,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792121841,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792121860,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792121861,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792122046,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792122046,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792122083,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792122083,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792175218,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792175218,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792176281,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792176281,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792179651,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792179651,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792179695,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792179695,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792217906,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792217906,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792218473,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792218473,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792300534,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792300534,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792300560,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792300560,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792300597,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792300597,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792301540,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792301541,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792301753,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792301753,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792302071,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792302071,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792302107,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792302107,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792307875,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792307875,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792331920,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792331920,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792332489,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792332489,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792333697,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792333698,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792333732,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792333732,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792333786,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792333786,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792335459,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792335459,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792336199,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792336199,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792336565,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792336565,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792337640,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792337640,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792338661,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792338661,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792342231,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792342232,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792342600,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792342600,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792346463,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792346463,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792347293,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792347293,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792347928,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792347928,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792347969,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792347969,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792348040,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792348040,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792353856,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    },
+    {
+      "ts": 1792353856,
+      "goal": "Summarise what you would do for this task.",
+      "provider": "claude",
+      "gate_policy": "recovery"
+    }
+  ],
+  "last_turn": 1792353856
+}

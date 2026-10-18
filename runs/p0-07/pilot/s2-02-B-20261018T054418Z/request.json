@@ -1,0 +1,13 @@
+{
+  "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+  "context": "",
+  "sources": {
+    "ledger": {
+      "title": "permits.jsonl (excerpt)",
+      "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

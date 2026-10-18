@@ -1,0 +1,1 @@
+{"answer":"billing = \"subscription\" (authMethod is \"claude.ai\"); warnings has 1 entry, since ANTHROPIC_API_KEY is set and non-empty, triggering the \"ANTHROPIC_API_KEY is set; Claude Code may bill the API key instead of the subscription.\" warning.","calls":1,"route":"short_self_contained","status":"complete"}

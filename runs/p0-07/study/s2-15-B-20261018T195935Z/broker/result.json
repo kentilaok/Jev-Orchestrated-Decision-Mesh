@@ -1,0 +1,1010 @@
+{
+  "status": "failed",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "10ca4aea530ceb6691880270f303d15f0b9a52d1abb006fdbc826efacd77b7b2",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "10ca4aea530ceb6691880270f303d15f0b9a52d1abb006fdbc826efacd77b7b2",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+    "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "compute",
+      "usage": {
+        "input_tokens": 1514,
+        "output_tokens": 31,
+        "total_tokens": 1545,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 6.3588e-05
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 2225,
+        "output_tokens": 50,
+        "total_tokens": 2275,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 9.345e-05
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 4001,
+        "output_tokens": 90,
+        "total_tokens": 4091,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000168042
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "status": "failed",
+      "error_type": "ClaudeCliError",
+      "usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "usage_status": "reported_before_rejection"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+            "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+          }
+        },
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    }
+  ],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "e9e239e9d8e5424fb85731e47b6bca7e50a1528ecf1e89001451ad4efe8dbe0b",
+      "state": {
+        "goal": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "code",
+            "title": "scripts/jev_decide.py excerpt (probability checks)"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+            "text": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that."
+          },
+          {
+            "id": "code",
+            "hash": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+            "text": "TOLERANCE = 0.001\n...\ndef distribution(value, keys, warnings, question_id):\n    require(isinstance(value, dict) and set(value) == set(keys), \"invalid_probability_options\")\n    require(all(number(p, 0, 1) for p in value.values()), \"invalid_probability_value\")\n    total = sum(value.values())\n    difference, allowed = abs(total - 1), min(0.02, 0.005 * len(keys))\n    require(difference <= allowed + 1e-12, \"invalid_probability_sum\")\n    if difference > TOLERANCE:\n        warnings.append({\"code\": \"probability_sum_rounding\", \"question_id\": question_id,\n    ...\n        require(number(answer.get(\"confidence\"), 0, 1), \"invalid_confidence\")\n        keys = question[\"criteria\"] if kind == \"choice\" else [str(i) for i in range(len(question[\"criteria\"]))]\n        probabilities = answer.get(\"probabilities\")\n        distribution(probabilities, keys, warnings, name)\n        if kind == \"choice\":\n            choice = answer.get(\"choice\")\n            require(isinstance(choice, str) and choice in keys, \"invalid_choice_value\")\n            require(probabilities[choice] + TOLERANCE >= max(probabilities.values()), \"choice_not_most_probable\")"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "compute": 0.96,
+          "stop": 0.04
+        },
+        "confidence": 0.92,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 1514,
+          "output_tokens": 31,
+          "total_tokens": 1545,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 6.3588e-05
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": null
+      },
+      "action_hash": "36da092d43000ec810bfb06b00cfc7be600f3a1d82357bb40af3840fccb3bc72",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+            "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+          }
+        },
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "e9e239e9d8e5424fb85731e47b6bca7e50a1528ecf1e89001451ad4efe8dbe0b",
+      "state": {
+        "goal": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "code",
+            "title": "scripts/jev_decide.py excerpt (probability checks)"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+            "text": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that."
+          },
+          {
+            "id": "code",
+            "hash": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+            "text": "TOLERANCE = 0.001\n...\ndef distribution(value, keys, warnings, question_id):\n    require(isinstance(value, dict) and set(value) == set(keys), \"invalid_probability_options\")\n    require(all(number(p, 0, 1) for p in value.values()), \"invalid_probability_value\")\n    total = sum(value.values())\n    difference, allowed = abs(total - 1), min(0.02, 0.005 * len(keys))\n    require(difference <= allowed + 1e-12, \"invalid_probability_sum\")\n    if difference > TOLERANCE:\n        warnings.append({\"code\": \"probability_sum_rounding\", \"question_id\": question_id,\n    ...\n        require(number(answer.get(\"confidence\"), 0, 1), \"invalid_confidence\")\n        keys = question[\"criteria\"] if kind == \"choice\" else [str(i) for i in range(len(question[\"criteria\"]))]\n        probabilities = answer.get(\"probabilities\")\n        distribution(probabilities, keys, warnings, name)\n        if kind == \"choice\":\n            choice = answer.get(\"choice\")\n            require(isinstance(choice, str) and choice in keys, \"invalid_choice_value\")\n            require(probabilities[choice] + TOLERANCE >= max(probabilities.values()), \"choice_not_most_probable\")"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "candidate": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+              "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+            }
+          },
+          "source_ids": [
+            "request",
+            "code"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.08,
+          "forward": 0.76,
+          "repair": 0.15,
+          "retrieve_evidence": 0.01
+        },
+        "confidence": 0.68,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 2225,
+          "output_tokens": 50,
+          "total_tokens": 2275,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 9.345e-05
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "post_worker_decision",
+      "version": 0,
+      "simulation": false,
+      "unit_id": "input",
+      "choice": "forward",
+      "gate_id": "e4",
+      "candidate_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e6",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "input",
+        "candidate_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+        "check_hash": null,
+        "successor": "hidden1",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "7bd5e9c88842e4ad3607d7b301d7e7caca3c37841f6b7913f91dfe1b10b84d37",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e7",
+      "kind": "checked_commit",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "input",
+      "packet": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+              "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+            }
+          },
+          "source_ids": [
+            "request",
+            "code"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e4"
+    },
+    {
+      "id": "e8",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "input",
+      "value": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+              "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+            }
+          },
+          "source_ids": [
+            "request",
+            "code"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e9",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "7157c39d6ddbee80f44eb2f1d2461f5ffd0c550ea4196519168dcf0afda439cd",
+      "state": {
+        "goal": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "code",
+            "title": "scripts/jev_decide.py excerpt (probability checks)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "code"
+            ],
+            "data": {
+              "summary": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+                "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+              }
+            },
+            "artifact_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+            "text": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that."
+          },
+          {
+            "id": "code",
+            "hash": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+            "text": "TOLERANCE = 0.001\n...\ndef distribution(value, keys, warnings, question_id):\n    require(isinstance(value, dict) and set(value) == set(keys), \"invalid_probability_options\")\n    require(all(number(p, 0, 1) for p in value.values()), \"invalid_probability_value\")\n    total = sum(value.values())\n    difference, allowed = abs(total - 1), min(0.02, 0.005 * len(keys))\n    require(difference <= allowed + 1e-12, \"invalid_probability_sum\")\n    if difference > TOLERANCE:\n        warnings.append({\"code\": \"probability_sum_rounding\", \"question_id\": question_id,\n    ...\n        require(number(answer.get(\"confidence\"), 0, 1), \"invalid_confidence\")\n        keys = question[\"criteria\"] if kind == \"choice\" else [str(i) for i in range(len(question[\"criteria\"]))]\n        probabilities = answer.get(\"probabilities\")\n        distribution(probabilities, keys, warnings, name)\n        if kind == \"choice\":\n            choice = answer.get(\"choice\")\n            require(isinstance(choice, str) and choice in keys, \"invalid_choice_value\")\n            require(probabilities[choice] + TOLERANCE >= max(probabilities.values()), \"choice_not_most_probable\")"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.02,
+          "opus_low": 0.53,
+          "opus_medium": 0.05,
+          "opus_xhigh": 0.01,
+          "sonnet_high": 0.01,
+          "sonnet_low": 0.35,
+          "sonnet_medium": 0.03,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.46,
+        "api_event": "call-3",
+        "usage": {
+          "input_tokens": 4001,
+          "output_tokens": 90,
+          "total_tokens": 4091,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000168042
+        }
+      }
+    },
+    {
+      "id": "e10",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden1",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "input",
+            "hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "791a71784af8d59e0df25f85a0333579b99e34609558c1b264e718adaddbdd98",
+      "gate_id": "e9"
+    },
+    {
+      "id": "e11",
+      "kind": "halt",
+      "version": 1,
+      "simulation": false,
+      "error": "MeshError: native_codex_call_failed"
+    }
+  ],
+  "recovery_rounds": {},
+  "error": "native_codex_call_failed",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 3,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 0,
+    "frontier_output_tokens": 0,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0.00032508,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "2eb66f8b946e55305b685e19564e82f82518b4e4c73b8c2d834ffc81ac0c92c8",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00028865,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1514,
+        "output_tokens": 31,
+        "total_tokens": 1545,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 6.3588e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1514,
+        "output_tokens": 31,
+        "cost": 6.3588e-05
+      },
+      "latency_ms": 641.0,
+      "provider_request_id": "gen-dec-1792353576-SXrXbK65Urb3jG8cdNQd",
+      "started_at": "2026-10-18T19:59:35.218Z",
+      "ended_at": "2026-10-18T19:59:35.850Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "61073ea113c5b0300e039cb798dfcfce760a58eb2efc43550dec9fb4096e1532",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00036775,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2225,
+        "output_tokens": 50,
+        "total_tokens": 2275,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 9.345e-05
+      },
+      "usage_raw": {
+        "input_tokens": 2225,
+        "output_tokens": 50,
+        "cost": 9.345e-05
+      },
+      "latency_ms": 609.0,
+      "provider_request_id": "gen-dec-1792353577-Pzblrbf0kBW9Ij43bkTC",
+      "started_at": "2026-10-18T19:59:35.854Z",
+      "ended_at": "2026-10-18T19:59:36.461Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "f7f621b06b1729b991fd21200f53fcac7af3c87aaeb43dcc42b29abc5a8c2f0c",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00050155,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4001,
+        "output_tokens": 90,
+        "total_tokens": 4091,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000168042
+      },
+      "usage_raw": {
+        "input_tokens": 4001,
+        "output_tokens": 90,
+        "cost": 0.000168042
+      },
+      "latency_ms": 625.0,
+      "provider_request_id": "gen-dec-1792353577-03jz126DvMNAaNdTeG6p",
+      "started_at": "2026-10-18T19:59:36.465Z",
+      "ended_at": "2026-10-18T19:59:37.089Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    }
+  ]
+}

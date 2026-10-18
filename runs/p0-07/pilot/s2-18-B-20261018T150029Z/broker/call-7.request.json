@@ -1,0 +1,345 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "calculate is given expressions of the form \"1+1+...+1\" (n ones, no spaces). What is the largest n for which it returns a value instead of raising expression_too_complex? Use CPython 3.11+ ast semantics.",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/atomic_mesh.py excerpt (calculate)"
+      },
+      {
+        "id": "ast",
+        "title": "Python ast note"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "ast"
+        ],
+        "data": {
+          "summary": "calculate is given expressions of the form \"1+1+...+1\" (n ones, no spaces). What is the largest n for which it returns a value instead of raising expression_too_complex? Use CPython 3.11+ ast semantics.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "928daca65d0cc30dd43b124fb70ad64968ff7d5200cb71393d81b764bdabd160",
+            "code": "7cf3047662b9a5ef67e1f3bdf66c3117037760884e405b2586b63b48b5885c5b",
+            "ast": "e7802dec8808a2905cc8706ae9d6b5d9bd8adaeb1e2a51a9d778a1b77eab3277"
+          }
+        },
+        "artifact_hash": "6b89e9e25bb45af5a1a3773045f441eece1b8f91a9cb2137d5a8836c3148ef30",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Largest n is 10. Node count is 3n-1 (Expression + n Constants + (n-1) BinOps + (n-1) Add nodes): n=10 gives 29 nodes and passes the <=30 guard, n=11 gives 32 and raises expression_too_complex. The length and range guards are not binding.",
+        "source_ids": [
+          "request",
+          "code",
+          "ast"
+        ],
+        "data": {
+          "summary": "For \"1+1+...+1\" with n ones, ast.walk yields 3n-1 nodes (Expression + n Constant + (n-1) BinOp + (n-1) Add); the <=30 guard passes at n=10 (29 nodes) and fails at n=11 (32), so the largest n returning a value is 10.",
+          "claims": [
+            "Node count is 1 Expression + n Constant + (n-1) BinOp + (n-1) Add operator node = 3n-1; the ast note confirms ast.walk includes operator nodes such as Add, and Constant carries no ctx.",
+            "Guard len(list(ast.walk(tree))) <= 30 gives 3n-1 <= 30, i.e. n <= 10 (n=10 -> 29 nodes; n=11 -> 32 nodes raises expression_too_complex).",
+            "Answer: largest n is 10.",
+            "The length guard 0 < len(expression) <= 120 is not binding: n=10 is 19 characters.",
+            "The arithmetic_out_of_range guard (finite, abs <= 1e12) is not binding: the computed value is 10.",
+            "Assumes CPython's left-associative parsing of chained '+', which yields the stated BinOp/operator counts.",
+            "Assumes no additional nodes reachable through fields for this expression shape (no Load/ctx nodes)."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "6b89e9e25bb45af5a1a3773045f441eece1b8f91a9cb2137d5a8836c3148ef30"
+          ],
+          "source_hashes": {
+            "ast": "e7802dec8808a2905cc8706ae9d6b5d9bd8adaeb1e2a51a9d778a1b77eab3277",
+            "code": "7cf3047662b9a5ef67e1f3bdf66c3117037760884e405b2586b63b48b5885c5b",
+            "request": "928daca65d0cc30dd43b124fb70ad64968ff7d5200cb71393d81b764bdabd160"
+          }
+        },
+        "artifact_hash": "0a401c6885ab354a4a4068d5677e8bdc8518851e75d5493cee84d4b1a169d8b2",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Largest n is 10. Node count is 3n-1 (Expression + n Constants + (n-1) BinOps + (n-1) Add nodes): n=10 gives 29 nodes and passes the <=30 guard, n=11 gives 32 and raises expression_too_complex. The length and range guards are not binding.",
+        "source_ids": [
+          "request",
+          "code",
+          "ast"
+        ],
+        "data": {
+          "summary": "For \"1+1+...+1\" with n ones, ast.walk yields 3n-1 nodes (Expression + n Constant + (n-1) BinOp + (n-1) Add); the <=30 guard passes at n=10 (29 nodes) and fails at n=11 (32 nodes), so the largest n returning a value is 10.",
+          "claims": [
+            "Node count is 1 Expression + n Constant + (n-1) BinOp + (n-1) Add operator nodes = 3n-1; the ast note confirms ast.walk includes operator nodes such as Add, and Constant carries no ctx.",
+            "Guard len(list(ast.walk(tree))) <= 30 gives 3n-1 <= 30, i.e. n <= 10 (n=10 -> 29 nodes; n=11 -> 32 nodes raises expression_too_complex).",
+            "Answer: largest n is 10.",
+            "The length guard 0 < len(expression) <= 120 is not binding: n=10 is 19 characters.",
+            "The arithmetic_out_of_range guard (finite, abs <= 1e12) is not binding: the computed value is 10.",
+            "Assumes CPython's left-associative parsing of chained '+', which yields the stated BinOp/operator counts.",
+            "Assumes no additional nodes reachable through fields for this expression shape (no Load/ctx nodes)."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "0a401c6885ab354a4a4068d5677e8bdc8518851e75d5493cee84d4b1a169d8b2"
+          ],
+          "source_hashes": {
+            "ast": "e7802dec8808a2905cc8706ae9d6b5d9bd8adaeb1e2a51a9d778a1b77eab3277",
+            "code": "7cf3047662b9a5ef67e1f3bdf66c3117037760884e405b2586b63b48b5885c5b",
+            "request": "928daca65d0cc30dd43b124fb70ad64968ff7d5200cb71393d81b764bdabd160"
+          }
+        },
+        "artifact_hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "928daca65d0cc30dd43b124fb70ad64968ff7d5200cb71393d81b764bdabd160",
+        "text": "calculate is given expressions of the form \"1+1+...+1\" (n ones, no spaces). What is the largest n for which it returns a value instead of raising expression_too_complex? Use CPython 3.11+ ast semantics."
+      },
+      {
+        "id": "code",
+        "hash": "7cf3047662b9a5ef67e1f3bdf66c3117037760884e405b2586b63b48b5885c5b",
+        "text": "def calculate(expression):\n    require(isinstance(expression, str) and 0 < len(expression) <= 120, 'invalid_expression')\n    ...\n        tree = ast.parse(expression, mode='eval')\n    ...\n    require(len(list(ast.walk(tree))) <= 30, 'expression_too_complex')\n    operations = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul, ast.Div: operator.truediv}\n    def visit(node):\n        if isinstance(node, ast.Constant) and type(node.value) in (int, float):\n            ...\n                value = Fraction(ast.get_source_segment(expression,node).replace('_',''))\n            ...\n        elif isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.USub, ast.UAdd)):\n            value = visit(node.operand) * (-1 if isinstance(node.op, ast.USub) else 1)\n        elif isinstance(node, ast.BinOp) and type(node.op) in operations:\n            ...\n                value = operations[type(node.op)](visit(node.left), visit(node.right))\n            ...\n        else:\n            raise MeshError('operation_not_allowed')\n        require(math.isfinite(value) and abs(value) <= 1e12, 'arithmetic_out_of_range')\n        return value\n    return visit(tree.body)"
+      },
+      {
+        "id": "ast",
+        "hash": "e7802dec8808a2905cc8706ae9d6b5d9bd8adaeb1e2a51a9d778a1b77eab3277",
+        "text": "ast.parse(\"1+1\", mode=\"eval\") gives Expression(body=BinOp(left=Constant(1), op=Add(), right=Constant(1))). ast.walk yields every node reachable through fields, including operator nodes such as Add."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 24,
+      "jev_tokens_remaining": 79326,
+      "jev_api_usd_remaining": 0.99914761,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "810edcb1fcc60e93d04f03f5a36bb99a47a2cf8024f876e399c0107c2f42cbcd"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

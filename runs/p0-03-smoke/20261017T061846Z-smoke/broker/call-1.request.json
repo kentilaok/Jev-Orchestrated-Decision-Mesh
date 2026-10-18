@@ -1,0 +1,84 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "records",
+        "title": "Synthetic production records"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+        "text": "Report production defects per 1,000 items, excluding trial records, with source support."
+      },
+      {
+        "id": "records",
+        "hash": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5",
+        "text": "segment A, kind production, items 240, defects 12\nsegment B, kind production, items 160, defects 8\nsegment T, kind trial, items 100, defects 30"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 30,
+      "jev_tokens_remaining": 50000,
+      "jev_api_usd_remaining": 1.0,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

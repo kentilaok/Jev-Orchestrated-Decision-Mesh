@@ -1,0 +1,20 @@
+{
+  "goal": "The Claude CLI returns usage {\"input_tokens\": 5, \"cache_read_input_tokens\": -2} (no output_tokens key). Which ClaudeCliError code does _usage raise?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/claude_cli_adapter.py excerpt",
+      "text": "def _count(value):\n    if type(value) is not int or value < 0:\n        raise ClaudeCliError(\"invalid_usage_counter\")\n    return value\n\n\ndef _usage(raw):\n    if not isinstance(raw, dict):\n        return None\n    uncached = _count(raw.get(\"input_tokens\", 0))\n    write = _count(raw.get(\"cache_creation_input_tokens\", 0))\n    read = _count(raw.get(\"cache_read_input_tokens\", 0))\n    output = _count(raw.get(\"output_tokens\", 0))\n    if \"input_tokens\" not in raw or \"output_tokens\" not in raw:\n        raise ClaudeCliError(\"missing_usage_counter\")\n    return {\"input_tokens\": uncached + write + read, \"cached_input_tokens\": read,\n            \"cache_write_input_tokens\": write, \"output_tokens\": output,\n            \"reasoning_output_tokens\": None,\n            \"semantics\": \"input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)\"}"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "5f9b9d5af9f4e19814c5ed215732eed08419669d61453713127ce3734e1b445e",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

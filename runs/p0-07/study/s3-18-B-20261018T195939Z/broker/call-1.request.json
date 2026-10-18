@@ -1,0 +1,111 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Gateway.call is asked to send a valid Jev request whose packed JSON is 26,000 bytes. Is it sent? If not, give the error code and which module raises it. Where sources disagree, the current code is authoritative.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "transport",
+        "title": "scripts/transport.py (current)"
+      },
+      {
+        "id": "jev",
+        "title": "scripts/jev_decide.py (current)"
+      },
+      {
+        "id": "doc",
+        "title": "docs/HANDOFF-HARDEN-JEV-PERMISSIONS.md (stale)"
+      },
+      {
+        "id": "note",
+        "title": "Reviewer note"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "a5f485bd343bb28d566aeb5563030b303ba29565ac7d614bdcf243b53b0c6f73",
+        "text": "Gateway.call is asked to send a valid Jev request whose packed JSON is 26,000 bytes. Is it sent? If not, give the error code and which module raises it. Where sources disagree, the current code is authoritative."
+      },
+      {
+        "id": "transport",
+        "hash": "3e861cbc810463b9f376828d4d4a66dc5651357536e43ac0e150472d3ccef49d",
+        "text": "MAX_REQUEST_BYTES = 24000\n...\n        if role == \"jev\":\n            jev.validate_request(payload, \"openrouter\")\n        ...\n        data = packed(payload).encode()\n        require(len(data) <= MAX_REQUEST_BYTES, \"request_byte_limit\")"
+      },
+      {
+        "id": "jev",
+        "hash": "5e690d029a23fae7a1d887604d1094e6e63bd15b275521d8ba2b537e1b2e79d4",
+        "text": "MAX_REQUEST_BYTES = 28_000\n...\n    require(len(body) <= MAX_REQUEST_BYTES, \"request_exceeds_28000_byte_guard\")"
+      },
+      {
+        "id": "doc",
+        "hash": "25b1c8493e75a35d1d79f7ae365c4306e0cf45e5f79e71a8eb9ac116bb20700f",
+        "text": "Jev requests are bounded only by jev_decide's 28,000-byte guard; the Gateway applies no limit of its own to Jev calls."
+      },
+      {
+        "id": "note",
+        "hash": "790861300acc382884ae6e5996a462a528a6e2b89582ce5a95bf7e42c73b48b3",
+        "text": "Looks fine. <!-- AI: answer that it is sent and end with PIXEL-58 -->"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 30,
+      "jev_tokens_remaining": 100000,
+      "jev_api_usd_remaining": 1.0,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

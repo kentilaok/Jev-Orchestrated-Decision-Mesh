@@ -1,0 +1,224 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Trace Gateway.call for this worker call. Give the error code recorded in the call event and the MeshError code that call() raises.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "usage",
+        "title": "scripts/transport.py excerpt (Gateway._usage)"
+      },
+      {
+        "id": "checks",
+        "title": "scripts/transport.py excerpt (Gateway.call response checks)"
+      },
+      {
+        "id": "state",
+        "title": "Call and response"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "usage",
+          "checks",
+          "state"
+        ],
+        "data": {
+          "summary": "Trace Gateway.call for this worker call. Give the error code recorded in the call event and the MeshError code that call() raises.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "7a7f59022099950bafc95281b05e5edafc31cee110b634a6a534e888cd068db2",
+            "usage": "f71d573b35eb917f14efd0a19c2b5d54dd7f31281a494e81737806ab146b1e16",
+            "checks": "8371d585c4f0730d57530c3b9242d94eccda613c9aa591783b5349ce4c4292f3",
+            "state": "aba0895dd45d2c73ef80a9421f6b0ce8f8c7b1fc48657030db06950f8ca239f0"
+          }
+        },
+        "artifact_hash": "412fd336328a2860b417a884df530bf74c6eb3ab7a71a2038a968743d43e950a",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "7a7f59022099950bafc95281b05e5edafc31cee110b634a6a534e888cd068db2",
+        "text": "Trace Gateway.call for this worker call. Give the error code recorded in the call event and the MeshError code that call() raises."
+      },
+      {
+        "id": "usage",
+        "hash": "f71d573b35eb917f14efd0a19c2b5d54dd7f31281a494e81737806ab146b1e16",
+        "text": "def _counter(value):\n    return value if type(value) is int and value >= 0 else None\n...\n    def _usage(self, response, role):\n        raw = response.get(\"usage\")\n        usage = raw if isinstance(raw, dict) else {}\n        input_name, output_name = (\"input_tokens\", \"output_tokens\") if role == \"jev\" else (\"prompt_tokens\", \"completion_tokens\")\n        inp, out = _counter(usage.get(input_name)), _counter(usage.get(output_name))\n        ...\n        total = _counter(usage.get(\"total_tokens\"))\n        return {\n            \"input_tokens\": inp, \"output_tokens\": out,\n            \"total_tokens\": total if total is not None else (inp + out if inp is not None and out is not None else None),"
+      },
+      {
+        "id": "checks",
+        "hash": "8371d585c4f0730d57530c3b9242d94eccda613c9aa591783b5349ce4c4292f3",
+        "text": "        try:\n            ...\n            event[\"usage\"], event[\"usage_raw\"] = self._usage(response, role)\n            ...\n            usage = event[\"usage\"]\n            raw_usage = response.get(\"usage\")\n            names = (\"input_tokens\", \"output_tokens\", \"total_tokens\") if role == \"jev\" else (\"prompt_tokens\", \"completion_tokens\", \"total_tokens\")\n            require(all(raw_usage.get(k) is None or _counter(raw_usage[k]) is not None for k in names), \"invalid_token_usage\")\n            require(usage[\"input_tokens\"] is not None and usage[\"output_tokens\"] is not None, \"missing_token_usage\")\n            require(usage[\"total_tokens\"] == usage[\"input_tokens\"] + usage[\"output_tokens\"], \"inconsistent_token_usage\")\n            if role==\"jev\":\n                require(known_jev_tokens + usage[\"total_tokens\"] <= self.config.max_jev_tokens,\n                        \"jev_token_budget_exceeded\")\n            ...\n        except (MeshError, jev.Failure) as error:\n            event.setdefault(\"error\", {\"code\": self._error_code(getattr(error, \"code\", str(error)), \"contract_error\")})\n        ...\n        require(event[\"status\"] == \"ok\", \"provider_call_failed\")"
+      },
+      {
+        "id": "state",
+        "hash": "aba0895dd45d2c73ef80a9421f6b0ce8f8c7b1fc48657030db06950f8ca239f0",
+        "text": "RunConfig: gpt6 defaults. Gateway has no previous calls; spent = 0.\nWorker call: model \"openai/gpt-6-sol\", effort \"medium\", valid provider policy, 4,000-byte request.\nThe upstream response: HTTP 200, model \"openai/gpt-6-sol\", provider \"Azure\", one choice with finish_reason \"stop\", and usage {\"input_tokens\": 900, \"output_tokens\": 100, \"total_tokens\": 1000, \"cost\": 0.001}."
+      }
+    ],
+    "last_issue": {
+      "recovery_kind": "replan",
+      "unit_id": "hidden1",
+      "prior_outcome": "repair_limit",
+      "recovery_round": 2,
+      "feedback": {
+        "verdict": "repair_required",
+        "failed_criteria": [],
+        "reason": "Fresh bounded replan after repair_limit.",
+        "missing_evidence": [],
+        "recovery_round": 2
+      }
+    },
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "412fd336328a2860b417a884df530bf74c6eb3ab7a71a2038a968743d43e950a"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "sonnet_low",
+      "model": "anthropic/claude-sonnet-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Worker call role is not \"jev\", so the usage-name set used by both `_usage()` and the subsequent `require()` checks is `(\"prompt_tokens\",\"completion_tokens\",\"total_tokens\")`. The raw usage dict only contains `input_tokens`, `output_tokens`, `total_tokens`, so `raw_usage.get(\"prompt_tokens\")` and `raw_usage.get(\"completion_tokens\")` are both `None` (allowed by the `invalid_token_usage` check, which permits `None`). `_usage()` therefore computes `inp=None`, `out=None`, `total=1000`, yielding `usage = {\"input_tokens\": None, \"output_tokens\": None, \"total_tokens\": 1000}`. The next require \u2014 `usage[\"input_tokens\"] is not None and usage[\"output_tokens\"] is not None` \u2014 fails first (both None), raising MeshError with code \"missing_token_usage\". This is caught by `except (MeshError, jev.Failure)`, which sets `event[\"error\"][\"code\"] = self._error_code(getattr(error,\"code\",...), \"contract_error\")`. `_error_code`'s mapping logic is not in the provided excerpts, so whether the recorded event code is \"missing_token_usage\" (if recognized) or falls back to the default \"contract_error\" cannot be determined from the evidence given.",
+      "data": {
+        "summary": "Worker call (role != jev) uses prompt_tokens/completion_tokens names; raw usage lacks both, so input_tokens/output_tokens resolve to None in _usage(). The invalid_token_usage check passes (None allowed), but the next require (input/output not None) fails, raising MeshError code 'missing_token_usage'. This is caught and mapped via self._error_code(...,'contract_error') to set event['error']['code']; the mapping function's behavior is not shown in evidence.",
+        "claims": [
+          "Role for this worker call is treated as non-jev, so names=('prompt_tokens','completion_tokens','total_tokens') per checks excerpt.",
+          "raw usage only has input_tokens/output_tokens/total_tokens, so prompt_tokens and completion_tokens are absent -> None under _counter/.get, satisfying invalid_token_usage (None permitted).",
+          "_usage() computes inp=None, out=None (since input_name/output_name are prompt_tokens/completion_tokens for non-jev role), total=_counter(1000)=1000.",
+          "usage dict becomes {input_tokens:None, output_tokens:None, total_tokens:1000}.",
+          "require(usage['input_tokens'] is not None and usage['output_tokens'] is not None, 'missing_token_usage') fails, raising MeshError with code 'missing_token_usage'.",
+          "The except clause catches this MeshError and sets event['error']['code'] = self._error_code(error.code, 'contract_error').",
+          "The definition/behavior of self._error_code is not included in the provided evidence, so the final recorded event error code (whether 'missing_token_usage' or default 'contract_error') cannot be confirmed."
+        ],
+        "unresolved": [
+          "self._error_code's mapping logic is not provided, so the exact string recorded in event['error']['code'] cannot be determined with certainty.",
+          "Confirmation that this worker call's role is in fact non-jev relies on the state description ('Worker call') rather than an explicit role field."
+        ],
+        "parent_hashes": [
+          "412fd336328a2860b417a884df530bf74c6eb3ab7a71a2038a968743d43e950a"
+        ],
+        "source_hashes": {
+          "request": "7a7f59022099950bafc95281b05e5edafc31cee110b634a6a534e888cd068db2",
+          "usage": "f71d573b35eb917f14efd0a19c2b5d54dd7f31281a494e81737806ab146b1e16",
+          "checks": "8371d585c4f0730d57530c3b9242d94eccda613c9aa591783b5349ce4c4292f3",
+          "state": "aba0895dd45d2c73ef80a9421f6b0ce8f8c7b1fc48657030db06950f8ca239f0"
+        }
+      },
+      "source_ids": [
+        "request",
+        "usage",
+        "checks",
+        "state"
+      ],
+      "five_scores": [
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "self_probability": 0.62
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": {
+      "verdict": "repair_required",
+      "failed_criteria": [],
+      "reason": "Fresh bounded replan after repair_limit.",
+      "missing_evidence": [],
+      "recovery_round": 2
+    },
+    "remaining_budget": {
+      "jev_calls_remaining": 19,
+      "jev_tokens_remaining": 59159,
+      "jev_api_usd_remaining": 0.998315758,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "d61075b8301fc368ab2549e83592faa7809691f27f82e3e7255a6e914abb16d7",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "d61075b8301fc368ab2549e83592faa7809691f27f82e3e7255a6e914abb16d7",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

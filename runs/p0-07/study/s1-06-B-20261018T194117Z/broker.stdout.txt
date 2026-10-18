@@ -1,0 +1,1 @@
+{"answer":"calculate(\"1e13 - 1e13\") raises MeshError with code 'arithmetic_out_of_range'. Each constant node (1e13) is visited first; the range check `abs(value) <= 1e12` fails on the literal 1e13 itself (1e13 > 1e12), before the subtraction is ever performed, so the result never reaches 0.","calls":1,"route":"short_self_contained","status":"complete"}

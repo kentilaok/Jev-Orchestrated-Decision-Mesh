@@ -1,0 +1,125 @@
+{
+  "status": "simulated",
+  "mode": "offline_simulation",
+  "simulation": true,
+  "method": "single_gpt_6_sol_high_call",
+  "task_hash": "20bd8062e022aebf93c45b7c5a1459c0c787f2f42467ca39ee6f0b68b94d0673",
+  "model": "openai/gpt-6-sol",
+  "effort": "high",
+  "configuration": {
+    "worker_model": "openai/gpt-6-sol",
+    "worker_effort": "medium",
+    "checker_model": "openai/gpt-6-sol",
+    "checker_effort": "high",
+    "astra_explicitly_authorized": false,
+    "worker_family": "gpt6",
+    "jev_model": "typesafe/jev-1.13",
+    "provider_route": "azure",
+    "provider_name": "Azure",
+    "jev_provider_name": "TypeSafe",
+    "worker_model_aliases": [],
+    "checker_model_aliases": [],
+    "jev_model_aliases": [
+      "typesafe/jev-1.13-20260917"
+    ],
+    "max_usd": 1.5,
+    "max_calls": 40,
+    "max_jev_calls": 30,
+    "max_jev_tokens": 50000,
+    "max_worker_calls": 12,
+    "max_checker_calls": 10,
+    "max_recovery_attempts": 2,
+    "max_verification_attempts": 2,
+    "max_recovery_rounds": 2,
+    "max_output_tokens": 2000,
+    "timeout": 45,
+    "worker_luna_input_usd_per_million": 0.1,
+    "worker_luna_output_usd_per_million": 0.5,
+    "worker_input_usd_per_million": 2.0,
+    "worker_output_usd_per_million": 10.0,
+    "worker_astra_input_usd_per_million": 10.0,
+    "worker_astra_output_usd_per_million": 50.0,
+    "checker_input_usd_per_million": 2.0,
+    "checker_output_usd_per_million": 10.0,
+    "jev_input_usd_per_million": 0.05,
+    "jev_output_usd_per_million": 0.05,
+    "worker_sonnet_input_usd_per_million": 2.0,
+    "worker_sonnet_output_usd_per_million": 10.0,
+    "worker_opus_input_usd_per_million": 5.0,
+    "worker_opus_output_usd_per_million": 25.0
+  },
+  "candidate": {
+    "text": "50.0 defects per 1000 production items; trial records excluded. [records]",
+    "answer": 50.0,
+    "unit": "defects per 1000 production items",
+    "included_segments": [
+      "A",
+      "B"
+    ],
+    "excluded_segments": [
+      "T"
+    ],
+    "source_ids": [
+      "records"
+    ]
+  },
+  "answer": 50.0,
+  "reference_answer": 50.0,
+  "quality_checks": {
+    "response_contract": true,
+    "answer_matches_exact_reference": true,
+    "included_segments_match_scope": true,
+    "excluded_segments_match_scope": true,
+    "unit_matches_task": true,
+    "source_ids_match_evidence": true,
+    "answer_cites_records": true,
+    "trial_exclusion_explained": true
+  },
+  "error_code": null,
+  "calls": [],
+  "usage": null,
+  "reported_cost": null,
+  "training_performed": false,
+  "metrics": {
+    "roles": {
+      "jev": {
+        "calls": 0,
+        "tokens": 0,
+        "cost_usd": 0,
+        "unknown_token_calls": 0,
+        "unknown_cost_calls": 0,
+        "blended_usd_per_million_tokens": null
+      },
+      "worker": {
+        "calls": 0,
+        "tokens": 0,
+        "cost_usd": 0,
+        "unknown_token_calls": 0,
+        "unknown_cost_calls": 0,
+        "blended_usd_per_million_tokens": null
+      },
+      "checker": {
+        "calls": 0,
+        "tokens": 0,
+        "cost_usd": 0,
+        "unknown_token_calls": 0,
+        "unknown_cost_calls": 0,
+        "blended_usd_per_million_tokens": null
+      }
+    },
+    "total_calls": 0,
+    "total_tokens": 0,
+    "total_cost_usd": 0,
+    "orchestration_ratio": null,
+    "worker_calls": 0,
+    "jev_passes": 0,
+    "checker_calls": 0,
+    "escalations": 0,
+    "avoidable_escalations": null,
+    "avoidable_worker_calls": null,
+    "early_exit_selected": false,
+    "early_exit_possible": null,
+    "comparison": null,
+    "accounting_note": "Cached input and reasoning output are subsets of input/output totals; unknown counters are not zero."
+  }
+}

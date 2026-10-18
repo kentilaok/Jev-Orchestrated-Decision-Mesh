@@ -1,0 +1,20 @@
+{
+  "goal": "Using only the source, state exactly what _cost_from_response returns for the response {\"artifact\": {}, \"api_equivalent_cost_usd\": null, \"usage\": {\"api_equivalent_cost_usd\": 0.31}} (JSON null is Python None).",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/frontier_providers.py excerpt",
+      "text": "def _cost_from_usage(usage: Any) -> float | None:\n    ...\n    if not isinstance(usage, dict):\n        return None\n    value = usage.get(\"api_equivalent_cost_usd\")\n    if type(value) not in (int, float) or isinstance(value, bool):\n        return None\n    if not math.isfinite(value) or value < 0:\n        return None\n    return float(value)\n\n\ndef _cost_from_response(response: Any) -> float | None:\n    \"\"\"Cost of a successful adapter response. ClaudeCliAdapter reports\n    `api_equivalent_cost_usd` at the top level; older shapes put it in usage.\"\"\"\n    if isinstance(response, dict) and \"api_equivalent_cost_usd\" in response:\n        return _cost_from_usage({\"api_equivalent_cost_usd\": response[\"api_equivalent_cost_usd\"]})\n    return _cost_from_usage(response.get(\"usage\") if isinstance(response, dict) else None)"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "66fe1604052d4e13b730cd0347f8024fa44e1507abc6f712a7cea57a7c0a93f0",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

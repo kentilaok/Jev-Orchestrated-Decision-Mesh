@@ -1,0 +1,1090 @@
+{
+  "status": "failed",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "191b46127e6bd8dde0e1913ace39b6691309624726af4753492121f9c61e2151",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "191b46127e6bd8dde0e1913ace39b6691309624726af4753492121f9c61e2151",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+    "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+    "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+    "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "compute",
+      "usage": {
+        "input_tokens": 1918,
+        "output_tokens": 31,
+        "total_tokens": 1949,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 8.0556e-05
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 2714,
+        "output_tokens": 50,
+        "total_tokens": 2764,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000113988
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 4434,
+        "output_tokens": 90,
+        "total_tokens": 4524,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000186228
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "status": "failed",
+      "error_type": "ClaudeCliError",
+      "usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "usage_status": "reported_before_rejection"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+            "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff"
+          }
+        },
+        "source_ids": [
+          "request",
+          "roles",
+          "compare",
+          "inputs"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    }
+  ],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "609e700bfb17b39f8f83b9bad32ceef243087d2d28d2efa3890b8e3c07728f4f",
+      "state": {
+        "goal": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "roles",
+            "title": "scripts/metrics.py excerpt (summarize_calls)"
+          },
+          {
+            "id": "compare",
+            "title": "scripts/metrics.py excerpt (comparison)"
+          },
+          {
+            "id": "inputs",
+            "title": "Inputs"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "text": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places)."
+          },
+          {
+            "id": "roles",
+            "hash": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+            "text": "    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]\n        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n    ...\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    ...\n    worker_tokens=roles['worker']['tokens']\n    jev_tokens=roles['jev']['tokens']\n    ratio=(jev_tokens/worker_tokens if jev_tokens is not None and worker_tokens is not None\n           and worker_tokens>0 else None)"
+          },
+          {
+            "id": "compare",
+            "hash": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "text": "    if baseline is not None:\n        baseline_cost=baseline.get('reported_cost')\n        baseline_checks=baseline.get('quality_checks')\n        baseline_pass=(baseline.get('status')=='complete' and isinstance(baseline_checks,dict)\n                       and bool(baseline_checks) and all(baseline_checks.values()))\n        quality_gain=(int(quality_pass)-int(baseline_pass) if type(quality_pass) is bool else None)\n        cost_multiplier=(total_cost/baseline_cost if _nonnegative(total_cost)\n                         and _nonnegative(baseline_cost) and baseline_cost>0 else None)\n        comparison={'baseline_cost_usd':baseline_cost if _nonnegative(baseline_cost) else None,\n                    'cost_multiplier':cost_multiplier,'quality_baseline':baseline_pass,\n                    'quality_cidm':quality_pass,'quality_gain_binary':quality_gain,\n                    'cost_per_quality_gain_usd':((total_cost-baseline_cost)/quality_gain\n                                                  if cost_multiplier is not None and quality_gain is not None\n                                                  and quality_gain>0 else None)}"
+          },
+          {
+            "id": "inputs",
+            "hash": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff",
+            "text": "calls = [{\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.002}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 12000, \"cost\": 0.03}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.01}}]\nbaseline = {\"status\": \"complete\", \"reported_cost\": 0.012, \"quality_checks\": {}}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "compute": 0.88,
+          "stop": 0.12
+        },
+        "confidence": 0.76,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 1918,
+          "output_tokens": 31,
+          "total_tokens": 1949,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 8.0556e-05
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": null
+      },
+      "action_hash": "36da092d43000ec810bfb06b00cfc7be600f3a1d82357bb40af3840fccb3bc72",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+            "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff"
+          }
+        },
+        "source_ids": [
+          "request",
+          "roles",
+          "compare",
+          "inputs"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "609e700bfb17b39f8f83b9bad32ceef243087d2d28d2efa3890b8e3c07728f4f",
+      "state": {
+        "goal": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "roles",
+            "title": "scripts/metrics.py excerpt (summarize_calls)"
+          },
+          {
+            "id": "compare",
+            "title": "scripts/metrics.py excerpt (comparison)"
+          },
+          {
+            "id": "inputs",
+            "title": "Inputs"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "text": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places)."
+          },
+          {
+            "id": "roles",
+            "hash": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+            "text": "    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]\n        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n    ...\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    ...\n    worker_tokens=roles['worker']['tokens']\n    jev_tokens=roles['jev']['tokens']\n    ratio=(jev_tokens/worker_tokens if jev_tokens is not None and worker_tokens is not None\n           and worker_tokens>0 else None)"
+          },
+          {
+            "id": "compare",
+            "hash": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "text": "    if baseline is not None:\n        baseline_cost=baseline.get('reported_cost')\n        baseline_checks=baseline.get('quality_checks')\n        baseline_pass=(baseline.get('status')=='complete' and isinstance(baseline_checks,dict)\n                       and bool(baseline_checks) and all(baseline_checks.values()))\n        quality_gain=(int(quality_pass)-int(baseline_pass) if type(quality_pass) is bool else None)\n        cost_multiplier=(total_cost/baseline_cost if _nonnegative(total_cost)\n                         and _nonnegative(baseline_cost) and baseline_cost>0 else None)\n        comparison={'baseline_cost_usd':baseline_cost if _nonnegative(baseline_cost) else None,\n                    'cost_multiplier':cost_multiplier,'quality_baseline':baseline_pass,\n                    'quality_cidm':quality_pass,'quality_gain_binary':quality_gain,\n                    'cost_per_quality_gain_usd':((total_cost-baseline_cost)/quality_gain\n                                                  if cost_multiplier is not None and quality_gain is not None\n                                                  and quality_gain>0 else None)}"
+          },
+          {
+            "id": "inputs",
+            "hash": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff",
+            "text": "calls = [{\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.002}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 12000, \"cost\": 0.03}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.01}}]\nbaseline = {\"status\": \"complete\", \"reported_cost\": 0.012, \"quality_checks\": {}}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "candidate": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+              "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+              "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+              "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff"
+            }
+          },
+          "source_ids": [
+            "request",
+            "roles",
+            "compare",
+            "inputs"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.01,
+          "forward": 0.95,
+          "repair": 0.03,
+          "retrieve_evidence": 0.01
+        },
+        "confidence": 0.93,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 2714,
+          "output_tokens": 50,
+          "total_tokens": 2764,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000113988
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "post_worker_decision",
+      "version": 0,
+      "simulation": false,
+      "unit_id": "input",
+      "choice": "forward",
+      "gate_id": "e4",
+      "candidate_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e6",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "input",
+        "candidate_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+        "check_hash": null,
+        "successor": "hidden1",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "c041206194136e376e64cb6ebabe51109c938889da08f39146935974227c1ca0",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e7",
+      "kind": "checked_commit",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "input",
+      "packet": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+              "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+              "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+              "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff"
+            }
+          },
+          "source_ids": [
+            "request",
+            "roles",
+            "compare",
+            "inputs"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e4"
+    },
+    {
+      "id": "e8",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "input",
+      "value": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+              "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+              "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+              "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff"
+            }
+          },
+          "source_ids": [
+            "request",
+            "roles",
+            "compare",
+            "inputs"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e9",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "9617ccb447059ec9336d3170609c449a0350a7043958fb8c9966f889f2b1ed10",
+      "state": {
+        "goal": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "roles",
+            "title": "scripts/metrics.py excerpt (summarize_calls)"
+          },
+          {
+            "id": "compare",
+            "title": "scripts/metrics.py excerpt (comparison)"
+          },
+          {
+            "id": "inputs",
+            "title": "Inputs"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "roles",
+              "compare",
+              "inputs"
+            ],
+            "data": {
+              "summary": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+                "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+                "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+                "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff"
+              }
+            },
+            "artifact_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "text": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places)."
+          },
+          {
+            "id": "roles",
+            "hash": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+            "text": "    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]\n        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n    ...\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    ...\n    worker_tokens=roles['worker']['tokens']\n    jev_tokens=roles['jev']['tokens']\n    ratio=(jev_tokens/worker_tokens if jev_tokens is not None and worker_tokens is not None\n           and worker_tokens>0 else None)"
+          },
+          {
+            "id": "compare",
+            "hash": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "text": "    if baseline is not None:\n        baseline_cost=baseline.get('reported_cost')\n        baseline_checks=baseline.get('quality_checks')\n        baseline_pass=(baseline.get('status')=='complete' and isinstance(baseline_checks,dict)\n                       and bool(baseline_checks) and all(baseline_checks.values()))\n        quality_gain=(int(quality_pass)-int(baseline_pass) if type(quality_pass) is bool else None)\n        cost_multiplier=(total_cost/baseline_cost if _nonnegative(total_cost)\n                         and _nonnegative(baseline_cost) and baseline_cost>0 else None)\n        comparison={'baseline_cost_usd':baseline_cost if _nonnegative(baseline_cost) else None,\n                    'cost_multiplier':cost_multiplier,'quality_baseline':baseline_pass,\n                    'quality_cidm':quality_pass,'quality_gain_binary':quality_gain,\n                    'cost_per_quality_gain_usd':((total_cost-baseline_cost)/quality_gain\n                                                  if cost_multiplier is not None and quality_gain is not None\n                                                  and quality_gain>0 else None)}"
+          },
+          {
+            "id": "inputs",
+            "hash": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff",
+            "text": "calls = [{\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.002}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 12000, \"cost\": 0.03}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.01}}]\nbaseline = {\"status\": \"complete\", \"reported_cost\": 0.012, \"quality_checks\": {}}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.01,
+          "opus_low": 0.53,
+          "opus_medium": 0.04,
+          "opus_xhigh": 0.01,
+          "sonnet_high": 0,
+          "sonnet_low": 0.39,
+          "sonnet_medium": 0.02,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.46,
+        "api_event": "call-3",
+        "usage": {
+          "input_tokens": 4434,
+          "output_tokens": 90,
+          "total_tokens": 4524,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000186228
+        }
+      }
+    },
+    {
+      "id": "e10",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden1",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "input",
+            "hash": "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "59318660d988c6e9971a924c8d3524d4983671f44377a0422ecdac675315cb7c",
+      "gate_id": "e9"
+    },
+    {
+      "id": "e11",
+      "kind": "halt",
+      "version": 1,
+      "simulation": false,
+      "error": "MeshError: native_codex_call_failed"
+    }
+  ],
+  "recovery_rounds": {},
+  "error": "native_codex_call_failed",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 3,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 0,
+    "frontier_output_tokens": 0,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0.00038077200000000003,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "60c490cd916867cf8b4e9e24930cfc5ccbe5181e6e0caf59064e26314d2cba16",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0003501,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1918,
+        "output_tokens": 31,
+        "total_tokens": 1949,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 8.0556e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1918,
+        "output_tokens": 31,
+        "cost": 8.0556e-05
+      },
+      "latency_ms": 625.0,
+      "provider_request_id": "gen-dec-1792353564-UtchIeZfN1IABm4ME2bN",
+      "started_at": "2026-10-18T19:59:22.760Z",
+      "ended_at": "2026-10-18T19:59:23.379Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "bf5b3759dcc60d3a723c45c28d9c890a9ebc96c584a4d6b87ac7d0767824339e",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.000431,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2714,
+        "output_tokens": 50,
+        "total_tokens": 2764,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000113988
+      },
+      "usage_raw": {
+        "input_tokens": 2714,
+        "output_tokens": 50,
+        "cost": 0.000113988
+      },
+      "latency_ms": 625.0,
+      "provider_request_id": "gen-dec-1792353564-yImKgIWO7lKLeCOMsxdo",
+      "started_at": "2026-10-18T19:59:23.383Z",
+      "ended_at": "2026-10-18T19:59:24.016Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "a608c9837bc9813dbc8d1f15a8b06b78c6e742b1733bc517b6bdbefbbb6140b2",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0005648,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4434,
+        "output_tokens": 90,
+        "total_tokens": 4524,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000186228
+      },
+      "usage_raw": {
+        "input_tokens": 4434,
+        "output_tokens": 90,
+        "cost": 0.000186228
+      },
+      "latency_ms": 671.0,
+      "provider_request_id": "gen-dec-1792353565-BHejCFGvMo9OAFNpmgny",
+      "started_at": "2026-10-18T19:59:24.021Z",
+      "ended_at": "2026-10-18T19:59:24.699Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    }
+  ]
+}

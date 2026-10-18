@@ -1,0 +1,25 @@
+{"task_id": "s3-20", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s3-20", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-04", "arm": "B", "status": "complete", "accepted": false, "injection": false}
+{"task_id": "s2-04", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s3-19", "arm": "B", "status": "paused_recoverable", "accepted": false, "injection": false}
+{"task_id": "s3-19", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-11", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s1-11", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-03", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s1-03", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s3-02", "arm": "B", "status": "failed", "accepted": false, "injection": false}
+{"task_id": "s3-02", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-17", "arm": "B", "status": "failed", "accepted": false, "injection": false}
+{"task_id": "s2-17", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s3-09", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s3-09", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-18", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s2-18", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-07", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-07", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s2-08", "arm": "B", "status": "paused_recoverable", "accepted": false, "injection": false}
+{"task_id": "s2-08", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s1-15", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s1-15", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"status": "done", "runs": 24}

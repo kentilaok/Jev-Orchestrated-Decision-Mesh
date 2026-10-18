@@ -1,0 +1,21 @@
+{
+  "goal": "Using the broker and config code and the command, give the max_cumulative_usd the PermitAuthority enforces and the max_jev_tokens the run uses.",
+  "context": "",
+  "sources": {
+    "broker": {
+      "title": "scripts/native_transition_broker.py excerpt (main)",
+      "text": "    parser.add_argument('--config', type=Path)\n    parser.add_argument('--host', choices=('codex', 'claude'), default='codex',\n                        help='Worker host: Codex CLI (GPT-6 routes) or Claude Code CLI (Sonnet/Opus routes)')\n    ...\n    settings = json.loads(args.config.read_text(encoding='utf-8-sig')) if args.config else {}\n    family = 'claude' if args.host == 'claude' else 'gpt6'\n    require(settings.get('worker_family', family) == family, 'host_and_worker_family_mismatch')\n    if args.max_cumulative_usd is not None:\n        settings['max_cumulative_usd'] = args.max_cumulative_usd\n    config = RunConfig.from_dict({**settings, 'worker_family': family})\n    ...\n    authority = PermitAuthority(args.out / 'permits.jsonl',\n                                max_cumulative_usd=config.max_cumulative_usd)"
+    },
+    "config": {
+      "title": "scripts/config.py excerpt",
+      "text": "@dataclass(frozen=True)\nclass RunConfig:\n    ...\n    worker_family: str = \"gpt6\"\n    ...\n    max_jev_tokens: int = 50000\n    ...\n    def __post_init__(self):\n        ...\n        family = FAMILIES[self.worker_family]\n        if self.worker_family == \"claude\":\n            ...\n            # Claude artifacts make Jev states about 1.8x larger than GPT-6 ones\n            # (P0-03 slice 3c), so the untouched Jev token default doubles.\n            if self.max_jev_tokens == 50000:\n                object.__setattr__(self, \"max_jev_tokens\", 100000)\n    ...\n    @classmethod\n    def from_dict(cls, value):\n        _require(type(value) is dict, \"configuration_must_be_object\")\n        allowed = {field.name for field in fields(cls)}\n        _require(all(type(k) is str for k in value) and set(value) <= allowed, \"unknown_configuration_fields\")\n        return cls(**value)"
+    },
+    "command": {
+      "title": "Operator command",
+      "text": "Config file run.json: {\"worker_family\": \"claude\", \"max_cumulative_usd\": 2.0, \"max_jev_tokens\": 50000, \"max_usd\": 0.4}\nCommand: python scripts/native_transition_broker.py --task t.json --out runs/x --host claude --config run.json --max-cumulative-usd 0.5 --live"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

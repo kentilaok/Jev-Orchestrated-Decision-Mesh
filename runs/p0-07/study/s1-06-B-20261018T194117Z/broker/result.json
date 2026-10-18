@@ -1,0 +1,88 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "calculate(\"1e13 - 1e13\") raises MeshError with code 'arithmetic_out_of_range'. Each constant node (1e13) is visited first; the range check `abs(value) <= 1e12` fails on the literal 1e13 itself (1e13 > 1e12), before the subtraction is ever performed, so the result never reaches 0.",
+  "task_hash": "10ba21944b2da93616128a2811554cb2be1eb8612e56ff2604b0ff9fbd1796bb",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "10ba21944b2da93616128a2811554cb2be1eb8612e56ff2604b0ff9fbd1796bb",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "a77ca400c907101851748e619e4de06f42d54c0a753928eaeb829659546f5d3a",
+    "code": "7cf3047662b9a5ef67e1f3bdf66c3117037760884e405b2586b63b48b5885c5b"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 11659,
+        "cached_input_tokens": 9311,
+        "cache_write_input_tokens": 2346,
+        "output_tokens": 950,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "79b64700-f794-4499-bb3a-f3f2bbd3dd65",
+      "permit_id": "fc591af03b0249a2b73c3cbc5575c1b5",
+      "artifact_hash": "46286db8afec85530c3e68b494310dac4445fd415db964834f47e73775bb2456"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "46286db8afec85530c3e68b494310dac4445fd415db964834f47e73775bb2456",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 11659,
+    "frontier_output_tokens": 950,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

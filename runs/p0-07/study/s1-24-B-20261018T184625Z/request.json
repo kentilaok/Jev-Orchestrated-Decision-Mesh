@@ -1,0 +1,20 @@
+{
+  "goal": "summarize_calls is given these calls: [{\"role\": \"jev\", \"usage\": {\"total_tokens\": 1200}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 8000}}, {\"role\": \"jev\", \"usage\": {\"total_tokens\": 1800}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": null}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 4000}}] (null is None). What is orchestration_ratio in the summary?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/metrics.py excerpt (summarize_calls)",
+      "text": "    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]\n        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n    ...\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    ...\n    worker_tokens=roles['worker']['tokens']\n    jev_tokens=roles['jev']['tokens']\n    ratio=(jev_tokens/worker_tokens if jev_tokens is not None and worker_tokens is not None\n           and worker_tokens>0 else None)"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "dd90f58a049957cb5ed5c45d860125a78a1916f86257cedce786dc44ec1e775e",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

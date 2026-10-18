@@ -1,0 +1,401 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl (receipt events only, in order)"
+      },
+      {
+        "id": "note",
+        "title": "Operator note"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Replay sums only numeric, finite, non-negative cost_usd values: 0.25 + 0.5 = 0.75. The null receipt contributes nothing, and the string \"0.1\" fails the `type(cost) in (int, float)` test, so it is silently skipped. Since 0.75 < 0.8, the cumulative cap check in `issue` does not trip and the next permit is issued.\n\nCaveat worth flagging: real spend was 0.85, which exceeds the cap. The hand-edited string receipt is invisible to replay even though `receipt()` would have rejected it as `invalid_receipt_cost`, and the verifying hash chain gives no signal because the edit was re-chained.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger",
+          "note"
+        ],
+        "data": {
+          "summary": "Replay yields cumulative_cost_usd = 0.75 (0.25 + 0.5); the string \"0.1\" and the null are skipped, so 0.75 < 0.8 and the next permit is ISSUED \u2014 though true spend is 0.85, over cap.",
+          "claims": [
+            "Replay adds a receipt's cost only when type(cost) is int/float, finite, and >= 0 (code).",
+            "cost_usd null (p-2) is skipped: it fails the type check in the replay branch (ledger, code).",
+            "cost_usd \"0.1\" (p-3) is a string, so type(cost) in (int, float) is False and it is silently skipped with no error during replay (ledger, code).",
+            "cumulative_cost_usd after replay = 0.25 + 0.5 = 0.75 (ledger, code).",
+            "issue() refuses only when _cumulative_cost_usd >= max_cumulative_usd; 0.75 >= 0.8 is False, so the next permit is issued (code, request).",
+            "Real spend is 0.25 + 0.1 + 0.5 = 0.85, exceeding the 0.8 cap; replay under-counts by 0.1 (ledger, note).",
+            "The string cost would have been rejected by receipt() as invalid_receipt_cost, so it could not have come from the normal write path, consistent with the hand-edit (code, note).",
+            "A verifying hash chain does not detect this: the edit was re-chained, so integrity verification gives no signal of the under-count (note, request).",
+            "Assumes the four listed receipts are the only cost-bearing events and that replay starts from zero (ledger).",
+            "Assumes the next issue() call passes all other checks (ttl, scope, per-permit budget), which are elided in the excerpt (code)."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+          ],
+          "source_hashes": {
+            "code": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "ledger": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+            "note": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73",
+            "request": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7"
+          }
+        },
+        "artifact_hash": "b1b39d46fec9d27e2735552321a5858555c22659293033e161bab789a12cba09",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "**cumulative_cost_usd after replay: 0.75. Next permit: ISSUED.**\n\nReplay only accumulates a receipt's `cost_usd` when `type(cost) in (int, float) and math.isfinite(cost) and cost >= 0`. Of the four receipts:\n\n- p-1 `0.25` \u2192 counted\n- p-2 `null` \u2192 fails the type check, skipped\n- p-3 `\"0.1\"` \u2192 a `str`, so `type(cost) in (int, float)` is False; silently skipped, no error raised\n- p-4 `0.5` \u2192 counted\n\nTotal = 0.75. The cap check in `issue` refuses only on `_cumulative_cost_usd >= max_cumulative_usd`, and 0.75 >= 0.8 is False, so the next permit is issued.\n\nCaveat worth flagging: real spend was 0.85, over the 0.8 cap \u2014 replay under-counts by 0.1. The hand-edited string receipt is invisible to replay even though `receipt()` would have rejected it as `invalid_receipt_cost` on the live write path, and the verifying hash chain gives no signal because the edit was re-chained.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger",
+          "note"
+        ],
+        "data": {
+          "summary": "Replay gives cumulative_cost_usd = 0.75 (0.25 + 0.5); the null and the string \"0.1\" are skipped, so 0.75 < 0.8 and the next permit is ISSUED \u2014 although true spend is 0.85, over the cap.",
+          "claims": [
+            "Replay adds a receipt's cost only when type(cost) is int/float, finite, and >= 0 (code).",
+            "p-2's null cost_usd fails the type check and contributes nothing (ledger, code).",
+            "p-3's cost_usd is the string \"0.1\", so type(cost) in (int, float) is False and it is silently skipped during replay with no error (ledger, code).",
+            "cumulative_cost_usd after replay = 0.25 + 0.5 = 0.75 (ledger, code).",
+            "issue() refuses only when _cumulative_cost_usd >= max_cumulative_usd; 0.75 >= 0.8 is False, so the next permit is ISSUED (code, request).",
+            "True spend is 0.25 + 0.1 + 0.5 = 0.85, over the 0.8 cap; replay under-counts by 0.1 (ledger, note).",
+            "receipt() would have rejected the string cost as invalid_receipt_cost, so it could not have come from the normal write path \u2014 consistent with the hand-edit (code, note).",
+            "A verifying hash chain gives no signal: the edited receipt was re-chained, so integrity checks do not detect the under-count (note, request).",
+            "Assumes these four receipts are the only cost-bearing events and that replay starts from zero (ledger).",
+            "Assumes the next issue() call passes all other checks (ttl, scope, per-permit budget), which are elided in the excerpt (code)."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "b1b39d46fec9d27e2735552321a5858555c22659293033e161bab789a12cba09"
+          ],
+          "source_hashes": {
+            "code": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "ledger": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+            "note": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73",
+            "request": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7"
+          }
+        },
+        "artifact_hash": "6ee853762727bbd8c66ac26f2f10a3f00c86079df6e1e93d1904ab5345f3aa3d",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "**Accepted \u2014 the parent's result checks out.**\n\ncumulative_cost_usd after replay = **0.75**; next permit = **ISSUED**.\n\nVerification against the sources:\n\n- The replay gate (`code`) is `type(cost) in (int, float) and math.isfinite(cost) and cost >= 0`. `null` \u2192 `None` fails it; `\"0.1\"` is a `str`, and `type(cost) in (int, float)` is an exact-type test, so no coercion occurs and nothing is raised on this path.\n- Counted: 0.25 (p-1) + 0.5 (p-4) = 0.75.\n- The cap check is `>=`, so `0.75 >= 0.8` is False \u2014 issue proceeds, subject to the other checks the excerpt elides.\n- The under-count caveat is correct and material: true spend is 0.85, past the 0.8 cap. `receipt()` would have rejected the string as `invalid_receipt_cost`, so the value cannot have come from the live write path, matching the operator note's hand-edit; and since the record was re-chained, the verifying hash chain gives no signal.\n\nOne addition to the parent's claims, not a correction: `receipt()` also excludes `bool` via `isinstance`, while the replay gate does not \u2014 a latent asymmetry that this ledger does not exercise.\n\nNothing unresolved blocking acceptance.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger",
+          "note"
+        ],
+        "data": {
+          "summary": "Accepted. Replay yields cumulative_cost_usd = 0.75 (0.25 + 0.5); null and the string \"0.1\" fail the type gate and are skipped, so 0.75 >= 0.8 is False and the next permit is ISSUED. True spend 0.85 exceeds the cap, so replay silently under-counts by 0.1.",
+          "claims": [
+            "Replay accumulates only when type(cost) in (int, float) and math.isfinite(cost) and cost >= 0 (code).",
+            "p-2's null fails the type check and contributes nothing (code, ledger).",
+            "p-3's \"0.1\" is a str, so the type gate is False; it is skipped with no error on the replay path (code, ledger).",
+            "Sum of counted receipts: 0.25 + 0.5 = 0.75 (ledger, code).",
+            "issue() refuses only on _cumulative_cost_usd >= max_cumulative_usd; 0.75 >= 0.8 is False, so ISSUED (code, request).",
+            "True spend 0.25 + 0.1 + 0.5 = 0.85 exceeds the 0.8 cap; replay under-counts by 0.1 (ledger, note).",
+            "receipt() would reject a string cost as invalid_receipt_cost, so the value could not come from the normal write path, consistent with the hand-edit (code, note).",
+            "The verifying hash chain gives no signal because the edited receipt was re-chained (note, request).",
+            "Assumes these four receipts are the only cost-bearing events and replay starts from zero (ledger).",
+            "Assumes the next issue() call passes all other checks (ttl, scope, per-permit budget), which the excerpt elides (code).",
+            "Note also that receipt()'s live path excludes bool via isinstance, while the replay gate does not \u2014 not triggered by this ledger (code)."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "6ee853762727bbd8c66ac26f2f10a3f00c86079df6e1e93d1904ab5345f3aa3d"
+          ],
+          "source_hashes": {
+            "code": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "ledger": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+            "note": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73",
+            "request": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7"
+          }
+        },
+        "artifact_hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7",
+        "text": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?"
+      },
+      {
+        "id": "code",
+        "hash": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+        "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
+      },
+      {
+        "id": "ledger",
+        "hash": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+        "text": "{\"kind\": \"permit_receipt\", \"permit_id\": \"p-1\", \"cost_usd\": 0.25}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-2\", \"cost_usd\": null}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-3\", \"cost_usd\": \"0.1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-4\", \"cost_usd\": 0.5}"
+      },
+      {
+        "id": "note",
+        "hash": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73",
+        "text": "Each of p-1..p-4 was issued and consumed before its receipt. The \"0.1\" receipt was hand-edited during an incident and re-chained."
+      }
+    ],
+    "last_issue": {
+      "recovery_kind": "replan",
+      "unit_id": "output",
+      "prior_outcome": "repair_limit",
+      "recovery_round": 1,
+      "feedback": {
+        "verdict": "repair_required",
+        "failed_criteria": [],
+        "reason": "Fresh bounded replan after repair_limit.",
+        "missing_evidence": [],
+        "recovery_round": 1
+      }
+    },
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": {
+      "verdict": "repair_required",
+      "failed_criteria": [],
+      "reason": "Fresh bounded replan after repair_limit.",
+      "missing_evidence": [],
+      "recovery_round": 1
+    },
+    "remaining_budget": {
+      "jev_calls_remaining": 18,
+      "jev_tokens_remaining": 36046,
+      "jev_api_usd_remaining": 0.997347952,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "be0728f182d3a5451a6b4b357e3ba90997e5a2b6ead7db4bc53f4e4bdf1a3692"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

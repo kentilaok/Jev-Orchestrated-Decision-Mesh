@@ -1,0 +1,20 @@
+{
+  "goal": "Using only the source, state exactly what _cost_from_usage returns for the argument {\"api_equivalent_cost_usd\": -0.5}.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/frontier_providers.py excerpt",
+      "text": "def _cost_from_usage(usage):\n    if not isinstance(usage, dict):\n        return None\n    value = usage.get(\"api_equivalent_cost_usd\")\n    if type(value) not in (int, float) or isinstance(value, bool):\n        return None\n    if not math.isfinite(value) or value < 0:\n        return None\n    return float(value)"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "af5301f40a16e56934cdc72ab3b678fe7bf1d895a8413e9d48d1ef0352e8e71f",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

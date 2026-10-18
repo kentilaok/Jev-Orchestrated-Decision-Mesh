@@ -1,0 +1,13 @@
+{
+  "goal": "run_checks runs five checks in this order (name, required, what its evaluator does): tests_green, required=True, returns status \"pass\"; lint_clean, required=False, returns status \"fail\"; files_declared, required=True, raises ValueError(\"workspace missing\"); no_concealed, required=True, returns status \"unresolved\"; build_ok, required=True, returns status \"fail\". Give the report's decision, and its failed and unresolved lists as they appear in report.as_dict().",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/postconditions.py excerpt (run_checks)",
+      "text": "    for check in checks:\n        try:\n            raw = check.evaluator(candidate, workspace)\n            ...\n            result = PostconditionResult(status=raw.status, evidence=raw.evidence,\n                                         reasoning=raw.reasoning, name=check.name)\n        except Exception as exc:\n            result = PostconditionResult(status=\"unresolved\", evidence={\"exception\": type(exc).__name__},\n                                         reasoning=\"evaluator raised: \" + str(exc)[:300],\n                                         name=check.name)\n        results.append(result)\n        if check.required:\n            if result.status == \"fail\":\n                failed.append(check.name)\n            elif result.status == \"unresolved\":\n                unresolved.append(check.name)\n    decision = \"release\" if not failed and not unresolved else \"withhold\"\n    return PostconditionReport(decision=decision, results=results,\n                               failed=failed, unresolved=unresolved)"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

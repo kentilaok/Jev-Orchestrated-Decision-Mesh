@@ -1,0 +1,76 @@
+{
+  "status": "native_codex_call_failed",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "6d61d40cafd4bf9442d0f84d39d9251d91a6b66c6703f5446b09b9e4d3cf2f13",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "6d61d40cafd4bf9442d0f84d39d9251d91a6b66c6703f5446b09b9e4d3cf2f13",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "b638af63d5e04c62c6149c7a4c2f0936894334c1e5d84844256c5b0b5b67e247",
+    "code": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "status": "failed",
+      "error_type": "ClaudeCliError",
+      "usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "usage_status": "reported_before_rejection"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 0,
+    "frontier_output_tokens": 0,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

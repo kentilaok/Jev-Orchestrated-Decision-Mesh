@@ -1,0 +1,295 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl (excerpt)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "data": {
+          "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "data": {
+          "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+          "claims": [
+            "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+        "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+      },
+      {
+        "id": "ledger",
+        "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+        "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 26,
+      "jev_tokens_remaining": 90535,
+      "jev_api_usd_remaining": 0.99961213,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

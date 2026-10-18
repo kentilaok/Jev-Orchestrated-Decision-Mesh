@@ -1,0 +1,704 @@
+{
+  "status": "failed",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "3ac82a56aeb21b1207b3f7cb459d1223460b29877c992d4b549d2bdbd5bbcbc3",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "3ac82a56aeb21b1207b3f7cb459d1223460b29877c992d4b549d2bdbd5bbcbc3",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+    "code": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+    "inputs": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "compute",
+      "usage": {
+        "input_tokens": 1662,
+        "output_tokens": 31,
+        "total_tokens": 1693,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 6.9804e-05
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 2393,
+        "output_tokens": 50,
+        "total_tokens": 2443,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000100506
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "status": "failed",
+      "usage": null,
+      "error_type": "MeshError"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+            "code": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+            "inputs": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e"
+          }
+        },
+        "source_ids": [
+          "request",
+          "code",
+          "inputs"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    }
+  ],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "2b0d66b62868e41dec04b24fe60c34e0c12f028b2c643294c23a95017a678ebf",
+      "state": {
+        "goal": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "code",
+            "title": "scripts/p0_03_audit.py excerpt (_audit_spend)"
+          },
+          {
+            "id": "inputs",
+            "title": "Inputs"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+            "text": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order."
+          },
+          {
+            "id": "code",
+            "hash": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+            "text": "    jev_events = result.get('jev_provider_events') or []\n    jev_cost = result.get('jev_api_cost_usd')\n    costs = [(e.get('usage') or {}).get('cost') if isinstance(e.get('usage'), dict) else None\n             for e in jev_events]\n    known = sum(c for c in costs if _is_cost(c))\n    if known > config.max_usd:\n        issues.append('jev_spend_over_max_usd')\n    if any(not _is_cost(c) for c in costs):\n        if jev_cost is not None:\n            issues.append('jev_cost_reported_despite_unknown_usage')\n    elif jev_events or jev_cost is not None:\n        if jev_cost is None or abs(jev_cost - known) > 1e-12:\n            issues.append('jev_cost_mismatch')\n    ...\n    accounting = result.get('accounting') or {}\n    unknown = sum(not _known_tokens(c.get('usage')) for c in frontier)\n    if accounting.get('frontier_calls_usage_unknown') != unknown:\n        issues.append('unknown_usage_count_mismatch')\n    if unknown:\n        if (accounting.get('frontier_input_tokens') is not None\n                or accounting.get('frontier_output_tokens') is not None):\n            issues.append('unknown_usage_summed_as_known')"
+          },
+          {
+            "id": "inputs",
+            "hash": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e",
+            "text": "result = {\"jev_provider_events\": [{\"usage\": {\"cost\": 0.0006, \"total_tokens\": 1800}}, {\"usage\": {\"total_tokens\": 900}}], \"jev_api_cost_usd\": 0.0006, \"calls\": [\"(non-empty)\"], \"accounting\": {\"frontier_calls_usage_unknown\": 0, \"frontier_input_tokens\": 4200, \"frontier_output_tokens\": 800}}\nfrontier = [{\"usage\": {\"input_tokens\": 4200, \"output_tokens\": 800}}, {\"usage\": null}]"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "compute": 0.92,
+          "stop": 0.08
+        },
+        "confidence": 0.84,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 1662,
+          "output_tokens": 31,
+          "total_tokens": 1693,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 6.9804e-05
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": null
+      },
+      "action_hash": "36da092d43000ec810bfb06b00cfc7be600f3a1d82357bb40af3840fccb3bc72",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+            "code": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+            "inputs": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e"
+          }
+        },
+        "source_ids": [
+          "request",
+          "code",
+          "inputs"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "2b0d66b62868e41dec04b24fe60c34e0c12f028b2c643294c23a95017a678ebf",
+      "state": {
+        "goal": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "code",
+            "title": "scripts/p0_03_audit.py excerpt (_audit_spend)"
+          },
+          {
+            "id": "inputs",
+            "title": "Inputs"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+            "text": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order."
+          },
+          {
+            "id": "code",
+            "hash": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+            "text": "    jev_events = result.get('jev_provider_events') or []\n    jev_cost = result.get('jev_api_cost_usd')\n    costs = [(e.get('usage') or {}).get('cost') if isinstance(e.get('usage'), dict) else None\n             for e in jev_events]\n    known = sum(c for c in costs if _is_cost(c))\n    if known > config.max_usd:\n        issues.append('jev_spend_over_max_usd')\n    if any(not _is_cost(c) for c in costs):\n        if jev_cost is not None:\n            issues.append('jev_cost_reported_despite_unknown_usage')\n    elif jev_events or jev_cost is not None:\n        if jev_cost is None or abs(jev_cost - known) > 1e-12:\n            issues.append('jev_cost_mismatch')\n    ...\n    accounting = result.get('accounting') or {}\n    unknown = sum(not _known_tokens(c.get('usage')) for c in frontier)\n    if accounting.get('frontier_calls_usage_unknown') != unknown:\n        issues.append('unknown_usage_count_mismatch')\n    if unknown:\n        if (accounting.get('frontier_input_tokens') is not None\n                or accounting.get('frontier_output_tokens') is not None):\n            issues.append('unknown_usage_summed_as_known')"
+          },
+          {
+            "id": "inputs",
+            "hash": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e",
+            "text": "result = {\"jev_provider_events\": [{\"usage\": {\"cost\": 0.0006, \"total_tokens\": 1800}}, {\"usage\": {\"total_tokens\": 900}}], \"jev_api_cost_usd\": 0.0006, \"calls\": [\"(non-empty)\"], \"accounting\": {\"frontier_calls_usage_unknown\": 0, \"frontier_input_tokens\": 4200, \"frontier_output_tokens\": 800}}\nfrontier = [{\"usage\": {\"input_tokens\": 4200, \"output_tokens\": 800}}, {\"usage\": null}]"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "candidate": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+              "code": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+              "inputs": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e"
+            }
+          },
+          "source_ids": [
+            "request",
+            "code",
+            "inputs"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.02,
+          "forward": 0.9,
+          "repair": 0.05,
+          "retrieve_evidence": 0.03
+        },
+        "confidence": 0.87,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 2393,
+          "output_tokens": 50,
+          "total_tokens": 2443,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000100506
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "post_worker_decision",
+      "version": 0,
+      "simulation": false,
+      "unit_id": "input",
+      "choice": "forward",
+      "gate_id": "e4",
+      "candidate_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e6",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "input",
+        "candidate_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+        "check_hash": null,
+        "successor": "hidden1",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "54d4eae41aca537ac29dd1a7aaffbd8561e85be85dd039572648774f968bd077",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e7",
+      "kind": "checked_commit",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "input",
+      "packet": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+              "code": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+              "inputs": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e"
+            }
+          },
+          "source_ids": [
+            "request",
+            "code",
+            "inputs"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e4"
+    },
+    {
+      "id": "e8",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "input",
+      "value": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "p0_03_audit._audit_spend(result, frontier, RunConfig(), issues) runs with issues = [] on the inputs below. List the issues it appends, in order.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "4967a43665092ad46b6fbf53b031dc0640271a78c8135dad394b3f99d8018081",
+              "code": "a681d88dcc5d522c59cf124a7d52e7bb22f5f696d2e1a0c0cda6a1c4193cc3ea",
+              "inputs": "f2e2eeffb94e67f6fab579cd53af8d61a0759e4b122fe2194735ef56ae244a1e"
+            }
+          },
+          "source_ids": [
+            "request",
+            "code",
+            "inputs"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "5533d0b7cb5d42932862e61b5d35881a1f506398e3e38092abc83440c0019391",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e9",
+      "kind": "halt",
+      "version": 1,
+      "simulation": false,
+      "error": "MeshError: jev_call_failed"
+    }
+  ],
+  "recovery_rounds": {},
+  "error": "jev_call_failed",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 0,
+    "consumed": 0,
+    "receipted": 0,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 3,
+    "frontier_child_calls": 0,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 0,
+    "frontier_output_tokens": 0,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0.00034503,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "6f74bbf3fba2bea5dfe0eadd56347f3295f043211b071168179f7973ee4b784f",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00029355,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1662,
+        "output_tokens": 31,
+        "total_tokens": 1693,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 6.9804e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1662,
+        "output_tokens": 31,
+        "cost": 6.9804e-05
+      },
+      "latency_ms": 985.0,
+      "provider_request_id": "gen-dec-1792335466-UPLzc5dE7dmsENoiOvY3",
+      "started_at": "2026-10-18T14:57:45.296Z",
+      "ended_at": "2026-10-18T14:57:46.272Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "82ca9835ae6f704b6e321cf9ee116d756c390cfb551a9181a54f22ad5bce7243",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00036705,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2393,
+        "output_tokens": 50,
+        "total_tokens": 2443,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000100506
+      },
+      "usage_raw": {
+        "input_tokens": 2393,
+        "output_tokens": 50,
+        "cost": 0.000100506
+      },
+      "latency_ms": 671.0,
+      "provider_request_id": "gen-dec-1792335467-7532UQ9adZgtW0Vbesee",
+      "started_at": "2026-10-18T14:57:46.277Z",
+      "ended_at": "2026-10-18T14:57:46.955Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "jev",
+      "status": "failed",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "6ec1335ea7f31caa3f6610019c4052662a25c169c74f5aa81fd18e9799153f34",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0005008,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4160,
+        "output_tokens": 90,
+        "total_tokens": 4250,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.00017472
+      },
+      "usage_raw": {
+        "input_tokens": 4160,
+        "output_tokens": 90,
+        "cost": 0.00017472
+      },
+      "latency_ms": 516.0,
+      "provider_request_id": "gen-dec-1792335468-eqLeHPpzBPkV0eRTrUwN",
+      "started_at": "2026-10-18T14:57:46.962Z",
+      "ended_at": "2026-10-18T14:57:47.478Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "error": {
+        "code": "choice_not_most_probable"
+      }
+    }
+  ]
+}

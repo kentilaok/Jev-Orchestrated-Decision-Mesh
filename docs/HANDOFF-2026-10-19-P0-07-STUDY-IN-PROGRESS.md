@@ -75,10 +75,12 @@ In 8 of the 11 F1/F2/F3 runs, the candidate CIDM was holding would have been acc
 
 ## 6. Data files
 
-- `runs/p0-07/results-study.jsonl`: live results. It is **gitignored**, so it exists only on this PC. Records 82-91 carry `infra_failure: true` and `infra_reason: claude_usage_limit_429`.
+**`runs/` is tracked in git** (since 19 October, at Ken's request; it was gitignored before), and logs inside it are tracked too (`!runs/**/*.log`). The repo is **public**. Before the first push, all of `runs/` was scanned: no OpenRouter key, other API keys, tokens, private keys or personal email. Rescan before each push of new run output, and never commit a file containing the key.
+
+- `runs/p0-07/results-study.jsonl`: live results. Records 82-91 carry `infra_failure: true` and `infra_reason: claude_usage_limit_429`. Commit it again after the study resumes and finishes.
 - `runs/p0-07/results-study.before-infra-relabel.jsonl`: the untouched original from before the relabel (SHA-256 `9e6afe54…b638`).
-- `runs/p0-07/study/<task>-<arm>-<stamp>/`: per-run folders (broker logs, Jev requests and responses, `attempts.json`). Also local only.
-- **Snapshot committed with this handoff:** `docs/p0-07-study-snapshot/` holds copies of both JSONL files as of the pause (`results-study.jsonl` SHA-256 `2dd71d5e…7981`). It is for an agent on another machine. The run folders are not included. **The live file in `runs/` stays authoritative.** If you continue on another machine, copy the snapshot to `runs/p0-07/results-study.jsonl` first, and expect missing run folders for the old records.
+- `runs/p0-07/study/<task>-<arm>-<stamp>/`: per-run folders (broker logs, Jev requests and responses, `attempts.json`).
+- The earlier `docs/p0-07-study-snapshot/` copy was removed once `runs/` became tracked. The live file in `runs/` is the only copy.
 - `runs/p0-07/review.html`: the review page (local), with picks superseded by the model review.
 
 ## 7. After the study finishes (in order)

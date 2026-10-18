@@ -1,0 +1,258 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A recovery evidence plan calls tool \"http_get\" on MCP server \"roblox-dev\". The server annotates it {\"readOnlyHint\": true}; the owner set no override, so the catalogue access_class comes from classify(server, tool) with no trust gate. The planner issued an \"mcp.read\" permit (Jev basis) for the call. The arguments match the schema. What does call_tool raise, and at which check?",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "profiles",
+        "title": "scripts/mcp_registry.py excerpt (PROFILES)"
+      },
+      {
+        "id": "classify",
+        "title": "scripts/mcp_registry.py excerpt (classify)"
+      },
+      {
+        "id": "call",
+        "title": "scripts/mcp_registry.py excerpt (call_tool)"
+      },
+      {
+        "id": "consume",
+        "title": "scripts/capability_permits.py excerpt (consume)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "profiles",
+          "classify",
+          "call",
+          "consume"
+        ],
+        "data": {
+          "summary": "A recovery evidence plan calls tool \"http_get\" on MCP server \"roblox-dev\". The server annotates it {\"readOnlyHint\": true}; the owner set no override, so the catalogue access_class comes from classify(server, tool) with no trust gate. The planner issued an \"mcp.read\" permit (Jev basis) for the call. The arguments match the schema. What does call_tool raise, and at which check?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "d8b8fb4b6d50235e1462375bc66e17fc93d3daa6388fe169a34f39d954e19977",
+            "profiles": "a411a05c6361b6386ff883e927a02063bf7bbfb483c5eaee6753302f37093a04",
+            "classify": "be0c6671e4bf2f6c22eb6432cc83bc3ae370bdc901241eab25a071edab3511ee",
+            "call": "46984bf690efdf46d6f9b8987b76e22919fc12aa3bee6d3cf74a1f330834346a",
+            "consume": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e"
+          }
+        },
+        "artifact_hash": "594f2dfd20ba3f8ff9cf411334485e6adfb75765a5663161af69585540f44339",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "call_tool raises `permit_capability_mismatch`, at the capability check in `authority.consume()`.\n\nWhy: `classify()` checks the builtin profiles before any annotations. `\"roblox\"` is a substring of `\"roblox-dev\"`, and `http_get` sits in `PROFILES[\"roblox\"][\"mutate\"]`, so classify returns `(\"mutate\", \"builtin_profile:roblox\")`. The `{\"readOnlyHint\": true}` annotation is never read, and the absent trust gate is moot.\n\nSo `access == \"mutate\"` passes the blocked check, `capability` becomes `\"mcp.mutate\"`, `_check_arguments` passes, and `consume(permit_id, \"mcp.mutate\", scope)` compares that against the planner's `\"mcp.read\"` grant \u2014 mismatch, raised before the scope-hash and expiry checks.",
+        "source_ids": [
+          "request",
+          "profiles",
+          "classify",
+          "call",
+          "consume"
+        ],
+        "data": {
+          "summary": "classify() matches the builtin profile first: \"roblox\" is a substring of \"roblox-dev\".lower(), and \"http_get\" is listed in PROFILES[\"roblox\"][\"mutate\"], so it returns (\"mutate\", \"builtin_profile:roblox\"). The readOnlyHint annotation is never consulted, since the annotation branch is reached only when no profile key matches or the tool name is in neither set; the absent trust gate is therefore irrelevant. In call_tool, access == \"mutate\" passes the blocked check and sets capability = \"mcp.mutate\". Arguments match the schema, so _check_arguments passes, and permit_scope is computed with access=\"mutate\". authority.consume(permit_id, \"mcp.mutate\", scope) then compares grant[\"capability\"] to the required capability; the planner's permit carries \"mcp.read\", so the call raises permit_capability_mismatch at the capability check in consume() \u2014 after unknown_permit and permit_already_used, before the scope-hash and expiry checks.",
+          "claims": [
+            "Failure: permit_capability_mismatch, raised by the require on grant[\"capability\"] == capability inside consume().",
+            "access_class is \"mutate\" with reason \"builtin_profile:roblox\": profile lookup precedes annotation handling and \"roblox\" in \"roblox-dev\".lower() is true.",
+            "The {\"readOnlyHint\": true} annotation has no effect; it is shadowed by the profile match, so the missing trust gate (no trusted_servers) changes nothing.",
+            "call_tool maps access \"mutate\" to capability \"mcp.mutate\", which consume verifies against the \"mcp.read\" permit.",
+            "Earlier checks pass: access != \"blocked\" (no owner override) and _check_arguments succeeds since arguments match the schema.",
+            "Within consume, unknown_permit and permit_already_used pass for a freshly issued, unused permit, so capability is the first failing require.",
+            "Scope-hash and expiry mismatches are never reached; permit_scope used access=\"mutate\", but the capability require short-circuits first.",
+            "Assumption: the permit was issued for this call and not previously consumed; otherwise permit_already_used would fire earlier.",
+            "The \"Jev basis\" of the permit is recorded provenance and does not affect the capability comparison."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "594f2dfd20ba3f8ff9cf411334485e6adfb75765a5663161af69585540f44339"
+          ],
+          "source_hashes": {
+            "call": "46984bf690efdf46d6f9b8987b76e22919fc12aa3bee6d3cf74a1f330834346a",
+            "classify": "be0c6671e4bf2f6c22eb6432cc83bc3ae370bdc901241eab25a071edab3511ee",
+            "consume": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e",
+            "profiles": "a411a05c6361b6386ff883e927a02063bf7bbfb483c5eaee6753302f37093a04",
+            "request": "d8b8fb4b6d50235e1462375bc66e17fc93d3daa6388fe169a34f39d954e19977"
+          }
+        },
+        "artifact_hash": "aac9d0c35eb1682090b3c113b62dc147d2bbfd0142c41af2bc750dfef19bc1fc",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "d8b8fb4b6d50235e1462375bc66e17fc93d3daa6388fe169a34f39d954e19977",
+        "text": "A recovery evidence plan calls tool \"http_get\" on MCP server \"roblox-dev\". The server annotates it {\"readOnlyHint\": true}; the owner set no override, so the catalogue access_class comes from classify(server, tool) with no trust gate. The planner issued an \"mcp.read\" permit (Jev basis) for the call. The arguments match the schema. What does call_tool raise, and at which check?"
+      },
+      {
+        "id": "profiles",
+        "hash": "a411a05c6361b6386ff883e927a02063bf7bbfb483c5eaee6753302f37093a04",
+        "text": "PROFILES = {\n    \"roblox\": {\n        \"read\": {\"list_roblox_studios\", \"get_studio_state\", \"search_game_tree\", \"script_search\",\n                 \"script_grep\", \"script_read\", \"inspect_instance\", \"get_console_output\",\n                 \"search_asset\", \"wait_job_finished\", \"screen_capture\"},\n        \"mutate\": {\"execute_luau\", \"multi_edit\", \"start_stop_play\", \"insert_asset\", \"generate_material\",\n                   \"generate_mesh\", \"generate_procedural_model\", \"generate_texture\", \"segment_mesh\",\n                   \"user_keyboard_input\", \"user_mouse_input\", \"character_navigation\", \"store_image\",\n                   \"upload_image\", \"http_get\", \"subagent\", \"skill\"},\n    },\n}"
+      },
+      {
+        "id": "classify",
+        "hash": "be0c6671e4bf2f6c22eb6432cc83bc3ae370bdc901241eab25a071edab3511ee",
+        "text": "def classify(server: str, tool: dict, *, trusted_servers=None) -> tuple[str, str]:\n    ...\n    name = tool.get(\"name\", \"\")\n    for key, profile in PROFILES.items():\n        if key in server.lower():\n            if name in profile[\"read\"]:\n                return \"read\", \"builtin_profile:\" + key\n            if name in profile[\"mutate\"]:\n                return \"mutate\", \"builtin_profile:\" + key\n    hints = tool.get(\"annotations\") or {}\n    if hints.get(\"destructiveHint\") is True or hints.get(\"readOnlyHint\") is False:\n        return \"mutate\", \"server_annotations\"\n    if hints.get(\"readOnlyHint\") is True and hints.get(\"openWorldHint\") is not True:\n        if trusted_servers is not None and server not in trusted_servers:\n            return \"unknown\", \"untrusted_server_readonly_hint_ignored\"\n        return \"read\", \"server_annotations\"\n    return \"unknown\", \"unclassified\""
+      },
+      {
+        "id": "call",
+        "hash": "46984bf690efdf46d6f9b8987b76e22919fc12aa3bee6d3cf74a1f330834346a",
+        "text": "    access = card[\"access_class\"]\n    require(access != \"blocked\", \"mcp_tool_blocked_by_owner\")\n    capability = \"mcp.read\" if access == \"read\" else \"mcp.mutate\"\n    _check_arguments(card[\"input_schema\"], arguments)\n    scope = permit_scope(spec[\"name\"], tool, arguments, access, card[\"schema_hash\"])\n    authority.consume(permit_id, capability, scope)"
+      },
+      {
+        "id": "consume",
+        "hash": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e",
+        "text": "    def consume(self, permit_id: str, capability: str, scope: dict) -> dict:\n        with self.lock:\n            require(isinstance(permit_id, str) and permit_id in self._permits, \"unknown_permit\")\n            require(permit_id not in self._used, \"permit_already_used\")\n            grant = self._permits[permit_id]\n            require(grant[\"capability\"] == capability, \"permit_capability_mismatch\")\n            require(grant[\"scope_hash\"] == digest(scope), \"permit_scope_mismatch\")\n            require(self.clock() <= grant[\"expires_at\"], \"permit_expired\")"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "aac9d0c35eb1682090b3c113b62dc147d2bbfd0142c41af2bc750dfef19bc1fc"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "summary": "classify() scans PROFILES before annotations: \"roblox\" is a substring of \"roblox-dev\".lower(), and \"http_get\" is in PROFILES[\"roblox\"][\"mutate\"], so it returns (\"mutate\", \"builtin_profile:roblox\"). The {\"readOnlyHint\": true} annotation is never consulted, and the absent trust gate is irrelevant. In call_tool, access == \"mutate\" passes the blocked check and sets capability = \"mcp.mutate\"; _check_arguments passes since arguments match the schema; permit_scope is built with access=\"mutate\". authority.consume(permit_id, \"mcp.mutate\", scope) then compares grant[\"capability\"] against it, and the planner's permit carries \"mcp.read\", so the call raises permit_capability_mismatch \u2014 after unknown_permit and permit_already_used, before the scope-hash and expiry checks.",
+        "claims": [
+          "Failure: permit_capability_mismatch, from the require on grant[\"capability\"] == capability inside consume().",
+          "access_class is \"mutate\" with reason \"builtin_profile:roblox\": the profile loop precedes annotation handling and \"roblox\" in \"roblox-dev\".lower() is true.",
+          "The {\"readOnlyHint\": true} annotation is shadowed by the profile match, so the missing trust gate changes nothing.",
+          "call_tool maps access \"mutate\" to capability \"mcp.mutate\", which consume checks against the \"mcp.read\" grant.",
+          "Earlier checks pass: access != \"blocked\" (no owner override) and _check_arguments succeeds because arguments match the schema.",
+          "In consume, unknown_permit and permit_already_used pass for a freshly issued, unused permit, so the capability require is the first failure.",
+          "Scope-hash and expiry checks are never reached; permit_scope used access=\"mutate\", but the capability require short-circuits first.",
+          "Assumption: the permit was issued for this call and not previously consumed; otherwise permit_already_used would fire first.",
+          "The \"Jev basis\" of the permit is provenance only and does not affect the capability comparison."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "aac9d0c35eb1682090b3c113b62dc147d2bbfd0142c41af2bc750dfef19bc1fc"
+        ],
+        "source_hashes": {
+          "request": "d8b8fb4b6d50235e1462375bc66e17fc93d3daa6388fe169a34f39d954e19977",
+          "profiles": "a411a05c6361b6386ff883e927a02063bf7bbfb483c5eaee6753302f37093a04",
+          "classify": "be0c6671e4bf2f6c22eb6432cc83bc3ae370bdc901241eab25a071edab3511ee",
+          "call": "46984bf690efdf46d6f9b8987b76e22919fc12aa3bee6d3cf74a1f330834346a",
+          "consume": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e"
+        }
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null,
+      "source_ids": [
+        "request",
+        "profiles",
+        "classify",
+        "call",
+        "consume"
+      ],
+      "text": "call_tool raises `permit_capability_mismatch`, at the capability check in `authority.consume()`.\n\nWhy: `classify()` scans the builtin profiles before looking at annotations. `\"roblox\"` is a substring of `\"roblox-dev\"`, and `http_get` is in `PROFILES[\"roblox\"][\"mutate\"]`, so classify returns `(\"mutate\", \"builtin_profile:roblox\")`. The `{\"readOnlyHint\": true}` annotation is never read, and the absent trust gate is moot.\n\nSo `access == \"mutate\"` passes the blocked check, `capability` becomes `\"mcp.mutate\"`, `_check_arguments` passes, and `consume(permit_id, \"mcp.mutate\", scope)` compares that against the planner's `\"mcp.read\"` grant \u2014 mismatch, raised after `unknown_permit` and `permit_already_used`, before the scope-hash and expiry checks."
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 25,
+      "jev_tokens_remaining": 79281,
+      "jev_api_usd_remaining": 0.999143242,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "49d1338d7523fc6eed1c0f2957997f6857bec8a0f06e77b07cfc01699d494e57",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "49d1338d7523fc6eed1c0f2957997f6857bec8a0f06e77b07cfc01699d494e57",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

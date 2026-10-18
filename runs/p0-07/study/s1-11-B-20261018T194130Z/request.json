@@ -1,0 +1,20 @@
+{
+  "goal": "An MCP tool's description is the Python string '  Fetch a page.Returns   HTML!  Use it with care.' (note the spaces). What exact string does _summary(description) return?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/mcp_registry.py excerpt (_summary)",
+      "text": "def _summary(text: str, limit: int = 160) -> str:\n    text = \" \".join((text or \"\").split())\n    first = re.split(r\"(?<=[.!?])\\s\", text, maxsplit=1)[0]\n    return (first if len(first) <= limit else first[:limit - 1] + \"\u2026\")"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "d3ffb34db3e5e7147d51b8dcbb756b0779d895105b5e667b03a298587399ca69",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

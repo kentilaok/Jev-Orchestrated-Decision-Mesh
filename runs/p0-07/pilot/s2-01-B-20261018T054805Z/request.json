@@ -1,0 +1,21 @@
+{
+  "goal": "A test fails. Using the requirement, the code and the test output, identify the function that causes the failure and give the corrected comparison operator.",
+  "context": "",
+  "sources": {
+    "requirement": {
+      "title": "Spend-cap requirement",
+      "text": "No new permit may be issued once the receipted cost has reached the cap. Reaching the cap exactly counts as reached."
+    },
+    "code": {
+      "title": "ledger.py",
+      "text": "def cap_reached(spent, cap):\n    return spent > cap\n\ndef issue(ledger, cap):\n    if cap_reached(ledger.spent, cap):\n        raise PermitError(\"cumulative_cap_exceeded\")\n    return ledger.new_permit()"
+    },
+    "test": {
+      "title": "Test output",
+      "text": "FAIL: test_refuses_at_exact_cap\n    ledger.spent = 1.0; issue(ledger, cap=1.0)\nAssertionError: PermitError not raised"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

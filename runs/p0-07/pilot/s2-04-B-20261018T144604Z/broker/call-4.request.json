@@ -1,0 +1,206 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl (receipt events only, in order)"
+      },
+      {
+        "id": "note",
+        "title": "Operator note"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger",
+          "note"
+        ],
+        "data": {
+          "summary": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7",
+            "code": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+            "ledger": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+            "note": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73"
+          }
+        },
+        "artifact_hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7",
+        "text": "A paused broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger hash chain verifies. What is cumulative_cost_usd after replay, and is the next permit issued or refused?"
+      },
+      {
+        "id": "code",
+        "hash": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+        "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
+      },
+      {
+        "id": "ledger",
+        "hash": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+        "text": "{\"kind\": \"permit_receipt\", \"permit_id\": \"p-1\", \"cost_usd\": 0.25}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-2\", \"cost_usd\": null}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-3\", \"cost_usd\": \"0.1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-4\", \"cost_usd\": 0.5}"
+      },
+      {
+        "id": "note",
+        "hash": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73",
+        "text": "Each of p-1..p-4 was issued and consumed before its receipt. The \"0.1\" receipt was hand-edited during an incident and re-chained."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Replay sums only numeric, finite, non-negative cost_usd values: 0.25 + 0.5 = 0.75. The null receipt contributes nothing, and the string \"0.1\" fails the `type(cost) in (int, float)` test, so it is silently skipped. Since 0.75 < 0.8, the cumulative cap check in `issue` does not trip and the next permit is issued.\n\nCaveat worth flagging: real spend was 0.85, which exceeds the cap. The hand-edited string receipt is invisible to replay even though `receipt()` would have rejected it as `invalid_receipt_cost`, and the verifying hash chain gives no signal because the edit was re-chained.",
+      "data": {
+        "summary": "Replay yields cumulative_cost_usd = 0.75 (0.25 + 0.5); the string \"0.1\" and the null are skipped, so 0.75 < 0.8 and the next permit is ISSUED \u2014 though true spend is 0.85, over cap.",
+        "claims": [
+          "Replay adds a receipt's cost only when type(cost) is int/float, finite, and >= 0 (code).",
+          "cost_usd null (p-2) is skipped: it fails the type check in the replay branch (ledger, code).",
+          "cost_usd \"0.1\" (p-3) is a string, so type(cost) in (int, float) is False and it is silently skipped with no error during replay (ledger, code).",
+          "cumulative_cost_usd after replay = 0.25 + 0.5 = 0.75 (ledger, code).",
+          "issue() refuses only when _cumulative_cost_usd >= max_cumulative_usd; 0.75 >= 0.8 is False, so the next permit is issued (code, request).",
+          "Real spend is 0.25 + 0.1 + 0.5 = 0.85, exceeding the 0.8 cap; replay under-counts by 0.1 (ledger, note).",
+          "The string cost would have been rejected by receipt() as invalid_receipt_cost, so it could not have come from the normal write path, consistent with the hand-edit (code, note).",
+          "A verifying hash chain does not detect this: the edit was re-chained, so integrity verification gives no signal of the under-count (note, request).",
+          "Assumes the four listed receipts are the only cost-bearing events and that replay starts from zero (ledger).",
+          "Assumes the next issue() call passes all other checks (ttl, scope, per-permit budget), which are elided in the excerpt (code)."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "9c5e75758edabf5d5dd778136be7522d35f5844e4d21006d2be2cb97bcafc85a"
+        ],
+        "source_hashes": {
+          "code": "ce918e018d0aca602e03830fc76fb9094d0545ff831435aa026dce2221149d87",
+          "ledger": "8abb87c0878d7aba63cdea904fa54f7d287899da51147eb4d60d677df11083d0",
+          "note": "b8208bec7409c253680deffeb538ef90b6187509bf9562e6ac8b5e3370f8cc73",
+          "request": "6c3490499131fe6ed48e69e86abf57029b3410a11bf9400e241ce68a471c74a7"
+        }
+      },
+      "source_ids": [
+        "request",
+        "code",
+        "ledger",
+        "note"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.9
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 27,
+      "jev_tokens_remaining": 91288,
+      "jev_api_usd_remaining": 0.999641278,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "b1b39d46fec9d27e2735552321a5858555c22659293033e161bab789a12cba09",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "b1b39d46fec9d27e2735552321a5858555c22659293033e161bab789a12cba09",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

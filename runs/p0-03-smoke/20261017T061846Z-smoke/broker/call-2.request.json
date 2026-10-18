@@ -1,0 +1,132 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Report production defects per 1,000 items, excluding trial records, with source support.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "records",
+        "title": "Synthetic production records"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+        "text": "Report production defects per 1,000 items, excluding trial records, with source support."
+      },
+      {
+        "id": "records",
+        "hash": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5",
+        "text": "segment A, kind production, items 240, defects 12\nsegment B, kind production, items 160, defects 8\nsegment T, kind trial, items 100, defects 30"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef",
+    "candidate": {
+      "text": "Input and evidence identities preserved.",
+      "data": {
+        "summary": "Report production defects per 1,000 items, excluding trial records, with source support.",
+        "claims": [],
+        "unresolved": [],
+        "parent_hashes": [],
+        "source_hashes": {
+          "request": "5ac245f830ea36f06ed12fcc12e67d0c7c1028015c87695287f484452d1e3376",
+          "records": "3c85061df1ab9c95d662d7e5e1bf41512ab462390430eca115adc0476789def5"
+        }
+      },
+      "source_ids": [
+        "request",
+        "records"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 29,
+      "jev_tokens_remaining": 48858,
+      "jev_api_usd_remaining": 0.999953338,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "fbbdfc5cb85bcd53cf215c18360fd4df3a75c485a48aa55516beb3872857c8d8",
+            "policy_version": "ca4c3f0230d767dab4eb36f3432f45aaa0ced7e3ffbc6cdb4b6001321bef3cef"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      }
+    }
+  }
+}

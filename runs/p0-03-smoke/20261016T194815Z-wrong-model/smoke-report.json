@@ -1,0 +1,117 @@
+{
+  "slice": "p0-03-3b",
+  "mode": "wrong-model",
+  "started_at": "20261016T194815Z",
+  "preflight": {
+    "ok": false,
+    "checks": {
+      "task": {
+        "ok": true,
+        "route": "broad_or_uncertain",
+        "task_hash": "f5f9d6cb39e342332ce5b28cfcbed9e3746ae42b46ef2e97f5031141ca316bb2"
+      },
+      "models_pinned": {
+        "ok": false,
+        "jev_model": "typesafe/jev-0.0-wrong",
+        "pinned_jev_model": "typesafe/jev-1.13",
+        "worker_routes": [
+          "sonnet_low",
+          "sonnet_medium",
+          "sonnet_high",
+          "sonnet_xhigh",
+          "opus_low",
+          "opus_medium",
+          "opus_high",
+          "opus_xhigh"
+        ],
+        "checker": [
+          "anthropic/claude-opus-5",
+          "high"
+        ]
+      },
+      "jev_cap": {
+        "ok": true,
+        "max_usd": 1.0,
+        "ceiling_usd": 1.0
+      },
+      "cumulative_cap": {
+        "ok": true,
+        "max_cumulative_usd": 1.0,
+        "ceiling_usd": 1.0
+      },
+      "openrouter_key": {
+        "ok": true,
+        "present": true
+      },
+      "claude_cli": {
+        "ok": true,
+        "installed": true,
+        "logged_in": true,
+        "auth_method": "claude.ai",
+        "billing": "subscription",
+        "subscription_type": "pro",
+        "warnings": [],
+        "detail": null
+      }
+    }
+  },
+  "config_policy_hash": "1695c4b6d72f65502f3290643b96216922e3604f3a9c68725d445926bc9e0041",
+  "command": [
+    "C:\\Users\\caber\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\scripts\\native_transition_broker.py",
+    "--task",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\examples\\native-project.request.json",
+    "--out",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\runs\\p0-03-smoke\\20261016T194815Z-wrong-model\\broker",
+    "--host",
+    "claude",
+    "--gate-policy",
+    "recovery",
+    "--config",
+    "D:\\Laptop Transfer\\Hermes Jev CIDM\\runs\\p0-03-smoke\\20261016T194815Z-wrong-model\\config.json",
+    "--max-cumulative-usd",
+    "1.0",
+    "--claude-executable",
+    "claude",
+    "--live"
+  ],
+  "session_env_removed": [
+    "ANTHROPIC_BASE_URL",
+    "CLAUDECODE",
+    "CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+    "CLAUDE_AGENT_SDK_VERSION",
+    "CLAUDE_CODE_ACCOUNT_UUID",
+    "CLAUDE_CODE_CHILD_SESSION",
+    "CLAUDE_CODE_DESKTOP_APP_VERSION",
+    "CLAUDE_CODE_DISABLE_CRON",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE",
+    "CLAUDE_CODE_EAGER_FLUSH",
+    "CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES",
+    "CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL",
+    "CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING",
+    "CLAUDE_CODE_ENTRYPOINT",
+    "CLAUDE_CODE_HOST_SESSION_ID",
+    "CLAUDE_CODE_MESSAGING_SOCKET",
+    "CLAUDE_CODE_MESSAGING_TOKEN",
+    "CLAUDE_CODE_OAUTH_SCOPES",
+    "CLAUDE_CODE_ORGANIZATION_UUID",
+    "CLAUDE_CODE_REPORT_FINDINGS",
+    "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+    "CLAUDE_CODE_SESSION_ATTENDED",
+    "CLAUDE_CODE_SESSION_ID",
+    "CLAUDE_CODE_SIMPLE",
+    "CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+    "CLAUDE_CODE_TERMINAL_MCP_TOOLS",
+    "CLAUDE_CODE_USER_EMAIL",
+    "CLAUDE_PID",
+    "CLAUDE_PREVIEW_CLASSIFIER_FLOOR"
+  ],
+  "status": "refused_before_launch",
+  "refused_checks": [
+    "models_pinned"
+  ],
+  "expectation": {
+    "met": true,
+    "reasons": []
+  }
+}

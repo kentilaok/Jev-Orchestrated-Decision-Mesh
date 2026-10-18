@@ -1,0 +1,3429 @@
+{
+  "schema_version": 1,
+  "kind": "cidm_recovery_bundle",
+  "checkpoint": {
+    "checkpoint_id": "74b30b37d5e2db035362815eea22605a42e71f9732fb694e5191613394a1aed5",
+    "status": "paused_recoverable",
+    "active_unit": "hidden3",
+    "active_index": 3,
+    "completed_units": [
+      "input",
+      "hidden1",
+      "hidden2"
+    ],
+    "recovery_kind": "retrieve_evidence",
+    "reason": "Additional original evidence is required before this unit can continue.",
+    "recovery_round": 0,
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "mesh_state_hash": "a9a23fcd35d8aba5c858319bc1056ada65fe4d377efe99407234ce3f9033061d",
+    "event_cursor": 29
+  },
+  "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+  "constraints": [],
+  "sources": {
+    "request": {
+      "title": "Current request",
+      "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+    },
+    "fields": {
+      "title": "scripts/experience_distiller.py excerpt (lesson fields)",
+      "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+    },
+    "code": {
+      "title": "scripts/experience_distiller.py excerpt (skill_name)",
+      "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+    },
+    "records": {
+      "title": "experience records (in order)",
+      "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+    }
+  },
+  "source_hashes": {
+    "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+    "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+    "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+    "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+  },
+  "policy": {
+    "worker_model": "anthropic/claude-sonnet-5",
+    "worker_effort": "medium",
+    "checker_model": "anthropic/claude-opus-5",
+    "checker_effort": "high",
+    "astra_explicitly_authorized": false,
+    "worker_family": "claude",
+    "jev_model": "typesafe/jev-1.13",
+    "provider_route": "azure",
+    "provider_name": "Azure",
+    "jev_provider_name": "TypeSafe",
+    "worker_model_aliases": [],
+    "checker_model_aliases": [],
+    "jev_model_aliases": [
+      "typesafe/jev-1.13-20260917"
+    ],
+    "max_usd": 1.0,
+    "max_cumulative_usd": 1.0,
+    "max_calls": 40,
+    "max_jev_calls": 30,
+    "max_jev_tokens": 100000,
+    "max_worker_calls": 12,
+    "max_checker_calls": 10,
+    "max_recovery_attempts": 2,
+    "max_verification_attempts": 2,
+    "max_recovery_rounds": 2,
+    "max_output_tokens": 2000,
+    "timeout": 45,
+    "worker_luna_input_usd_per_million": 0.1,
+    "worker_luna_output_usd_per_million": 0.5,
+    "worker_input_usd_per_million": 2.0,
+    "worker_output_usd_per_million": 10.0,
+    "worker_astra_input_usd_per_million": 10.0,
+    "worker_astra_output_usd_per_million": 50.0,
+    "checker_input_usd_per_million": 2.0,
+    "checker_output_usd_per_million": 10.0,
+    "jev_input_usd_per_million": 0.05,
+    "jev_output_usd_per_million": 0.05,
+    "worker_sonnet_input_usd_per_million": 2.0,
+    "worker_sonnet_output_usd_per_million": 10.0,
+    "worker_opus_input_usd_per_million": 5.0,
+    "worker_opus_output_usd_per_million": 25.0,
+    "review_policy": "jev_conditional_sol_high_v3",
+    "worker_routes": [
+      {
+        "id": "sonnet_low",
+        "model": "anthropic/claude-sonnet-5",
+        "effort": "low"
+      },
+      {
+        "id": "sonnet_medium",
+        "model": "anthropic/claude-sonnet-5",
+        "effort": "medium"
+      },
+      {
+        "id": "sonnet_high",
+        "model": "anthropic/claude-sonnet-5",
+        "effort": "high"
+      },
+      {
+        "id": "sonnet_xhigh",
+        "model": "anthropic/claude-sonnet-5",
+        "effort": "xhigh"
+      },
+      {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      {
+        "id": "opus_medium",
+        "model": "anthropic/claude-opus-5",
+        "effort": "medium"
+      },
+      {
+        "id": "opus_high",
+        "model": "anthropic/claude-opus-5",
+        "effort": "high"
+      },
+      {
+        "id": "opus_xhigh",
+        "model": "anthropic/claude-opus-5",
+        "effort": "xhigh"
+      }
+    ]
+  },
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "unit_ids": [
+    "input",
+    "hidden1",
+    "hidden2",
+    "hidden3",
+    "output"
+  ],
+  "deterministic_units": [
+    "input"
+  ],
+  "checker_identity": {
+    "model": "anthropic/claude-opus-5",
+    "effort": "high"
+  },
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+          }
+        },
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "hidden1",
+      "artifact": {
+        "data": {
+          "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+          "claims": [
+            "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+            "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+            "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+            "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+            "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+          ],
+          "source_hashes": {
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+          }
+        },
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "five_scores": [
+          5,
+          4,
+          5,
+          4,
+          5
+        ],
+        "self_probability": 0.82,
+        "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+      },
+      "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+      "parent_artifacts": [
+        {
+          "id": "input",
+          "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e12",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "hidden2",
+      "artifact": {
+        "data": {
+          "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+          "claims": [
+            "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+            "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+            "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+            "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+            "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+          ],
+          "source_hashes": {
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          4,
+          5
+        ],
+        "self_probability": 0.93,
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+      },
+      "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+      "parent_artifacts": [
+        {
+          "id": "hidden1",
+          "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e20",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    }
+  ],
+  "checks": [],
+  "recovery_feedback": null,
+  "recovery_rounds": {},
+  "mesh": {
+    "version": 3,
+    "accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+          }
+        },
+        "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+          "claims": [
+            "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+            "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+            "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+            "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+            "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+          ],
+          "source_hashes": {
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+          }
+        },
+        "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+          "claims": [
+            "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+            "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+            "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+            "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+            "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+          ],
+          "source_hashes": {
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+          }
+        },
+        "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+        "reviewed_by_sol": false
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated": [],
+    "stalled": {},
+    "simulation": false,
+    "events": [
+      {
+        "id": "e1",
+        "kind": "jev_decision",
+        "version": 0,
+        "simulation": false,
+        "phase": "authorize_unit",
+        "options": {
+          "stop": {
+            "description": "Stop without computing or forwarding."
+          },
+          "compute": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "input",
+              "attempt": 0,
+              "parents": [],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": null
+            },
+            "description": "Use deterministic code for this unit; no generative worker call."
+          }
+        },
+        "state_hash": "eeecf2ed429727c6cca2186f872afdc3f1a1b1150c65a9cf4b3665ffa33cf326",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 0,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "input",
+            "released": false
+          },
+          "unit": {
+            "id": "input",
+            "name": "Input",
+            "objective": "Preserve the current request, carried context, and original source identities."
+          },
+          "parents": [],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "compute",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "compute": 0.89,
+            "stop": 0.11
+          },
+          "confidence": 0.78,
+          "api_event": "call-1",
+          "usage": {
+            "input_tokens": 1638,
+            "output_tokens": 31,
+            "total_tokens": 1669,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 6.8796e-05
+          }
+        }
+      },
+      {
+        "id": "e2",
+        "kind": "dispatch",
+        "version": 0,
+        "simulation": false,
+        "worker_id": "producer",
+        "action": {
+          "operation": "compute_unit",
+          "unit_id": "input",
+          "attempt": 0,
+          "parents": [],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "worker_route": null
+        },
+        "action_hash": "36da092d43000ec810bfb06b00cfc7be600f3a1d82357bb40af3840fccb3bc72",
+        "gate_id": "e1"
+      },
+      {
+        "id": "e3",
+        "kind": "provisional_return",
+        "version": 0,
+        "simulation": false,
+        "worker_id": "producer",
+        "unit_id": "input",
+        "value": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+            }
+          },
+          "source_ids": [
+            "request",
+            "fields",
+            "code",
+            "records"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        }
+      },
+      {
+        "id": "e4",
+        "kind": "jev_decision",
+        "version": 0,
+        "simulation": false,
+        "phase": "after_worker",
+        "options": {
+          "repair": {
+            "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+          },
+          "retrieve_evidence": {
+            "description": "Stop for original evidence that is missing."
+          },
+          "forward": {
+            "worker_id": "policy",
+            "action": {
+              "operation": "forward",
+              "unit_id": "input",
+              "candidate_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "check_hash": null,
+              "successor": "hidden1",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+          },
+          "check_sol_high": {
+            "worker_id": "checker",
+            "action": {
+              "operation": "sol_high_check",
+              "unit_id": "input",
+              "attempt": 0,
+              "check_attempt": 0,
+              "candidate_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+          }
+        },
+        "state_hash": "eeecf2ed429727c6cca2186f872afdc3f1a1b1150c65a9cf4b3665ffa33cf326",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 0,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "input",
+            "released": false
+          },
+          "unit": {
+            "id": "input",
+            "name": "Input",
+            "objective": "Preserve the current request, carried context, and original source identities."
+          },
+          "parents": [],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "candidate": {
+            "text": "Input and evidence identities preserved.",
+            "data": {
+              "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+              }
+            },
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "five_scores": [
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "self_probability": null
+          },
+          "hard_checks": {
+            "native_shape": true,
+            "source_hashes_match": true,
+            "parent_hashes_match": true,
+            "artifact_schema_valid": true
+          },
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "forward",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "check_sol_high": 0.03,
+            "forward": 0.92,
+            "repair": 0.04,
+            "retrieve_evidence": 0.01
+          },
+          "confidence": 0.89,
+          "api_event": "call-2",
+          "usage": {
+            "input_tokens": 2414,
+            "output_tokens": 50,
+            "total_tokens": 2464,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 0.000101388
+          }
+        }
+      },
+      {
+        "id": "e5",
+        "kind": "post_worker_decision",
+        "version": 0,
+        "simulation": false,
+        "unit_id": "input",
+        "choice": "forward",
+        "gate_id": "e4",
+        "candidate_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        }
+      },
+      {
+        "id": "e6",
+        "kind": "dispatch",
+        "version": 0,
+        "simulation": false,
+        "worker_id": "policy",
+        "action": {
+          "operation": "forward",
+          "unit_id": "input",
+          "candidate_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+          "check_hash": null,
+          "successor": "hidden1",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        },
+        "action_hash": "f9418245dc8962dcd4a9a406c1a63ff5d1d7d9b9b6a69d45e22de8b38eb1a287",
+        "gate_id": "e4"
+      },
+      {
+        "id": "e7",
+        "kind": "checked_commit",
+        "version": 1,
+        "simulation": false,
+        "unit_id": "input",
+        "packet": {
+          "id": "input",
+          "artifact": {
+            "text": "Input and evidence identities preserved.",
+            "data": {
+              "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+              }
+            },
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "five_scores": [
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "self_probability": null
+          },
+          "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+          "parent_artifacts": [],
+          "worker_route": null,
+          "checker": null,
+          "decision_id": "e4",
+          "decision_phase": "after_worker",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        },
+        "gate_id": "e4"
+      },
+      {
+        "id": "e8",
+        "kind": "provisional_return",
+        "version": 1,
+        "simulation": false,
+        "worker_id": "policy",
+        "unit_id": "input",
+        "value": {
+          "id": "input",
+          "artifact": {
+            "text": "Input and evidence identities preserved.",
+            "data": {
+              "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+              }
+            },
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "five_scores": [
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "self_probability": null
+          },
+          "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+          "parent_artifacts": [],
+          "worker_route": null,
+          "checker": null,
+          "decision_id": "e4",
+          "decision_phase": "after_worker",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        }
+      },
+      {
+        "id": "e9",
+        "kind": "jev_decision",
+        "version": 1,
+        "simulation": false,
+        "phase": "authorize_unit",
+        "options": {
+          "sonnet_low": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_low",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "low"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+          },
+          "sonnet_medium": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_medium",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "medium"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+          },
+          "sonnet_high": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_high",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "high"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+          },
+          "sonnet_xhigh": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_xhigh",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "xhigh"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+          },
+          "opus_low": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_low",
+                "model": "anthropic/claude-opus-5",
+                "effort": "low"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+          },
+          "opus_medium": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_medium",
+                "model": "anthropic/claude-opus-5",
+                "effort": "medium"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+          },
+          "opus_high": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_high",
+                "model": "anthropic/claude-opus-5",
+                "effort": "high"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+          },
+          "opus_xhigh": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "input",
+                  "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_xhigh",
+                "model": "anthropic/claude-opus-5",
+                "effort": "xhigh"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+          }
+        },
+        "state_hash": "c8157c0ca1ddcdd4e9ea35aacadf406c9d5c7c89f4eb2ab8e448472c916a8ed9",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 1,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [
+            {
+              "id": "input",
+              "operation": "validated_unit",
+              "summary": "Input and evidence identities preserved.",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+                "claims": [],
+                "unresolved": [],
+                "parent_hashes": [],
+                "source_hashes": {
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+                }
+              },
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "reviewed_by_sol": false
+            }
+          ],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [
+              "input"
+            ],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "hidden1",
+            "released": false
+          },
+          "unit": {
+            "id": "hidden1",
+            "name": "Interpret",
+            "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+          },
+          "parents": [
+            {
+              "id": "input",
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "opus_low",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "opus_high": 0.01,
+            "opus_low": 0.61,
+            "opus_medium": 0.04,
+            "opus_xhigh": 0.01,
+            "sonnet_high": 0,
+            "sonnet_low": 0.31,
+            "sonnet_medium": 0.02,
+            "sonnet_xhigh": 0
+          },
+          "confidence": 0.55,
+          "api_event": "call-3",
+          "usage": {
+            "input_tokens": 4158,
+            "output_tokens": 90,
+            "total_tokens": 4248,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 0.000174636
+          }
+        }
+      },
+      {
+        "id": "e10",
+        "kind": "dispatch",
+        "version": 1,
+        "simulation": false,
+        "worker_id": "producer",
+        "action": {
+          "operation": "compute_unit",
+          "unit_id": "hidden1",
+          "attempt": 0,
+          "parents": [
+            {
+              "id": "input",
+              "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "worker_route": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          }
+        },
+        "action_hash": "0c775abfc52c055aca6ee4754c915c6a53918b5cc20f7b0b9032112a3e799710",
+        "gate_id": "e9"
+      },
+      {
+        "id": "e11",
+        "kind": "provisional_return",
+        "version": 1,
+        "simulation": false,
+        "worker_id": "producer",
+        "unit_id": "hidden1",
+        "value": {
+          "data": {
+            "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+            "claims": [
+              "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+              "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+              "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+              "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+              "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+            ],
+            "source_hashes": {
+              "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+            }
+          },
+          "source_ids": [
+            "request",
+            "fields",
+            "code",
+            "records"
+          ],
+          "five_scores": [
+            5,
+            4,
+            5,
+            4,
+            5
+          ],
+          "self_probability": 0.82,
+          "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+        }
+      },
+      {
+        "id": "e12",
+        "kind": "jev_decision",
+        "version": 1,
+        "simulation": false,
+        "phase": "after_worker",
+        "options": {
+          "repair": {
+            "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+          },
+          "retrieve_evidence": {
+            "description": "Stop for original evidence that is missing."
+          },
+          "forward": {
+            "worker_id": "policy",
+            "action": {
+              "operation": "forward",
+              "unit_id": "hidden1",
+              "candidate_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+              "check_hash": null,
+              "successor": "hidden2",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+          },
+          "check_sol_high": {
+            "worker_id": "checker",
+            "action": {
+              "operation": "sol_high_check",
+              "unit_id": "hidden1",
+              "attempt": 0,
+              "check_attempt": 0,
+              "candidate_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+          },
+          "escalate": {
+            "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+          }
+        },
+        "state_hash": "c8157c0ca1ddcdd4e9ea35aacadf406c9d5c7c89f4eb2ab8e448472c916a8ed9",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 1,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [
+            {
+              "id": "input",
+              "operation": "validated_unit",
+              "summary": "Input and evidence identities preserved.",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+                "claims": [],
+                "unresolved": [],
+                "parent_hashes": [],
+                "source_hashes": {
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+                }
+              },
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "reviewed_by_sol": false
+            }
+          ],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [
+              "input"
+            ],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "hidden1",
+            "released": false
+          },
+          "unit": {
+            "id": "hidden1",
+            "name": "Interpret",
+            "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+          },
+          "parents": [
+            {
+              "id": "input",
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "selected_worker": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          },
+          "candidate": {
+            "data": {
+              "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "claims": [
+                "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+                "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+                "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+              ],
+              "source_hashes": {
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+              }
+            },
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "five_scores": [
+              5,
+              4,
+              5,
+              4,
+              5
+            ],
+            "self_probability": 0.82,
+            "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+          },
+          "hard_checks": {
+            "native_shape": true,
+            "source_hashes_match": true,
+            "parent_hashes_match": true,
+            "artifact_schema_valid": true
+          },
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "forward",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "check_sol_high": 0.15,
+            "escalate": 0.02,
+            "forward": 0.72,
+            "repair": 0.08,
+            "retrieve_evidence": 0.03
+          },
+          "confidence": 0.65,
+          "api_event": "call-4",
+          "usage": {
+            "input_tokens": 3386,
+            "output_tokens": 59,
+            "total_tokens": 3445,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 0.000142212
+          }
+        }
+      },
+      {
+        "id": "e13",
+        "kind": "post_worker_decision",
+        "version": 1,
+        "simulation": false,
+        "unit_id": "hidden1",
+        "choice": "forward",
+        "gate_id": "e12",
+        "candidate_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        }
+      },
+      {
+        "id": "e14",
+        "kind": "dispatch",
+        "version": 1,
+        "simulation": false,
+        "worker_id": "policy",
+        "action": {
+          "operation": "forward",
+          "unit_id": "hidden1",
+          "candidate_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+          "check_hash": null,
+          "successor": "hidden2",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        },
+        "action_hash": "c4f21e45b130faa387a49850413c7b7f8e01592d256d4a30f9e11de050728e50",
+        "gate_id": "e12"
+      },
+      {
+        "id": "e15",
+        "kind": "checked_commit",
+        "version": 2,
+        "simulation": false,
+        "unit_id": "hidden1",
+        "packet": {
+          "id": "hidden1",
+          "artifact": {
+            "data": {
+              "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "claims": [
+                "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+                "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+                "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+              ],
+              "source_hashes": {
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+              }
+            },
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "five_scores": [
+              5,
+              4,
+              5,
+              4,
+              5
+            ],
+            "self_probability": 0.82,
+            "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+          },
+          "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+          "parent_artifacts": [
+            {
+              "id": "input",
+              "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+            }
+          ],
+          "worker_route": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          },
+          "checker": null,
+          "decision_id": "e12",
+          "decision_phase": "after_worker",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        },
+        "gate_id": "e12"
+      },
+      {
+        "id": "e16",
+        "kind": "provisional_return",
+        "version": 2,
+        "simulation": false,
+        "worker_id": "policy",
+        "unit_id": "hidden1",
+        "value": {
+          "id": "hidden1",
+          "artifact": {
+            "data": {
+              "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "claims": [
+                "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+                "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+                "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+              ],
+              "source_hashes": {
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+              }
+            },
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "five_scores": [
+              5,
+              4,
+              5,
+              4,
+              5
+            ],
+            "self_probability": 0.82,
+            "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+          },
+          "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+          "parent_artifacts": [
+            {
+              "id": "input",
+              "hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+            }
+          ],
+          "worker_route": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          },
+          "checker": null,
+          "decision_id": "e12",
+          "decision_phase": "after_worker",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        }
+      },
+      {
+        "id": "e17",
+        "kind": "jev_decision",
+        "version": 2,
+        "simulation": false,
+        "phase": "authorize_unit",
+        "options": {
+          "sonnet_low": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_low",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "low"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+          },
+          "sonnet_medium": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_medium",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "medium"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+          },
+          "sonnet_high": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_high",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "high"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+          },
+          "sonnet_xhigh": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_xhigh",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "xhigh"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+          },
+          "opus_low": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_low",
+                "model": "anthropic/claude-opus-5",
+                "effort": "low"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+          },
+          "opus_medium": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_medium",
+                "model": "anthropic/claude-opus-5",
+                "effort": "medium"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+          },
+          "opus_high": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_high",
+                "model": "anthropic/claude-opus-5",
+                "effort": "high"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+          },
+          "opus_xhigh": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden1",
+                  "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_xhigh",
+                "model": "anthropic/claude-opus-5",
+                "effort": "xhigh"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+          }
+        },
+        "state_hash": "7aefc2f74e79682464dbf9aa7bed41e22918dfb319e43bc498418f201d9ed3f8",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 2,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [
+            {
+              "id": "input",
+              "operation": "validated_unit",
+              "summary": "Input and evidence identities preserved.",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+                "claims": [],
+                "unresolved": [],
+                "parent_hashes": [],
+                "source_hashes": {
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+                }
+              },
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "reviewed_by_sol": false
+            },
+            {
+              "id": "hidden1",
+              "operation": "validated_unit",
+              "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+                "claims": [
+                  "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+                  "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                  "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+                  "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                  "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+                ],
+                "unresolved": [],
+                "parent_hashes": [
+                  "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                ],
+                "source_hashes": {
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+                }
+              },
+              "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+              "reviewed_by_sol": false
+            }
+          ],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [
+              "input",
+              "hidden1"
+            ],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "hidden2",
+            "released": false
+          },
+          "unit": {
+            "id": "hidden2",
+            "name": "Compute",
+            "objective": "Perform the bounded substantive work using accepted context and original evidence."
+          },
+          "parents": [
+            {
+              "id": "hidden1",
+              "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "opus_low",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "opus_high": 0.01,
+            "opus_low": 0.76,
+            "opus_medium": 0.01,
+            "opus_xhigh": 0,
+            "sonnet_high": 0,
+            "sonnet_low": 0.21,
+            "sonnet_medium": 0.01,
+            "sonnet_xhigh": 0
+          },
+          "confidence": 0.73,
+          "api_event": "call-5",
+          "usage": {
+            "input_tokens": 4949,
+            "output_tokens": 90,
+            "total_tokens": 5039,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 0.000207858
+          }
+        }
+      },
+      {
+        "id": "e18",
+        "kind": "dispatch",
+        "version": 2,
+        "simulation": false,
+        "worker_id": "producer",
+        "action": {
+          "operation": "compute_unit",
+          "unit_id": "hidden2",
+          "attempt": 0,
+          "parents": [
+            {
+              "id": "hidden1",
+              "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "worker_route": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          }
+        },
+        "action_hash": "c01bf61d5a15faf59561040c6c7bc5c098a184183589e9279b619157ddb4b052",
+        "gate_id": "e17"
+      },
+      {
+        "id": "e19",
+        "kind": "provisional_return",
+        "version": 2,
+        "simulation": false,
+        "worker_id": "producer",
+        "unit_id": "hidden2",
+        "value": {
+          "data": {
+            "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+            "claims": [
+              "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+              "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+              "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+              "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+              "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+            ],
+            "source_hashes": {
+              "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            4,
+            5
+          ],
+          "self_probability": 0.93,
+          "source_ids": [
+            "request",
+            "fields",
+            "code",
+            "records"
+          ],
+          "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+        }
+      },
+      {
+        "id": "e20",
+        "kind": "jev_decision",
+        "version": 2,
+        "simulation": false,
+        "phase": "after_worker",
+        "options": {
+          "repair": {
+            "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+          },
+          "retrieve_evidence": {
+            "description": "Stop for original evidence that is missing."
+          },
+          "forward": {
+            "worker_id": "policy",
+            "action": {
+              "operation": "forward",
+              "unit_id": "hidden2",
+              "candidate_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+              "check_hash": null,
+              "successor": "hidden3",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+          },
+          "check_sol_high": {
+            "worker_id": "checker",
+            "action": {
+              "operation": "sol_high_check",
+              "unit_id": "hidden2",
+              "attempt": 0,
+              "check_attempt": 0,
+              "candidate_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+          },
+          "escalate": {
+            "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+          }
+        },
+        "state_hash": "7aefc2f74e79682464dbf9aa7bed41e22918dfb319e43bc498418f201d9ed3f8",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 2,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [
+            {
+              "id": "input",
+              "operation": "validated_unit",
+              "summary": "Input and evidence identities preserved.",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+                "claims": [],
+                "unresolved": [],
+                "parent_hashes": [],
+                "source_hashes": {
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+                }
+              },
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "reviewed_by_sol": false
+            },
+            {
+              "id": "hidden1",
+              "operation": "validated_unit",
+              "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+                "claims": [
+                  "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+                  "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                  "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+                  "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                  "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+                ],
+                "unresolved": [],
+                "parent_hashes": [
+                  "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                ],
+                "source_hashes": {
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+                }
+              },
+              "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+              "reviewed_by_sol": false
+            }
+          ],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [
+              "input",
+              "hidden1"
+            ],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "hidden2",
+            "released": false
+          },
+          "unit": {
+            "id": "hidden2",
+            "name": "Compute",
+            "objective": "Perform the bounded substantive work using accepted context and original evidence."
+          },
+          "parents": [
+            {
+              "id": "hidden1",
+              "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "selected_worker": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          },
+          "candidate": {
+            "data": {
+              "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+              "claims": [
+                "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+                "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+                "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              ],
+              "source_hashes": {
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+              }
+            },
+            "five_scores": [
+              5,
+              5,
+              5,
+              4,
+              5
+            ],
+            "self_probability": 0.93,
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+          },
+          "hard_checks": {
+            "native_shape": true,
+            "source_hashes_match": true,
+            "parent_hashes_match": true,
+            "artifact_schema_valid": true
+          },
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "forward",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "check_sol_high": 0.13,
+            "escalate": 0.02,
+            "forward": 0.73,
+            "repair": 0.1,
+            "retrieve_evidence": 0.02
+          },
+          "confidence": 0.66,
+          "api_event": "call-6",
+          "usage": {
+            "input_tokens": 4265,
+            "output_tokens": 59,
+            "total_tokens": 4324,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 0.00017913
+          }
+        }
+      },
+      {
+        "id": "e21",
+        "kind": "post_worker_decision",
+        "version": 2,
+        "simulation": false,
+        "unit_id": "hidden2",
+        "choice": "forward",
+        "gate_id": "e20",
+        "candidate_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        }
+      },
+      {
+        "id": "e22",
+        "kind": "dispatch",
+        "version": 2,
+        "simulation": false,
+        "worker_id": "policy",
+        "action": {
+          "operation": "forward",
+          "unit_id": "hidden2",
+          "candidate_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+          "check_hash": null,
+          "successor": "hidden3",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        },
+        "action_hash": "c7b39f3a02327c3596a8db9093bca3c12cfa2e154bb8dea30003977a48e47998",
+        "gate_id": "e20"
+      },
+      {
+        "id": "e23",
+        "kind": "checked_commit",
+        "version": 3,
+        "simulation": false,
+        "unit_id": "hidden2",
+        "packet": {
+          "id": "hidden2",
+          "artifact": {
+            "data": {
+              "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+              "claims": [
+                "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+                "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+                "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              ],
+              "source_hashes": {
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+              }
+            },
+            "five_scores": [
+              5,
+              5,
+              5,
+              4,
+              5
+            ],
+            "self_probability": 0.93,
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+          },
+          "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+          "parent_artifacts": [
+            {
+              "id": "hidden1",
+              "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+            }
+          ],
+          "worker_route": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          },
+          "checker": null,
+          "decision_id": "e20",
+          "decision_phase": "after_worker",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        },
+        "gate_id": "e20"
+      },
+      {
+        "id": "e24",
+        "kind": "provisional_return",
+        "version": 3,
+        "simulation": false,
+        "worker_id": "policy",
+        "unit_id": "hidden2",
+        "value": {
+          "id": "hidden2",
+          "artifact": {
+            "data": {
+              "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+              "claims": [
+                "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+                "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+                "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+              ],
+              "source_hashes": {
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+              }
+            },
+            "five_scores": [
+              5,
+              5,
+              5,
+              4,
+              5
+            ],
+            "self_probability": 0.93,
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b"
+          },
+          "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+          "parent_artifacts": [
+            {
+              "id": "hidden1",
+              "hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+            }
+          ],
+          "worker_route": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          },
+          "checker": null,
+          "decision_id": "e20",
+          "decision_phase": "after_worker",
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+        }
+      },
+      {
+        "id": "e25",
+        "kind": "jev_decision",
+        "version": 3,
+        "simulation": false,
+        "phase": "authorize_unit",
+        "options": {
+          "sonnet_low": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_low",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "low"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+          },
+          "sonnet_medium": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_medium",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "medium"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+          },
+          "sonnet_high": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_high",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "high"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+          },
+          "sonnet_xhigh": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "sonnet_xhigh",
+                "model": "anthropic/claude-sonnet-5",
+                "effort": "xhigh"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+          },
+          "opus_low": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_low",
+                "model": "anthropic/claude-opus-5",
+                "effort": "low"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+          },
+          "opus_medium": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_medium",
+                "model": "anthropic/claude-opus-5",
+                "effort": "medium"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+          },
+          "opus_high": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_high",
+                "model": "anthropic/claude-opus-5",
+                "effort": "high"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+          },
+          "opus_xhigh": {
+            "worker_id": "producer",
+            "action": {
+              "operation": "compute_unit",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "parents": [
+                {
+                  "id": "hidden2",
+                  "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+                }
+              ],
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+              "worker_route": {
+                "id": "opus_xhigh",
+                "model": "anthropic/claude-opus-5",
+                "effort": "xhigh"
+              }
+            },
+            "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+          }
+        },
+        "state_hash": "a9a23fcd35d8aba5c858319bc1056ada65fe4d377efe99407234ce3f9033061d",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 3,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [
+            {
+              "id": "input",
+              "operation": "validated_unit",
+              "summary": "Input and evidence identities preserved.",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+                "claims": [],
+                "unresolved": [],
+                "parent_hashes": [],
+                "source_hashes": {
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+                }
+              },
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "reviewed_by_sol": false
+            },
+            {
+              "id": "hidden1",
+              "operation": "validated_unit",
+              "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+                "claims": [
+                  "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+                  "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                  "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+                  "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                  "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+                ],
+                "unresolved": [],
+                "parent_hashes": [
+                  "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                ],
+                "source_hashes": {
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+                }
+              },
+              "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+              "reviewed_by_sol": false
+            },
+            {
+              "id": "hidden2",
+              "operation": "validated_unit",
+              "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+                "claims": [
+                  "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+                  "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                  "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+                  "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                  "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+                ],
+                "unresolved": [],
+                "parent_hashes": [
+                  "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                ],
+                "source_hashes": {
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+                }
+              },
+              "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+              "reviewed_by_sol": false
+            }
+          ],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [
+              "input",
+              "hidden1",
+              "hidden2"
+            ],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "hidden3",
+            "released": false
+          },
+          "unit": {
+            "id": "hidden3",
+            "name": "Reconcile",
+            "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+          },
+          "parents": [
+            {
+              "id": "hidden2",
+              "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "opus_low",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "opus_high": 0.02,
+            "opus_low": 0.64,
+            "opus_medium": 0.04,
+            "opus_xhigh": 0.01,
+            "sonnet_high": 0.01,
+            "sonnet_low": 0.26,
+            "sonnet_medium": 0.02,
+            "sonnet_xhigh": 0
+          },
+          "confidence": 0.59,
+          "api_event": "call-7",
+          "usage": {
+            "input_tokens": 5844,
+            "output_tokens": 90,
+            "total_tokens": 5934,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 0.000245448
+          }
+        }
+      },
+      {
+        "id": "e26",
+        "kind": "dispatch",
+        "version": 3,
+        "simulation": false,
+        "worker_id": "producer",
+        "action": {
+          "operation": "compute_unit",
+          "unit_id": "hidden3",
+          "attempt": 0,
+          "parents": [
+            {
+              "id": "hidden2",
+              "hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "worker_route": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          }
+        },
+        "action_hash": "2d123479f180fa3bd86dbc35f739d7f26ebeb5ffa02748c86d12825ffb3f6050",
+        "gate_id": "e25"
+      },
+      {
+        "id": "e27",
+        "kind": "provisional_return",
+        "version": 3,
+        "simulation": false,
+        "worker_id": "producer",
+        "unit_id": "hidden3",
+        "value": {
+          "data": {
+            "summary": "Verified the parent. The filter in the fields excerpt keeps only verified_recovery records, so the hidden3 record is dropped and verified[0] is the r1 record: unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\" (r2 ignored). skill_name lowercases and maps '_'->'-': scope \"p0.07 bench-suite\", unit \"hidden-2\"; signature \"9F3a-77bc21\"[:8].lower() = \"9f3a-77b\". base = \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\"; the isalnum-or-'-' filter drops '.' and ' ' giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\", 38 chars (5+15+9+9), under the 64 cap. Answer confirmed.",
+            "claims": [
+              "Only the two verified_recovery records pass the filter; verified[0] is run_id r1, so unit_id=\"hidden_2\" and project_scope=\"P0.07 Bench_Suite\"; hidden3 and r2 contribute nothing.",
+              "Truncation precedes lowercasing in effect: \"9F3a-77bc21\"[:8] = \"9F3a-77b\" -> \"9f3a-77b\".",
+              "Character filter removes '.' and the space only; hyphens and alnum survive, so \"p0.07 bench-suite\" -> \"p007bench-suite\".",
+              "Length check: 5 + 15 + 9 + 9 = 38 chars, so the [:64] slice is a no-op.",
+              "Assumes the lesson dict carries the record's \"signature\" (\"9F3a-77bc21\"); the fields excerpt shown only assigns unit_id and project_scope."
+            ],
+            "unresolved": [
+              "The fields excerpt does not show \"signature\" being written into the lesson dict. If it is not, skill_name falls back to \"unknown\" and returns \"cidm-p007bench-suite-hidden-2-unknown\"."
+            ],
+            "parent_hashes": [
+              "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+            ],
+            "source_hashes": {
+              "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            4,
+            5,
+            5
+          ],
+          "self_probability": 0.85,
+          "source_ids": [
+            "request",
+            "fields",
+            "code",
+            "records"
+          ],
+          "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b (assuming the lesson dict carries the record's signature; the shown excerpt only assigns unit_id and project_scope, and without a signature key the result would be cidm-p007bench-suite-hidden-2-unknown)"
+        }
+      },
+      {
+        "id": "e28",
+        "kind": "jev_decision",
+        "version": 3,
+        "simulation": false,
+        "phase": "after_worker",
+        "options": {
+          "repair": {
+            "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+          },
+          "retrieve_evidence": {
+            "description": "Stop for original evidence that is missing."
+          },
+          "forward": {
+            "worker_id": "policy",
+            "action": {
+              "operation": "forward",
+              "unit_id": "hidden3",
+              "candidate_hash": "172b49f2b6c3daaf428ada92b0103e3d5624df30d6bddb1adde98ff6b3f5eaf1",
+              "check_hash": null,
+              "successor": "output",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+          },
+          "check_sol_high": {
+            "worker_id": "checker",
+            "action": {
+              "operation": "sol_high_check",
+              "unit_id": "hidden3",
+              "attempt": 0,
+              "check_attempt": 0,
+              "candidate_hash": "172b49f2b6c3daaf428ada92b0103e3d5624df30d6bddb1adde98ff6b3f5eaf1",
+              "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+            },
+            "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+          },
+          "escalate": {
+            "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+          }
+        },
+        "state_hash": "a9a23fcd35d8aba5c858319bc1056ada65fe4d377efe99407234ce3f9033061d",
+        "state": {
+          "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "constraints": [],
+          "version": 3,
+          "source_manifest": [
+            {
+              "id": "request",
+              "title": "Current request"
+            },
+            {
+              "id": "fields",
+              "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+            },
+            {
+              "id": "code",
+              "title": "scripts/experience_distiller.py excerpt (skill_name)"
+            },
+            {
+              "id": "records",
+              "title": "experience records (in order)"
+            }
+          ],
+          "recent_accepted": [
+            {
+              "id": "input",
+              "operation": "validated_unit",
+              "summary": "Input and evidence identities preserved.",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+                "claims": [],
+                "unresolved": [],
+                "parent_hashes": [],
+                "source_hashes": {
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+                }
+              },
+              "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+              "reviewed_by_sol": false
+            },
+            {
+              "id": "hidden1",
+              "operation": "validated_unit",
+              "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+                "claims": [
+                  "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+                  "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                  "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+                  "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                  "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+                ],
+                "unresolved": [],
+                "parent_hashes": [
+                  "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+                ],
+                "source_hashes": {
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+                }
+              },
+              "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+              "reviewed_by_sol": false
+            },
+            {
+              "id": "hidden2",
+              "operation": "validated_unit",
+              "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+              "source_ids": [
+                "request",
+                "fields",
+                "code",
+                "records"
+              ],
+              "data": {
+                "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+                "claims": [
+                  "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+                  "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+                  "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+                  "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+                  "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+                ],
+                "unresolved": [],
+                "parent_hashes": [
+                  "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+                ],
+                "source_hashes": {
+                  "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                  "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                  "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                  "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+                }
+              },
+              "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+              "reviewed_by_sol": false
+            }
+          ],
+          "older_accepted_ids": [],
+          "evidence": [
+            {
+              "id": "request",
+              "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+              "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+            },
+            {
+              "id": "fields",
+              "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+              "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+            },
+            {
+              "id": "code",
+              "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+              "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+            },
+            {
+              "id": "records",
+              "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+              "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+            }
+          ],
+          "last_issue": null,
+          "pending_verification": null,
+          "invalidated_result_ids": [],
+          "completion": {
+            "completed_units": [
+              "input",
+              "hidden1",
+              "hidden2"
+            ],
+            "required_order": [
+              "input",
+              "hidden1",
+              "hidden2",
+              "hidden3",
+              "output"
+            ],
+            "active_unit": "hidden3",
+            "released": false
+          },
+          "unit": {
+            "id": "hidden3",
+            "name": "Reconcile",
+            "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+          },
+          "parents": [
+            {
+              "id": "hidden2",
+              "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+            }
+          ],
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "selected_worker": {
+            "id": "opus_low",
+            "model": "anthropic/claude-opus-5",
+            "effort": "low"
+          },
+          "candidate": {
+            "data": {
+              "summary": "Verified the parent. The filter in the fields excerpt keeps only verified_recovery records, so the hidden3 record is dropped and verified[0] is the r1 record: unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\" (r2 ignored). skill_name lowercases and maps '_'->'-': scope \"p0.07 bench-suite\", unit \"hidden-2\"; signature \"9F3a-77bc21\"[:8].lower() = \"9f3a-77b\". base = \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\"; the isalnum-or-'-' filter drops '.' and ' ' giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\", 38 chars (5+15+9+9), under the 64 cap. Answer confirmed.",
+              "claims": [
+                "Only the two verified_recovery records pass the filter; verified[0] is run_id r1, so unit_id=\"hidden_2\" and project_scope=\"P0.07 Bench_Suite\"; hidden3 and r2 contribute nothing.",
+                "Truncation precedes lowercasing in effect: \"9F3a-77bc21\"[:8] = \"9F3a-77b\" -> \"9f3a-77b\".",
+                "Character filter removes '.' and the space only; hyphens and alnum survive, so \"p0.07 bench-suite\" -> \"p007bench-suite\".",
+                "Length check: 5 + 15 + 9 + 9 = 38 chars, so the [:64] slice is a no-op.",
+                "Assumes the lesson dict carries the record's \"signature\" (\"9F3a-77bc21\"); the fields excerpt shown only assigns unit_id and project_scope."
+              ],
+              "unresolved": [
+                "The fields excerpt does not show \"signature\" being written into the lesson dict. If it is not, skill_name falls back to \"unknown\" and returns \"cidm-p007bench-suite-hidden-2-unknown\"."
+              ],
+              "parent_hashes": [
+                "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+              ],
+              "source_hashes": {
+                "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+                "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+                "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+                "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+              }
+            },
+            "five_scores": [
+              5,
+              5,
+              4,
+              5,
+              5
+            ],
+            "self_probability": 0.85,
+            "source_ids": [
+              "request",
+              "fields",
+              "code",
+              "records"
+            ],
+            "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b (assuming the lesson dict carries the record's signature; the shown excerpt only assigns unit_id and project_scope, and without a signature key the result would be cidm-p007bench-suite-hidden-2-unknown)"
+          },
+          "hard_checks": {
+            "native_shape": true,
+            "source_hashes_match": true,
+            "parent_hashes_match": true,
+            "artifact_schema_valid": true
+          },
+          "repair_feedback": null
+        },
+        "decision": {
+          "choice": "retrieve_evidence",
+          "model": "typesafe/jev-1.13-20260917",
+          "live": true,
+          "probabilities": {
+            "check_sol_high": 0.28,
+            "escalate": 0.05,
+            "forward": 0.17,
+            "repair": 0.17,
+            "retrieve_evidence": 0.33
+          },
+          "confidence": 0.16,
+          "api_event": "call-8",
+          "usage": {
+            "input_tokens": 5289,
+            "output_tokens": 62,
+            "total_tokens": 5351,
+            "total_tokens_source": "derived_input_plus_output",
+            "cached_input_tokens": null,
+            "reasoning_tokens": null,
+            "cost": 0.000222138
+          }
+        }
+      },
+      {
+        "id": "e29",
+        "kind": "post_worker_decision",
+        "version": 3,
+        "simulation": false,
+        "unit_id": "hidden3",
+        "choice": "retrieve_evidence",
+        "gate_id": "e28",
+        "candidate_hash": "172b49f2b6c3daaf428ada92b0103e3d5624df30d6bddb1adde98ff6b3f5eaf1",
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        }
+      },
+      {
+        "id": "e30",
+        "kind": "recovery_checkpoint",
+        "version": 3,
+        "simulation": false,
+        "unit_id": "hidden3",
+        "checkpoint": {
+          "checkpoint_id": "74b30b37d5e2db035362815eea22605a42e71f9732fb694e5191613394a1aed5",
+          "status": "paused_recoverable",
+          "active_unit": "hidden3",
+          "active_index": 3,
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2"
+          ],
+          "recovery_kind": "retrieve_evidence",
+          "reason": "Additional original evidence is required before this unit can continue.",
+          "recovery_round": 0,
+          "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+          "mesh_state_hash": "a9a23fcd35d8aba5c858319bc1056ada65fe4d377efe99407234ce3f9033061d",
+          "event_cursor": 29
+        }
+      }
+    ]
+  },
+  "host": {
+    "task_hash": "09afe628737494ccebaa1ec50733130d05ecf3c951583e453f2dba524bfce749",
+    "gate_policy": "recovery",
+    "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+    "calls": [
+      {
+        "role": "jev",
+        "phase": "authorize_unit",
+        "choice": "compute",
+        "usage": {
+          "input_tokens": 1638,
+          "output_tokens": 31,
+          "total_tokens": 1669,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 6.8796e-05
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      },
+      {
+        "role": "jev",
+        "phase": "after_worker",
+        "choice": "forward",
+        "usage": {
+          "input_tokens": 2414,
+          "output_tokens": 50,
+          "total_tokens": 2464,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000101388
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      },
+      {
+        "role": "jev",
+        "phase": "authorize_unit",
+        "choice": "opus_low",
+        "usage": {
+          "input_tokens": 4158,
+          "output_tokens": 90,
+          "total_tokens": 4248,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000174636
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      },
+      {
+        "role": "worker",
+        "requested_model": "claude-opus-5",
+        "requested_effort": "low",
+        "actual_model": "claude-opus-5",
+        "actual_effort": null,
+        "identity_verification": "reported_match",
+        "usage": {
+          "input_tokens": 14650,
+          "cached_input_tokens": 6899,
+          "cache_write_input_tokens": 7747,
+          "output_tokens": 1632,
+          "reasoning_output_tokens": null,
+          "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+        },
+        "status": "ok",
+        "session_id": "53225bc3-456c-4b2d-950f-0b90cbff599b",
+        "permit_id": "91e8f2f7392f48bb8d6dc12e38e31d1e",
+        "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+      },
+      {
+        "role": "jev",
+        "phase": "after_worker",
+        "choice": "forward",
+        "usage": {
+          "input_tokens": 3386,
+          "output_tokens": 59,
+          "total_tokens": 3445,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000142212
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      },
+      {
+        "role": "jev",
+        "phase": "authorize_unit",
+        "choice": "opus_low",
+        "usage": {
+          "input_tokens": 4949,
+          "output_tokens": 90,
+          "total_tokens": 5039,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000207858
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      },
+      {
+        "role": "worker",
+        "requested_model": "claude-opus-5",
+        "requested_effort": "low",
+        "actual_model": "claude-opus-5",
+        "actual_effort": null,
+        "identity_verification": "reported_match",
+        "usage": {
+          "input_tokens": 7337,
+          "cached_input_tokens": 4021,
+          "cache_write_input_tokens": 3314,
+          "output_tokens": 1232,
+          "reasoning_output_tokens": null,
+          "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+        },
+        "status": "ok",
+        "session_id": "f3ba181f-bb4c-4282-8c94-9d78b33887fa",
+        "permit_id": "22884989b5684aa9a3637e523fc585a6",
+        "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+      },
+      {
+        "role": "jev",
+        "phase": "after_worker",
+        "choice": "forward",
+        "usage": {
+          "input_tokens": 4265,
+          "output_tokens": 59,
+          "total_tokens": 4324,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.00017913
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      },
+      {
+        "role": "jev",
+        "phase": "authorize_unit",
+        "choice": "opus_low",
+        "usage": {
+          "input_tokens": 5844,
+          "output_tokens": 90,
+          "total_tokens": 5934,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000245448
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      },
+      {
+        "role": "worker",
+        "requested_model": "claude-opus-5",
+        "requested_effort": "low",
+        "actual_model": "claude-opus-5",
+        "actual_effort": null,
+        "identity_verification": "reported_match",
+        "usage": {
+          "input_tokens": 7449,
+          "cached_input_tokens": 4021,
+          "cache_write_input_tokens": 3426,
+          "output_tokens": 1626,
+          "reasoning_output_tokens": null,
+          "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+        },
+        "status": "ok",
+        "session_id": "183c495f-353d-4fc6-a69d-d7e89c5303d1",
+        "permit_id": "2c5b40874d15448d9a6d147b33a664a6",
+        "artifact_hash": "172b49f2b6c3daaf428ada92b0103e3d5624df30d6bddb1adde98ff6b3f5eaf1"
+      },
+      {
+        "role": "jev",
+        "phase": "after_worker",
+        "choice": "retrieve_evidence",
+        "usage": {
+          "input_tokens": 5289,
+          "output_tokens": 62,
+          "total_tokens": 5351,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000222138
+        },
+        "identity": "typesafe/jev-1.13-20260917",
+        "identity_verification": "provider_reported",
+        "status": "ok"
+      }
+    ]
+  },
+  "bundle_hash": "e72449c45644f54c2f0a60df186a39113328ad49e008311c6a726ab7d7e80dcf"
+}

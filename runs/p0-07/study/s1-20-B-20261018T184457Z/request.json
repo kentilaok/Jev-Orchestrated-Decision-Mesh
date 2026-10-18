@@ -1,0 +1,24 @@
+{
+  "goal": "What does classify_action(\"Cleanup\", {\"reversibility_hint\": \"non-reversible\"}) return?",
+  "context": "",
+  "sources": {
+    "rules": {
+      "title": "scripts/action_reversibility.py excerpt (_NAME_RULES)",
+      "text": "# Each tuple is (regex, classification). Matched left-to-right; first hit wins.\n_NAME_RULES: tuple[tuple[re.Pattern, str], ...] = (\n    (re.compile(r\"^(delete|drop|destroy|wipe|remove|rm|purge|erase|forget)([_\\-].*)?$\"),\n     \"non_reversible\"),\n    (re.compile(r\"^rmdir$|^rm_dir$|^rm_rf$\"), \"non_reversible\"),\n    (re.compile(r\"^(send|post|publish|deploy|release|charge|pay|notify|email|sms|\"\n                r\"webhook|slack|tweet)([_\\-].*)?$\"), \"non_reversible\"),\n    (re.compile(r\"^(post_webhook|post_slack|publish_tweet)$\"), \"non_reversible\"),\n    (re.compile(r\"^(write|update|patch|put|replace|overwrite|append|insert|\"\n                r\"create)([_\\-].*)?$\"), \"non_reversible\"),\n    (re.compile(r\"^alter([_\\-].*)?$\"), \"non_reversible\"),\n    (re.compile(r\"^(read|get|list|search|find|fetch|lookup|describe|show|\"\n                r\"inspect|peek|head|tail)([_\\-].*)?$\"), \"reversible\"),\n)"
+    },
+    "code": {
+      "title": "scripts/action_reversibility.py excerpt (classifier and gate)",
+      "text": "def classify_action(name: str, annotations: dict | None) -> str:\n    ...\n    annotations = annotations or {}\n    hint = str(annotations.get(\"reversibility_hint\") or \"\").strip().lower()\n    if hint == \"non_reversible\":\n        return \"non_reversible\"\n    name_lower = str(name or \"\").strip().lower()\n    for pattern, classification in _NAME_RULES:\n        if pattern.match(name_lower):\n            return classification\n    if hint == \"reversible\":\n        return \"reversible\"\n    return \"unknown\"\n\n\ndef is_blocked_without_approval(action: str, annotations: dict | None, *,\n                                approval: dict | None) -> bool:\n    ...\n    kind = classify_action(action, annotations)\n    if kind == \"reversible\":\n        return False\n    if not isinstance(approval, dict):\n        return True\n    if approval.get(\"status\") != \"approved\":\n        return True\n    operator = str(approval.get(\"operator\") or \"\").strip()\n    bound = str(approval.get(\"action\") or \"\").strip()\n    if not operator or bound != action:\n        return True\n    return False"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "10370c5106773a4be94763c5d0d64def7f532eec02ddcfab68b4739c3f26ce58",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

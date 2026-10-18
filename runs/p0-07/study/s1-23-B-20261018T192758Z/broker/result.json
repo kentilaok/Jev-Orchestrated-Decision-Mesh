@@ -1,0 +1,88 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "Rejected. For provider=\"typesafe\", the regex prefix is empty (only openrouter gets the \"~?typesafe/\" prefix), so the required pattern is exactly \"jev-[A-Za-z0-9._-]+\". The model string \"typesafe/jev-1.13\" includes the \"typesafe/\" prefix and does not fullmatch that pattern, so validate_request fails with code: explicit_provider_jev_model_required.",
+  "task_hash": "dd42fde908c4a2242d9ea4174e6083f08e06efd4f4429ce108f9e6d3248fc865",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "dd42fde908c4a2242d9ea4174e6083f08e06efd4f4429ce108f9e6d3248fc865",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "df2544939b02b7b57c18710ea985c382b21169f8016e89c66b3d9e5c4e5b00f8",
+    "code": "f11061e0208b279add4c7c0ae22e2af0bcff56eb1a3819edaf7fa42acb7e3262"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 11600,
+        "cached_input_tokens": 9311,
+        "cache_write_input_tokens": 2287,
+        "output_tokens": 1073,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "38fb1b8b-2c98-4003-a06b-761568585a52",
+      "permit_id": "5c54b8e8214842f09d8ab493231a0133",
+      "artifact_hash": "d3a7cc147cb84041e261536c829a165f3c2e3f25ae9b4d8f828cd4fe1c2c11b7"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "d3a7cc147cb84041e261536c829a165f3c2e3f25ae9b4d8f828cd4fe1c2c11b7",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 11600,
+    "frontier_output_tokens": 1073,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

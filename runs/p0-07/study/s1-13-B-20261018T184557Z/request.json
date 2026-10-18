@@ -1,0 +1,20 @@
+{
+  "goal": "A Jev \"score\" question has five criteria. Ignoring the 1e-12 slack, what is the largest absolute difference between the returned score and the probability-weighted score that validate_response accepts without raising score_distribution_mismatch?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/jev_decide.py excerpt (score answers)",
+      "text": "        keys = question[\"criteria\"] if kind == \"choice\" else [str(i) for i in range(len(question[\"criteria\"]))]\n        ...\n        else:\n            require(number(answer.get(\"score\"), 0, len(keys) - 1), \"invalid_score_value\")\n            require(isinstance(answer.get(\"legend\"), dict) and set(answer[\"legend\"]) == set(keys), \"invalid_score_legend\")\n            require(all(answer[\"legend\"][str(i)] == v for i, v in enumerate(question[\"criteria\"])), \"score_legend_mismatch\")\n            expected = sum(int(k) * p for k, p in probabilities.items())\n            difference = abs(answer[\"score\"] - expected)\n            # Quantization bound assumes score and each probability were rounded independently.\n            allowed = 0.005 * (1 + sum(range(len(keys))))\n            require(difference <= allowed + 1e-12, \"score_distribution_mismatch\")\n            if difference > TOLERANCE * len(keys):\n                warnings.append({\"code\": \"score_rounding_difference\", \"question_id\": name,"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "5f281cfd2628919f7ddf2395c508e0a5e4edf52540db613ef58bcf73a186eb4d",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

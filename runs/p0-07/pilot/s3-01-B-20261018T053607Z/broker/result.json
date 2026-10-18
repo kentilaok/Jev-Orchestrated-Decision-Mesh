@@ -1,0 +1,116 @@
+{
+  "status": "failed",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "d475efa23ce808071bf0894d5187fa5645cca0ddabde1ce286f4ab825831b4e6",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "d475efa23ce808071bf0894d5187fa5645cca0ddabde1ce286f4ab825831b4e6",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "5df8d57ffadc3479dde2b0ed11b74838e1472862f58f028d6faf149f3c08c97c",
+    "readme": "9fce64f75ec38daac7fe77652c3ed3cea60a1e3f874160f07ea206bdc1825ddb",
+    "code": "7f5f0a5225531d5f37b8538eae4755831edc82b9e95b8a7b434185a1511cb248",
+    "notes": "490a06855aaba41781e90d2678532a39fd04c024373f655f849181c3b92859e4"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "status": "failed",
+      "usage": null,
+      "error_type": "MeshError"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "committed": [],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "halt",
+      "version": 0,
+      "simulation": false,
+      "error": "MeshError: jev_call_failed"
+    }
+  ],
+  "recovery_rounds": {},
+  "error": "jev_call_failed",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 0,
+    "consumed": 0,
+    "receipted": 0,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 1,
+    "frontier_child_calls": 0,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 0,
+    "frontier_output_tokens": 0,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": null,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "failed",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": null,
+      "provider": null,
+      "request_hash": "de6959a686a6362661c212baff86d7c2fec08de7f39c7e44ba7024232313c749",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0002319,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "total_tokens_source": null,
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": null
+      },
+      "usage_raw": null,
+      "latency_ms": 16.0,
+      "provider_request_id": null,
+      "started_at": "2026-10-18T05:36:07.670Z",
+      "ended_at": "2026-10-18T05:36:07.690Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "error": {
+        "code": "network_error"
+      }
+    }
+  ]
+}

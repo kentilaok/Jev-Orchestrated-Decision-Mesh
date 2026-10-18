@@ -1,0 +1,4474 @@
+{
+  "status": "complete",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": "**p-7c2** \u2014 issued and consumed in the ledger excerpt with no `permit_receipt` line, unlike p-1a0 (0.12) and p-9d4 (0.08). Caveat: true for the excerpt as given; a receipt could exist outside this window. Parent accepted.",
+  "task_hash": "5cd245b1da7e340825c0403909d21dd35329b1b1e6ca7ec551e169f469d765ca",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "5cd245b1da7e340825c0403909d21dd35329b1b1e6ca7ec551e169f469d765ca",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+    "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "compute",
+      "usage": {
+        "input_tokens": 1242,
+        "output_tokens": 31,
+        "total_tokens": 1273,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 5.2164e-05
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 1876,
+        "output_tokens": 50,
+        "total_tokens": 1926,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 7.8792e-05
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 3596,
+        "output_tokens": 90,
+        "total_tokens": 3686,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000151032
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "actual_model": "claude-opus-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 12770,
+        "cached_input_tokens": 5956,
+        "cache_write_input_tokens": 6810,
+        "output_tokens": 1141,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "d60598df-30d4-4972-9aea-7c54c9c2c0a7",
+      "permit_id": "3035bd3478ef4e66938b7f676eea8bb8",
+      "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 2521,
+        "output_tokens": 59,
+        "total_tokens": 2580,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000105882
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 4086,
+        "output_tokens": 90,
+        "total_tokens": 4176,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000171612
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "actual_model": "claude-opus-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 13075,
+        "cached_input_tokens": 10121,
+        "cache_write_input_tokens": 2950,
+        "output_tokens": 1055,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "72545217-343d-40b8-ac1f-bea379a377f4",
+      "permit_id": "40ec79550adf46bebcd1fab1a7c2b0ac",
+      "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 3049,
+        "output_tokens": 59,
+        "total_tokens": 3108,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000128058
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 4659,
+        "output_tokens": 90,
+        "total_tokens": 4749,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000195678
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "actual_model": "claude-opus-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 13189,
+        "cached_input_tokens": 10153,
+        "cache_write_input_tokens": 3032,
+        "output_tokens": 1153,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "2a0581c4-b740-4245-bff5-2ed22e723e4f",
+      "permit_id": "38a01083ab5a42d7a9127d6a07313334",
+      "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 3616,
+        "output_tokens": 59,
+        "total_tokens": 3675,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000151872
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 4888,
+        "output_tokens": 90,
+        "total_tokens": 4978,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000205296
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "actual_model": "claude-opus-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 13246,
+        "cached_input_tokens": 10194,
+        "cache_write_input_tokens": 3048,
+        "output_tokens": 1351,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "65daec62-197f-42ad-90cf-f3bd1552295d",
+      "permit_id": "7f5a9a0f35024cbb999fd616329d9d5c",
+      "artifact_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 3916,
+        "output_tokens": 59,
+        "total_tokens": 3975,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000164472
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "hidden1",
+      "artifact": {
+        "data": {
+          "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+          "claims": [
+            "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": 0.9,
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line."
+      },
+      "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+      "parent_artifacts": [
+        {
+          "id": "input",
+          "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e12",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "hidden2",
+      "artifact": {
+        "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+        "data": {
+          "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+          "claims": [
+            "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          4,
+          5
+        ],
+        "self_probability": 0.95
+      },
+      "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+      "parent_artifacts": [
+        {
+          "id": "hidden1",
+          "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e20",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "hidden3",
+      "artifact": {
+        "text": "p-7c2 \u2014 issued and consumed, with no permit_receipt line in the ledger excerpt. Parent accepted.",
+        "data": {
+          "summary": "Verified against the ledger: p-7c2 is the only permit with a permit_consumed event and no matching permit_receipt event; the parent's answer is correct.",
+          "claims": [
+            "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+            "The parent's claims and conclusion match the ledger evidence; no corrections needed."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": 0.95
+      },
+      "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+      "parent_artifacts": [
+        {
+          "id": "hidden2",
+          "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e28",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "output",
+      "artifact": {
+        "data": {
+          "summary": "The ledger excerpt shows p-7c2 as the only permit with a permit_consumed event and no corresponding permit_receipt event; p-1a0 and p-9d4 each have a receipt.",
+          "claims": [
+            "Ledger records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and for p-9d4 (cost_usd 0.08).",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+            "Parent result reviewed and accepted; its claims match the ledger evidence."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": 0.97,
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "text": "**p-7c2** \u2014 issued and consumed in the ledger excerpt with no `permit_receipt` line, unlike p-1a0 (0.12) and p-9d4 (0.08). Caveat: true for the excerpt as given; a receipt could exist outside this window. Parent accepted."
+      },
+      "artifact_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30",
+      "parent_artifacts": [
+        {
+          "id": "hidden3",
+          "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e36",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    }
+  ],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "5ed26f0709f1db1f369bc923e49d11c951f37b72b04aa7da2ae7aef3115e11ed",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "compute": 0.98,
+          "stop": 0.02
+        },
+        "confidence": 0.96,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 1242,
+          "output_tokens": 31,
+          "total_tokens": 1273,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 5.2164e-05
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": null
+      },
+      "action_hash": "36da092d43000ec810bfb06b00cfc7be600f3a1d82357bb40af3840fccb3bc72",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "5ed26f0709f1db1f369bc923e49d11c951f37b72b04aa7da2ae7aef3115e11ed",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "candidate": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.01,
+          "forward": 0.96,
+          "repair": 0.03,
+          "retrieve_evidence": 0
+        },
+        "confidence": 0.95,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 1876,
+          "output_tokens": 50,
+          "total_tokens": 1926,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 7.8792e-05
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "post_worker_decision",
+      "version": 0,
+      "simulation": false,
+      "unit_id": "input",
+      "choice": "forward",
+      "gate_id": "e4",
+      "candidate_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e6",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "input",
+        "candidate_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+        "check_hash": null,
+        "successor": "hidden1",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "2a9158658efa40e04fa87bbd188019b9e1d021da9274392469116bdc717f0897",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e7",
+      "kind": "checked_commit",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "input",
+      "packet": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e4"
+    },
+    {
+      "id": "e8",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "input",
+      "value": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e9",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "2de933a149c631c571ec89bdd61ba5e54ad06b2cfcb4fe356d728494a27ea035",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.01,
+          "opus_low": 0.61,
+          "opus_medium": 0.03,
+          "opus_xhigh": 0,
+          "sonnet_high": 0,
+          "sonnet_low": 0.33,
+          "sonnet_medium": 0.02,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.55,
+        "api_event": "call-3",
+        "usage": {
+          "input_tokens": 3596,
+          "output_tokens": 90,
+          "total_tokens": 3686,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000151032
+        }
+      }
+    },
+    {
+      "id": "e10",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden1",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "input",
+            "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "1e7f370d6455777661dd73cfbf47b7985c65131209a1a863e004206ade10d5fd",
+      "gate_id": "e9"
+    },
+    {
+      "id": "e11",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden1",
+      "value": {
+        "data": {
+          "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+          "claims": [
+            "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": 0.9,
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line."
+      }
+    },
+    {
+      "id": "e12",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "2de933a149c631c571ec89bdd61ba5e54ad06b2cfcb4fe356d728494a27ea035",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "selected_worker": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "candidate": {
+          "data": {
+            "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+            "claims": [
+              "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.9,
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line."
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.05,
+          "escalate": 0.03,
+          "forward": 0.87,
+          "repair": 0.04,
+          "retrieve_evidence": 0.01
+        },
+        "confidence": 0.84,
+        "api_event": "call-4",
+        "usage": {
+          "input_tokens": 2521,
+          "output_tokens": 59,
+          "total_tokens": 2580,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000105882
+        }
+      }
+    },
+    {
+      "id": "e13",
+      "kind": "post_worker_decision",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "choice": "forward",
+      "gate_id": "e12",
+      "candidate_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e14",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden1",
+        "candidate_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+        "check_hash": null,
+        "successor": "hidden2",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "91e336bf4ce1347b04cf422d451a6c4b4df414a381368f62a91b9c8380be28e5",
+      "gate_id": "e12"
+    },
+    {
+      "id": "e15",
+      "kind": "checked_commit",
+      "version": 2,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "packet": {
+        "id": "hidden1",
+        "artifact": {
+          "data": {
+            "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+            "claims": [
+              "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.9,
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line."
+        },
+        "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+        "parent_artifacts": [
+          {
+            "id": "input",
+            "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e12",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e12"
+    },
+    {
+      "id": "e16",
+      "kind": "provisional_return",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden1",
+      "value": {
+        "id": "hidden1",
+        "artifact": {
+          "data": {
+            "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+            "claims": [
+              "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.9,
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line."
+        },
+        "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+        "parent_artifacts": [
+          {
+            "id": "input",
+            "hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e12",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e17",
+      "kind": "jev_decision",
+      "version": 2,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "3445b7f3a44ad97db52d93ac69134403bb9401a3dfddcbcb8a662f421a6720bf",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 2,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden2",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden2",
+          "name": "Compute",
+          "objective": "Perform the bounded substantive work using accepted context and original evidence."
+        },
+        "parents": [
+          {
+            "id": "hidden1",
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0,
+          "opus_low": 0.64,
+          "opus_medium": 0.02,
+          "opus_xhigh": 0,
+          "sonnet_high": 0,
+          "sonnet_low": 0.33,
+          "sonnet_medium": 0.01,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.59,
+        "api_event": "call-5",
+        "usage": {
+          "input_tokens": 4086,
+          "output_tokens": 90,
+          "total_tokens": 4176,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000171612
+        }
+      }
+    },
+    {
+      "id": "e18",
+      "kind": "dispatch",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden2",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden1",
+            "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "15783246397012435bbf4d1de1cf9bd045be5489d81bf01591cec44ec680d704",
+      "gate_id": "e17"
+    },
+    {
+      "id": "e19",
+      "kind": "provisional_return",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden2",
+      "value": {
+        "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+        "data": {
+          "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+          "claims": [
+            "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          4,
+          5
+        ],
+        "self_probability": 0.95
+      }
+    },
+    {
+      "id": "e20",
+      "kind": "jev_decision",
+      "version": 2,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "3445b7f3a44ad97db52d93ac69134403bb9401a3dfddcbcb8a662f421a6720bf",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 2,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden2",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden2",
+          "name": "Compute",
+          "objective": "Perform the bounded substantive work using accepted context and original evidence."
+        },
+        "parents": [
+          {
+            "id": "hidden1",
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "selected_worker": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "candidate": {
+          "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+          "data": {
+            "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+            "claims": [
+              "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            4,
+            5
+          ],
+          "self_probability": 0.95
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.02,
+          "escalate": 0.01,
+          "forward": 0.93,
+          "repair": 0.04,
+          "retrieve_evidence": 0
+        },
+        "confidence": 0.91,
+        "api_event": "call-6",
+        "usage": {
+          "input_tokens": 3049,
+          "output_tokens": 59,
+          "total_tokens": 3108,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000128058
+        }
+      }
+    },
+    {
+      "id": "e21",
+      "kind": "post_worker_decision",
+      "version": 2,
+      "simulation": false,
+      "unit_id": "hidden2",
+      "choice": "forward",
+      "gate_id": "e20",
+      "candidate_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e22",
+      "kind": "dispatch",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden2",
+        "candidate_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+        "check_hash": null,
+        "successor": "hidden3",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "d2cfde0bff19a7b2717a6a2616f3a45836d7ef270d3b6af3c8a3a48f40e843f4",
+      "gate_id": "e20"
+    },
+    {
+      "id": "e23",
+      "kind": "checked_commit",
+      "version": 3,
+      "simulation": false,
+      "unit_id": "hidden2",
+      "packet": {
+        "id": "hidden2",
+        "artifact": {
+          "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+          "data": {
+            "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+            "claims": [
+              "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            4,
+            5
+          ],
+          "self_probability": 0.95
+        },
+        "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+        "parent_artifacts": [
+          {
+            "id": "hidden1",
+            "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e20",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e20"
+    },
+    {
+      "id": "e24",
+      "kind": "provisional_return",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden2",
+      "value": {
+        "id": "hidden2",
+        "artifact": {
+          "text": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+          "data": {
+            "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+            "claims": [
+              "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            4,
+            5
+          ],
+          "self_probability": 0.95
+        },
+        "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+        "parent_artifacts": [
+          {
+            "id": "hidden1",
+            "hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e20",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e25",
+      "kind": "jev_decision",
+      "version": 3,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "895e19a501bb42cd727b23d4500f81132ff3708cfb7840671c0a9c7d1b2eacfc",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 3,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+              "claims": [
+                "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden3",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden3",
+          "name": "Reconcile",
+          "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+        },
+        "parents": [
+          {
+            "id": "hidden2",
+            "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.01,
+          "opus_low": 0.67,
+          "opus_medium": 0.04,
+          "opus_xhigh": 0,
+          "sonnet_high": 0,
+          "sonnet_low": 0.26,
+          "sonnet_medium": 0.02,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.62,
+        "api_event": "call-7",
+        "usage": {
+          "input_tokens": 4659,
+          "output_tokens": 90,
+          "total_tokens": 4749,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000195678
+        }
+      }
+    },
+    {
+      "id": "e26",
+      "kind": "dispatch",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden3",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden2",
+            "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "632ad647fce52013f710ec5f3a68968ed3cb33124fe4110097a463bb1714e886",
+      "gate_id": "e25"
+    },
+    {
+      "id": "e27",
+      "kind": "provisional_return",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden3",
+      "value": {
+        "text": "p-7c2 \u2014 issued and consumed, with no permit_receipt line in the ledger excerpt. Parent accepted.",
+        "data": {
+          "summary": "Verified against the ledger: p-7c2 is the only permit with a permit_consumed event and no matching permit_receipt event; the parent's answer is correct.",
+          "claims": [
+            "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+            "The parent's claims and conclusion match the ledger evidence; no corrections needed."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": 0.95
+      }
+    },
+    {
+      "id": "e28",
+      "kind": "jev_decision",
+      "version": 3,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden3",
+            "candidate_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+            "check_hash": null,
+            "successor": "output",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "895e19a501bb42cd727b23d4500f81132ff3708cfb7840671c0a9c7d1b2eacfc",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 3,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+              "claims": [
+                "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden3",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden3",
+          "name": "Reconcile",
+          "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+        },
+        "parents": [
+          {
+            "id": "hidden2",
+            "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "selected_worker": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "candidate": {
+          "text": "p-7c2 \u2014 issued and consumed, with no permit_receipt line in the ledger excerpt. Parent accepted.",
+          "data": {
+            "summary": "Verified against the ledger: p-7c2 is the only permit with a permit_consumed event and no matching permit_receipt event; the parent's answer is correct.",
+            "claims": [
+              "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+              "The parent's claims and conclusion match the ledger evidence; no corrections needed."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.95
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.03,
+          "escalate": 0,
+          "forward": 0.94,
+          "repair": 0.03,
+          "retrieve_evidence": 0
+        },
+        "confidence": 0.92,
+        "api_event": "call-8",
+        "usage": {
+          "input_tokens": 3616,
+          "output_tokens": 59,
+          "total_tokens": 3675,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000151872
+        }
+      }
+    },
+    {
+      "id": "e29",
+      "kind": "post_worker_decision",
+      "version": 3,
+      "simulation": false,
+      "unit_id": "hidden3",
+      "choice": "forward",
+      "gate_id": "e28",
+      "candidate_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e30",
+      "kind": "dispatch",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden3",
+        "candidate_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+        "check_hash": null,
+        "successor": "output",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "418a6b179b8b219da473b2b16b85eacc170d8c9cb534de6aa7b61d182358a123",
+      "gate_id": "e28"
+    },
+    {
+      "id": "e31",
+      "kind": "checked_commit",
+      "version": 4,
+      "simulation": false,
+      "unit_id": "hidden3",
+      "packet": {
+        "id": "hidden3",
+        "artifact": {
+          "text": "p-7c2 \u2014 issued and consumed, with no permit_receipt line in the ledger excerpt. Parent accepted.",
+          "data": {
+            "summary": "Verified against the ledger: p-7c2 is the only permit with a permit_consumed event and no matching permit_receipt event; the parent's answer is correct.",
+            "claims": [
+              "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+              "The parent's claims and conclusion match the ledger evidence; no corrections needed."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.95
+        },
+        "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+        "parent_artifacts": [
+          {
+            "id": "hidden2",
+            "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e28",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e28"
+    },
+    {
+      "id": "e32",
+      "kind": "provisional_return",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden3",
+      "value": {
+        "id": "hidden3",
+        "artifact": {
+          "text": "p-7c2 \u2014 issued and consumed, with no permit_receipt line in the ledger excerpt. Parent accepted.",
+          "data": {
+            "summary": "Verified against the ledger: p-7c2 is the only permit with a permit_consumed event and no matching permit_receipt event; the parent's answer is correct.",
+            "claims": [
+              "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+              "The parent's claims and conclusion match the ledger evidence; no corrections needed."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.95
+        },
+        "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+        "parent_artifacts": [
+          {
+            "id": "hidden2",
+            "hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e28",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e33",
+      "kind": "jev_decision",
+      "version": 4,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "7a065c2d9226aa7ea182df2eef0f3738cbd31630b15ec2fd548fc7d7659525b4",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 4,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+              "claims": [
+                "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden3",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, with no permit_receipt line in the ledger excerpt. Parent accepted.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Verified against the ledger: p-7c2 is the only permit with a permit_consumed event and no matching permit_receipt event; the parent's answer is correct.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+                "The parent's claims and conclusion match the ledger evidence; no corrections needed."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [
+          "input"
+        ],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "output",
+          "released": false
+        },
+        "unit": {
+          "id": "output",
+          "name": "Output",
+          "objective": "Deliver a concise supported result and state material unresolved issues."
+        },
+        "parents": [
+          {
+            "id": "hidden3",
+            "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0,
+          "opus_low": 0.73,
+          "opus_medium": 0.01,
+          "opus_xhigh": 0,
+          "sonnet_high": 0,
+          "sonnet_low": 0.26,
+          "sonnet_medium": 0,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.69,
+        "api_event": "call-9",
+        "usage": {
+          "input_tokens": 4888,
+          "output_tokens": 90,
+          "total_tokens": 4978,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000205296
+        }
+      }
+    },
+    {
+      "id": "e34",
+      "kind": "dispatch",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "output",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden3",
+            "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "b68bd68f2e7de601a750b90bc134dcd4e489513b8bd509a3bec2425e473336e8",
+      "gate_id": "e33"
+    },
+    {
+      "id": "e35",
+      "kind": "provisional_return",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "output",
+      "value": {
+        "data": {
+          "summary": "The ledger excerpt shows p-7c2 as the only permit with a permit_consumed event and no corresponding permit_receipt event; p-1a0 and p-9d4 each have a receipt.",
+          "claims": [
+            "Ledger records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and for p-9d4 (cost_usd 0.08).",
+            "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+            "Answer: permit_id = p-7c2.",
+            "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+            "Parent result reviewed and accepted; its claims match the ledger evidence."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+          ],
+          "source_hashes": {
+            "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": 0.97,
+        "source_ids": [
+          "request",
+          "ledger"
+        ],
+        "text": "**p-7c2** \u2014 issued and consumed in the ledger excerpt with no `permit_receipt` line, unlike p-1a0 (0.12) and p-9d4 (0.08). Caveat: true for the excerpt as given; a receipt could exist outside this window. Parent accepted."
+      }
+    },
+    {
+      "id": "e36",
+      "kind": "jev_decision",
+      "version": 4,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "output",
+            "candidate_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30",
+            "check_hash": null,
+            "successor": "user",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "output",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "7a065c2d9226aa7ea182df2eef0f3738cbd31630b15ec2fd548fc7d7659525b4",
+      "state": {
+        "goal": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id.",
+        "constraints": [],
+        "version": 4,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "ledger",
+            "title": "permits.jsonl (excerpt)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no corresponding permit_receipt event.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 and p-9d4.",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "a07479b8cf317d99a10b04c01e8834f4332bd077ae5bbad2be9ea9767ff229da"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, but no permit_receipt line.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Permit p-7c2 is the only permit in the ledger excerpt with a permit_consumed event and no matching permit_receipt event.",
+              "claims": [
+                "The ledger excerpt records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "caec39bf7a31ca968d33aa2d5b78db975f26da291dbf3e350b4e13431122fab1"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden3",
+            "operation": "validated_unit",
+            "summary": "p-7c2 \u2014 issued and consumed, with no permit_receipt line in the ledger excerpt. Parent accepted.",
+            "source_ids": [
+              "request",
+              "ledger"
+            ],
+            "data": {
+              "summary": "Verified against the ledger: p-7c2 is the only permit with a permit_consumed event and no matching permit_receipt event; the parent's answer is correct.",
+              "claims": [
+                "Ledger shows permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and p-9d4 (cost_usd 0.08).",
+                "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+                "Answer: permit_id = p-7c2.",
+                "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+                "The parent's claims and conclusion match the ledger evidence; no corrections needed."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "0062109b6e5d92c5166e7f90ac9ed50bfae491bb894e65f45bf38d4564448c98"
+              ],
+              "source_hashes": {
+                "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+                "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+              }
+            },
+            "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [
+          "input"
+        ],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+            "text": "Using only the ledger source, find the permit that was consumed but never received a receipt. Give its permit_id."
+          },
+          {
+            "id": "ledger",
+            "hash": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb",
+            "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1a0\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1a0\",\"cost_usd\":0.12}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-7c2\"}\n{\"kind\":\"permit_issued\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-9d4\"}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-9d4\",\"cost_usd\":0.08}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-7c2\"}"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "output",
+          "released": false
+        },
+        "unit": {
+          "id": "output",
+          "name": "Output",
+          "objective": "Deliver a concise supported result and state material unresolved issues."
+        },
+        "parents": [
+          {
+            "id": "hidden3",
+            "artifact_hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "selected_worker": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "candidate": {
+          "data": {
+            "summary": "The ledger excerpt shows p-7c2 as the only permit with a permit_consumed event and no corresponding permit_receipt event; p-1a0 and p-9d4 each have a receipt.",
+            "claims": [
+              "Ledger records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and for p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+              "Parent result reviewed and accepted; its claims match the ledger evidence."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.97,
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "text": "**p-7c2** \u2014 issued and consumed in the ledger excerpt with no `permit_receipt` line, unlike p-1a0 (0.12) and p-9d4 (0.08). Caveat: true for the excerpt as given; a receipt could exist outside this window. Parent accepted."
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "prior_units_resolved": true,
+          "output_has_no_unresolved": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.03,
+          "escalate": 0.01,
+          "forward": 0.87,
+          "repair": 0.08,
+          "retrieve_evidence": 0.01
+        },
+        "confidence": 0.84,
+        "api_event": "call-10",
+        "usage": {
+          "input_tokens": 3916,
+          "output_tokens": 59,
+          "total_tokens": 3975,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000164472
+        }
+      }
+    },
+    {
+      "id": "e37",
+      "kind": "post_worker_decision",
+      "version": 4,
+      "simulation": false,
+      "unit_id": "output",
+      "choice": "forward",
+      "gate_id": "e36",
+      "candidate_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "prior_units_resolved": true,
+        "output_has_no_unresolved": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e38",
+      "kind": "dispatch",
+      "version": 4,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "output",
+        "candidate_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30",
+        "check_hash": null,
+        "successor": "user",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "5805035ab5b11d1785da31876b143a2f40b015e5acc18d96f6d1237da45c73df",
+      "gate_id": "e36"
+    },
+    {
+      "id": "e39",
+      "kind": "checked_commit",
+      "version": 5,
+      "simulation": false,
+      "unit_id": "output",
+      "packet": {
+        "id": "output",
+        "artifact": {
+          "data": {
+            "summary": "The ledger excerpt shows p-7c2 as the only permit with a permit_consumed event and no corresponding permit_receipt event; p-1a0 and p-9d4 each have a receipt.",
+            "claims": [
+              "Ledger records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and for p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+              "Parent result reviewed and accepted; its claims match the ledger evidence."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.97,
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "text": "**p-7c2** \u2014 issued and consumed in the ledger excerpt with no `permit_receipt` line, unlike p-1a0 (0.12) and p-9d4 (0.08). Caveat: true for the excerpt as given; a receipt could exist outside this window. Parent accepted."
+        },
+        "artifact_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30",
+        "parent_artifacts": [
+          {
+            "id": "hidden3",
+            "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e36",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e36"
+    },
+    {
+      "id": "e40",
+      "kind": "provisional_return",
+      "version": 5,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "output",
+      "value": {
+        "id": "output",
+        "artifact": {
+          "data": {
+            "summary": "The ledger excerpt shows p-7c2 as the only permit with a permit_consumed event and no corresponding permit_receipt event; p-1a0 and p-9d4 each have a receipt.",
+            "claims": [
+              "Ledger records permit_issued, permit_consumed and permit_receipt for p-1a0 (cost_usd 0.12) and for p-9d4 (cost_usd 0.08).",
+              "p-7c2 has permit_issued and permit_consumed but no permit_receipt line.",
+              "Answer: permit_id = p-7c2.",
+              "Assumption: the excerpt is complete for the window examined; a receipt for p-7c2 could exist outside it.",
+              "Parent result reviewed and accepted; its claims match the ledger evidence."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+            ],
+            "source_hashes": {
+              "request": "0694e1e3bc89d681f1bccc6cfc65f49a03280a71271089a9773ef03cb73b8bdc",
+              "ledger": "5e06bda4743731773d2dd569994a19f7bf483581e723cac823861345d3e5b1cb"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": 0.97,
+          "source_ids": [
+            "request",
+            "ledger"
+          ],
+          "text": "**p-7c2** \u2014 issued and consumed in the ledger excerpt with no `permit_receipt` line, unlike p-1a0 (0.12) and p-9d4 (0.08). Caveat: true for the excerpt as given; a receipt could exist outside this window. Parent accepted."
+        },
+        "artifact_hash": "5dc791ca11e1546699384ce72414b1b20de3cd7376b1ae2acfc8ece9426d2e30",
+        "parent_artifacts": [
+          {
+            "id": "hidden3",
+            "hash": "c7279691885ea86156c912ea4c3d069a8ccf798650e4ae99a6e6c900b11364db"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e36",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e41",
+      "kind": "recovery_complete",
+      "version": 5,
+      "simulation": false,
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ]
+    }
+  ],
+  "recovery_rounds": {},
+  "audit": {
+    "valid": true,
+    "status": "complete",
+    "committed_units": [
+      "input",
+      "hidden1",
+      "hidden2",
+      "hidden3",
+      "output"
+    ],
+    "checked_commits": 5,
+    "post_worker_jev_decisions": 5,
+    "post_checker_jev_decisions": 0,
+    "live_high_checker_calls": [],
+    "issues": []
+  },
+  "native_audit": {
+    "valid": true,
+    "issues": [],
+    "jev_calls": 10,
+    "worker_calls": 4,
+    "checker_calls": 0
+  },
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 4,
+    "consumed": 4,
+    "receipted": 4,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 10,
+    "frontier_child_calls": 4,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 52280,
+    "frontier_output_tokens": 4700,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0.001404858,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "627f02cc011311f9ee32181eccdc6a2b35f0c361d352ff73681866fe39c7b923",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00022930000000000002,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1242,
+        "output_tokens": 31,
+        "total_tokens": 1273,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 5.2164e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1242,
+        "output_tokens": 31,
+        "cost": 5.2164e-05
+      },
+      "latency_ms": 844.0,
+      "provider_request_id": "gen-dec-1792301795-rsUrBEqIjhalSNeQJvGm",
+      "started_at": "2026-10-18T05:36:34.589Z",
+      "ended_at": "2026-10-18T05:36:35.439Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "f9c32415a3c5e8e1f1eb96101f2e36266d69c58e6f870fc13ad4d7d1f90a3723",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00029720000000000007,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 1876,
+        "output_tokens": 50,
+        "total_tokens": 1926,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 7.8792e-05
+      },
+      "usage_raw": {
+        "input_tokens": 1876,
+        "output_tokens": 50,
+        "cost": 7.8792e-05
+      },
+      "latency_ms": 500.0,
+      "provider_request_id": "gen-dec-1792301796-wCXcEB2kER7oPc9H4Fch",
+      "started_at": "2026-10-18T05:36:35.443Z",
+      "ended_at": "2026-10-18T05:36:35.950Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "e43551382048f7a111afd951fbec5dc987a6db84c1025307204b77d282e04ee1",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.000431,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3596,
+        "output_tokens": 90,
+        "total_tokens": 3686,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000151032
+      },
+      "usage_raw": {
+        "input_tokens": 3596,
+        "output_tokens": 90,
+        "cost": 0.000151032
+      },
+      "latency_ms": 532.0,
+      "provider_request_id": "gen-dec-1792301796-9UgVjLWdK9q2FzQdkMIs",
+      "started_at": "2026-10-18T05:36:35.954Z",
+      "ended_at": "2026-10-18T05:36:36.484Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-4",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "8935265ec93fb90c3cbbed2a63c9dfd21c8209ea3c0b4da96cb30773682c8c8b",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00036115,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2521,
+        "output_tokens": 59,
+        "total_tokens": 2580,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000105882
+      },
+      "usage_raw": {
+        "input_tokens": 2521,
+        "output_tokens": 59,
+        "cost": 0.000105882
+      },
+      "latency_ms": 547.0,
+      "provider_request_id": "gen-dec-1792301813-e867Msz1FD6G7cK0Txic",
+      "started_at": "2026-10-18T05:36:52.858Z",
+      "ended_at": "2026-10-18T05:36:53.408Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-5",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "e3d5bbc79378f37f93e91aef89a1debec94ed8b4ae075e3f521252e2b4bc0959",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00048140000000000005,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4086,
+        "output_tokens": 90,
+        "total_tokens": 4176,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000171612
+      },
+      "usage_raw": {
+        "input_tokens": 4086,
+        "output_tokens": 90,
+        "cost": 0.000171612
+      },
+      "latency_ms": 563.0,
+      "provider_request_id": "gen-dec-1792301814-433omwvPqQI0nu9lMnRN",
+      "started_at": "2026-10-18T05:36:53.412Z",
+      "ended_at": "2026-10-18T05:36:53.983Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-6",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "e1d858578bf8c44fdc4aa2da53934854ea6b8bbcab665b9c8357bd410b6170f3",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00041365000000000005,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3049,
+        "output_tokens": 59,
+        "total_tokens": 3108,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000128058
+      },
+      "usage_raw": {
+        "input_tokens": 3049,
+        "output_tokens": 59,
+        "cost": 0.000128058
+      },
+      "latency_ms": 625.0,
+      "provider_request_id": "gen-dec-1792301830-oGMHSho0Xpr9KdffcvRb",
+      "started_at": "2026-10-18T05:37:09.949Z",
+      "ended_at": "2026-10-18T05:37:10.565Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-7",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "69f63aa2ce35b4433d16405300f3cff689a6420a4bb542b5be853ae40969a70f",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0005333,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4659,
+        "output_tokens": 90,
+        "total_tokens": 4749,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000195678
+      },
+      "usage_raw": {
+        "input_tokens": 4659,
+        "output_tokens": 90,
+        "cost": 0.000195678
+      },
+      "latency_ms": 579.0,
+      "provider_request_id": "gen-dec-1792301831-VJlw1wOVLqhXDihmxYCu",
+      "started_at": "2026-10-18T05:37:10.569Z",
+      "ended_at": "2026-10-18T05:37:11.146Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-8",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "e45ad2ebada90f9c99d207850983dfdb329f73c5d99828349badea9e6cca5b86",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00047275,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3616,
+        "output_tokens": 59,
+        "total_tokens": 3675,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000151872
+      },
+      "usage_raw": {
+        "input_tokens": 3616,
+        "output_tokens": 59,
+        "cost": 0.000151872
+      },
+      "latency_ms": 578.0,
+      "provider_request_id": "gen-dec-1792301848-W6qgWUcFNzwSmVjkKwPu",
+      "started_at": "2026-10-18T05:37:27.564Z",
+      "ended_at": "2026-10-18T05:37:28.128Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-9",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "8c344fef4728ab9b160fd99dd1db518e3154837b5c5a55bddce80242ad27198b",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0005622,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4888,
+        "output_tokens": 90,
+        "total_tokens": 4978,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000205296
+      },
+      "usage_raw": {
+        "input_tokens": 4888,
+        "output_tokens": 90,
+        "cost": 0.000205296
+      },
+      "latency_ms": 531.0,
+      "provider_request_id": "gen-dec-1792301848-vLGOBVsD4iixeYnnj4n7",
+      "started_at": "2026-10-18T05:37:28.133Z",
+      "ended_at": "2026-10-18T05:37:28.667Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-10",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "a06db5fcba89fe437baad756b4832c16654cdfcb8bd06f3994d0af4ea7bd8956",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0005112000000000001,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3916,
+        "output_tokens": 59,
+        "total_tokens": 3975,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000164472
+      },
+      "usage_raw": {
+        "input_tokens": 3916,
+        "output_tokens": 59,
+        "cost": 0.000164472
+      },
+      "latency_ms": 531.0,
+      "provider_request_id": "gen-dec-1792301864-FJlqZEj4qGTxMAxlKKEd",
+      "started_at": "2026-10-18T05:37:43.784Z",
+      "ended_at": "2026-10-18T05:37:44.327Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    }
+  ]
+}

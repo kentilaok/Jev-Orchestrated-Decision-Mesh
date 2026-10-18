@@ -1,0 +1,1 @@
+{"answer":"required = 9 (2 tiers \u00d7 4 efforts = 8 worker routes, plus 1 checker route; astra route excluded since astra_explicitly_authorized defaults to False).","calls":1,"route":"short_self_contained","status":"complete"}

@@ -1,0 +1,1 @@
+{"answer":"Accepted. Worker blended_usd_per_million_tokens = 2400.0000000000005; total_tokens = 32000; total_cost_usd = None.","calls":14,"route":"broad_or_uncertain","status":"complete"}

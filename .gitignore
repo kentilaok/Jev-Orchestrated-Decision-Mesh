@@ -6,10 +6,11 @@ venv/
 .env
 .env.*
 !.env.example
-runs/
 work/
 outputs/
 *.log
+# Run output is tracked (study evidence that paid calls cannot regenerate), including its logs.
+!runs/**/*.log
 *.key
 *.pem
 *.npz

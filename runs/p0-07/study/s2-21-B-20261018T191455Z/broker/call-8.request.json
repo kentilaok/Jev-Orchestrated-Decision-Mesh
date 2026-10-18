@@ -1,0 +1,271 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "fields",
+        "title": "scripts/experience_distiller.py excerpt (lesson fields)"
+      },
+      {
+        "id": "code",
+        "title": "scripts/experience_distiller.py excerpt (skill_name)"
+      },
+      {
+        "id": "records",
+        "title": "experience records (in order)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7"
+          }
+        },
+        "artifact_hash": "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "The lesson is built from the first verified_recovery record (r1): unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\", signature \"9F3a-77bc21\". skill_name lowercases and hyphenates scope/unit, truncates the signature to 8 chars, then strips any char that is not alphanumeric or '-', removing the '.' and the space. Result: cidm-p007bench-suite-hidden-2-9f3a-77b",
+          "claims": [
+            "distill_lessons filters to verified_recovery records; the first such record is run_id r1, so the unverified hidden3 record and the later r2 record do not set lesson fields.",
+            "signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+            "scope lowercased with underscores replaced: \"p0.07 bench-suite\"; unit: \"hidden-2\".",
+            "The alnum/'-' filter drops the '.' and the space, giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+            "Assumed the lesson dict carries the record's raw signature value; the code excerpt does not show that assignment."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "85d2471e620179016abe4ae4731953a5b3481ddf0d32cb343f0fd7104c9d82a3"
+          ],
+          "source_hashes": {
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+          }
+        },
+        "artifact_hash": "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b",
+        "source_ids": [
+          "request",
+          "fields",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "distill_lessons keeps only verified_recovery records and takes verified[0] = run_id r1, so unit_id \"hidden_2\" and project_scope \"P0.07 Bench_Suite\"; the unverified hidden3 record and r2 are ignored. skill_name lowercases and underscore-to-hyphen the scope (\"p0.07 bench-suite\") and unit (\"hidden-2\"), truncates the signature \"9F3a-77bc21\" to 8 chars and lowercases it (\"9f3a-77b\"), builds \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\", then strips the '.' and the space via the alnum/'-' filter. Result is 38 chars, under the 64 cap.",
+          "claims": [
+            "Only verified_recovery records survive the filter; verified[0] is run_id r1, so the unverified hidden3 record and the later r2 record set no lesson fields.",
+            "Signature \"9F3a-77bc21\" is truncated to 8 chars (\"9F3a-77b\") then lowercased to \"9f3a-77b\".",
+            "Scope lowercased with '_'->'-' gives \"p0.07 bench-suite\"; unit gives \"hidden-2\".",
+            "The alnum/'-' filter drops the '.' and the space, yielding \"cidm-p007bench-suite-hidden-2-9f3a-77b\" (38 chars, under the 64 cap).",
+            "Assumed the lesson dict carries the record's raw signature value; the fields excerpt shows only unit_id and project_scope being assigned."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "0a7013bf8d290a63e37babf878ba1cf99d2f9fe4ca87139cce031007dc84cc53"
+          ],
+          "source_hashes": {
+            "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+            "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+            "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+            "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+          }
+        },
+        "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70",
+        "text": "distill_lessons runs on the records below and skill_name is called on the resulting lesson. What exact string does skill_name return?"
+      },
+      {
+        "id": "fields",
+        "hash": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+        "text": "        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        unit_id = str(verified[0].get(\"unit_id\") or \"unknown\")\n        project_scope = str(verified[0].get(\"project_scope\") or \"unscoped\")"
+      },
+      {
+        "id": "code",
+        "hash": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+        "text": "def skill_name(lesson: dict) -> str:\n    scope = str(lesson.get(\"project_scope\") or \"unscoped\").lower().replace(\"_\", \"-\")\n    unit = str(lesson.get(\"unit_id\") or \"recovery\").lower().replace(\"_\", \"-\")\n    signature = str(lesson.get(\"signature\") or \"unknown\")[:8].lower()\n    base = \"cidm-\" + scope + \"-\" + unit + \"-\" + signature\n    return \"\".join(ch for ch in base if ch.isalnum() or ch == \"-\")[:64]"
+      },
+      {
+        "id": "records",
+        "hash": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+        "text": "{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden3\", \"project_scope\": \"Old_Scope\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"hidden_2\", \"project_scope\": \"P0.07 Bench_Suite\", \"verified_recovery\": true, \"run_id\": \"r1\"}\n{\"signature\": \"9F3a-77bc21\", \"unit_id\": \"output\", \"project_scope\": \"Other\", \"verified_recovery\": true, \"run_id\": \"r2\"}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "summary": "Verified the parent. The filter in the fields excerpt keeps only verified_recovery records, so the hidden3 record is dropped and verified[0] is the r1 record: unit_id \"hidden_2\", project_scope \"P0.07 Bench_Suite\" (r2 ignored). skill_name lowercases and maps '_'->'-': scope \"p0.07 bench-suite\", unit \"hidden-2\"; signature \"9F3a-77bc21\"[:8].lower() = \"9f3a-77b\". base = \"cidm-p0.07 bench-suite-hidden-2-9f3a-77b\"; the isalnum-or-'-' filter drops '.' and ' ' giving \"cidm-p007bench-suite-hidden-2-9f3a-77b\", 38 chars (5+15+9+9), under the 64 cap. Answer confirmed.",
+        "claims": [
+          "Only the two verified_recovery records pass the filter; verified[0] is run_id r1, so unit_id=\"hidden_2\" and project_scope=\"P0.07 Bench_Suite\"; hidden3 and r2 contribute nothing.",
+          "Truncation precedes lowercasing in effect: \"9F3a-77bc21\"[:8] = \"9F3a-77b\" -> \"9f3a-77b\".",
+          "Character filter removes '.' and the space only; hyphens and alnum survive, so \"p0.07 bench-suite\" -> \"p007bench-suite\".",
+          "Length check: 5 + 15 + 9 + 9 = 38 chars, so the [:64] slice is a no-op.",
+          "Assumes the lesson dict carries the record's \"signature\" (\"9F3a-77bc21\"); the fields excerpt shown only assigns unit_id and project_scope."
+        ],
+        "unresolved": [
+          "The fields excerpt does not show \"signature\" being written into the lesson dict. If it is not, skill_name falls back to \"unknown\" and returns \"cidm-p007bench-suite-hidden-2-unknown\"."
+        ],
+        "parent_hashes": [
+          "edefea6f6213097814b1861a4a71a84c139afe07ea37f5ab05c9e0607d06ae60"
+        ],
+        "source_hashes": {
+          "code": "12ed3c1ce7b77219233bf69b3cd758adaab4442a301454de52b3d3cc1abc74db",
+          "fields": "454957e107a70fe479be9b913c547f8c4e5d69583ba7dbc0a6078ff943864724",
+          "records": "9c4ce991cfaf1fb5b0f2c922a79964f521ff4e4d6bddb41a4def80e942c336a7",
+          "request": "cbec55952af3d511e29326c8b81b2e938bf841267a6417a8c4c7c55dc3621c70"
+        }
+      },
+      "five_scores": [
+        5,
+        5,
+        4,
+        5,
+        5
+      ],
+      "self_probability": 0.85,
+      "source_ids": [
+        "request",
+        "fields",
+        "code",
+        "records"
+      ],
+      "text": "skill_name returns: cidm-p007bench-suite-hidden-2-9f3a-77b (assuming the lesson dict carries the record's signature; the shown excerpt only assigns unit_id and project_scope, and without a signature key the result would be cidm-p007bench-suite-hidden-2-unknown)"
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 23,
+      "jev_tokens_remaining": 72877,
+      "jev_api_usd_remaining": 0.998880532,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden3",
+            "candidate_hash": "172b49f2b6c3daaf428ada92b0103e3d5624df30d6bddb1adde98ff6b3f5eaf1",
+            "check_hash": null,
+            "successor": "output",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "172b49f2b6c3daaf428ada92b0103e3d5624df30d6bddb1adde98ff6b3f5eaf1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}
