@@ -21,7 +21,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])7(?!\\.?\\d)|\\bseven\\b"
+      "^\\W*(?:(?:answer(?: is)?|(?<!_)observations)\\s*(?:=|:|is|are)?\\s*)?(?:7|seven)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|(?<!_)observations)\\s*(?:=|:|is|are)?\\s*(?:7|seven)\\b(?!\\.\\d)|(?<![\\w.])(?:7|seven)\\s+(?:observations)"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:answer(?: is)?|(?<!_)observations)\\s*(?:=|:|is|are)?\\s*)?(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?|(?<!_)observations)\\s*(?:=|:|is|are)?\\s*(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:observations)"
     ]
   },
   "examples": {
@@ -32,7 +35,8 @@
     "fail": [
       "8, one per record.",
       "6: records without run_id are not runs.",
-      "1."
+      "1.",
+      "The 7 distinct run strings include \"None\", but run-less records are skipped, so observations = 6."
     ]
   }
 }

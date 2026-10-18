@@ -17,7 +17,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])3(?!\\.?\\d)|\\bthree\\b"
+      "^\\W*(?:(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*)?(?:3|three)\\b(?!\\.\\d)|\\b(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*(?:3|three)\\b(?!\\.\\d)|(?<![\\w.])(?:3|three)\\s+(?:(?:calls? |of them |pairs? )?(?:returns?|are escalated|escalate)\\b)"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*)?(?!(?:3|three)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*(?!(?:3|three)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:3|three)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:(?:calls? |of them |pairs? )?(?:returns?|are escalated|escalate)\\b)"
     ]
   },
   "examples": {
@@ -28,7 +31,8 @@
     "fail": [
       "5: also fill \"Submit\" and check \"Subscribe to news\".",
       "4, counting Sign-up as sign up.",
-      "2: Enter with a trailing space does not equal \"enter\"."
+      "2: Enter with a trailing space does not equal \"enter\".",
+      "Only 2 calls return it: the 3 candidates include press \"Enter \", which is not stripped."
     ]
   }
 }

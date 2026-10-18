@@ -21,9 +21,14 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])5(?!\\.?\\d)|\\bfive\\b",
-      "(?<![\\d.])0\\.60*(?!\\d)",
-      "(?<![\\d.])0\\.80*(?!\\d)"
+      "^\\W*(?:(?:answer(?: is)?|tasks_paired|paired tasks?)\\s*(?:=|:|is|are)?\\s*)?(?:5|five)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|tasks_paired|paired tasks?)\\s*(?:=|:|is|are)?\\s*(?:5|five)\\b(?!\\.\\d)|(?<![\\w.])(?:5|five)\\s+(?:paired|tasks? (?:are )?paired)",
+      "yield[ _]?a\\b\\W*(?:is\\W*)?(?<![\\d.])0\\.60*(?!\\d)",
+      "yield[ _]?b\\b\\W*(?:is\\W*)?(?<![\\d.])0\\.80*(?!\\d)"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:answer(?: is)?|tasks_paired|paired tasks?)\\s*(?:=|:|is|are)?\\s*)?(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?|tasks_paired|paired tasks?)\\s*(?:=|:|is|are)?\\s*(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:5|five)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:paired|tasks? (?:are )?paired)",
+      "yield[ _]?a\\b\\W*(?:is\\W*)?(?!(?<![\\d.])0\\.60*(?!\\d))\\d",
+      "yield[ _]?b\\b\\W*(?:is\\W*)?(?!(?<![\\d.])0\\.80*(?!\\d))\\d"
     ]
   },
   "examples": {
@@ -34,7 +39,8 @@
     "fail": [
       "6 paired tasks, yield_a 0.667, yield_b 0.833 (s2-06 included).",
       "5 paired; yield_a 0.6, yield_b 0.6 (the s2-05 infra failure counts as B).",
-      "4 paired tasks, yield_a 0.75, yield_b 0.75."
+      "4 paired tasks, yield_a 0.75, yield_b 0.75.",
+      "Of the 5 tasks with records, 4 are paired; yield_a 0.8, yield_b 0.6."
     ]
   }
 }

@@ -21,7 +21,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])10(?!\\.?\\d)|\\bten\\b"
+      "^\\W*(?:(?:n|answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)\\s*(?:=|:|is|are)?\\s*)?(?:10|ten)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)\\s*(?:=|:|is|are)?\\s*(?:10|ten)\\b(?!\\.\\d)|(?<![\\w.])(?:10|ten)\\s+(?:ones)"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:n|answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)\\s*(?:=|:|is|are)?\\s*)?(?!(?:10|ten)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?|largest (?:accepted )?(?:sum|n|value of n)(?: has| is)?)\\s*(?:=|:|is|are)?\\s*(?!(?:10|ten)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:10|ten)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:ones)"
     ]
   },
   "examples": {
@@ -32,7 +35,8 @@
     "fail": [
       "15: BinOps plus constants are 2n - 1 <= 30.",
       "30.",
-      "11."
+      "11.",
+      "Ten ones give 29 nodes, but the limit is inclusive, so the largest n is 11."
     ]
   }
 }

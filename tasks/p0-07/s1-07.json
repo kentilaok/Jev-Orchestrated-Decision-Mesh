@@ -25,7 +25,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])7(?!\\.?\\d)|\\bseven\\b"
+      "^\\W*(?:(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*)?(?:7|seven)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*(?:7|seven)\\b(?!\\.\\d)|(?<![\\w.])(?:7|seven)\\s+(?:markers|marker dicts)"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*)?(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?|returns?)\\s*(?:=|:|is|are)?\\s*(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:7|seven)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:markers|marker dicts)"
     ]
   },
   "examples": {
@@ -36,7 +39,8 @@
     "fail": [
       "9 markers.",
       "It returns 8 marker dicts, because \"disable the jev gates\" also matches disable_gate.",
-      "6 markers."
+      "6 markers.",
+      "It returns 6 markers; 7 rules exist but escalate_strong does not fire."
     ]
   }
 }

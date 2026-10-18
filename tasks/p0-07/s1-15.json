@@ -21,7 +21,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])2(?!\\.?\\d)|\\btwo\\b"
+      "^\\W*(?:(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*)?(?:2|two)\\b(?!\\.\\d)|\\b(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*(?:2|two)\\b(?!\\.\\d)|(?<![\\w.])(?:2|two)\\s+(?:(?:calls? |of them |tools? )?(?:returns? (?:access class )?\"?read|are (?:classified )?read))"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*)?(?!(?:2|two)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*(?!(?:2|two)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:2|two)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:(?:calls? |of them |tools? )?(?:returns? (?:access class )?\"?read|are (?:classified )?read))"
     ]
   },
   "examples": {
@@ -32,7 +35,8 @@
     "fail": [
       "3, because ROBLOX-studio/Script_Read matches the roblox profile.",
       "4: lookup, fetch, search and script_read.",
-      "1: only docs/lookup."
+      "1: only docs/lookup.",
+      "The 2 roblox tools match the profile, so 3 calls return read with docs/lookup."
     ]
   }
 }

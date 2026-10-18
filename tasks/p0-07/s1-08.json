@@ -21,18 +21,23 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])3(?!\\.?\\d)|\\bthree\\b"
+      "^\\W*(?:(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*)?(?:3|three)\\b(?!\\.\\d)|\\b(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*(?:3|three)\\b(?!\\.\\d)|(?<![\\w.])(?:3|three)\\s+(?:(?:calls? |actions? |of them )?(?:returns? true|are blocked|blocked))"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*)?(?!(?:3|three)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?)\\s*(?:=|:|is|are)?\\s*(?!(?:3|three)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:3|three)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:(?:calls? |actions? |of them )?(?:returns? true|are blocked|blocked))"
     ]
   },
   "examples": {
     "pass": [
       "3 are blocked: \"Delete_tmp\" (non_reversible, and the approval is bound to \"delete_tmp\", not \"Delete_tmp\"), \"readme_update\" (no rule matches, so unknown) and \"postmortem\" (unknown). delete_tmp is approved; get-file and list_files are reversible.",
-      "Three calls return True."
+      "Three calls return True.",
+      "Of the 6 calls, 3 return True (not 2)."
     ],
     "fail": [
       "2: Delete_tmp lowercases to delete_tmp, so only readme_update and postmortem are blocked.",
       "1: only postmortem.",
-      "4 calls return True."
+      "4 calls return True.",
+      "Of the 3 actions with no matching rule, only postmortem is unknown, so 2 calls return True."
     ]
   }
 }

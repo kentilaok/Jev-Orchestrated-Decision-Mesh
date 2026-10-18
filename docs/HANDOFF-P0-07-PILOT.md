@@ -43,7 +43,9 @@ Pilot 3 (six paired tasks): yield A 1.00, B 1.00. Efficiency, B minus A, stratif
 **For Ken's review.**
 - Protocol §3 requires at least one S2 task in three to be built to trigger a repair, retrieval or pause. These tasks are built to invite a first-pass wrong answer, which a checker would have to catch. None of them requires retrieval, because both arms get identical sources and arm B has no retrieval index.
 - Difficulty is not measured yet. No live run has used the new suite.
-- The regex checks favour exact tokens, and a few count answers use bare numbers. A wrong answer that happens to mention the gold token would pass. Those patterns are worth reading.
+- Count checks (s1-07, s1-08, s1-14, s1-15, s1-19, s2-07, s2-14, s2-16, s2-18, s3-15) no longer accept a bare number. `count()` in the builder needs the count stated as the answer: it opens the answer, follows a key (`receipted is 7`), or comes before the counted thing (`7 markers`). Any other number in those positions fails, unless it follows "not", "than" or "of (the)". s2-07 also ties each yield to its arm, so swapped yields fail. Each of these tasks has a new fail example that mentions the gold number but states a wrong count. Known trade-off: a correct answer phrased unusually (for example "it reports 7, the receipted value") can be rejected.
+- Single-value checks (for example s1-01 `100000`, s1-03, s1-05, s1-11, s1-13, s1-22, s1-24, s2-04, s2-06, s2-12, s2-22, s3-03, s3-05) still match the gold value anywhere. "It stays 50000; it would only become 100000 if the default were untouched" passes s1-01. The same `count()`-style binding could be applied to them if wanted.
+- The regex checks favour exact tokens. Those patterns are worth reading.
 
 ## 5. Next steps
 

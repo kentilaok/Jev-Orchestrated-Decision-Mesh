@@ -21,7 +21,10 @@
   },
   "acceptance": {
     "must_match": [
-      "(?<![\\w.])9(?!\\.?\\d)|\\bnine\\b"
+      "^\\W*(?:(?:answer(?: is)?|required|len\\(needed\\))\\s*(?:=|:|is|are)?\\s*)?(?:9|nine)\\b(?!\\.\\d)|\\b(?:answer(?: is)?|required|len\\(needed\\))\\s*(?:=|:|is|are)?\\s*(?:9|nine)\\b(?!\\.\\d)|(?<![\\w.])(?:9|nine)\\s+(?:required (?:routes|entries))"
+    ],
+    "must_not_match": [
+      "^\\W*(?:(?:answer(?: is)?|required|len\\(needed\\))\\s*(?:=|:|is|are)?\\s*)?(?!(?:9|nine)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d|\\s+(?:each|per|of the)\\b)|(?<![\"\\'(])(?<!not )\\b(?:answer(?: is)?|required|len\\(needed\\))\\s*(?:=|:|is|are)?\\s*(?!(?:9|nine)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\b(?!\\.\\d)|(?<![\\w.])(?<!not )(?<!than )(?<!of )(?<!of the )(?!(?:9|nine)\\b)(?:\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\\s+(?:required (?:routes|entries))"
     ]
   },
   "examples": {
@@ -32,7 +35,8 @@
     "fail": [
       "10: eight routes, the checker and the short route.",
       "8 worker routes.",
-      "11."
+      "11.",
+      "With 9 candidate entries, the short route counts twice, so required is 10."
     ]
   }
 }

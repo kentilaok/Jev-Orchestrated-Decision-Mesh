@@ -18,7 +18,10 @@
   "acceptance": {
     "must_match": [
       "truncated after 25 chars",
-      "\\bonce\\b|\\b1 time|\\bone (time|occurrence)|(?<![\\w.])1(?!\\.?\\d)"
+      "\\bonce\\b|\\b(?:1|one) (?:time|occurrence)\\b"
+    ],
+    "must_not_match": [
+      "\\btwice\\b|(?<![\\w.])(?:[02-9]|\\d{2,}|zero|two|three|four|five|six) (?:times|occurrences)\\b"
     ]
   },
   "examples": {
@@ -29,7 +32,8 @@
     "fail": [
       "No truncation: 24 <= 25. The end marker appears twice.",
       "Not truncated; CIDM_END_DATA>>> appears once.",
-      "Truncated after 24 chars; it appears once."
+      "Truncated after 24 chars; it appears once.",
+      "Truncated ([truncated after 25 chars]); CIDM_END_DATA>>> appears twice, once in the body and once as the closing marker."
     ]
   }
 }
