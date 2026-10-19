@@ -1,0 +1,365 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "identity",
+        "title": "scripts/transport.py excerpt (_validate_identity)"
+      },
+      {
+        "id": "config",
+        "title": "scripts/config.py excerpt (aliases and response_models)"
+      },
+      {
+        "id": "jev",
+        "title": "scripts/jev_decide.py excerpt (validate_response model check)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "identity",
+          "config",
+          "jev"
+        ],
+        "data": {
+          "summary": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "c7348ea9bff44e59286b4254fe587a83749dd4d201f346844dc90f4bbe167845",
+            "identity": "822ebc9bcd568768b93027cd1b46a53edbd8f77eeee01eef544844e288e74f15",
+            "config": "0d8633d39ad3f3ffbdbfa067c3b1ba835fcb5f1656020c537c3c3516a1f06949",
+            "jev": "d1cfaa9a0e9588c7ab40fb09b86f6575596e4c91760576698c1750c91f57c5c0"
+          }
+        },
+        "artifact_hash": "0a06ee230c2603776895ca19a2f1417ee2fd8a383865e7a336acbf762e0bf091",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "jev_decide.validate_response alone: ACCEPTS. requested=\"jev-1.13\", returned=\"jev-1.13.2\"; returned.startswith(requested+\".\") is True (\"jev-1.13.\" prefix matches), so the regex+prefix check passes with no error.\n\nHowever, Gateway.call also runs transport._validate_identity, which is stricter. For role==\"jev\" it normalizes the returned model to \"typesafe/jev-1.13.2\" and checks membership in config.response_models(\"jev\", ...) = {\"typesafe/jev-1.13\", \"typesafe/jev-1.13-20260917\"}. \"typesafe/jev-1.13.2\" is not in that set, so require(...) fails and raises \"response_model_mismatch\".\n\nNet result: the Gateway records error code \"response_model_mismatch\" for this call \u2014 identity validation rejects the response even though jev_decide's own validator would have let it through.",
+        "source_ids": [
+          "request",
+          "identity",
+          "config",
+          "jev"
+        ],
+        "data": {
+          "summary": "jev_decide.validate_response alone accepts \"jev-1.13.2\" as a valid response to a request for \"jev-1.13\" (startswith requested+\".\" branch). But Gateway.call also enforces transport._validate_identity, which normalizes to \"typesafe/jev-1.13.2\" and requires exact membership in config.response_models(\"jev\",...) = {typesafe/jev-1.13, typesafe/jev-1.13-20260917}. That membership check fails, so the Gateway records error code \"response_model_mismatch\".",
+          "claims": [
+            "jev_decide.validate_response: requested=\"jev-1.13\" (after stripping typesafe/ prefix), returned=\"jev-1.13.2\"; returned.startswith(requested+\".\") is True, so this validator alone accepts the model with no error.",
+            "Gateway.call does not rely on jev_decide alone; transport._validate_identity runs as part of the identity validation layer and is stricter (exact-set membership vs. prefix matching).",
+            "_validate_identity for role==\"jev\" normalizes returned model to \"typesafe/\"+returned = \"typesafe/jev-1.13.2\".",
+            "config.response_models(\"jev\", payload[\"model\"]) returns exactly (jev_model,)+jev_model_aliases = (\"typesafe/jev-1.13\", \"typesafe/jev-1.13-20260917\"); \"typesafe/jev-1.13.2\" is not a member.",
+            "Because the membership check fails, require(...) raises \"response_model_mismatch\", which is the error code the Gateway records for this call.",
+            "Assumption: Gateway.call invokes _validate_identity (or an equivalent identity check) on every response in addition to any model-specific validator like jev_decide.validate_response; this is inferred from the identity.py excerpt and the request framing, not independently confirmed from Gateway.call's source in this evidence set.",
+            "Assumption: jev_model_aliases is read from the default RunConfig as shown (only one alias, \"typesafe/jev-1.13-20260917\"), with no other aliases added at runtime."
+          ],
+          "unresolved": [
+            "Gateway.call's own source was not provided in evidence; the exact ordering/short-circuiting between jev_decide.validate_response and transport._validate_identity (e.g., does Gateway call both, and does one being called make the other's result irrelevant?) is inferred, not directly shown."
+          ],
+          "parent_hashes": [
+            "0a06ee230c2603776895ca19a2f1417ee2fd8a383865e7a336acbf762e0bf091"
+          ],
+          "source_hashes": {
+            "config": "0d8633d39ad3f3ffbdbfa067c3b1ba835fcb5f1656020c537c3c3516a1f06949",
+            "identity": "822ebc9bcd568768b93027cd1b46a53edbd8f77eeee01eef544844e288e74f15",
+            "jev": "d1cfaa9a0e9588c7ab40fb09b86f6575596e4c91760576698c1750c91f57c5c0",
+            "request": "c7348ea9bff44e59286b4254fe587a83749dd4d201f346844dc90f4bbe167845"
+          }
+        },
+        "artifact_hash": "b958fe55882d4b2d473a9454f21f0005c4a1fb2780a0f7f37d214583cf6cce80",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "jev_decide.validate_response alone: ACCEPTS. requested=\"jev-1.13\" (stripped), returned=\"jev-1.13.2\"; returned.startswith(requested+\".\") is True, so the regex+prefix check passes with no error raised by this validator in isolation.\n\nBut Gateway.call also runs transport._validate_identity, which is stricter. For role==\"jev\" it normalizes the returned model to \"typesafe/jev-1.13.2\" and requires membership in config.response_models(\"jev\", payload[\"model\"]) = (\"typesafe/jev-1.13\", \"typesafe/jev-1.13-20260917\"). \"typesafe/jev-1.13.2\" is not in that tuple, so require(...) fails and raises \"response_model_mismatch\".\n\nNet result: the Gateway records error code \"response_model_mismatch\" for this call \u2014 identity validation rejects the response even though jev_decide's own model check would have accepted it on its own.",
+        "source_ids": [
+          "request",
+          "identity",
+          "config",
+          "jev"
+        ],
+        "data": {
+          "summary": "jev_decide.validate_response alone accepts \"jev-1.13.2\" for a request of \"jev-1.13\" via the startswith(requested+\".\") branch. But Gateway.call also enforces transport._validate_identity, which normalizes to \"typesafe/jev-1.13.2\" and requires exact membership in config.response_models(\"jev\",...) = {typesafe/jev-1.13, typesafe/jev-1.13-20260917}. Membership fails, so the Gateway records error code \"response_model_mismatch\".",
+          "claims": [
+            "jev_decide.validate_response: requested=\"jev-1.13\" after stripping \"~\"/\"typesafe/\" prefixes; returned=\"jev-1.13.2\" after stripping \"typesafe/\"; returned.startswith(requested+\".\") is True, so this validator alone raises no error.",
+            "Gateway.call does not rely on jev_decide alone; transport._validate_identity also runs on every response and is stricter (exact-set membership vs. prefix matching).",
+            "_validate_identity for role==\"jev\" normalizes returned model to \"typesafe/\"+returned.removeprefix(\"typesafe/\") = \"typesafe/jev-1.13.2\".",
+            "config.response_models(\"jev\", payload[\"model\"]) returns (jev_model,)+jev_model_aliases = (\"typesafe/jev-1.13\", \"typesafe/jev-1.13-20260917\"); \"typesafe/jev-1.13.2\" is not a member of this tuple.",
+            "Because the membership check fails, require(normalized in response_models(...), \"response_model_mismatch\") raises \"response_model_mismatch\", which is the error code the Gateway records for this call.",
+            "Assumption: Gateway.call invokes _validate_identity on every response in addition to any model-specific validator such as jev_decide.validate_response; inferred from the identity.py excerpt and request framing, not independently confirmed from Gateway.call's own source.",
+            "Assumption: jev_model_aliases is exactly the default RunConfig value shown, (\"typesafe/jev-1.13-20260917\",), with no runtime additions.",
+            "This reproduces the accepted-parent analysis; no new evidence changes the conclusion."
+          ],
+          "unresolved": [
+            "Gateway.call's own source was not provided in evidence; the exact ordering/short-circuiting between jev_decide.validate_response and transport._validate_identity is inferred, not directly shown."
+          ],
+          "parent_hashes": [
+            "b958fe55882d4b2d473a9454f21f0005c4a1fb2780a0f7f37d214583cf6cce80"
+          ],
+          "source_hashes": {
+            "config": "0d8633d39ad3f3ffbdbfa067c3b1ba835fcb5f1656020c537c3c3516a1f06949",
+            "identity": "822ebc9bcd568768b93027cd1b46a53edbd8f77eeee01eef544844e288e74f15",
+            "jev": "d1cfaa9a0e9588c7ab40fb09b86f6575596e4c91760576698c1750c91f57c5c0",
+            "request": "c7348ea9bff44e59286b4254fe587a83749dd4d201f346844dc90f4bbe167845"
+          }
+        },
+        "artifact_hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "c7348ea9bff44e59286b4254fe587a83749dd4d201f346844dc90f4bbe167845",
+        "text": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?"
+      },
+      {
+        "id": "identity",
+        "hash": "822ebc9bcd568768b93027cd1b46a53edbd8f77eeee01eef544844e288e74f15",
+        "text": "    def _validate_identity(self, role, response, payload):\n        returned = response.get(\"model\")\n        require(isinstance(returned, str), \"missing_response_model\")\n        normalized = \"typesafe/\" + returned.removeprefix(\"typesafe/\") if role == \"jev\" else returned\n        require(normalized in self.config.response_models(role, payload[\"model\"]), \"response_model_mismatch\")"
+      },
+      {
+        "id": "config",
+        "hash": "0d8633d39ad3f3ffbdbfa067c3b1ba835fcb5f1656020c537c3c3516a1f06949",
+        "text": "    jev_model: str = \"typesafe/jev-1.13\"\n    ...\n    jev_model_aliases: tuple = (\"typesafe/jev-1.13-20260917\",)\n    ...\n    def response_models(self, role, requested_model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        if role == \"worker\" and requested_model is not None and requested_model != self.worker_model:\n            _require(any(route[\"model\"] == requested_model for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n            return (requested_model,)\n        return (getattr(self, role + \"_model\"),) + getattr(self, role + \"_model_aliases\")"
+      },
+      {
+        "id": "jev",
+        "hash": "d1cfaa9a0e9588c7ab40fb09b86f6575596e4c91760576698c1750c91f57c5c0",
+        "text": "    requested = request[\"model\"].removeprefix(\"~\").removeprefix(\"typesafe/\")\n    returned = response[\"model\"].removeprefix(\"typesafe/\")\n    require(re.fullmatch(r\"jev-[A-Za-z0-9._-]+\", returned) and\n            (requested == \"jev-latest\" or returned == requested or\n             returned.startswith((requested + \".\", requested + \"-\"))), \"response_model_mismatch\")"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 24,
+      "jev_tokens_remaining": 75952,
+      "jev_api_usd_remaining": 0.999005986,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "5ef9ac36c63c9fe36cfe54caadcab1eec26d325217ecbcc38ee296fa7e2701a8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

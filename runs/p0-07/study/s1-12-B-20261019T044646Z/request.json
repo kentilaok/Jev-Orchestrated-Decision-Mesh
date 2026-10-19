@@ -1,0 +1,20 @@
+{
+  "goal": "A Jev choice question has exactly three options. The response gives probabilities {\"forward\": 0.55, \"repair\": 0.3, \"stop\": 0.166} and choice \"forward\"; every other field is valid. Does validate_response accept it? If not, give the Failure code.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/jev_decide.py excerpt (probability checks)",
+      "text": "TOLERANCE = 0.001\n...\ndef distribution(value, keys, warnings, question_id):\n    require(isinstance(value, dict) and set(value) == set(keys), \"invalid_probability_options\")\n    require(all(number(p, 0, 1) for p in value.values()), \"invalid_probability_value\")\n    total = sum(value.values())\n    difference, allowed = abs(total - 1), min(0.02, 0.005 * len(keys))\n    require(difference <= allowed + 1e-12, \"invalid_probability_sum\")\n    if difference > TOLERANCE:\n        warnings.append({\"code\": \"probability_sum_rounding\", \"question_id\": question_id,\n    ...\n        require(number(answer.get(\"confidence\"), 0, 1), \"invalid_confidence\")\n        keys = question[\"criteria\"] if kind == \"choice\" else [str(i) for i in range(len(question[\"criteria\"]))]\n        probabilities = answer.get(\"probabilities\")\n        distribution(probabilities, keys, warnings, name)\n        if kind == \"choice\":\n            choice = answer.get(\"choice\")\n            require(isinstance(choice, str) and choice in keys, \"invalid_choice_value\")\n            require(probabilities[choice] + TOLERANCE >= max(probabilities.values()), \"choice_not_most_probable\")"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "75cc3f6f70875af35eec7978e978c8c55d05b5de3d8b9a8850d9a59eabd88981",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

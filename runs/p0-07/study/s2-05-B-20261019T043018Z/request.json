@@ -1,0 +1,13 @@
+{
+  "goal": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/retrieval.py excerpt (chunk_text)",
+      "text": "    require(isinstance(text, str) and 200 <= max_chars <= SOURCE_LIMIT and 0 <= overlap < max_chars // 2,\n            \"invalid_chunking\")\n    text = text.replace(\"\\r\\n\", \"\\n\").strip()\n    if not text:\n        return []\n    paragraphs = [p.strip() for p in re.split(r\"\\n\\s*\\n\", text) if p.strip()]\n    pieces: list[str] = []\n    for paragraph in paragraphs:\n        while len(paragraph) > max_chars:\n            cut = paragraph.rfind(\" \", 0, max_chars)\n            cut = cut if cut > max_chars // 2 else max_chars\n            pieces.append(paragraph[:cut].strip())\n            paragraph = paragraph[cut:].strip()\n        if paragraph:\n            pieces.append(paragraph)\n    chunks: list[str] = []\n    current = \"\"\n    for piece in pieces:\n        candidate = (current + \"\\n\\n\" + piece).strip() if current else piece\n        if len(candidate) <= max_chars:\n            current = candidate\n            continue\n        chunks.append(current)\n        tail = current[-overlap:] if overlap else \"\"\n        current = (tail + \"\\n\\n\" + piece).strip() if tail and len(tail) + len(piece) + 2 <= max_chars else piece\n    if current:\n        chunks.append(current)\n    return chunks"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

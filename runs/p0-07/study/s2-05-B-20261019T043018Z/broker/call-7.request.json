@@ -1,0 +1,332 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/retrieval.py excerpt (chunk_text)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+            "code": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57"
+          }
+        },
+        "artifact_hash": "9ae98d6d7450faf330a86ee9697e7d983255cc05a6ebba5b563a2403bdd80f9b",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Chunk lengths in order: 182, 182, 139 (3 chunks).\n\n1. pieces = the four paragraphs unchanged (all <= 200, so the rfind/split loop never runs).\n2. a150 + sep + b30 = 182; adding c120 would give 304 > 200, so chunk 1 (182) is flushed.\n3. tail = last 60 chars (28 a's + sep + 30 b's); 60+120+2 = 182 <= 200, so current = 182; adding d139 would give 323 > 200, so chunk 2 (182) is flushed.\n4. tail = last 60 chars (60 c's); 60+139+2 = 201 > 200, so the tail is dropped and current = d139.\n5. Final `if current` appends chunk 3 (139).",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "chunk_text returns 3 chunks with lengths [182, 182, 139]. No paragraph exceeds max_chars, so pieces are the four paragraphs unchanged. Packing: a150+b30 = 182 (flush when c would push it to 304); 60-char tail + c120 = 182 (flush when d would push it to 323); the second tail is dropped because 60+139+2 = 201 > 200, leaving d139 as the final chunk.",
+          "claims": [
+            "All four paragraphs are <= max_chars (200), so the paragraph-splitting while-loop never runs; pieces = [a*150, b*30, c*120, d*139].",
+            "Chunk 1 = a*150 + blank-line separator + b*30 = 182 chars; adding c*120 would give 304 > 200, so it is flushed.",
+            "Overlap tail after chunk 1 = last 60 chars = 28 a's + separator + 30 b's; 60+120+2 = 182 <= 200, so the tail is kept.",
+            "Chunk 2 = tail(60) + separator + c*120 = 182 chars; adding d*139 would give 323 > 200, so it is flushed.",
+            "Overlap tail after chunk 2 = 60 c's; 60+139+2 = 201 > 200, so the tail is dropped and current becomes the bare paragraph.",
+            "Chunk 3 = d*139 = 139 chars, appended by the final 'if current' branch.",
+            "strip() changes nothing because no tail or piece begins or ends with whitespace.",
+            "Preconditions hold: max_chars 200 >= 200 and overlap 60 < 200//2 = 100, so require() passes."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "9ae98d6d7450faf330a86ee9697e7d983255cc05a6ebba5b563a2403bdd80f9b"
+          ],
+          "source_hashes": {
+            "request": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+            "code": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57"
+          }
+        },
+        "artifact_hash": "96cbad6fd2a0168cec70d637986f6b766380b41a83281d354afb9c3a424f0950",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Chunk lengths in order: 182, 182, 139 (3 chunks).\n\n1. pieces = the four paragraphs unchanged (each <= 200, so the rfind/split while-loop never runs).\n2. a150 + \"\\n\\n\" + b30 = 182 <= 200; adding c120 would give 304 > 200, so chunk 1 (182) is flushed.\n3. tail = last 60 chars of chunk 1 (28 a's + sep + 30 b's); 60+120+2 = 182 <= 200, so current = 182; adding d139 would give 323 > 200, so chunk 2 (182) is flushed.\n4. tail = last 60 chars of chunk 2 (60 c's); 60+139+2 = 201 > 200, so the tail is dropped and current = d139.\n5. The final `if current` appends chunk 3 (139).",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "chunk_text returns 3 chunks with lengths [182, 182, 139]. No paragraph exceeds max_chars, so pieces are the four paragraphs unchanged. Packing: a150+b30 = 182 (flushed when c would push it to 304); 60-char tail + c120 = 182 (flushed when d would push it to 323); the second tail is dropped because 60+139+2 = 201 > 200, leaving d139 as the final chunk.",
+          "claims": [
+            "Preconditions pass: max_chars 200 >= 200 and overlap 60 < 200//2 = 100, so require() does not raise (assumes SOURCE_LIMIT >= 200).",
+            "All four paragraphs are <= max_chars (150, 30, 120, 139), so the splitting while-loop never runs; pieces = [a*150, b*30, c*120, d*139].",
+            "Chunk 1 = a*150 + blank-line separator + b*30 = 182 chars; adding c*120 would give 304 > 200, so it is flushed.",
+            "Overlap tail after chunk 1 = last 60 chars = 28 a's + separator + 30 b's; 60+120+2 = 182 <= 200, so the tail is kept.",
+            "Chunk 2 = tail(60) + separator + c*120 = 182 chars; adding d*139 would give 323 > 200, so it is flushed.",
+            "Overlap tail after chunk 2 = 60 c's; 60+139+2 = 201 > 200, so the tail is dropped and current becomes the bare paragraph d*139.",
+            "Chunk 3 = d*139 = 139 chars, appended by the final 'if current' branch.",
+            "strip() is a no-op throughout because no piece or tail begins or ends with whitespace."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "96cbad6fd2a0168cec70d637986f6b766380b41a83281d354afb9c3a424f0950"
+          ],
+          "source_hashes": {
+            "request": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+            "code": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57"
+          }
+        },
+        "artifact_hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+        "text": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order."
+      },
+      {
+        "id": "code",
+        "hash": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57",
+        "text": "    require(isinstance(text, str) and 200 <= max_chars <= SOURCE_LIMIT and 0 <= overlap < max_chars // 2,\n            \"invalid_chunking\")\n    text = text.replace(\"\\r\\n\", \"\\n\").strip()\n    if not text:\n        return []\n    paragraphs = [p.strip() for p in re.split(r\"\\n\\s*\\n\", text) if p.strip()]\n    pieces: list[str] = []\n    for paragraph in paragraphs:\n        while len(paragraph) > max_chars:\n            cut = paragraph.rfind(\" \", 0, max_chars)\n            cut = cut if cut > max_chars // 2 else max_chars\n            pieces.append(paragraph[:cut].strip())\n            paragraph = paragraph[cut:].strip()\n        if paragraph:\n            pieces.append(paragraph)\n    chunks: list[str] = []\n    current = \"\"\n    for piece in pieces:\n        candidate = (current + \"\\n\\n\" + piece).strip() if current else piece\n        if len(candidate) <= max_chars:\n            current = candidate\n            continue\n        chunks.append(current)\n        tail = current[-overlap:] if overlap else \"\"\n        current = (tail + \"\\n\\n\" + piece).strip() if tail and len(tail) + len(piece) + 2 <= max_chars else piece\n    if current:\n        chunks.append(current)\n    return chunks"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 24,
+      "jev_tokens_remaining": 79053,
+      "jev_api_usd_remaining": 0.999136144,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "24352216e8561c31ac20e96c7bea930457f6db5363b64861d038840b03ea87ed"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

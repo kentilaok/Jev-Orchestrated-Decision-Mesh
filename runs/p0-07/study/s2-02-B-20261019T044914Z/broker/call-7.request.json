@@ -1,0 +1,348 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list.",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (audit_permit_ledger)"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl (events in order)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "4d238ce6ad3eba20286720ef26480ebecccec8e97cc16eae24eca9b99006be74",
+            "code": "0bd048275b0bb1e158f0744be3d6641bfda3de1385a16f8d56b3f304b0af7221",
+            "ledger": "f4fbcea5d0261b97e62324cbf1848b65b5b75d2ee51c7d36aaa96bc0af6692ab"
+          }
+        },
+        "artifact_hash": "5245ac244b52a0d64fcb6c9eaea26cfd9217b29a23ffaa421fdca81bdb56868c",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Issues reported, in order (5 total):\n\n1. `double_consumption:p-a1`\n2. `consumed_without_issue:p-b2`\n3. `receipt_without_consumption:p-c3`\n4. `consumed_scope_mismatch:p-e5`\n5. `consumed_without_receipt:p-b2`\n\n`unused`: `[\"p-d4\"]`\n\nResult: `valid` False, `issued` 3, `consumed` 3, `receipted` 3. Sources: request, code, ledger.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "audit_permit_ledger over the 10 events yields 5 issues in order: double_consumption:p-a1, consumed_without_issue:p-b2, receipt_without_consumption:p-c3, consumed_scope_mismatch:p-e5, then the trailing consumed_without_receipt:p-b2. unused = [\"p-d4\"]. valid=False, issued=3, consumed=3, receipted=3.",
+          "claims": [
+            "Event 3 repeats consume of p-a1 after a valid consume, so double_consumption:p-a1 is appended; p-a1 is already in `consumed` so no state change.",
+            "p-b2 is consumed with no prior permit_issued, giving consumed_without_issue:p-b2; the if/elif chain stops there, so no scope check runs.",
+            "p-b2 is still added to `consumed` despite the issue and is never receipted, so it also yields consumed_without_receipt:p-b2 in the trailing pass.",
+            "p-c3 receipt arrives with no consume: receipt_without_consumption:p-c3. It enters `receipted` but not `consumed`, so it cannot appear in `missing`.",
+            "p-e5 consume carries scope_hash s5x vs issued s5, giving consumed_scope_mismatch:p-e5; its later receipt is accepted because p-e5 is in `consumed`.",
+            "unused = sorted(issued - consumed) = ['p-d4']: p-d4 was issued and never consumed. p-b2 is absent because it was never issued.",
+            "Counts: issued=3 (p-a1, p-d4, p-e5), consumed=3 (p-a1, p-b2, p-e5), receipted=3 (p-a1, p-c3, p-e5); valid=False since issues is non-empty.",
+            "Issue order follows event order, with consumed_without_receipt entries appended last in sorted permit order (only p-b2 here).",
+            "Assumption: the `...` elisions in the excerpt contain only permit_issued handling that emits no issues for these events; no journal argument is supplied, so journal cross-checks are skipped."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "5245ac244b52a0d64fcb6c9eaea26cfd9217b29a23ffaa421fdca81bdb56868c"
+          ],
+          "source_hashes": {
+            "code": "0bd048275b0bb1e158f0744be3d6641bfda3de1385a16f8d56b3f304b0af7221",
+            "ledger": "f4fbcea5d0261b97e62324cbf1848b65b5b75d2ee51c7d36aaa96bc0af6692ab",
+            "request": "4d238ce6ad3eba20286720ef26480ebecccec8e97cc16eae24eca9b99006be74"
+          }
+        },
+        "artifact_hash": "b1005af920d354e8d2aafa9dffa4e5a895497caa0117b99014c65e641543704e",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Issues, in reported order (5):\n\n1. `double_consumption:p-a1`\n2. `consumed_without_issue:p-b2`\n3. `receipt_without_consumption:p-c3`\n4. `consumed_scope_mismatch:p-e5`\n5. `consumed_without_receipt:p-b2`\n\n`unused`: `[\"p-d4\"]`\n\nAlso: `valid` False, `issued` 3, `consumed` 3, `receipted` 3. Sources: request, code, ledger.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "audit_permit_ledger over the 10 events reports 5 issues in order: double_consumption:p-a1, consumed_without_issue:p-b2, receipt_without_consumption:p-c3, consumed_scope_mismatch:p-e5, consumed_without_receipt:p-b2. unused = [\"p-d4\"]; valid=False, issued=3, consumed=3, receipted=3.",
+          "claims": [
+            "Event 3 re-consumes p-a1 after a valid consume: pid is in issued and in consumed, so double_consumption:p-a1; consumed.add is idempotent.",
+            "p-b2 consumed with no prior permit_issued -> consumed_without_issue:p-b2; the elif chain skips the scope check.",
+            "p-b2 is still added to consumed and never receipted, so missing=['p-b2'] yields the trailing consumed_without_receipt:p-b2.",
+            "p-c3 receipt with no consume -> receipt_without_consumption:p-c3; it joins receipted only, so it cannot appear in missing or unused.",
+            "p-e5 consumed with scope_hash s5x vs issued s5 -> consumed_scope_mismatch:p-e5; its later receipt is clean since p-e5 is in consumed.",
+            "unused = sorted(set(issued) - consumed) = ['p-d4']; p-b2 is not in issued so it is excluded.",
+            "len(issued)=3 (p-a1,p-d4,p-e5), len(consumed)=3 (p-a1,p-b2,p-e5), len(receipted)=3 (p-a1,p-c3,p-e5); valid=False because issues is non-empty.",
+            "Assumption: the elided '...' lines handle only permit_issued bookkeeping and emit no issues; no journal argument means no journal cross-checks."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "b1005af920d354e8d2aafa9dffa4e5a895497caa0117b99014c65e641543704e"
+          ],
+          "source_hashes": {
+            "code": "0bd048275b0bb1e158f0744be3d6641bfda3de1385a16f8d56b3f304b0af7221",
+            "ledger": "f4fbcea5d0261b97e62324cbf1848b65b5b75d2ee51c7d36aaa96bc0af6692ab",
+            "request": "4d238ce6ad3eba20286720ef26480ebecccec8e97cc16eae24eca9b99006be74"
+          }
+        },
+        "artifact_hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "4d238ce6ad3eba20286720ef26480ebecccec8e97cc16eae24eca9b99006be74",
+        "text": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list."
+      },
+      {
+        "id": "code",
+        "hash": "0bd048275b0bb1e158f0744be3d6641bfda3de1385a16f8d56b3f304b0af7221",
+        "text": "    issues, issued, consumed, receipted = [], {}, set(), set()\n    ...\n    for event in events:\n        kind, pid = event.get(\"kind\"), event.get(\"permit_id\")\n        if kind == \"permit_issued\":\n            ...\n            issued[pid] = event\n            ...\n        elif kind == \"permit_consumed\":\n            if pid not in issued:\n                issues.append(\"consumed_without_issue:\" + str(pid))\n            elif pid in consumed:\n                issues.append(\"double_consumption:\" + str(pid))\n            elif issued[pid].get(\"scope_hash\") != event.get(\"scope_hash\"):\n                issues.append(\"consumed_scope_mismatch:\" + str(pid))\n            consumed.add(pid)\n        elif kind == \"permit_receipt\":\n            if pid not in consumed:\n                issues.append(\"receipt_without_consumption:\" + str(pid))\n            receipted.add(pid)\n    missing = sorted(consumed - receipted)\n    issues.extend(\"consumed_without_receipt:\" + pid for pid in missing)\n    return {\"valid\": not issues, \"issues\": issues, \"issued\": len(issued),\n            \"consumed\": len(consumed), \"receipted\": len(receipted),\n            \"unused\": sorted(set(issued) - consumed)}"
+      },
+      {
+        "id": "ledger",
+        "hash": "f4fbcea5d0261b97e62324cbf1848b65b5b75d2ee51c7d36aaa96bc0af6692ab",
+        "text": "{\"kind\": \"permit_issued\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-a1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-b2\", \"scope_hash\": \"s2\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-c3\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-d4\", \"scope_hash\": \"s4\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5x\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-e5\"}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 24,
+      "jev_tokens_remaining": 78142,
+      "jev_api_usd_remaining": 0.999097882,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "d5f56ad53e46c6354b7e098775eb1faff02a8f49860acafbcdaae9c2f393ab3e"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

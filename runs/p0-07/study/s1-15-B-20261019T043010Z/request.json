@@ -1,0 +1,24 @@
+{
+  "goal": "A Jev response body is exactly {\"confidence\": 1e400}. What does decode_json(body) do: return a value (give the value of \"confidence\" in the result) or raise a Failure (give its code)? Python 3 json semantics apply.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/jev_decide.py excerpt (decode_json)",
+      "text": "def decode_json(raw):\n    def pairs(items):\n        result = {}\n        for key, value in items:\n            require(key not in result, \"duplicate_json_key\")\n            result[key] = value\n        return result\n\n    def constant(_):\n        raise Failure(\"nonfinite_json_number\")\n\n    try:\n        return json.loads(raw, object_pairs_hook=pairs, parse_constant=constant)\n    except (ValueError, UnicodeError, RecursionError):\n        raise Failure(\"invalid_json\") from None"
+    },
+    "json": {
+      "title": "Python json note",
+      "text": "json.loads calls parse_constant only for the literals -Infinity, Infinity and NaN. A numeric literal is parsed by float(), and float(\"1e400\") is inf."
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "8fab7913055329e2b1e40658cb5b9ddaed63eecc53f424c6baab4b6464cc512a",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

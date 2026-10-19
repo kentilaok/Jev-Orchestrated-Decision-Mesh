@@ -1,0 +1,130 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/retrieval.py excerpt (chunk_text)"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+        "text": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order."
+      },
+      {
+        "id": "code",
+        "hash": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57",
+        "text": "    require(isinstance(text, str) and 200 <= max_chars <= SOURCE_LIMIT and 0 <= overlap < max_chars // 2,\n            \"invalid_chunking\")\n    text = text.replace(\"\\r\\n\", \"\\n\").strip()\n    if not text:\n        return []\n    paragraphs = [p.strip() for p in re.split(r\"\\n\\s*\\n\", text) if p.strip()]\n    pieces: list[str] = []\n    for paragraph in paragraphs:\n        while len(paragraph) > max_chars:\n            cut = paragraph.rfind(\" \", 0, max_chars)\n            cut = cut if cut > max_chars // 2 else max_chars\n            pieces.append(paragraph[:cut].strip())\n            paragraph = paragraph[cut:].strip()\n        if paragraph:\n            pieces.append(paragraph)\n    chunks: list[str] = []\n    current = \"\"\n    for piece in pieces:\n        candidate = (current + \"\\n\\n\" + piece).strip() if current else piece\n        if len(candidate) <= max_chars:\n            current = candidate\n            continue\n        chunks.append(current)\n        tail = current[-overlap:] if overlap else \"\"\n        current = (tail + \"\\n\\n\" + piece).strip() if tail and len(tail) + len(piece) + 2 <= max_chars else piece\n    if current:\n        chunks.append(current)\n    return chunks"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "candidate": {
+      "text": "Input and evidence identities preserved.",
+      "data": {
+        "summary": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+        "claims": [],
+        "unresolved": [],
+        "parent_hashes": [],
+        "source_hashes": {
+          "request": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+          "code": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57"
+        }
+      },
+      "source_ids": [
+        "request",
+        "code"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 29,
+      "jev_tokens_remaining": 98465,
+      "jev_api_usd_remaining": 0.999936832,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "9ae98d6d7450faf330a86ee9697e7d983255cc05a6ebba5b563a2403bdd80f9b",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "9ae98d6d7450faf330a86ee9697e7d983255cc05a6ebba5b563a2403bdd80f9b",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      }
+    }
+  }
+}

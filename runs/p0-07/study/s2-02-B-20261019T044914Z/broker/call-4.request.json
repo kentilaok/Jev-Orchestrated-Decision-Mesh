@@ -1,0 +1,192 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/capability_permits.py excerpt (audit_permit_ledger)"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl (events in order)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "ledger"
+        ],
+        "data": {
+          "summary": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "4d238ce6ad3eba20286720ef26480ebecccec8e97cc16eae24eca9b99006be74",
+            "code": "0bd048275b0bb1e158f0744be3d6641bfda3de1385a16f8d56b3f304b0af7221",
+            "ledger": "f4fbcea5d0261b97e62324cbf1848b65b5b75d2ee51c7d36aaa96bc0af6692ab"
+          }
+        },
+        "artifact_hash": "5245ac244b52a0d64fcb6c9eaea26cfd9217b29a23ffaa421fdca81bdb56868c",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "4d238ce6ad3eba20286720ef26480ebecccec8e97cc16eae24eca9b99006be74",
+        "text": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list."
+      },
+      {
+        "id": "code",
+        "hash": "0bd048275b0bb1e158f0744be3d6641bfda3de1385a16f8d56b3f304b0af7221",
+        "text": "    issues, issued, consumed, receipted = [], {}, set(), set()\n    ...\n    for event in events:\n        kind, pid = event.get(\"kind\"), event.get(\"permit_id\")\n        if kind == \"permit_issued\":\n            ...\n            issued[pid] = event\n            ...\n        elif kind == \"permit_consumed\":\n            if pid not in issued:\n                issues.append(\"consumed_without_issue:\" + str(pid))\n            elif pid in consumed:\n                issues.append(\"double_consumption:\" + str(pid))\n            elif issued[pid].get(\"scope_hash\") != event.get(\"scope_hash\"):\n                issues.append(\"consumed_scope_mismatch:\" + str(pid))\n            consumed.add(pid)\n        elif kind == \"permit_receipt\":\n            if pid not in consumed:\n                issues.append(\"receipt_without_consumption:\" + str(pid))\n            receipted.add(pid)\n    missing = sorted(consumed - receipted)\n    issues.extend(\"consumed_without_receipt:\" + pid for pid in missing)\n    return {\"valid\": not issues, \"issues\": issues, \"issued\": len(issued),\n            \"consumed\": len(consumed), \"receipted\": len(receipted),\n            \"unused\": sorted(set(issued) - consumed)}"
+      },
+      {
+        "id": "ledger",
+        "hash": "f4fbcea5d0261b97e62324cbf1848b65b5b75d2ee51c7d36aaa96bc0af6692ab",
+        "text": "{\"kind\": \"permit_issued\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-a1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-b2\", \"scope_hash\": \"s2\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-c3\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-d4\", \"scope_hash\": \"s4\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5x\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-e5\"}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "5245ac244b52a0d64fcb6c9eaea26cfd9217b29a23ffaa421fdca81bdb56868c"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "summary": "audit_permit_ledger over the 10 events yields 5 issues in order: double_consumption:p-a1, consumed_without_issue:p-b2, receipt_without_consumption:p-c3, consumed_scope_mismatch:p-e5, then the trailing consumed_without_receipt:p-b2. unused = [\"p-d4\"]. valid=False, issued=3, consumed=3, receipted=3.",
+        "claims": [
+          "Event 3 repeats consume of p-a1 after a valid consume, so double_consumption:p-a1 is appended; p-a1 is already in `consumed` so no state change.",
+          "p-b2 is consumed with no prior permit_issued, giving consumed_without_issue:p-b2; the if/elif chain stops there, so no scope check runs.",
+          "p-b2 is still added to `consumed` despite the issue and is never receipted, so it also yields consumed_without_receipt:p-b2 in the trailing pass.",
+          "p-c3 receipt arrives with no consume: receipt_without_consumption:p-c3. It enters `receipted` but not `consumed`, so it cannot appear in `missing`.",
+          "p-e5 consume carries scope_hash s5x vs issued s5, giving consumed_scope_mismatch:p-e5; its later receipt is accepted because p-e5 is in `consumed`.",
+          "unused = sorted(issued - consumed) = ['p-d4']: p-d4 was issued and never consumed. p-b2 is absent because it was never issued.",
+          "Counts: issued=3 (p-a1, p-d4, p-e5), consumed=3 (p-a1, p-b2, p-e5), receipted=3 (p-a1, p-c3, p-e5); valid=False since issues is non-empty.",
+          "Issue order follows event order, with consumed_without_receipt entries appended last in sorted permit order (only p-b2 here).",
+          "Assumption: the `...` elisions in the excerpt contain only permit_issued handling that emits no issues for these events; no journal argument is supplied, so journal cross-checks are skipped."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "5245ac244b52a0d64fcb6c9eaea26cfd9217b29a23ffaa421fdca81bdb56868c"
+        ],
+        "source_hashes": {
+          "code": "0bd048275b0bb1e158f0744be3d6641bfda3de1385a16f8d56b3f304b0af7221",
+          "ledger": "f4fbcea5d0261b97e62324cbf1848b65b5b75d2ee51c7d36aaa96bc0af6692ab",
+          "request": "4d238ce6ad3eba20286720ef26480ebecccec8e97cc16eae24eca9b99006be74"
+        }
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null,
+      "source_ids": [
+        "request",
+        "code",
+        "ledger"
+      ],
+      "text": "Issues reported, in order (5 total):\n\n1. `double_consumption:p-a1`\n2. `consumed_without_issue:p-b2`\n3. `receipt_without_consumption:p-c3`\n4. `consumed_scope_mismatch:p-e5`\n5. `consumed_without_receipt:p-b2`\n\n`unused`: `[\"p-d4\"]`\n\nResult: `valid` False, `issued` 3, `consumed` 3, `receipted` 3. Sources: request, code, ledger."
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 27,
+      "jev_tokens_remaining": 91593,
+      "jev_api_usd_remaining": 0.999654088,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "b1005af920d354e8d2aafa9dffa4e5a895497caa0117b99014c65e641543704e",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "b1005af920d354e8d2aafa9dffa4e5a895497caa0117b99014c65e641543704e",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

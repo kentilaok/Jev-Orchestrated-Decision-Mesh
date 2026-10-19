@@ -1,0 +1,1 @@
+{"answer":"3 of the 8 calls return \"browser.submit_transaction\": click/\"Confirm order\" (matches \"confirm\"+\"order\"), press/\"Enter \" (strips to \"enter\"), and click/\"Post comment\" (matches \"post\"). The others resolve to their base \"browser.mutate\" capability.","calls":1,"route":"short_self_contained","status":"complete"}

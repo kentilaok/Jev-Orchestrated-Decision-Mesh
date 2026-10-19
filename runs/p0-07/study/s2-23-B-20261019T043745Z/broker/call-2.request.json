@@ -1,0 +1,152 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "identity",
+        "title": "scripts/transport.py excerpt (_validate_identity)"
+      },
+      {
+        "id": "config",
+        "title": "scripts/config.py excerpt (aliases and response_models)"
+      },
+      {
+        "id": "jev",
+        "title": "scripts/jev_decide.py excerpt (validate_response model check)"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "c7348ea9bff44e59286b4254fe587a83749dd4d201f346844dc90f4bbe167845",
+        "text": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?"
+      },
+      {
+        "id": "identity",
+        "hash": "822ebc9bcd568768b93027cd1b46a53edbd8f77eeee01eef544844e288e74f15",
+        "text": "    def _validate_identity(self, role, response, payload):\n        returned = response.get(\"model\")\n        require(isinstance(returned, str), \"missing_response_model\")\n        normalized = \"typesafe/\" + returned.removeprefix(\"typesafe/\") if role == \"jev\" else returned\n        require(normalized in self.config.response_models(role, payload[\"model\"]), \"response_model_mismatch\")"
+      },
+      {
+        "id": "config",
+        "hash": "0d8633d39ad3f3ffbdbfa067c3b1ba835fcb5f1656020c537c3c3516a1f06949",
+        "text": "    jev_model: str = \"typesafe/jev-1.13\"\n    ...\n    jev_model_aliases: tuple = (\"typesafe/jev-1.13-20260917\",)\n    ...\n    def response_models(self, role, requested_model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        if role == \"worker\" and requested_model is not None and requested_model != self.worker_model:\n            _require(any(route[\"model\"] == requested_model for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n            return (requested_model,)\n        return (getattr(self, role + \"_model\"),) + getattr(self, role + \"_model_aliases\")"
+      },
+      {
+        "id": "jev",
+        "hash": "d1cfaa9a0e9588c7ab40fb09b86f6575596e4c91760576698c1750c91f57c5c0",
+        "text": "    requested = request[\"model\"].removeprefix(\"~\").removeprefix(\"typesafe/\")\n    returned = response[\"model\"].removeprefix(\"typesafe/\")\n    require(re.fullmatch(r\"jev-[A-Za-z0-9._-]+\", returned) and\n            (requested == \"jev-latest\" or returned == requested or\n             returned.startswith((requested + \".\", requested + \"-\"))), \"response_model_mismatch\")"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "candidate": {
+      "text": "Input and evidence identities preserved.",
+      "data": {
+        "summary": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?",
+        "claims": [],
+        "unresolved": [],
+        "parent_hashes": [],
+        "source_hashes": {
+          "request": "c7348ea9bff44e59286b4254fe587a83749dd4d201f346844dc90f4bbe167845",
+          "identity": "822ebc9bcd568768b93027cd1b46a53edbd8f77eeee01eef544844e288e74f15",
+          "config": "0d8633d39ad3f3ffbdbfa067c3b1ba835fcb5f1656020c537c3c3516a1f06949",
+          "jev": "d1cfaa9a0e9588c7ab40fb09b86f6575596e4c91760576698c1750c91f57c5c0"
+        }
+      },
+      "source_ids": [
+        "request",
+        "identity",
+        "config",
+        "jev"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 29,
+      "jev_tokens_remaining": 98201,
+      "jev_api_usd_remaining": 0.999925744,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "0a06ee230c2603776895ca19a2f1417ee2fd8a383865e7a336acbf762e0bf091",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "0a06ee230c2603776895ca19a2f1417ee2fd8a383865e7a336acbf762e0bf091",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      }
+    }
+  }
+}

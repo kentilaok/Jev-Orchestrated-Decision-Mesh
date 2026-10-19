@@ -1,0 +1,88 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "The call raises `mcp_unexpected_arguments`.\n\nTrace through `_check_arguments`:\n1. arguments is a dict, length under 20,000 \u2014 passes.\n2. required=[\"query\"]; \"query\" is present \u2014 no missing required args.\n3. additionalProperties is False, so it checks `set(arguments) <= set(props)`. arguments keys = {query, limit, page}; props keys = {query, limit}. \"page\" is not in props, so this check fails first, raising `mcp_unexpected_arguments` before the type-checking loop ever runs (so the `limit: true` boolean-vs-integer mismatch is never reached).",
+  "task_hash": "0a984106f2f48c8dd655249e1627bf2b8ecbc8f07820e35c9cf2ec6f3191be67",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "0a984106f2f48c8dd655249e1627bf2b8ecbc8f07820e35c9cf2ec6f3191be67",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "d3f39d21e38d1e58a18cb25ca5527096edd1d62975635a28ae23a174dcb2b52f",
+    "code": "c97005b33f5f563d31a2ba15961e5936690ee0453449e91c84ac5ee87d6d70e7"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 19940,
+        "cached_input_tokens": 9315,
+        "cache_write_input_tokens": 10623,
+        "output_tokens": 968,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "e63828f3-a08a-4d2a-8fb2-14ffd3a2ed5b",
+      "permit_id": "e6e3946abd21481f949120faa5064aa1",
+      "artifact_hash": "15af9adf44c76ff112507937ce25f499b56324ccec6002bb338a48bd10aa10af"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "15af9adf44c76ff112507937ce25f499b56324ccec6002bb338a48bd10aa10af",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 19940,
+    "frontier_output_tokens": 968,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

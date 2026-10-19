@@ -1,0 +1,20 @@
+{
+  "goal": "classify(action, target) is called for each pair in [[\"click\", \"Confirm order\"], [\"fill\", \"Submit\"], [\"press\", \"Enter \"], [\"click\", \"Postal code\"], [\"click\", \"Sign-up\"], [\"press\", \"Tab\"], [\"check\", \"Subscribe to news\"], [\"click\", \"Post comment\"]] (action first). How many of the eight calls return \"browser.submit_transaction\"?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/browser_capability.py excerpt",
+      "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "6d61d40cafd4bf9442d0f84d39d9251d91a6b66c6703f5446b09b9e4d3cf2f13",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

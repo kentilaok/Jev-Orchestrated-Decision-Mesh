@@ -1,0 +1,111 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "browser",
+        "title": "scripts/browser_capability.py excerpt"
+      },
+      {
+        "id": "perform",
+        "title": "scripts/browser_capability.py excerpt (perform)"
+      },
+      {
+        "id": "classes",
+        "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+      },
+      {
+        "id": "basis",
+        "title": "scripts/capability_permits.py excerpt (validate_basis)"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+        "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+      },
+      {
+        "id": "browser",
+        "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+        "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+      },
+      {
+        "id": "perform",
+        "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+        "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+      },
+      {
+        "id": "classes",
+        "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+        "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+      },
+      {
+        "id": "basis",
+        "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+        "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 30,
+      "jev_tokens_remaining": 100000,
+      "jev_api_usd_remaining": 1.0,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

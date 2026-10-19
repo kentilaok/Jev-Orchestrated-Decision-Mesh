@@ -1,0 +1,306 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A test fails on a working copy of capability_permits.py. Using the requirement, the code under test, the ledger sample and the test output, name the function that contains the defect and give the exact fix.",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "requirement",
+        "title": "P0-06 requirement"
+      },
+      {
+        "id": "code",
+        "title": "capability_permits.py (working copy under test)"
+      },
+      {
+        "id": "ledger",
+        "title": "permits.jsonl written by receipt()"
+      },
+      {
+        "id": "test",
+        "title": "Test output"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Defective function: `_replay_ledger`. It matches `kind == \"permit_receipts\"` while the ledger written by `receipt()` uses `\"permit_receipt\"`, so receipted costs are never summed and `_cumulative_cost_usd` remains 0.0; the cap check in `issue()` then passes. Fix: in `_replay_ledger`, change `elif kind == \"permit_receipts\":` to `elif kind == \"permit_receipt\":`. Nothing else changes.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "ledger",
+          "test"
+        ],
+        "data": {
+          "summary": "The defect is in `_replay_ledger`: it matches `kind == \"permit_receipts\"` (plural) while `receipt()` writes `\"permit_receipt\"` (singular), so replayed receipt costs are never accumulated. `_cumulative_cost_usd` stays 0.0, the cap check in `issue()` (`0.0 >= 1.0`) is false, and no PermitError is raised, violating the P0-06 requirement. Fix: change that one string literal to `\"permit_receipt\"`.",
+          "claims": [
+            "Defect is in `_replay_ledger`: the receipt branch tests `kind == \"permit_receipts\"` (plural), but `receipt()` writes `\"permit_receipt\"` (singular) per the ledger sample, so no receipt event matches and `_cumulative_cost_usd` stays 0.0 [code][ledger].",
+            "Exact fix: change `elif kind == \"permit_receipts\":` to `elif kind == \"permit_receipt\":` in `_replay_ledger`. No other line needs changing.",
+            "This explains both test observations: `cumulative_cost_usd == 0.0` after replay, and `issue()` not raising because `0.0 >= 1.0` is false [test][code].",
+            "`issue()` matches the requirement (cap check uses `>=`, so it refuses once the total reaches the cap) and is not the defect [requirement][code].",
+            "Assumption: the ledger sample's `permit_receipt` kind is authoritative (stated as written by `receipt()`); renaming the writer instead would break existing ledgers, so the reader is the side to fix.",
+            "Minor, not the cause of this failure: `type(cost) in (int, float)` rejects int/float subclasses; `isinstance(cost, (int, float)) and not isinstance(cost, bool)` is the usual form. Out of scope."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "96a621b2be0f43e9b7352105a4d6ec2857d07d37c3402cff4135c8b6f74a0ef5"
+          ],
+          "source_hashes": {
+            "code": "8a65d367661686a06e4f215c21bd31fc5d770c6d3696b94c2280af6b2772497a",
+            "ledger": "33f2a1d5b5570c7a8ef30743d1b855243a9a6fe662a5b9cb78cf255e1e267fcf",
+            "request": "31ba080f1dc7a6bbcd3837cc2dedbe96371c138aeea0dee444dc0958e99ac2ac",
+            "requirement": "fbdb58530540ab5e2894a73d8fa7060d2b9fecb896476fe5c37f86120434382e",
+            "test": "1e144d8a7be5d8145d85c5fdc722220da68744ce5c1d4c0369bbefe1c62c458c"
+          }
+        },
+        "artifact_hash": "3fe672b794693897597c23f6dab4030f7b4ad5e63a112456661d3f11e6a5d972",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Defective function: `_replay_ledger`. It matches `kind == \"permit_receipts\"` while the ledger written by `receipt()` uses `\"permit_receipt\"`, so receipted costs are never summed and `_cumulative_cost_usd` remains 0.0; the cap check in `issue()` then passes. Fix: in `_replay_ledger`, change `elif kind == \"permit_receipts\":` to `elif kind == \"permit_receipt\":`. Nothing else changes.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "ledger",
+          "test"
+        ],
+        "data": {
+          "summary": "The defect is in `_replay_ledger`: it matches `kind == \"permit_receipts\"` (plural) while `receipt()` writes `\"permit_receipt\"` (singular), so replayed receipt costs are never accumulated. `_cumulative_cost_usd` stays 0.0, the cap check in `issue()` (`0.0 >= 1.0`) is false, and no PermitError is raised, violating the P0-06 requirement. Fix: change that one string literal to `\"permit_receipt\"`.",
+          "claims": [
+            "Defect is in `_replay_ledger`: the receipt branch tests `kind == \"permit_receipts\"` (plural), but the ledger written by `receipt()` uses `\"permit_receipt\"` (singular), so no receipt event matches and `_cumulative_cost_usd` stays 0.0 [code][ledger].",
+            "Exact fix: change `elif kind == \"permit_receipts\":` to `elif kind == \"permit_receipt\":` in `_replay_ledger`. No other line needs changing.",
+            "This explains both test observations: `cumulative_cost_usd == 0.0` after replay, and `issue()` not raising because `0.0 >= 1.0` is false [test][code].",
+            "`issue()` matches the requirement (cap check uses `>=`, so it refuses once the total reaches the cap) and is not the defect [requirement][code].",
+            "Assumption: the ledger sample's `permit_receipt` kind is authoritative (stated as written by `receipt()`); renaming the writer instead would break existing ledgers, so the reader is the side to fix.",
+            "Minor, not the cause of this failure: `type(cost) in (int, float)` rejects int/float subclasses; `isinstance(cost, (int, float)) and not isinstance(cost, bool)` is the usual form. Out of scope."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "3fe672b794693897597c23f6dab4030f7b4ad5e63a112456661d3f11e6a5d972"
+          ],
+          "source_hashes": {
+            "code": "8a65d367661686a06e4f215c21bd31fc5d770c6d3696b94c2280af6b2772497a",
+            "ledger": "33f2a1d5b5570c7a8ef30743d1b855243a9a6fe662a5b9cb78cf255e1e267fcf",
+            "request": "31ba080f1dc7a6bbcd3837cc2dedbe96371c138aeea0dee444dc0958e99ac2ac",
+            "requirement": "fbdb58530540ab5e2894a73d8fa7060d2b9fecb896476fe5c37f86120434382e",
+            "test": "1e144d8a7be5d8145d85c5fdc722220da68744ce5c1d4c0369bbefe1c62c458c"
+          }
+        },
+        "artifact_hash": "c727859e2735c42ef17f169d8aa9fc21cec7eae77c8736f21d4516daefb7ac0a",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "Accepted. Defective function: `_replay_ledger`; fix: change `elif kind == \\\"permit_receipts\\\":` to `elif kind == \\\"permit_receipt\\\":`. The mismatch with the singular kind written by `receipt()` means no receipt cost is replayed, `_cumulative_cost_usd` stays 0.0, `0.0 >= 1.0` is false, and no PermitError is raised \u2014 matching the test output exactly. The fix restores the P0-06 behaviour (`1.0 >= 1.0` refuses). `issue()` is correct as written. No unresolved issues.",
+        "source_ids": [
+          "request",
+          "requirement",
+          "code",
+          "ledger",
+          "test"
+        ],
+        "data": {
+          "summary": "Accepted. The parent correctly names `_replay_ledger` as the defective function and gives the right one-token fix (`\"permit_receipts\"` -> `\"permit_receipt\"`). The causal chain is fully supported: the plural/singular kind mismatch means the receipt branch never matches, so `_cumulative_cost_usd` stays 0.0, the cap check `0.0 >= 1.0` is false, and no PermitError is raised, exactly matching the test output. After the fix the replay sums 1.0 and `1.0 >= 1.0` refuses the permit as P0-06 requires. `issue()` is not defective. The `type(cost) in (int, float)` observation is a real but non-causal nit, correctly scoped out. No unresolved issues.",
+          "claims": [
+            "Verified: `_replay_ledger` tests `kind == \"permit_receipts\"` while the ledger line written by `receipt()` is `\"permit_receipt\"`, so the receipt branch never fires [code][ledger].",
+            "Verified consequence chain: no receipt summed -> `_cumulative_cost_usd` stays 0.0 (matches `cumulative_cost_usd == 0.0` in the output) -> `0.0 >= 1.0` false -> `PermitError not raised` [test][code].",
+            "Verified the fix is minimal and sufficient: with `\"permit_receipt\"` the replay adds 1.0 and `1.0 >= 1.0` triggers the refusal P0-06 requires [requirement].",
+            "Verified direction of fix: on-disk ledgers already use the singular kind, so the reader must change rather than the writer [ledger].",
+            "Verified `issue()` is not defective: `>=` matches \"refuse once the total reaches the cap\" [requirement][code].",
+            "The `type(cost) in (int, float)` nit is real but non-causal here (sample cost is a plain float), correctly left out of scope.",
+            "No source contradicts the parent; artifact accepted as-is."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "c727859e2735c42ef17f169d8aa9fc21cec7eae77c8736f21d4516daefb7ac0a"
+          ],
+          "source_hashes": {
+            "code": "8a65d367661686a06e4f215c21bd31fc5d770c6d3696b94c2280af6b2772497a",
+            "ledger": "33f2a1d5b5570c7a8ef30743d1b855243a9a6fe662a5b9cb78cf255e1e267fcf",
+            "request": "31ba080f1dc7a6bbcd3837cc2dedbe96371c138aeea0dee444dc0958e99ac2ac",
+            "requirement": "fbdb58530540ab5e2894a73d8fa7060d2b9fecb896476fe5c37f86120434382e",
+            "test": "1e144d8a7be5d8145d85c5fdc722220da68744ce5c1d4c0369bbefe1c62c458c"
+          }
+        },
+        "artifact_hash": "a6a8041e0699d475d05718b135bbdf97a79bc84493649c30808ed2d543c642ef",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "31ba080f1dc7a6bbcd3837cc2dedbe96371c138aeea0dee444dc0958e99ac2ac",
+        "text": "A test fails on a working copy of capability_permits.py. Using the requirement, the code under test, the ledger sample and the test output, name the function that contains the defect and give the exact fix."
+      },
+      {
+        "id": "requirement",
+        "hash": "fbdb58530540ab5e2894a73d8fa7060d2b9fecb896476fe5c37f86120434382e",
+        "text": "A resumed broker must count every receipted cost already in the ledger toward max_cumulative_usd, and refuse new permits once the total reaches the cap."
+      },
+      {
+        "id": "code",
+        "hash": "8a65d367661686a06e4f215c21bd31fc5d770c6d3696b94c2280af6b2772497a",
+        "text": "    def _replay_ledger(self) -> None:\n        events = self.ledger.read()\n        for event in events:\n            kind = event.get(\"kind\")\n            if kind == \"permit_issued\":\n                pid = event.get(\"permit_id\")\n                if not isinstance(pid, str):\n                    continue\n                self._permits[pid] = {\"permit_id\": pid, \"replayed\": True}\n            elif kind == \"permit_consumed\":\n                pid = event.get(\"permit_id\")\n                if isinstance(pid, str):\n                    self._used.add(pid)\n            elif kind == \"permit_receipts\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability, scope, basis, *, ttl_seconds=None, budget=None):\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")"
+      },
+      {
+        "id": "ledger",
+        "hash": "33f2a1d5b5570c7a8ef30743d1b855243a9a6fe662a5b9cb78cf255e1e267fcf",
+        "text": "{\"kind\":\"permit_issued\",\"permit_id\":\"p-1\",...}\n{\"kind\":\"permit_consumed\",\"permit_id\":\"p-1\",...}\n{\"kind\":\"permit_receipt\",\"permit_id\":\"p-1\",\"cost_usd\":1.0,...}"
+      },
+      {
+        "id": "test",
+        "hash": "1e144d8a7be5d8145d85c5fdc722220da68744ce5c1d4c0369bbefe1c62c458c",
+        "text": "FAIL: test_resumed_authority_refuses_at_cap\n    authority = PermitAuthority(ledger_with_1_usd_receipt, max_cumulative_usd=1.0)\n    authority.issue(\"frontier.run\", scope, basis)\nAssertionError: PermitError not raised\n    authority.cumulative_cost_usd == 0.0"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "a6a8041e0699d475d05718b135bbdf97a79bc84493649c30808ed2d543c642ef"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Defective function: `_replay_ledger`. Fix: change `elif kind == \"permit_receipts\":` to `elif kind == \"permit_receipt\":`.\n\nThe writer emits the singular kind `permit_receipt` (ledger sample), so the plural branch never matches. No receipted cost is replayed, `_cumulative_cost_usd` stays 0.0 (matching `cumulative_cost_usd == 0.0` in the test output), the cap check `0.0 >= 1.0` is false, and `issue()` raises nothing \u2014 hence `PermitError not raised`. After the fix the replay adds 1.0 and `1.0 >= 1.0` refuses the permit, satisfying P0-06. `issue()` is correct: `>=` is exactly \"refuses once the total reaches the cap\". The `type(cost) in (int, float)` check is a real but non-causal nit here, since the sample cost is a plain float; out of scope. No unresolved issues.",
+      "data": {
+        "summary": "Defect is in `_replay_ledger`: it matches `kind == \"permit_receipts\"` but `receipt()` writes `\"permit_receipt\"`. Exact fix: `elif kind == \"permit_receipt\":`. Chain: branch never fires -> `_cumulative_cost_usd` stays 0.0 (as the test reports) -> `0.0 >= 1.0` false -> no PermitError. With the fix the replay sums 1.0 and `1.0 >= 1.0` refuses the new permit, meeting P0-06. The reader must change, not the writer, since on-disk ledgers already use the singular kind. `issue()` is not defective. The `type(cost) in (int, float)` strictness is a real but non-causal nit, left out of scope. No unresolved issues.",
+        "claims": [
+          "Defective function is `_replay_ledger`; the fix is the kind string `\"permit_receipts\"` -> `\"permit_receipt\"` [code][ledger].",
+          "`receipt()` writes kind `\"permit_receipt\"` (singular) per the ledger sample, so the plural comparison never matches [ledger].",
+          "Unmatched branch means no cost accumulates, so `_cumulative_cost_usd` remains 0.0, exactly as the test output reports [test][code].",
+          "With 0.0 the guard `0.0 >= 1.0` is false, so `issue()` raises nothing and `PermitError not raised` fires [test][code].",
+          "After the fix the replay adds 1.0 and `1.0 >= 1.0` triggers the refusal P0-06 requires [requirement][code].",
+          "Direction of the fix: on-disk ledgers already use the singular kind, so the reader changes, not the writer [ledger].",
+          "`issue()` is not defective: `>=` matches \"refuse once the total reaches the cap\" [requirement][code].",
+          "The `type(cost) in (int, float)` check is a real but non-causal nit (sample cost is a plain float); out of scope."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "a6a8041e0699d475d05718b135bbdf97a79bc84493649c30808ed2d543c642ef"
+        ],
+        "source_hashes": {
+          "code": "8a65d367661686a06e4f215c21bd31fc5d770c6d3696b94c2280af6b2772497a",
+          "ledger": "33f2a1d5b5570c7a8ef30743d1b855243a9a6fe662a5b9cb78cf255e1e267fcf",
+          "request": "31ba080f1dc7a6bbcd3837cc2dedbe96371c138aeea0dee444dc0958e99ac2ac",
+          "requirement": "fbdb58530540ab5e2894a73d8fa7060d2b9fecb896476fe5c37f86120434382e",
+          "test": "1e144d8a7be5d8145d85c5fdc722220da68744ce5c1d4c0369bbefe1c62c458c"
+        }
+      },
+      "source_ids": [
+        "request",
+        "requirement",
+        "code",
+        "ledger",
+        "test"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.95
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "prior_units_resolved": true,
+      "output_has_no_unresolved": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 21,
+      "jev_tokens_remaining": 55549,
+      "jev_api_usd_remaining": 0.998159014,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "output",
+            "candidate_hash": "5bdcbb5b23187ab23fbe6ec9e4787d3d6e9a52e6db3bface44ff86d4d9c8cc04",
+            "check_hash": null,
+            "successor": "user",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "output",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "5bdcbb5b23187ab23fbe6ec9e4787d3d6e9a52e6db3bface44ff86d4d9c8cc04",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

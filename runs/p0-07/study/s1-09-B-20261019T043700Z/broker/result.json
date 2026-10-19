@@ -1,0 +1,89 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "validate_basis(\"browser.mutate\", {kind: \"compiled_policy\", ...}) raises PermitError code \"compiled_policy_only_authorizes_fast_path\".\n\nTrace: capability \"browser.mutate\" is known (CAPABILITIES has it); basis kind \"compiled_policy\" is a valid BASES key; required fields {policy_hash, skill_id, skill_hash, manifest_hash} are all present and each is a non-bool str/int of length 1-256, so the field-presence and field-type checks pass. The next check is `if kind == \"compiled_policy\": require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")`. Since capability is \"browser.mutate\", not \"fast_path.execute\", this require fails and raises PermitError(\"compiled_policy_only_authorizes_fast_path\"). Execution stops there \u2014 the later strong-capability/WEAK_ONLY_BASES check (which would also reject compiled_policy for a strong capability like browser.mutate) is never reached.",
+  "task_hash": "12861dd5069bc9e111704968abae86413b70a79898b32ef879954dfccb608736",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "12861dd5069bc9e111704968abae86413b70a79898b32ef879954dfccb608736",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "160836bcd6d936c795f0d642a2492e1cb6dfc42ccd3cc0efe0132df6450dc114",
+    "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+    "code": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 19988,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 19986,
+        "output_tokens": 1423,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "a5e4f8e0-9eed-4b4e-b530-1b0e62918511",
+      "permit_id": "58c634fd43114b1d873a99589f0aaf89",
+      "artifact_hash": "a3fdbae891390cace4f8f45812e365080e6182379b7247a0ff66f97cefc4c81c"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "a3fdbae891390cace4f8f45812e365080e6182379b7247a0ff66f97cefc4c81c",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 19988,
+    "frontier_output_tokens": 1423,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

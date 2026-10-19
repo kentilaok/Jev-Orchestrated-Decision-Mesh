@@ -1,0 +1,208 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/jev_decide.py excerpt (probability checks)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+            "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+          }
+        },
+        "artifact_hash": "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Not accepted. One warning (`probability_sum_rounding`) is appended first, then validation fails with `choice_not_most_probable`: 0.4 + 0.001 = 0.401 < max 0.4011 (forward). The sum 1.0011 is within the allowed 0.015 slack but exceeds TOLERANCE, which is what triggers the warning.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "Rejected with choice_not_most_probable, and a probability_sum_rounding warning is appended first. Sum = 0.4011+0.4+0.2 = 1.0011, so difference = 0.0011 and allowed = min(0.02, 0.005*3=0.015) = 0.015, so the sum check passes (0.0011 <= 0.015). Because 0.0011 > TOLERANCE (0.001), distribution() appends the warning {code: probability_sum_rounding, question_id: name}. Confidence 0.6 and the key set {forward, repair, stop} are valid, and choice \"repair\" is a string in keys. The final check fails: probabilities[\"repair\"] + TOLERANCE = 0.4 + 0.001 = 0.401, which is less than max(probabilities.values()) = 0.4011 (forward), so require(...) raises Failure(\"choice_not_most_probable\").",
+          "claims": [
+            "Sum 1.0011; difference 0.0011 <= allowed 0.015, so invalid_probability_sum does not trigger.",
+            "0.0011 > TOLERANCE 0.001, so warning probability_sum_rounding is appended inside distribution() before the choice checks.",
+            "choice \"repair\" is a valid string in keys, so invalid_choice_value passes.",
+            "0.4 + 0.001 = 0.401 < 0.4011, so the tolerant most-probable check fails: Failure code choice_not_most_probable.",
+            "Floating-point detail: 0.401 vs 0.4011 is not a near-tie, so binary rounding does not change the outcome.",
+            "Assumed the excerpt's ordering is the full path and that require() raises on a false condition with the given code."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+          ],
+          "source_hashes": {
+            "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+            "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93"
+          }
+        },
+        "artifact_hash": "b879e9ba1bca31bd2245044358fc146d7aa7915a914fa9e04dd1594668af5d73",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+        "text": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that."
+      },
+      {
+        "id": "code",
+        "hash": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+        "text": "TOLERANCE = 0.001\n...\ndef distribution(value, keys, warnings, question_id):\n    require(isinstance(value, dict) and set(value) == set(keys), \"invalid_probability_options\")\n    require(all(number(p, 0, 1) for p in value.values()), \"invalid_probability_value\")\n    total = sum(value.values())\n    difference, allowed = abs(total - 1), min(0.02, 0.005 * len(keys))\n    require(difference <= allowed + 1e-12, \"invalid_probability_sum\")\n    if difference > TOLERANCE:\n        warnings.append({\"code\": \"probability_sum_rounding\", \"question_id\": question_id,\n    ...\n        require(number(answer.get(\"confidence\"), 0, 1), \"invalid_confidence\")\n        keys = question[\"criteria\"] if kind == \"choice\" else [str(i) for i in range(len(question[\"criteria\"]))]\n        probabilities = answer.get(\"probabilities\")\n        distribution(probabilities, keys, warnings, name)\n        if kind == \"choice\":\n            choice = answer.get(\"choice\")\n            require(isinstance(choice, str) and choice in keys, \"invalid_choice_value\")\n            require(probabilities[choice] + TOLERANCE >= max(probabilities.values()), \"choice_not_most_probable\")"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "b879e9ba1bca31bd2245044358fc146d7aa7915a914fa9e04dd1594668af5d73"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "claims": [
+          "Sum = 0.4011+0.4+0.2 = 1.0011; difference = 0.0011; allowed = min(0.02, 0.005*3=0.015), so invalid_probability_sum does not trigger.",
+          "0.0011 > TOLERANCE 0.001, so warning probability_sum_rounding (with question_id) is appended inside distribution(), before the choice checks.",
+          "Key set {forward, repair, stop} matches criteria and all values are in [0,1]; confidence 0.6 is valid.",
+          "choice \"repair\" is a string in keys, so invalid_choice_value passes.",
+          "Final check fails: 0.4 + 0.001 = 0.401 < max = 0.4011, so require raises Failure(\"choice_not_most_probable\").",
+          "0.401 vs 0.4011 is not a near-tie, so binary floating-point representation does not flip the outcome.",
+          "Assumed the excerpt's order is the full validation path and require() raises Failure with the given code on a false condition."
+        ],
+        "parent_hashes": [
+          "b879e9ba1bca31bd2245044358fc146d7aa7915a914fa9e04dd1594668af5d73"
+        ],
+        "source_hashes": {
+          "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+          "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93"
+        },
+        "summary": "Not accepted. Rejected with Failure code choice_not_most_probable, and one warning is appended before that. Sum = 0.4011+0.4+0.2 = 1.0011, so difference = 0.0011 and allowed = min(0.02, 0.005*3 = 0.015); 0.0011 <= 0.015 + 1e-12, so invalid_probability_sum does not trigger. Because 0.0011 > TOLERANCE (0.001), distribution() appends {code: probability_sum_rounding, question_id: name} to warnings. Confidence 0.6 is in [0,1]; the key set {forward, repair, stop} matches the criteria and all values are valid numbers in [0,1]. choice \"repair\" is a string in keys, so invalid_choice_value passes. The last check fails: probabilities[\"repair\"] + TOLERANCE = 0.401 < max(probabilities.values()) = 0.4011 (forward), so require(...) raises Failure(\"choice_not_most_probable\").",
+        "unresolved": []
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null,
+      "source_ids": [
+        "request",
+        "code"
+      ],
+      "text": "Not accepted. A `probability_sum_rounding` warning is appended first, then validation fails with `choice_not_most_probable`: 0.4 + 0.001 = 0.401 < max 0.4011 (forward). The sum 1.0011 is within the allowed 0.015 slack, so the sum check passes, but the 0.0011 deviation exceeds TOLERANCE, which triggers the warning."
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 25,
+      "jev_tokens_remaining": 83785,
+      "jev_api_usd_remaining": 0.99933241,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "57049055c216e8ae811432005ef0254dcb27d730828b4db52f8bfb68958570c9",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "57049055c216e8ae811432005ef0254dcb27d730828b4db52f8bfb68958570c9",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

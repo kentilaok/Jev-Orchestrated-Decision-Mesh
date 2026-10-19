@@ -1,0 +1,20 @@
+{
+  "goal": "A broker resumes with PermitAuthority(ledger, max_cumulative_usd=0.8). The ledger (hash chain valid) holds exactly two permit_receipt events, in this order: cost_usd 0.7, then cost_usd 0.1. State the exact value of authority.cumulative_cost_usd after replay as Python repr() prints it, and say whether the next issue() raises cumulative_cap_exceeded.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/capability_permits.py excerpt (replay, issue, receipt)",
+      "text": "            elif kind == \"permit_receipt\":\n                cost = event.get(\"cost_usd\")\n                if (type(cost) in (int, float) and math.isfinite(cost) and cost >= 0):\n                    self._cumulative_cost_usd += float(cost)\n\n    def issue(self, capability: str, scope: dict, basis: dict, *, ttl_seconds: float | None = None,\n              budget: dict | None = None) -> str:\n        ...\n        if (self.max_cumulative_usd is not None\n                and self._cumulative_cost_usd >= self.max_cumulative_usd):\n            raise PermitError(\"cumulative_cap_exceeded\")\n    ...\n    def receipt(self, permit_id: str, outcome: dict) -> dict:\n        ...\n        cost = outcome.get(\"cost_usd\")\n        if cost is not None:\n            require(type(cost) in (int, float) and not isinstance(cost, bool)\n                    and math.isfinite(cost) and cost >= 0,\n                    \"invalid_receipt_cost\")\n            cost = float(cost)\n            with self.lock:\n                self._cumulative_cost_usd += cost"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "ba12fdbc27ecf21cdb3ab488d68497deab98f33987f3ad312925584d4eba00b8",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

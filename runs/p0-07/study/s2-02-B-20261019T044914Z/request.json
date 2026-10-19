@@ -1,0 +1,17 @@
+{
+  "goal": "Run audit_permit_ledger (no journal) over the ledger events in order. List every issue string it reports, and the \"unused\" list.",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/capability_permits.py excerpt (audit_permit_ledger)",
+      "text": "    issues, issued, consumed, receipted = [], {}, set(), set()\n    ...\n    for event in events:\n        kind, pid = event.get(\"kind\"), event.get(\"permit_id\")\n        if kind == \"permit_issued\":\n            ...\n            issued[pid] = event\n            ...\n        elif kind == \"permit_consumed\":\n            if pid not in issued:\n                issues.append(\"consumed_without_issue:\" + str(pid))\n            elif pid in consumed:\n                issues.append(\"double_consumption:\" + str(pid))\n            elif issued[pid].get(\"scope_hash\") != event.get(\"scope_hash\"):\n                issues.append(\"consumed_scope_mismatch:\" + str(pid))\n            consumed.add(pid)\n        elif kind == \"permit_receipt\":\n            if pid not in consumed:\n                issues.append(\"receipt_without_consumption:\" + str(pid))\n            receipted.add(pid)\n    missing = sorted(consumed - receipted)\n    issues.extend(\"consumed_without_receipt:\" + pid for pid in missing)\n    return {\"valid\": not issues, \"issues\": issues, \"issued\": len(issued),\n            \"consumed\": len(consumed), \"receipted\": len(receipted),\n            \"unused\": sorted(set(issued) - consumed)}"
+    },
+    "ledger": {
+      "title": "permits.jsonl (events in order)",
+      "text": "{\"kind\": \"permit_issued\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-a1\", \"scope_hash\": \"s1\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-a1\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-b2\", \"scope_hash\": \"s2\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-c3\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-d4\", \"scope_hash\": \"s4\"}\n{\"kind\": \"permit_issued\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5\"}\n{\"kind\": \"permit_consumed\", \"permit_id\": \"p-e5\", \"scope_hash\": \"s5x\"}\n{\"kind\": \"permit_receipt\", \"permit_id\": \"p-e5\"}"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

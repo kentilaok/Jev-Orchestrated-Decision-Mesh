@@ -1,0 +1,374 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places).",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "roles",
+        "title": "scripts/metrics.py excerpt (summarize_calls)"
+      },
+      {
+        "id": "compare",
+        "title": "scripts/metrics.py excerpt (comparison)"
+      },
+      {
+        "id": "inputs",
+        "title": "Inputs"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "cost_multiplier = 3.5000, cost_per_quality_gain_usd = 0.0300. Total cost 0.042 USD vs baseline 0.012 USD gives 3.5x; the baseline's empty quality_checks dict makes quality_baseline False, so quality_gain_binary = 1 and the per-gain cost is the raw 0.03 USD delta.",
+        "source_ids": [
+          "request",
+          "roles",
+          "compare",
+          "inputs"
+        ],
+        "data": {
+          "claims": [
+            "Total cost = 0.002 + 0.03 + 0.01 = 0.042 USD across jev/worker/checker; all costs non-negative so no None.",
+            "baseline quality_checks is an empty dict, so bool({}) is False and baseline_pass = False despite status 'complete'.",
+            "quality_pass=True is a bool, so quality_gain_binary = 1 - 0 = 1.",
+            "cost_multiplier = 0.042 / 0.012 = 3.4999999999999996 -> 3.5000 at 4 dp.",
+            "cost_per_quality_gain_usd = (0.042 - 0.012) / 1 = 0.03 -> 0.0300 at 4 dp.",
+            "Floating-point sum of costs is ~0.042 (0.042000000000000003); rounding to 4 dp is unaffected."
+          ],
+          "parent_hashes": [
+            "476601af9641cf2ac571be77caaed360eac626c67938ffb0ca48356a5b78f2d7"
+          ],
+          "source_hashes": {
+            "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff",
+            "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0"
+          },
+          "summary": "cost_multiplier = 3.5000; cost_per_quality_gain_usd = 0.0300. Total CIDM cost 0.042 USD (0.002 jev + 0.03 worker + 0.01 checker) against baseline_cost 0.012. The baseline's empty quality_checks dict fails the bool(baseline_checks) guard, so quality_baseline is False and quality_gain_binary is 1, making the gain divisor 1 and the per-gain cost equal to the 0.03 USD delta.",
+          "unresolved": []
+        },
+        "artifact_hash": "48cbfc447914a49c9f8cbfbc0316c9ab316ad7c9cda093874eace9799fbdcae7",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "cost_multiplier = 3.5000, cost_per_quality_gain_usd = 0.0300. Total CIDM cost 0.042 USD (0.002 + 0.03 + 0.01) against baseline 0.012 USD gives 3.5x; the baseline's empty quality_checks dict fails the bool(baseline_checks) guard, so quality_baseline is False, quality_gain_binary = 1, and the per-gain cost equals the 0.03 USD delta.",
+        "source_ids": [
+          "request",
+          "roles",
+          "compare",
+          "inputs"
+        ],
+        "data": {
+          "summary": "cost_multiplier = 3.5000; cost_per_quality_gain_usd = 0.0300. Total cost 0.042 USD (jev 0.002 + worker 0.03 + checker 0.01) vs baseline_cost 0.012. Baseline status is 'complete' but quality_checks is {}, so bool({}) is False and baseline_pass = False; quality_pass=True is a bool, so quality_gain_binary = 1. A divisor of 1 makes cost_per_quality_gain equal the 0.03 USD delta.",
+          "claims": [
+            "All role costs are non-negative, so per-role cost_usd and total_cost are not None.",
+            "Total cost = 0.002 + 0.03 + 0.01 = 0.042 USD.",
+            "baseline quality_checks is an empty dict: bool({}) is False, so baseline_pass = False despite status 'complete'.",
+            "quality_pass=True has type bool, so quality_gain = int(True) - int(False) = 1.",
+            "cost_multiplier = 0.042 / 0.012 = 3.4999999999999996 -> 3.5000 at 4 dp.",
+            "cost_per_quality_gain_usd = (0.042 - 0.012) / 1 = 0.03 -> 0.0300 at 4 dp.",
+            "Float summation gives ~0.042000000000000003; rounding to 4 dp is unaffected."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "48cbfc447914a49c9f8cbfbc0316c9ab316ad7c9cda093874eace9799fbdcae7"
+          ],
+          "source_hashes": {
+            "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff",
+            "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0"
+          }
+        },
+        "artifact_hash": "cb415a5880e41d1096bfae208c4eddfd06fe2fca00d352465e6019b5e0d8d794",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "Accepted. cost_multiplier = 3.5000 and cost_per_quality_gain_usd = 0.0300. Role costs sum to 0.042 USD (0.002 + 0.03 + 0.01) and are all non-negative, so total_cost is a number; 0.042/0.012 = 3.4999999999999996 -> 3.5000. The baseline has status 'complete' and a dict quality_checks, but bool({}) is False, so baseline_pass is False; quality_pass=True is a bool, giving quality_gain_binary = 1 and (0.042-0.012)/1 = 0.0300. Float noise does not change either value at 4 dp. No blocking issues.",
+        "source_ids": [
+          "request",
+          "roles",
+          "compare",
+          "inputs"
+        ],
+        "data": {
+          "summary": "Verified: cost_multiplier = 3.5000, cost_per_quality_gain_usd = 0.0300. Role costs 0.002 + 0.03 + 0.01 = 0.042 USD, all non-negative so cost_usd and total_cost are numbers. baseline_cost = 0.012 > 0, so cost_multiplier = 0.042/0.012 = 3.4999999999999996 -> 3.5000. Baseline status is 'complete' and quality_checks is a dict, but bool({}) is False, so baseline_pass = False; quality_pass=True is type bool, so quality_gain_binary = 1 > 0 and cost_per_quality_gain_usd = (0.042-0.012)/1 = 0.03 -> 0.0300. Float noise (~0.042000000000000003) does not change either value at 4 dp. Parent's reasoning and both figures accepted as correct.",
+          "claims": [
+            "Checked the parent's two figures against the roles and compare excerpts; both are correct.",
+            "Per-role cost_usd: jev 0.002, worker 0.03, checker 0.01; all non-negative, so no None short-circuit.",
+            "total_cost = 0.042 USD; baseline_cost = 0.012 USD and > 0, so cost_multiplier is computed.",
+            "0.042/0.012 = 3.4999999999999996, which rounds to 3.5000 at 4 dp.",
+            "bool({}) is False, so the empty quality_checks dict makes baseline_pass False even though status == 'complete'.",
+            "all({}.values()) is True but is gated by the bool(baseline_checks) conjunct, so it does not rescue baseline_pass.",
+            "quality_pass=True satisfies type(quality_pass) is bool, so quality_gain = 1 - 0 = 1.",
+            "quality_gain = 1 > 0, so cost_per_quality_gain_usd = (0.042 - 0.012)/1 = 0.03 -> 0.0300.",
+            "Binary float summation gives ~0.042000000000000003; both results are unchanged at 4 dp."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "cb415a5880e41d1096bfae208c4eddfd06fe2fca00d352465e6019b5e0d8d794"
+          ],
+          "source_hashes": {
+            "compare": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+            "inputs": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff",
+            "request": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+            "roles": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0"
+          }
+        },
+        "artifact_hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "a8f16e0eb915a50f6bae36af5284c62d995a163b16d9dfd695745110c499633a",
+        "text": "summarize_calls(calls, baseline=baseline, quality_pass=True) runs on the calls and baseline below. Give cost_multiplier and cost_per_quality_gain_usd from the comparison (round each to 4 decimal places)."
+      },
+      {
+        "id": "roles",
+        "hash": "8e1c0bf63015026bef1891e0640d15cfdb88418d3c2967e921cf644b829cd2e0",
+        "text": "    roles={}\n    for role in ('jev','worker','checker'):\n        entries=[event for event in calls if event.get('role')==role]\n        totals=[(event.get('usage') or {}).get('total_tokens') for event in entries]\n        charges=[(event.get('usage') or {}).get('cost') for event in entries]\n        roles[role]={\n            'calls':len(entries),\n            'tokens':sum(totals) if all(_nonnegative(v) for v in totals) else None,\n            'cost_usd':sum(charges) if all(_nonnegative(v) for v in charges) else None,\n    ...\n    total_tokens=(sum(role['tokens'] for role in roles.values())\n                  if all(role['tokens'] is not None for role in roles.values()) else None)\n    ...\n    worker_tokens=roles['worker']['tokens']\n    jev_tokens=roles['jev']['tokens']\n    ratio=(jev_tokens/worker_tokens if jev_tokens is not None and worker_tokens is not None\n           and worker_tokens>0 else None)"
+      },
+      {
+        "id": "compare",
+        "hash": "780f2d501786930f70049304da2a668f2418031980b46bc69d6b2668a03e2b24",
+        "text": "    if baseline is not None:\n        baseline_cost=baseline.get('reported_cost')\n        baseline_checks=baseline.get('quality_checks')\n        baseline_pass=(baseline.get('status')=='complete' and isinstance(baseline_checks,dict)\n                       and bool(baseline_checks) and all(baseline_checks.values()))\n        quality_gain=(int(quality_pass)-int(baseline_pass) if type(quality_pass) is bool else None)\n        cost_multiplier=(total_cost/baseline_cost if _nonnegative(total_cost)\n                         and _nonnegative(baseline_cost) and baseline_cost>0 else None)\n        comparison={'baseline_cost_usd':baseline_cost if _nonnegative(baseline_cost) else None,\n                    'cost_multiplier':cost_multiplier,'quality_baseline':baseline_pass,\n                    'quality_cidm':quality_pass,'quality_gain_binary':quality_gain,\n                    'cost_per_quality_gain_usd':((total_cost-baseline_cost)/quality_gain\n                                                  if cost_multiplier is not None and quality_gain is not None\n                                                  and quality_gain>0 else None)}"
+      },
+      {
+        "id": "inputs",
+        "hash": "2fedfbc59b91d4a5bfb80fd7c9553df33291d066057b62cc939a4fec2d23e1ff",
+        "text": "calls = [{\"role\": \"jev\", \"usage\": {\"total_tokens\": 3000, \"cost\": 0.002}}, {\"role\": \"worker\", \"usage\": {\"total_tokens\": 12000, \"cost\": 0.03}}, {\"role\": \"checker\", \"usage\": {\"total_tokens\": 5000, \"cost\": 0.01}}]\nbaseline = {\"status\": \"complete\", \"reported_cost\": 0.012, \"quality_checks\": {}}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 22,
+      "jev_tokens_remaining": 63953,
+      "jev_api_usd_remaining": 0.998508202,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "13e6d0f52bbb819dd8707e37a36e5fb85e9bdaeba2b2f825a8946c9262a0a357"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

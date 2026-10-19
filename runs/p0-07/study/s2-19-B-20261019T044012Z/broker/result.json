@@ -1,0 +1,3336 @@
+{
+  "status": "failed",
+  "route": "broad_or_uncertain",
+  "gate_policy": "recovery",
+  "answer": null,
+  "task_hash": "30fb40936cfbf7f8dcb5d282a20e0a841a16456e956277bd468ae8e21e75aff2",
+  "classification": {
+    "source": "conservative_default",
+    "snapshot_hash": "30fb40936cfbf7f8dcb5d282a20e0a841a16456e956277bd468ae8e21e75aff2",
+    "flags": null,
+    "rationale": null,
+    "scope": "broad_or_uncertain"
+  },
+  "source_hashes": {
+    "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+    "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+    "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+    "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+    "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+  },
+  "calls": [
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "compute",
+      "usage": {
+        "input_tokens": 2364,
+        "output_tokens": 31,
+        "total_tokens": 2395,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 9.9288e-05
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 3260,
+        "output_tokens": 50,
+        "total_tokens": 3310,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.00013692
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 5004,
+        "output_tokens": 90,
+        "total_tokens": 5094,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000210168
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "actual_model": "claude-opus-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 26544,
+        "cached_input_tokens": 12750,
+        "cache_write_input_tokens": 13790,
+        "output_tokens": 2223,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "613bf253-0de6-45dc-9f88-c20ded485865",
+      "permit_id": "386f84fc7eef4256a1e410a6e35a396e",
+      "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 4499,
+        "output_tokens": 59,
+        "total_tokens": 4558,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000188958
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 6104,
+        "output_tokens": 90,
+        "total_tokens": 6194,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000256368
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "actual_model": "claude-opus-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 13477,
+        "cached_input_tokens": 4048,
+        "cache_write_input_tokens": 9427,
+        "output_tokens": 1477,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "68b0e206-7b9f-4477-adb9-39d3cd3890dd",
+      "permit_id": "a723d78d26b54be494574af59ae6aa7a",
+      "artifact_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+    },
+    {
+      "role": "jev",
+      "phase": "after_worker",
+      "choice": "forward",
+      "usage": {
+        "input_tokens": 5697,
+        "output_tokens": 59,
+        "total_tokens": 5756,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000239274
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "jev",
+      "phase": "authorize_unit",
+      "choice": "opus_low",
+      "usage": {
+        "input_tokens": 7271,
+        "output_tokens": 90,
+        "total_tokens": 7361,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000305382
+      },
+      "identity": "typesafe/jev-1.13-20260917",
+      "identity_verification": "provider_reported",
+      "status": "ok"
+    },
+    {
+      "role": "worker",
+      "requested_model": "claude-opus-5",
+      "requested_effort": "low",
+      "actual_model": "claude-opus-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 28604,
+        "cached_input_tokens": 17727,
+        "cache_write_input_tokens": 10873,
+        "output_tokens": 3445,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "6d2b636d-ee46-48b7-b82d-c83e2b7aa2e7",
+      "permit_id": "bc14971aa2e3440dba55c6e8dba14a6a",
+      "artifact_hash": "1376c3f3122b01fab9ea40e6c50daa660b2bd8a4f6351439da21044f9a6f8122"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "protocol_version": "cidm-recovery-first-v1",
+  "base_protocol_version": "cidm-conditional-review-v3",
+  "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+  "committed": [
+    {
+      "id": "input",
+      "artifact": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+          }
+        },
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "classes",
+          "basis"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      },
+      "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+      "parent_artifacts": [],
+      "worker_route": null,
+      "checker": null,
+      "decision_id": "e4",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "hidden1",
+      "artifact": {
+        "data": {
+          "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+          "claims": [
+            "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+            "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+            "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+            "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+            "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+            "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+            "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+            "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+          ],
+          "source_hashes": {
+            "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          4,
+          5,
+          4
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "classes",
+          "basis"
+        ],
+        "text": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform."
+      },
+      "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+      "parent_artifacts": [
+        {
+          "id": "input",
+          "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e12",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    },
+    {
+      "id": "hidden2",
+      "artifact": {
+        "data": {
+          "summary": "classify(\"click\", \"Place order\") returns \"browser.submit_transaction\": ACTIONS maps click to browser.mutate, but the transactional branch fires because action is \"click\", target is non-empty, and TRANSACTIONAL matches \"place order\" case-insensitively. CAPABILITIES marks browser.submit_transaction as strong. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] = {\"operator\", \"reason\"} and the generic field checks, and neither the jev_decision nor compiled_policy branch applies. But \"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability. issue() mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be needed. With no permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable for this click.",
+          "claims": [
+            "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action \"click\", non-empty target, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+            "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+            "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}; both are non-empty strings within 256 chars, so the generic field checks pass.",
+            "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+            "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+            "The jev_decision and compiled_policy special branches do not apply to an operator basis.",
+            "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+            "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+          ],
+          "source_hashes": {
+            "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          4
+        ],
+        "self_probability": 0.93,
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "classes",
+          "basis"
+        ],
+        "text": "capability = \"browser.submit_transaction\" \u2014 click on \"Place order\" hits the TRANSACTIONAL branch in classify, overriding the browser.mutate mapping. That capability is strong in CAPABILITIES, and basis kind \"operator\" is in WEAK_ONLY_BASES, so validate_basis fails with \"strong_capability_requires_jev_basis\": issue() mints no permit. A jev_decision basis declaring live or simulation would be required; without a permit, perform()'s authority.consume is never reached. Sources: request, browser, classes, basis, perform."
+      },
+      "artifact_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+      "parent_artifacts": [
+        {
+          "id": "hidden1",
+          "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+        }
+      ],
+      "worker_route": {
+        "id": "opus_low",
+        "model": "anthropic/claude-opus-5",
+        "effort": "low"
+      },
+      "checker": null,
+      "decision_id": "e20",
+      "decision_phase": "after_worker",
+      "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+    }
+  ],
+  "checks": [],
+  "events": [
+    {
+      "id": "e1",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      },
+      "state_hash": "bc05650c471433ceba78a630ef4183f97e05063eef806260c232d5b9d5781572",
+      "state": {
+        "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "browser",
+            "title": "scripts/browser_capability.py excerpt"
+          },
+          {
+            "id": "perform",
+            "title": "scripts/browser_capability.py excerpt (perform)"
+          },
+          {
+            "id": "classes",
+            "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+          },
+          {
+            "id": "basis",
+            "title": "scripts/capability_permits.py excerpt (validate_basis)"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+          },
+          {
+            "id": "browser",
+            "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+          },
+          {
+            "id": "perform",
+            "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+          },
+          {
+            "id": "classes",
+            "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+          },
+          {
+            "id": "basis",
+            "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "compute",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "compute": 0.98,
+          "stop": 0.02
+        },
+        "confidence": 0.96,
+        "api_event": "call-1",
+        "usage": {
+          "input_tokens": 2364,
+          "output_tokens": 31,
+          "total_tokens": 2395,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 9.9288e-05
+        }
+      }
+    },
+    {
+      "id": "e2",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "input",
+        "attempt": 0,
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": null
+      },
+      "action_hash": "36da092d43000ec810bfb06b00cfc7be600f3a1d82357bb40af3840fccb3bc72",
+      "gate_id": "e1"
+    },
+    {
+      "id": "e3",
+      "kind": "provisional_return",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "input",
+      "value": {
+        "text": "Input and evidence identities preserved.",
+        "data": {
+          "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+          }
+        },
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "classes",
+          "basis"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "self_probability": null
+      }
+    },
+    {
+      "id": "e4",
+      "kind": "jev_decision",
+      "version": 0,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "input",
+            "candidate_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+            "check_hash": null,
+            "successor": "hidden1",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "input",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        }
+      },
+      "state_hash": "bc05650c471433ceba78a630ef4183f97e05063eef806260c232d5b9d5781572",
+      "state": {
+        "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+        "constraints": [],
+        "version": 0,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "browser",
+            "title": "scripts/browser_capability.py excerpt"
+          },
+          {
+            "id": "perform",
+            "title": "scripts/browser_capability.py excerpt (perform)"
+          },
+          {
+            "id": "classes",
+            "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+          },
+          {
+            "id": "basis",
+            "title": "scripts/capability_permits.py excerpt (validate_basis)"
+          }
+        ],
+        "recent_accepted": [],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+          },
+          {
+            "id": "browser",
+            "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+          },
+          {
+            "id": "perform",
+            "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+          },
+          {
+            "id": "classes",
+            "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+          },
+          {
+            "id": "basis",
+            "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "input",
+          "released": false
+        },
+        "unit": {
+          "id": "input",
+          "name": "Input",
+          "objective": "Preserve the current request, carried context, and original source identities."
+        },
+        "parents": [],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "candidate": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+            }
+          },
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.02,
+          "forward": 0.87,
+          "repair": 0.09,
+          "retrieve_evidence": 0.02
+        },
+        "confidence": 0.83,
+        "api_event": "call-2",
+        "usage": {
+          "input_tokens": 3260,
+          "output_tokens": 50,
+          "total_tokens": 3310,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.00013692
+        }
+      }
+    },
+    {
+      "id": "e5",
+      "kind": "post_worker_decision",
+      "version": 0,
+      "simulation": false,
+      "unit_id": "input",
+      "choice": "forward",
+      "gate_id": "e4",
+      "candidate_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e6",
+      "kind": "dispatch",
+      "version": 0,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "input",
+        "candidate_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+        "check_hash": null,
+        "successor": "hidden1",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "8fab5688742cba025478e421f0850fd1928a6cb8cf8aba10cf2a8b50388df8a5",
+      "gate_id": "e4"
+    },
+    {
+      "id": "e7",
+      "kind": "checked_commit",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "input",
+      "packet": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+            }
+          },
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e4"
+    },
+    {
+      "id": "e8",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "input",
+      "value": {
+        "id": "input",
+        "artifact": {
+          "text": "Input and evidence identities preserved.",
+          "data": {
+            "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+            "claims": [],
+            "unresolved": [],
+            "parent_hashes": [],
+            "source_hashes": {
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+            }
+          },
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "self_probability": null
+        },
+        "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+        "parent_artifacts": [],
+        "worker_route": null,
+        "checker": null,
+        "decision_id": "e4",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e9",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "input",
+                "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "6ec4a4c5b85f3df96eb5031845494d9d571c40a72bddf58ef72e2ffde5efbab6",
+      "state": {
+        "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "browser",
+            "title": "scripts/browser_capability.py excerpt"
+          },
+          {
+            "id": "perform",
+            "title": "scripts/browser_capability.py excerpt (perform)"
+          },
+          {
+            "id": "classes",
+            "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+          },
+          {
+            "id": "basis",
+            "title": "scripts/capability_permits.py excerpt (validate_basis)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+              }
+            },
+            "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+          },
+          {
+            "id": "browser",
+            "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+          },
+          {
+            "id": "perform",
+            "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+          },
+          {
+            "id": "classes",
+            "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+          },
+          {
+            "id": "basis",
+            "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.01,
+          "opus_low": 0.56,
+          "opus_medium": 0.1,
+          "opus_xhigh": 0.01,
+          "sonnet_high": 0,
+          "sonnet_low": 0.26,
+          "sonnet_medium": 0.05,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.5,
+        "api_event": "call-3",
+        "usage": {
+          "input_tokens": 5004,
+          "output_tokens": 90,
+          "total_tokens": 5094,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000210168
+        }
+      }
+    },
+    {
+      "id": "e10",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden1",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "input",
+            "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "9334f330992c812fd3a6ba2bfc8b4e7da71792834de151fc88893dda9225d0b0",
+      "gate_id": "e9"
+    },
+    {
+      "id": "e11",
+      "kind": "provisional_return",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden1",
+      "value": {
+        "data": {
+          "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+          "claims": [
+            "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+            "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+            "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+            "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+            "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+            "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+            "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+            "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+          ],
+          "source_hashes": {
+            "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          4,
+          5,
+          4
+        ],
+        "self_probability": null,
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "classes",
+          "basis"
+        ],
+        "text": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform."
+      }
+    },
+    {
+      "id": "e12",
+      "kind": "jev_decision",
+      "version": 1,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "6ec4a4c5b85f3df96eb5031845494d9d571c40a72bddf58ef72e2ffde5efbab6",
+      "state": {
+        "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+        "constraints": [],
+        "version": 1,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "browser",
+            "title": "scripts/browser_capability.py excerpt"
+          },
+          {
+            "id": "perform",
+            "title": "scripts/browser_capability.py excerpt (perform)"
+          },
+          {
+            "id": "classes",
+            "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+          },
+          {
+            "id": "basis",
+            "title": "scripts/capability_permits.py excerpt (validate_basis)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+              }
+            },
+            "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+          },
+          {
+            "id": "browser",
+            "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+          },
+          {
+            "id": "perform",
+            "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+          },
+          {
+            "id": "classes",
+            "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+          },
+          {
+            "id": "basis",
+            "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden1",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden1",
+          "name": "Interpret",
+          "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+        },
+        "parents": [
+          {
+            "id": "input",
+            "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "selected_worker": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "candidate": {
+          "data": {
+            "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+            "claims": [
+              "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+              "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+              "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+              "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+              "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+              "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+              "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+              "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+            ],
+            "source_hashes": {
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            4,
+            5,
+            4
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "text": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform."
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.08,
+          "escalate": 0.01,
+          "forward": 0.86,
+          "repair": 0.04,
+          "retrieve_evidence": 0.01
+        },
+        "confidence": 0.82,
+        "api_event": "call-4",
+        "usage": {
+          "input_tokens": 4499,
+          "output_tokens": 59,
+          "total_tokens": 4558,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000188958
+        }
+      }
+    },
+    {
+      "id": "e13",
+      "kind": "post_worker_decision",
+      "version": 1,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "choice": "forward",
+      "gate_id": "e12",
+      "candidate_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e14",
+      "kind": "dispatch",
+      "version": 1,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden1",
+        "candidate_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+        "check_hash": null,
+        "successor": "hidden2",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "3e965b77882d93d0d4962a5b8a4558fc1bd8e599950b304c0db0515e5b00a8fa",
+      "gate_id": "e12"
+    },
+    {
+      "id": "e15",
+      "kind": "checked_commit",
+      "version": 2,
+      "simulation": false,
+      "unit_id": "hidden1",
+      "packet": {
+        "id": "hidden1",
+        "artifact": {
+          "data": {
+            "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+            "claims": [
+              "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+              "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+              "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+              "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+              "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+              "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+              "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+              "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+            ],
+            "source_hashes": {
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            4,
+            5,
+            4
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "text": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform."
+        },
+        "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+        "parent_artifacts": [
+          {
+            "id": "input",
+            "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e12",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e12"
+    },
+    {
+      "id": "e16",
+      "kind": "provisional_return",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden1",
+      "value": {
+        "id": "hidden1",
+        "artifact": {
+          "data": {
+            "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+            "claims": [
+              "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+              "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+              "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+              "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+              "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+              "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+              "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+              "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+            ],
+            "source_hashes": {
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            4,
+            5,
+            4
+          ],
+          "self_probability": null,
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "text": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform."
+        },
+        "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+        "parent_artifacts": [
+          {
+            "id": "input",
+            "hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e12",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e17",
+      "kind": "jev_decision",
+      "version": 2,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "de5a97667fb4f6f9eb03a9084fa6984408593d37ec8af2e6f03ad5f8f9993193",
+      "state": {
+        "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+        "constraints": [],
+        "version": 2,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "browser",
+            "title": "scripts/browser_capability.py excerpt"
+          },
+          {
+            "id": "perform",
+            "title": "scripts/browser_capability.py excerpt (perform)"
+          },
+          {
+            "id": "classes",
+            "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+          },
+          {
+            "id": "basis",
+            "title": "scripts/capability_permits.py excerpt (validate_basis)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+              }
+            },
+            "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+              "claims": [
+                "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+                "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+                "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+                "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+                "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+                "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+                "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+                "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              ],
+              "source_hashes": {
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+              }
+            },
+            "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+          },
+          {
+            "id": "browser",
+            "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+          },
+          {
+            "id": "perform",
+            "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+          },
+          {
+            "id": "classes",
+            "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+          },
+          {
+            "id": "basis",
+            "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden2",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden2",
+          "name": "Compute",
+          "objective": "Perform the bounded substantive work using accepted context and original evidence."
+        },
+        "parents": [
+          {
+            "id": "hidden1",
+            "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.01,
+          "opus_low": 0.68,
+          "opus_medium": 0.03,
+          "opus_xhigh": 0.01,
+          "sonnet_high": 0,
+          "sonnet_low": 0.25,
+          "sonnet_medium": 0.01,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.63,
+        "api_event": "call-5",
+        "usage": {
+          "input_tokens": 6104,
+          "output_tokens": 90,
+          "total_tokens": 6194,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000256368
+        }
+      }
+    },
+    {
+      "id": "e18",
+      "kind": "dispatch",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden2",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden1",
+            "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "60fce1b3a3d2e5c01f5fb1b32b0be904611bf5b419b9ffeac8c5942461594e7a",
+      "gate_id": "e17"
+    },
+    {
+      "id": "e19",
+      "kind": "provisional_return",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden2",
+      "value": {
+        "data": {
+          "summary": "classify(\"click\", \"Place order\") returns \"browser.submit_transaction\": ACTIONS maps click to browser.mutate, but the transactional branch fires because action is \"click\", target is non-empty, and TRANSACTIONAL matches \"place order\" case-insensitively. CAPABILITIES marks browser.submit_transaction as strong. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] = {\"operator\", \"reason\"} and the generic field checks, and neither the jev_decision nor compiled_policy branch applies. But \"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability. issue() mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be needed. With no permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable for this click.",
+          "claims": [
+            "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action \"click\", non-empty target, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+            "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+            "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}; both are non-empty strings within 256 chars, so the generic field checks pass.",
+            "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+            "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+            "The jev_decision and compiled_policy special branches do not apply to an operator basis.",
+            "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+            "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+          ],
+          "source_hashes": {
+            "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+          }
+        },
+        "five_scores": [
+          5,
+          5,
+          5,
+          5,
+          4
+        ],
+        "self_probability": 0.93,
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "classes",
+          "basis"
+        ],
+        "text": "capability = \"browser.submit_transaction\" \u2014 click on \"Place order\" hits the TRANSACTIONAL branch in classify, overriding the browser.mutate mapping. That capability is strong in CAPABILITIES, and basis kind \"operator\" is in WEAK_ONLY_BASES, so validate_basis fails with \"strong_capability_requires_jev_basis\": issue() mints no permit. A jev_decision basis declaring live or simulation would be required; without a permit, perform()'s authority.consume is never reached. Sources: request, browser, classes, basis, perform."
+      }
+    },
+    {
+      "id": "e20",
+      "kind": "jev_decision",
+      "version": 2,
+      "simulation": false,
+      "phase": "after_worker",
+      "options": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      },
+      "state_hash": "de5a97667fb4f6f9eb03a9084fa6984408593d37ec8af2e6f03ad5f8f9993193",
+      "state": {
+        "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+        "constraints": [],
+        "version": 2,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "browser",
+            "title": "scripts/browser_capability.py excerpt"
+          },
+          {
+            "id": "perform",
+            "title": "scripts/browser_capability.py excerpt (perform)"
+          },
+          {
+            "id": "classes",
+            "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+          },
+          {
+            "id": "basis",
+            "title": "scripts/capability_permits.py excerpt (validate_basis)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+              }
+            },
+            "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+              "claims": [
+                "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+                "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+                "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+                "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+                "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+                "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+                "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+                "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              ],
+              "source_hashes": {
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+              }
+            },
+            "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+          },
+          {
+            "id": "browser",
+            "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+          },
+          {
+            "id": "perform",
+            "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+          },
+          {
+            "id": "classes",
+            "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+          },
+          {
+            "id": "basis",
+            "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden2",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden2",
+          "name": "Compute",
+          "objective": "Perform the bounded substantive work using accepted context and original evidence."
+        },
+        "parents": [
+          {
+            "id": "hidden1",
+            "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "selected_worker": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "candidate": {
+          "data": {
+            "summary": "classify(\"click\", \"Place order\") returns \"browser.submit_transaction\": ACTIONS maps click to browser.mutate, but the transactional branch fires because action is \"click\", target is non-empty, and TRANSACTIONAL matches \"place order\" case-insensitively. CAPABILITIES marks browser.submit_transaction as strong. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] = {\"operator\", \"reason\"} and the generic field checks, and neither the jev_decision nor compiled_policy branch applies. But \"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability. issue() mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be needed. With no permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable for this click.",
+            "claims": [
+              "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action \"click\", non-empty target, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+              "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+              "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}; both are non-empty strings within 256 chars, so the generic field checks pass.",
+              "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+              "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+              "The jev_decision and compiled_policy special branches do not apply to an operator basis.",
+              "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+              "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+            ],
+            "source_hashes": {
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            4
+          ],
+          "self_probability": 0.93,
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "text": "capability = \"browser.submit_transaction\" \u2014 click on \"Place order\" hits the TRANSACTIONAL branch in classify, overriding the browser.mutate mapping. That capability is strong in CAPABILITIES, and basis kind \"operator\" is in WEAK_ONLY_BASES, so validate_basis fails with \"strong_capability_requires_jev_basis\": issue() mints no permit. A jev_decision basis declaring live or simulation would be required; without a permit, perform()'s authority.consume is never reached. Sources: request, browser, classes, basis, perform."
+        },
+        "hard_checks": {
+          "native_shape": true,
+          "source_hashes_match": true,
+          "parent_hashes_match": true,
+          "artifact_schema_valid": true
+        },
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "forward",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "check_sol_high": 0.09,
+          "escalate": 0.01,
+          "forward": 0.86,
+          "repair": 0.03,
+          "retrieve_evidence": 0.01
+        },
+        "confidence": 0.82,
+        "api_event": "call-6",
+        "usage": {
+          "input_tokens": 5697,
+          "output_tokens": 59,
+          "total_tokens": 5756,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000239274
+        }
+      }
+    },
+    {
+      "id": "e21",
+      "kind": "post_worker_decision",
+      "version": 2,
+      "simulation": false,
+      "unit_id": "hidden2",
+      "choice": "forward",
+      "gate_id": "e20",
+      "candidate_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+      "hard_checks": {
+        "native_shape": true,
+        "source_hashes_match": true,
+        "parent_hashes_match": true,
+        "artifact_schema_valid": true
+      }
+    },
+    {
+      "id": "e22",
+      "kind": "dispatch",
+      "version": 2,
+      "simulation": false,
+      "worker_id": "policy",
+      "action": {
+        "operation": "forward",
+        "unit_id": "hidden2",
+        "candidate_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+        "check_hash": null,
+        "successor": "hidden3",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "action_hash": "2947816ed68716e34d4c0ce2d85a6fe47a9b2f75ac25274a7dc1c6028459b5a7",
+      "gate_id": "e20"
+    },
+    {
+      "id": "e23",
+      "kind": "checked_commit",
+      "version": 3,
+      "simulation": false,
+      "unit_id": "hidden2",
+      "packet": {
+        "id": "hidden2",
+        "artifact": {
+          "data": {
+            "summary": "classify(\"click\", \"Place order\") returns \"browser.submit_transaction\": ACTIONS maps click to browser.mutate, but the transactional branch fires because action is \"click\", target is non-empty, and TRANSACTIONAL matches \"place order\" case-insensitively. CAPABILITIES marks browser.submit_transaction as strong. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] = {\"operator\", \"reason\"} and the generic field checks, and neither the jev_decision nor compiled_policy branch applies. But \"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability. issue() mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be needed. With no permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable for this click.",
+            "claims": [
+              "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action \"click\", non-empty target, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+              "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+              "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}; both are non-empty strings within 256 chars, so the generic field checks pass.",
+              "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+              "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+              "The jev_decision and compiled_policy special branches do not apply to an operator basis.",
+              "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+              "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+            ],
+            "source_hashes": {
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            4
+          ],
+          "self_probability": 0.93,
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "text": "capability = \"browser.submit_transaction\" \u2014 click on \"Place order\" hits the TRANSACTIONAL branch in classify, overriding the browser.mutate mapping. That capability is strong in CAPABILITIES, and basis kind \"operator\" is in WEAK_ONLY_BASES, so validate_basis fails with \"strong_capability_requires_jev_basis\": issue() mints no permit. A jev_decision basis declaring live or simulation would be required; without a permit, perform()'s authority.consume is never reached. Sources: request, browser, classes, basis, perform."
+        },
+        "artifact_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+        "parent_artifacts": [
+          {
+            "id": "hidden1",
+            "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e20",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      },
+      "gate_id": "e20"
+    },
+    {
+      "id": "e24",
+      "kind": "provisional_return",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "policy",
+      "unit_id": "hidden2",
+      "value": {
+        "id": "hidden2",
+        "artifact": {
+          "data": {
+            "summary": "classify(\"click\", \"Place order\") returns \"browser.submit_transaction\": ACTIONS maps click to browser.mutate, but the transactional branch fires because action is \"click\", target is non-empty, and TRANSACTIONAL matches \"place order\" case-insensitively. CAPABILITIES marks browser.submit_transaction as strong. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] = {\"operator\", \"reason\"} and the generic field checks, and neither the jev_decision nor compiled_policy branch applies. But \"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability. issue() mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be needed. With no permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable for this click.",
+            "claims": [
+              "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action \"click\", non-empty target, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+              "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+              "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}; both are non-empty strings within 256 chars, so the generic field checks pass.",
+              "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+              "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+              "The jev_decision and compiled_policy special branches do not apply to an operator basis.",
+              "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+              "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+            ],
+            "unresolved": [],
+            "parent_hashes": [
+              "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+            ],
+            "source_hashes": {
+              "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+              "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+              "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+              "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+              "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+            }
+          },
+          "five_scores": [
+            5,
+            5,
+            5,
+            5,
+            4
+          ],
+          "self_probability": 0.93,
+          "source_ids": [
+            "request",
+            "browser",
+            "perform",
+            "classes",
+            "basis"
+          ],
+          "text": "capability = \"browser.submit_transaction\" \u2014 click on \"Place order\" hits the TRANSACTIONAL branch in classify, overriding the browser.mutate mapping. That capability is strong in CAPABILITIES, and basis kind \"operator\" is in WEAK_ONLY_BASES, so validate_basis fails with \"strong_capability_requires_jev_basis\": issue() mints no permit. A jev_decision basis declaring live or simulation would be required; without a permit, perform()'s authority.consume is never reached. Sources: request, browser, classes, basis, perform."
+        },
+        "artifact_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+        "parent_artifacts": [
+          {
+            "id": "hidden1",
+            "hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+          }
+        ],
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        },
+        "checker": null,
+        "decision_id": "e20",
+        "decision_phase": "after_worker",
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+      }
+    },
+    {
+      "id": "e25",
+      "kind": "jev_decision",
+      "version": 3,
+      "simulation": false,
+      "phase": "authorize_unit",
+      "options": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden2",
+                "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      },
+      "state_hash": "f1db779c8a6910dbed5456a014d97b2a6209dd582962d35f01e8d0babfa8ccb6",
+      "state": {
+        "goal": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+        "constraints": [],
+        "version": 3,
+        "source_manifest": [
+          {
+            "id": "request",
+            "title": "Current request"
+          },
+          {
+            "id": "browser",
+            "title": "scripts/browser_capability.py excerpt"
+          },
+          {
+            "id": "perform",
+            "title": "scripts/browser_capability.py excerpt (perform)"
+          },
+          {
+            "id": "classes",
+            "title": "scripts/capability_permits.py excerpt (capability classes and bases)"
+          },
+          {
+            "id": "basis",
+            "title": "scripts/capability_permits.py excerpt (validate_basis)"
+          }
+        ],
+        "recent_accepted": [
+          {
+            "id": "input",
+            "operation": "validated_unit",
+            "summary": "Input and evidence identities preserved.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?",
+              "claims": [],
+              "unresolved": [],
+              "parent_hashes": [],
+              "source_hashes": {
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+              }
+            },
+            "artifact_hash": "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden1",
+            "operation": "validated_unit",
+            "summary": "capability = \"browser.submit_transaction\" (click on \"Place order\" matches TRANSACTIONAL). It is a strong capability, and basis kind \"operator\" is in WEAK_ONLY_BASES, so issue() fails validation with \"strong_capability_requires_jev_basis\" and mints no permit. Sources: request, browser, classes, basis, perform.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "classify(\"click\", \"Place order\") returns browser.submit_transaction: ACTIONS maps click to browser.mutate, but the transactional branch fires because TRANSACTIONAL matches \"place order\" in the target. That capability is strong in CAPABILITIES. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] field requirements, but \"operator\" is in WEAK_ONLY_BASES, so validate_basis's strong-capability check fails. issue() therefore mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be required.",
+              "claims": [
+                "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action is \"click\", target non-empty, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+                "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+                "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}, both non-empty strings within 256 chars, so the generic field checks pass.",
+                "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+                "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+                "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+                "The compiled_policy and jev_decision special branches do not apply to an operator basis.",
+                "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "5380e2c65510b1d2ac5c408c49990eec473199d090226d0a22de02c59aa10bef"
+              ],
+              "source_hashes": {
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55"
+              }
+            },
+            "artifact_hash": "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc",
+            "reviewed_by_sol": false
+          },
+          {
+            "id": "hidden2",
+            "operation": "validated_unit",
+            "summary": "capability = \"browser.submit_transaction\" \u2014 click on \"Place order\" hits the TRANSACTIONAL branch in classify, overriding the browser.mutate mapping. That capability is strong in CAPABILITIES, and basis kind \"operator\" is in WEAK_ONLY_BASES, so validate_basis fails with \"strong_capability_requires_jev_basis\": issue() mints no permit. A jev_decision basis declaring live or simulation would be required; without a permit, perform()'s authority.consume is never reached. Sources: request, browser, classes, basis, perform.",
+            "source_ids": [
+              "request",
+              "browser",
+              "perform",
+              "classes",
+              "basis"
+            ],
+            "data": {
+              "summary": "classify(\"click\", \"Place order\") returns \"browser.submit_transaction\": ACTIONS maps click to browser.mutate, but the transactional branch fires because action is \"click\", target is non-empty, and TRANSACTIONAL matches \"place order\" case-insensitively. CAPABILITIES marks browser.submit_transaction as strong. The basis {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"} satisfies BASES[\"operator\"] = {\"operator\", \"reason\"} and the generic field checks, and neither the jev_decision nor compiled_policy branch applies. But \"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability. issue() mints no permit and rejects with \"strong_capability_requires_jev_basis\"; a jev_decision basis declaring live or simulation would be needed. With no permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable for this click.",
+              "claims": [
+                "classify(\"click\", \"Place order\") maps click to browser.mutate via ACTIONS, then the transactional branch applies (action \"click\", non-empty target, TRANSACTIONAL matches \"place order\" case-insensitively), returning browser.submit_transaction.",
+                "CAPABILITIES marks browser.submit_transaction as {\"strong\": True}.",
+                "The basis supplies both fields required by BASES[\"operator\"] = {\"operator\", \"reason\"}; both are non-empty strings within 256 chars, so the generic field checks pass.",
+                "\"operator\" is in WEAK_ONLY_BASES, so validate_basis's final require(kind not in WEAK_ONLY_BASES) fails for a strong capability.",
+                "issue() does not mint a permit: it rejects with \"strong_capability_requires_jev_basis\". A jev_decision basis declaring live or simulation would be needed.",
+                "The jev_decision and compiled_policy special branches do not apply to an operator basis.",
+                "Assumption: authority.issue() calls validate_basis(capability, basis); issue()'s body is not in evidence, so this is inferred from validate_basis's signature and role.",
+                "Consequence: with no permit, perform()'s later authority.consume(permit_id, capability, scope) is unreachable for this click."
+              ],
+              "unresolved": [],
+              "parent_hashes": [
+                "62c0692a53f6ee8b79d18a95e061b896f06a9178a70139e4c71ee9f8abea52bc"
+              ],
+              "source_hashes": {
+                "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+                "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+                "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+                "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+                "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+              }
+            },
+            "artifact_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba",
+            "reviewed_by_sol": false
+          }
+        ],
+        "older_accepted_ids": [],
+        "evidence": [
+          {
+            "id": "request",
+            "hash": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "text": "The operator console wants to click the button \"Place order\". It first computes capability = classify(\"click\", \"Place order\"), then calls authority.issue(capability, scope, {\"kind\": \"operator\", \"operator\": \"ken\", \"reason\": \"checkout test\"}). Which capability is computed, and what does issue() do?"
+          },
+          {
+            "id": "browser",
+            "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+          },
+          {
+            "id": "perform",
+            "hash": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        ...\n        self.authority.consume(permit_id, capability, scope)"
+          },
+          {
+            "id": "classes",
+            "hash": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "text": "CAPABILITIES = {\n    \"frontier.run\": {\"strong\": False},\n    \"retrieval.query\": {\"strong\": False},\n    \"mcp.read\": {\"strong\": False},\n    \"mcp.mutate\": {\"strong\": True},\n    \"browser.read\": {\"strong\": False},\n    \"browser.extract\": {\"strong\": False},\n    \"browser.mutate\": {\"strong\": True},\n    \"browser.submit_transaction\": {\"strong\": True},\n    ...\n    \"fast_path.execute\": {\"strong\": False},\n}\n\nBASES = {\n    # A Jev typed decision; the receipt names the gate and its state hash.\n    \"jev_decision\": {\"decision_id\", \"choice\", \"state_hash\"},\n    ...\n    # An owner-admitted compiled Fast Path policy.\n    \"compiled_policy\": {\"policy_hash\", \"skill_id\", \"skill_hash\", \"manifest_hash\"},\n    # A human operator action in the local console.\n    \"operator\": {\"operator\", \"reason\"},\n}"
+          },
+          {
+            "id": "basis",
+            "hash": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d",
+            "text": "WEAK_ONLY_BASES = {\"operator\", \"compiled_policy\", \"host_short_classification\"}\n\n\ndef validate_basis(capability: str, basis: dict) -> dict:\n    require(capability in CAPABILITIES, \"unknown_capability\")\n    require(isinstance(basis, dict) and basis.get(\"kind\") in BASES, \"invalid_permit_basis\")\n    kind = basis[\"kind\"]\n    fields = BASES[kind]\n    require(fields <= set(basis), \"permit_basis_missing_fields\")\n    for key in fields:\n        value = basis[key]\n        require(isinstance(value, (str, int)) and not isinstance(value, bool)\n                and 0 < len(str(value)) <= 256, \"invalid_permit_basis_field\")\n    if kind == \"jev_decision\":\n        require(basis.get(\"live\") is True or basis.get(\"simulation\") is True,\n                \"jev_basis_must_declare_live_or_simulation\")\n    if kind == \"compiled_policy\":\n        require(capability == \"fast_path.execute\", \"compiled_policy_only_authorizes_fast_path\")\n    if CAPABILITIES[capability][\"strong\"]:\n        require(kind not in WEAK_ONLY_BASES, \"strong_capability_requires_jev_basis\")\n    return copy.deepcopy(basis)"
+          }
+        ],
+        "last_issue": null,
+        "pending_verification": null,
+        "invalidated_result_ids": [],
+        "completion": {
+          "completed_units": [
+            "input",
+            "hidden1",
+            "hidden2"
+          ],
+          "required_order": [
+            "input",
+            "hidden1",
+            "hidden2",
+            "hidden3",
+            "output"
+          ],
+          "active_unit": "hidden3",
+          "released": false
+        },
+        "unit": {
+          "id": "hidden3",
+          "name": "Reconcile",
+          "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+        },
+        "parents": [
+          {
+            "id": "hidden2",
+            "artifact_hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "repair_feedback": null
+      },
+      "decision": {
+        "choice": "opus_low",
+        "model": "typesafe/jev-1.13-20260917",
+        "live": true,
+        "probabilities": {
+          "opus_high": 0.01,
+          "opus_low": 0.59,
+          "opus_medium": 0.05,
+          "opus_xhigh": 0.01,
+          "sonnet_high": 0,
+          "sonnet_low": 0.31,
+          "sonnet_medium": 0.03,
+          "sonnet_xhigh": 0
+        },
+        "confidence": 0.53,
+        "api_event": "call-7",
+        "usage": {
+          "input_tokens": 7271,
+          "output_tokens": 90,
+          "total_tokens": 7361,
+          "total_tokens_source": "derived_input_plus_output",
+          "cached_input_tokens": null,
+          "reasoning_tokens": null,
+          "cost": 0.000305382
+        }
+      }
+    },
+    {
+      "id": "e26",
+      "kind": "dispatch",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "producer",
+      "action": {
+        "operation": "compute_unit",
+        "unit_id": "hidden3",
+        "attempt": 0,
+        "parents": [
+          {
+            "id": "hidden2",
+            "hash": "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+          }
+        ],
+        "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+        "worker_route": {
+          "id": "opus_low",
+          "model": "anthropic/claude-opus-5",
+          "effort": "low"
+        }
+      },
+      "action_hash": "5ba27274e45d58e10123c2e14c13f64d1a93501bcd7be9600e5325348655407e",
+      "gate_id": "e25"
+    },
+    {
+      "id": "e27",
+      "kind": "provisional_return",
+      "version": 3,
+      "simulation": false,
+      "worker_id": "producer",
+      "unit_id": "hidden3",
+      "value": {
+        "text": "Verified. capability = \"browser.submit_transaction\": ACTIONS maps \"click\" to browser.mutate, but classify's first branch fires (action in (\"click\",\"press\"), target \"Place order\" non-empty, TRANSACTIONAL matches \"place order\" under re.I). CAPABILITIES marks it strong. The basis kind \"operator\" satisfies BASES[\"operator\"] = {\"operator\",\"reason\"} and the generic field checks, and neither the jev_decision nor compiled_policy branch applies; but \"operator\" is in WEAK_ONLY_BASES, so the final require fails and validate_basis rejects with \"strong_capability_requires_jev_basis\". issue() mints no permit. A jev_decision basis (decision_id, choice, state_hash) declaring live or simulation True would be needed. Without a permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable. Sources: request, browser, classes, basis, perform.",
+        "data": {
+          "summary": "Parent accepted. classify(\"click\",\"Place order\") returns \"browser.submit_transaction\": ACTIONS gives browser.mutate, then the transactional branch overrides it (action \"click\", non-empty target, TRANSACTIONAL matches \"place order\" case-insensitively). CAPABILITIES marks that capability strong. The operator basis satisfies BASES[\"operator\"] = {\"operator\",\"reason\"} and the generic type/length checks; the jev_decision and compiled_policy branches do not apply. The final require(kind not in WEAK_ONLY_BASES) fails because \"operator\" is in WEAK_ONLY_BASES, so validate_basis rejects with \"strong_capability_requires_jev_basis\" and issue() mints no permit. A jev_decision basis declaring live or simulation True would be needed. With no permit, perform()'s authority.consume(permit_id, capability, scope) is unreachable for this click.",
+          "claims": [
+            "ACTIONS[\"click\"] is browser.mutate, but classify's first branch applies: capability == browser.mutate, action in (\"click\",\"press\"), target truthy, and TRANSACTIONAL matches \"place order\" under re.I, so the return is browser.submit_transaction.",
+            "CAPABILITIES[\"browser.submit_transaction\"] = {\"strong\": True}.",
+            "The basis supplies both fields in BASES[\"operator\"] = {\"operator\",\"reason\"}; \"ken\" and \"checkout test\" are non-empty strings within 256 chars, so the per-field checks pass.",
+            "kind is not \"jev_decision\" and not \"compiled_policy\", so those two special branches are skipped.",
+            "\"operator\" is in WEAK_ONLY_BASES, so require(kind not in WEAK_ONLY_BASES) fails for a strong capability: validate_basis rejects with \"strong_capability_requires_jev_basis\" and no permit is minted.",
+            "A jev_decision basis with decision_id, choice, state_hash and live is True or simulation is True would pass instead.",
+            "Assumption (inherited from parent, unresolved in evidence): authority.issue() delegates to validate_basis; issue()'s body is not in the sources, so the rejection path is inferred from validate_basis's signature and role.",
+            "Consequence: with no permit issued, perform()'s authority.consume(permit_id, capability, scope) is never reached for this click."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "7d614daac02473c0f0f5d1dca2e699fe7eb0d3291c68b0b3d14aebfa0875afba"
+          ],
+          "source_hashes": {
+            "request": "9af312a922790f719cd30d90a95707974e267458744eea61fe5acb87468cfc55",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "perform": "9f972a1d97011040a58f312cb33c297a797b323a361bc33adcc152f8aa99c2f0",
+            "classes": "88073ab21a47b0ce0e424457f1c728b20fc06b004d31b0b81058a722111b7ef6",
+            "basis": "4bf39ba73dd470e1f4eb338c854c7416dbfdd555f55a0841f044fe092d37e57d"
+          }
+        },
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "classes",
+          "basis"
+        ],
+        "five_scores": [
+          5,
+          5,
+          5,
+          4,
+          5
+        ],
+        "self_probability": 0.93
+      }
+    },
+    {
+      "id": "e28",
+      "kind": "halt",
+      "version": 3,
+      "simulation": false,
+      "error": "MeshError: unit_context_too_large"
+    }
+  ],
+  "recovery_rounds": {},
+  "error": "unit_context_too_large",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 3,
+    "consumed": 3,
+    "receipted": 3,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 7,
+    "frontier_child_calls": 3,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 68625,
+    "frontier_output_tokens": 7145,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0.001436358,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": [
+    {
+      "id": "call-1",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "5e6d77cfaf4b9f56613be919aa813679a4bad79e89875c1e487843d8390b7d4d",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00042525,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 2364,
+        "output_tokens": 31,
+        "total_tokens": 2395,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 9.9288e-05
+      },
+      "usage_raw": {
+        "input_tokens": 2364,
+        "output_tokens": 31,
+        "cost": 9.9288e-05
+      },
+      "latency_ms": 596.093,
+      "provider_request_id": "gen-dec-1792384814-Ac9D5mj2BNRNKiXH8MHE",
+      "started_at": "2026-10-19T04:40:12.940Z",
+      "ended_at": "2026-10-19T04:40:13.536Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-2",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "02940d7d5429e4f057d414293bea39bd8f15477f8909e4632f07958c850fa05b",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0005162000000000001,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 3260,
+        "output_tokens": 50,
+        "total_tokens": 3310,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.00013692
+      },
+      "usage_raw": {
+        "input_tokens": 3260,
+        "output_tokens": 50,
+        "cost": 0.00013692
+      },
+      "latency_ms": 521.789,
+      "provider_request_id": "gen-dec-1792384815-TcpDUqoiI9HGEdHgDbiQ",
+      "started_at": "2026-10-19T04:40:13.542Z",
+      "ended_at": "2026-10-19T04:40:14.064Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-3",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "9efcc6d56a1870ca21d458da1af257bcef918e20b0ae6fc7786625887b91849a",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00065,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 5004,
+        "output_tokens": 90,
+        "total_tokens": 5094,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000210168
+      },
+      "usage_raw": {
+        "input_tokens": 5004,
+        "output_tokens": 90,
+        "cost": 0.000210168
+      },
+      "latency_ms": 535.461,
+      "provider_request_id": "gen-dec-1792384815-wPw7MpSys08dmffAQ5Yc",
+      "started_at": "2026-10-19T04:40:14.068Z",
+      "ended_at": "2026-10-19T04:40:14.604Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": [
+        {
+          "code": "probability_sum_rounding",
+          "question_id": "next",
+          "returned_sum": 0.99,
+          "absolute_difference": 0.01,
+          "allowed_difference": 0.02,
+          "assumption": "independent_2_decimal_rounding"
+        }
+      ]
+    },
+    {
+      "id": "call-4",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "c45695217ad86279f628ffdd4972a65c3bee02568c56cd5ac18a9a7369d70695",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0006766000000000001,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 4499,
+        "output_tokens": 59,
+        "total_tokens": 4558,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000188958
+      },
+      "usage_raw": {
+        "input_tokens": 4499,
+        "output_tokens": 59,
+        "cost": 0.000188958
+      },
+      "latency_ms": 632.609,
+      "provider_request_id": "gen-dec-1792384848-oEgaYHPSrPszAfndq0Pd",
+      "started_at": "2026-10-19T04:40:46.275Z",
+      "ended_at": "2026-10-19T04:40:46.908Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-5",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "2df948d7e0f8eca80fcd3868fee55ba4ad9b1e45cf4d01675b5952eece51fbe0",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00079685,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 6104,
+        "output_tokens": 90,
+        "total_tokens": 6194,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000256368
+      },
+      "usage_raw": {
+        "input_tokens": 6104,
+        "output_tokens": 90,
+        "cost": 0.000256368
+      },
+      "latency_ms": 570.635,
+      "provider_request_id": "gen-dec-1792384848-5ltpe6wy1hViKXOqEZW4",
+      "started_at": "2026-10-19T04:40:46.912Z",
+      "ended_at": "2026-10-19T04:40:47.483Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": [
+        {
+          "code": "probability_sum_rounding",
+          "question_id": "next",
+          "returned_sum": 0.99,
+          "absolute_difference": 0.01,
+          "allowed_difference": 0.02,
+          "assumption": "independent_2_decimal_rounding"
+        }
+      ]
+    },
+    {
+      "id": "call-6",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "9072dc8616fedfe9d1f9c38ca6e6d08b73f13f514f97ec9922a5389c46c9155b",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.0008490500000000001,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 5697,
+        "output_tokens": 59,
+        "total_tokens": 5756,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000239274
+      },
+      "usage_raw": {
+        "input_tokens": 5697,
+        "output_tokens": 59,
+        "cost": 0.000239274
+      },
+      "latency_ms": 662.804,
+      "provider_request_id": "gen-dec-1792384873-vZsEdKoiGNXiHYxetiuN",
+      "started_at": "2026-10-19T04:41:11.581Z",
+      "ended_at": "2026-10-19T04:41:12.244Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    },
+    {
+      "id": "call-7",
+      "role": "jev",
+      "status": "ok",
+      "requested_model": "typesafe/jev-1.13",
+      "returned_model": "typesafe/jev-1.13-20260917",
+      "provider": "TypeSafe",
+      "request_hash": "8d8655d369ccd5006f400eec5569dd50acc74123e9316246327409078c20ae97",
+      "policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+      "reserved_usd": 0.00096875,
+      "followup_jev_reserved_usd": 0.0,
+      "admission_reserved_calls": 1,
+      "followup_jev_required": false,
+      "reasoning_effort": null,
+      "usage": {
+        "input_tokens": 7271,
+        "output_tokens": 90,
+        "total_tokens": 7361,
+        "total_tokens_source": "derived_input_plus_output",
+        "cached_input_tokens": null,
+        "reasoning_tokens": null,
+        "cost": 0.000305382
+      },
+      "usage_raw": {
+        "input_tokens": 7271,
+        "output_tokens": 90,
+        "cost": 0.000305382
+      },
+      "latency_ms": 626.57,
+      "provider_request_id": "gen-dec-1792384874-iiNGmmfkyRI7lYR8LC3r",
+      "started_at": "2026-10-19T04:41:12.249Z",
+      "ended_at": "2026-10-19T04:41:12.876Z",
+      "usage_semantics": {
+        "cached_input_tokens": "subset_of_input_tokens",
+        "reasoning_tokens": "subset_of_output_tokens"
+      },
+      "warnings": []
+    }
+  ]
+}

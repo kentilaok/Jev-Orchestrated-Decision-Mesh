@@ -1,0 +1,292 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "Using the browser module, the permit code and the steps: what does perform() raise (give the PermitError code), how many entries does session.receipts hold afterwards, and was page.click called?",
+    "constraints": [],
+    "version": 3,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "browser",
+        "title": "scripts/browser_capability.py excerpt"
+      },
+      {
+        "id": "perform",
+        "title": "scripts/browser_capability.py excerpt (BrowserSession.perform)"
+      },
+      {
+        "id": "consume",
+        "title": "scripts/capability_permits.py excerpt (consume)"
+      },
+      {
+        "id": "steps",
+        "title": "Steps"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "consume",
+          "steps"
+        ],
+        "data": {
+          "summary": "Using the browser module, the permit code and the steps: what does perform() raise (give the PermitError code), how many entries does session.receipts hold afterwards, and was page.click called?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "7cf0fcfd7d7fcfb24065bf54aa1adef8bcddcc4f26a7d12a3cdba86cc80ec8ac",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "perform": "2b59afef904c59b9a651ab420283962815657e3bb7d45504a378e315ceaa9796",
+            "consume": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e",
+            "steps": "e5517cd7a4b31fa7c755bb56cd734fe2a936c44d831e2abee3d7b386942ffbd2"
+          }
+        },
+        "artifact_hash": "f87584e75ecc5f17aa03465c310b57377b4cf1e5e599cafbc6fcbc146698449f",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "perform() raises PermitError(\"permit_capability_mismatch\"); session.receipts holds 0 entries; page.click was never called.\n\nclassify(\"click\", \"Pay now\") upgrades the required capability to browser.submit_transaction because TRANSACTIONAL matches \"Pay\", but the permit was issued for browser.mutate. The origin check passes, then consume() fails its capability equality check \u2014 before the try/finally \u2014 so no receipt is appended and the click branch never runs.",
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "consume",
+          "steps"
+        ],
+        "data": {
+          "summary": "perform() raises PermitError code permit_capability_mismatch (click on \"Pay now\" classifies as browser.submit_transaction, permit was browser.mutate). receipts stays at 0 because consume() fails before the try/finally that appends the outcome. page.click is never called.",
+          "claims": [
+            "classify(\"click\", \"Pay now\") returns browser.submit_transaction: base capability is browser.mutate, action is click, and TRANSACTIONAL matches \"Pay\" in the target.",
+            "The origin check passes: page.url https://shop.example/cart yields an origin within allowed_origins [\"https://shop.example\"], so it is not browser_origin_not_allowed.",
+            "consume() reaches require(grant[\"capability\"] == capability) and fails, since the permit was issued for browser.mutate; code permit_capability_mismatch.",
+            "Earlier consume() checks (unknown_permit, permit_already_used) pass on a freshly issued permit; scope_hash and expiry are valid per the steps, so they are not the first failure.",
+            "authority.consume is called before the try/finally, so the failure skips receipts.append(outcome) and authority.receipt(permit_id, outcome); session.receipts length is 0, assuming a fresh session.",
+            "page.click is not invoked: the click branch sits inside the try block that is never entered.",
+            "Assumption: require() raises PermitError carrying the given code string, consistent with the question asking for a PermitError code."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "f87584e75ecc5f17aa03465c310b57377b4cf1e5e599cafbc6fcbc146698449f"
+          ],
+          "source_hashes": {
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "consume": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e",
+            "perform": "2b59afef904c59b9a651ab420283962815657e3bb7d45504a378e315ceaa9796",
+            "request": "7cf0fcfd7d7fcfb24065bf54aa1adef8bcddcc4f26a7d12a3cdba86cc80ec8ac",
+            "steps": "e5517cd7a4b31fa7c755bb56cd734fe2a936c44d831e2abee3d7b386942ffbd2"
+          }
+        },
+        "artifact_hash": "958af3ee8b152c5076d6b7dd9051d0eaa63dc28f427e3dfb7215fbdec8064c82",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "perform() raises PermitError(\"permit_capability_mismatch\"); session.receipts holds 0 entries; page.click was never called.\n\nclassify(\"click\", \"Pay now\") returns browser.submit_transaction because TRANSACTIONAL matches \"Pay\" in the target, but the permit was issued for browser.mutate. The origin check passes (https://shop.example is allowed), then consume() fails its capability equality check \u2014 which runs before the try/finally \u2014 so no outcome is appended and the click branch never executes.",
+        "source_ids": [
+          "request",
+          "browser",
+          "perform",
+          "consume",
+          "steps"
+        ],
+        "data": {
+          "summary": "perform() raises PermitError code permit_capability_mismatch: click on \"Pay now\" classifies as browser.submit_transaction while the permit granted browser.mutate. receipts stays at 0 because consume() raises before the try/finally that appends the outcome. page.click is never called.",
+          "claims": [
+            "classify(\"click\", \"Pay now\") returns browser.submit_transaction: base capability browser.mutate, action click, and TRANSACTIONAL matches \"Pay\" in the target.",
+            "Origin check passes: page.url https://shop.example/cart gives an origin in allowed_origins [\"https://shop.example\"], so the failure is not browser_origin_not_allowed.",
+            "consume() reaches require(grant[\"capability\"] == capability) and fails, since the permit was issued for browser.mutate; code permit_capability_mismatch.",
+            "Earlier consume() checks (unknown_permit, permit_already_used) pass on a freshly issued permit; scope_hash and expiry are valid per the steps, so they are not the first failure.",
+            "authority.consume is called before the try/finally, so the raise skips receipts.append(outcome) and authority.receipt(permit_id, outcome); session.receipts length is 0, assuming a fresh session.",
+            "page.click is not invoked: the click branch is inside the try block that is never entered.",
+            "Assumption: require() raises PermitError carrying the given code string, consistent with the question asking for a PermitError code."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "958af3ee8b152c5076d6b7dd9051d0eaa63dc28f427e3dfb7215fbdec8064c82"
+          ],
+          "source_hashes": {
+            "request": "7cf0fcfd7d7fcfb24065bf54aa1adef8bcddcc4f26a7d12a3cdba86cc80ec8ac",
+            "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+            "perform": "2b59afef904c59b9a651ab420283962815657e3bb7d45504a378e315ceaa9796",
+            "consume": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e",
+            "steps": "e5517cd7a4b31fa7c755bb56cd734fe2a936c44d831e2abee3d7b386942ffbd2"
+          }
+        },
+        "artifact_hash": "4bac868a598be849ac8d3a11307d93db107215e40553e4aab2ee53df75ec4a4e",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "7cf0fcfd7d7fcfb24065bf54aa1adef8bcddcc4f26a7d12a3cdba86cc80ec8ac",
+        "text": "Using the browser module, the permit code and the steps: what does perform() raise (give the PermitError code), how many entries does session.receipts hold afterwards, and was page.click called?"
+      },
+      {
+        "id": "browser",
+        "hash": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+        "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+      },
+      {
+        "id": "perform",
+        "hash": "2b59afef904c59b9a651ab420283962815657e3bb7d45504a378e315ceaa9796",
+        "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        origin_url = url if action == \"goto\" else getattr(self.page, \"url\", None)\n        scope = action_scope(action, origin_url if origin_url not in (None, \"about:blank\") else None, target, value)\n        require(scope[\"origin\"] is None or scope[\"origin\"] in self.allowed, \"browser_origin_not_allowed\")\n        self.authority.consume(permit_id, capability, scope)\n        outcome = {\"status\": \"failed\", \"action\": action, \"capability\": capability, \"origin\": scope[\"origin\"]}\n        try:\n            ...\n            elif action in (\"click\", \"check\"):\n                result = getattr(self.page, action)(target)\n            ...\n        finally:\n            self.receipts.append(outcome)\n            self.authority.receipt(permit_id, outcome)"
+      },
+      {
+        "id": "consume",
+        "hash": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e",
+        "text": "    def consume(self, permit_id: str, capability: str, scope: dict) -> dict:\n        with self.lock:\n            require(isinstance(permit_id, str) and permit_id in self._permits, \"unknown_permit\")\n            require(permit_id not in self._used, \"permit_already_used\")\n            grant = self._permits[permit_id]\n            require(grant[\"capability\"] == capability, \"permit_capability_mismatch\")\n            require(grant[\"scope_hash\"] == digest(scope), \"permit_scope_mismatch\")\n            require(self.clock() <= grant[\"expires_at\"], \"permit_expired\")"
+      },
+      {
+        "id": "steps",
+        "hash": "e5517cd7a4b31fa7c755bb56cd734fe2a936c44d831e2abee3d7b386942ffbd2",
+        "text": "session = BrowserSession(page, authority, allowed_origins=[\"https://shop.example\"]); page.url is \"https://shop.example/cart\".\nThe agent issues a permit: pid = authority.issue(\"browser.mutate\", action_scope(\"click\", page.url, \"Pay now\", None), jev_basis), where jev_basis is a valid live Jev decision basis.\nIt then calls session.perform(\"click\", pid, target=\"Pay now\")."
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden3",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden3",
+      "name": "Reconcile",
+      "objective": "Check the proposed work against requirements, predecessors, and source evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden2",
+        "artifact_hash": "4bac868a598be849ac8d3a11307d93db107215e40553e4aab2ee53df75ec4a4e"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Accepted. perform() raises PermitError(\"permit_capability_mismatch\"); session.receipts holds 0 entries; page.click was not called.\n\nVerified against sources: classify(\"click\", \"Pay now\") upgrades browser.mutate to browser.submit_transaction because TRANSACTIONAL matches \"Pay\" case-insensitively. The origin check passes (page.url https://shop.example/cart -> origin https://shop.example, in allowed_origins), so browser_origin_not_allowed is not reached. In consume(), unknown_permit and permit_already_used pass for the freshly issued permit, then the capability equality check fails against the granted browser.mutate. Since authority.consume precedes the try/finally, the finally block never runs: no receipts.append, no authority.receipt, and the click branch inside try never executes.",
+      "data": {
+        "summary": "Parent's answer is correct and fully supported. perform() raises permit_capability_mismatch (click on \"Pay now\" classifies as browser.submit_transaction vs granted browser.mutate); receipts has 0 entries because consume() raises before the try/finally; page.click never called.",
+        "claims": [
+          "classify(\"click\", \"Pay now\") -> browser.submit_transaction: ACTIONS maps click to browser.mutate, action is in (\"click\",\"press\"), and TRANSACTIONAL matches \"Pay\" under re.I.",
+          "Origin check passes: page.url is https://shop.example/cart, whose origin https://shop.example is in allowed_origins, so browser_origin_not_allowed is not the failure.",
+          "consume() fails at require(grant[\"capability\"] == capability) because the permit was issued for browser.mutate; code permit_capability_mismatch.",
+          "Checks before the capability check (unknown_permit, permit_already_used) pass on a freshly issued, unused permit; scope_hash and expiry checks are never reached.",
+          "authority.consume precedes the try/finally, so the raise propagates out of perform() without executing receipts.append(outcome) or authority.receipt(...): receipts length 0 on a fresh session.",
+          "page.click is not invoked; the click/check branch sits inside the try block that is never entered.",
+          "Assumption carried from the parent and accepted: require() raises PermitError with the given code string, consistent with the request asking for a PermitError code."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "4bac868a598be849ac8d3a11307d93db107215e40553e4aab2ee53df75ec4a4e"
+        ],
+        "source_hashes": {
+          "request": "7cf0fcfd7d7fcfb24065bf54aa1adef8bcddcc4f26a7d12a3cdba86cc80ec8ac",
+          "browser": "aa844c9e00f9a2bc95901102d7514991dd0153e0784a5698f8f270f01601cfc0",
+          "perform": "2b59afef904c59b9a651ab420283962815657e3bb7d45504a378e315ceaa9796",
+          "consume": "01f0bbaff64cc2df3776a99cbb74270f90805995bc371b9ecdd5f3ba6689b13e",
+          "steps": "e5517cd7a4b31fa7c755bb56cd734fe2a936c44d831e2abee3d7b386942ffbd2"
+        }
+      },
+      "source_ids": [
+        "request",
+        "browser",
+        "perform",
+        "consume",
+        "steps"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": null
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 23,
+      "jev_tokens_remaining": 67891,
+      "jev_api_usd_remaining": 0.99867112,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden3",
+            "candidate_hash": "8e8c70782d8c8e84432d575d08496fb3167bbe8ec820ee6b09f9e1f05d8a08e3",
+            "check_hash": null,
+            "successor": "output",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden3",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "8e8c70782d8c8e84432d575d08496fb3167bbe8ec820ee6b09f9e1f05d8a08e3",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

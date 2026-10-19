@@ -1,0 +1,20 @@
+{
+  "goal": "A broker request has active_project false, unresolved_stages [\"finish hidden3\"], and an explicit host classification whose snapshot_hash is fresh, whose four flags are all false and whose rationale is \"Single bounded question.\". Which scope does validate_spec assign?",
+  "context": "",
+  "sources": {
+    "code": {
+      "title": "scripts/native_transition_broker.py excerpt (validate_spec)",
+      "text": "    classification = spec['classification']\n    if classification is None:\n        scope = 'broad_or_uncertain'\n        record = {'source': 'conservative_default', 'snapshot_hash': snapshot,\n                  'flags': None, 'rationale': None, 'scope': scope}\n    else:\n        require(type(classification) is dict\n                and set(classification) == {'snapshot_hash', 'rationale', *CLASSIFICATION_FLAGS},\n                'native_classification_schema')\n        require(classification['snapshot_hash'] == snapshot, 'stale_native_classification')\n        flags = {name: classification[name] for name in CLASSIFICATION_FLAGS}\n        require(all(type(value) is bool for value in flags.values()), 'native_classification_flags')\n        rationale = classification['rationale']\n        require(type(rationale) is str and 10 <= len(rationale) <= 500,\n                'native_classification_rationale')\n        scope = ('broad_or_uncertain' if any(flags.values()) or spec['active_project'] or unresolved\n                 else 'short_self_contained')"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": {
+    "snapshot_hash": "bef574d7a408d8450ae74d5953dcd2fb5646fbf14ab5aa0f36cca7db59799c42",
+    "multiple_steps": false,
+    "broad_project": false,
+    "ambiguous": false,
+    "depends_on_context": false,
+    "rationale": "Single bounded question answered from the supplied sources."
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "distill_lessons is given the records below (one per line). What is \"observations\" for the sig-g lesson?",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/experience_distiller.py excerpt (distill_lessons)"
+      },
+      {
+        "id": "records",
+        "title": "experience records"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code",
+          "records"
+        ],
+        "data": {
+          "summary": "distill_lessons is given the records below (one per line). What is \"observations\" for the sig-g lesson?",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "bb12f3c57b59214e8f8ce4575829faea2f6e61822e30a9c2832d1f4cefbbb87a",
+            "code": "714b7c04321abb034646fa189859e4c96e3088996f16f78e6b0982bebca85a11",
+            "records": "739c1333f3b193b296fc85a2aab27822171c7bdf015a718b30571a27261881bb"
+          }
+        },
+        "artifact_hash": "d66ad92a36167e525803034c52d1edd1e582a9db0e83505faf640338ab1e4166",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "observations = 7 for the sig-g lesson. All eight records group under sig-g, but observation_runs is a set of str(run_id): r1-r6 contribute six members, and the two records with no run_id both stringify to \"None\", adding one member. The lesson is emitted at all only because one record carries verified_recovery; that record lacks a run_id, so verified_runs = {\"None\"} \u2192 verified_observations = 1, verified_experiences = 1, confidence = \"provisional\". The str(None) collapse is the trap: a naive count gives 8.",
+        "source_ids": [
+          "request",
+          "code",
+          "records"
+        ],
+        "data": {
+          "claims": [
+            "All 8 records share signature \"sig-g\", so they form one group.",
+            "observation_runs = {str(item.get('run_id')) for item in items}; the six records r1-r6 give six distinct strings.",
+            "The two records without a run_id both yield str(None) == 'None', collapsing into a single extra set member.",
+            "Hence observations = len(observation_runs) = 7, not 8.",
+            "Related fields: verified_runs = {'None'} so verified_observations = 1, verified_experiences = 1, confidence = 'provisional'.",
+            "Assumes records are parsed as dicts in the listed order and no other filtering precedes the excerpt."
+          ],
+          "parent_hashes": [
+            "d66ad92a36167e525803034c52d1edd1e582a9db0e83505faf640338ab1e4166"
+          ],
+          "source_hashes": {
+            "code": "714b7c04321abb034646fa189859e4c96e3088996f16f78e6b0982bebca85a11",
+            "records": "739c1333f3b193b296fc85a2aab27822171c7bdf015a718b30571a27261881bb",
+            "request": "bb12f3c57b59214e8f8ce4575829faea2f6e61822e30a9c2832d1f4cefbbb87a"
+          },
+          "summary": "observations = 7. The sig-g group has 8 records; observation_runs is a set of str(run_id), giving r1-r6 plus 'None' for the two records lacking run_id. The lesson is emitted because one record has verified_recovery, but that record also has no run_id, so verified_observations = 1 and confidence = 'provisional'.",
+          "unresolved": []
+        },
+        "artifact_hash": "437946b9597b69588d69e4e00124036b73b76bd980eb325464ee0e63662f22f7",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "bb12f3c57b59214e8f8ce4575829faea2f6e61822e30a9c2832d1f4cefbbb87a",
+        "text": "distill_lessons is given the records below (one per line). What is \"observations\" for the sig-g lesson?"
+      },
+      {
+        "id": "code",
+        "hash": "714b7c04321abb034646fa189859e4c96e3088996f16f78e6b0982bebca85a11",
+        "text": "    groups: dict[str, list[dict]] = defaultdict(list)\n    for record in records:\n        if isinstance(record, dict) and record.get(\"signature\"):\n            groups[str(record[\"signature\"])].append(record)\n    ...\n    for signature, items in groups.items():\n        verified = [item for item in items if item.get(\"verified_recovery\")]\n        if not verified:\n            continue\n        ...\n        observation_runs = {str(item.get(\"run_id\")) for item in items}\n        verified_runs = {str(item.get(\"run_id\")) for item in verified}\n        lessons.append({\n            ...\n            \"observations\": len(observation_runs),\n            \"verified_observations\": len(verified_runs),\n            \"verified_experiences\": len(verified),\n            \"confidence\": (\n                \"high\" if len(verified_runs) >= 3\n                else \"medium\" if len(verified_runs) >= 2\n                else \"provisional\"\n            ),"
+      },
+      {
+        "id": "records",
+        "hash": "739c1333f3b193b296fc85a2aab27822171c7bdf015a718b30571a27261881bb",
+        "text": "{\"signature\": \"sig-g\", \"run_id\": \"r1\"}\n{\"signature\": \"sig-g\", \"run_id\": \"r2\"}\n{\"signature\": \"sig-g\", \"run_id\": \"r3\"}\n{\"signature\": \"sig-g\", \"run_id\": \"r4\"}\n{\"signature\": \"sig-g\", \"run_id\": \"r5\"}\n{\"signature\": \"sig-g\", \"run_id\": \"r6\"}\n{\"signature\": \"sig-g\"}\n{\"signature\": \"sig-g\", \"verified_recovery\": true}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "437946b9597b69588d69e4e00124036b73b76bd980eb325464ee0e63662f22f7"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "data": {
+        "claims": [
+          "All 8 records have signature \"sig-g\" and non-empty, so one group with 8 items.",
+          "verified = records with truthy verified_recovery = 1 item (the last), so the lesson is emitted.",
+          "observation_runs = {str(item.get(\"run_id\")) for item in items}: r1..r6 plus \"None\" from the two records lacking run_id.",
+          "str(None) == \"None\" collapses the two missing-run_id records into a single set member, so len = 7.",
+          "verified_runs = {\"None\"} -> verified_observations = 1, verified_experiences = 1, confidence = \"provisional\".",
+          "Assumes the 8 lines are parsed as dicts in order and no filtering outside the shown excerpt."
+        ],
+        "parent_hashes": [
+          "437946b9597b69588d69e4e00124036b73b76bd980eb325464ee0e63662f22f7"
+        ],
+        "source_hashes": {
+          "code": "714b7c04321abb034646fa189859e4c96e3088996f16f78e6b0982bebca85a11",
+          "records": "739c1333f3b193b296fc85a2aab27822171c7bdf015a718b30571a27261881bb",
+          "request": "bb12f3c57b59214e8f8ce4575829faea2f6e61822e30a9c2832d1f4cefbbb87a"
+        },
+        "summary": "observations = 7. The sig-g group holds all 8 records, but observation_runs is a set of str(run_id): r1-r6 give six members and the two records without run_id both stringify to \"None\", adding one. The lesson is emitted because one record has verified_recovery; that record has no run_id, so verified_runs = {\"None\"}, verified_observations = 1, verified_experiences = 1, confidence = \"provisional\".",
+        "unresolved": []
+      },
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.97,
+      "source_ids": [
+        "request",
+        "code",
+        "records"
+      ],
+      "text": "observations = 7 for the sig-g lesson. All eight records fall in the sig-g group, but observation_runs is a set of str(run_id): r1-r6 give six members, and the two records with no run_id both stringify to \"None\", adding one member \u2014 7 total. The lesson is emitted only because one record carries verified_recovery; that record also lacks run_id, so verified_runs = {\"None\"} \u2192 verified_observations = 1, verified_experiences = 1, confidence = \"provisional\". The str(None) collapse is the trap: a naive per-record count would say 8."
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 25,
+      "jev_tokens_remaining": 83911,
+      "jev_api_usd_remaining": 0.999337702,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden2",
+            "candidate_hash": "55ab0c4fdd0bd66baedc5c0972c3fc8b3df68b6dba85d5d653f75274cead0875",
+            "check_hash": null,
+            "successor": "hidden3",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "55ab0c4fdd0bd66baedc5c0972c3fc8b3df68b6dba85d5d653f75274cead0875",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

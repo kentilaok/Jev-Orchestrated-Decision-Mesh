@@ -1,0 +1,102 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "identity",
+        "title": "scripts/transport.py excerpt (_validate_identity)"
+      },
+      {
+        "id": "config",
+        "title": "scripts/config.py excerpt (aliases and response_models)"
+      },
+      {
+        "id": "jev",
+        "title": "scripts/jev_decide.py excerpt (validate_response model check)"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "c7348ea9bff44e59286b4254fe587a83749dd4d201f346844dc90f4bbe167845",
+        "text": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?"
+      },
+      {
+        "id": "identity",
+        "hash": "822ebc9bcd568768b93027cd1b46a53edbd8f77eeee01eef544844e288e74f15",
+        "text": "    def _validate_identity(self, role, response, payload):\n        returned = response.get(\"model\")\n        require(isinstance(returned, str), \"missing_response_model\")\n        normalized = \"typesafe/\" + returned.removeprefix(\"typesafe/\") if role == \"jev\" else returned\n        require(normalized in self.config.response_models(role, payload[\"model\"]), \"response_model_mismatch\")"
+      },
+      {
+        "id": "config",
+        "hash": "0d8633d39ad3f3ffbdbfa067c3b1ba835fcb5f1656020c537c3c3516a1f06949",
+        "text": "    jev_model: str = \"typesafe/jev-1.13\"\n    ...\n    jev_model_aliases: tuple = (\"typesafe/jev-1.13-20260917\",)\n    ...\n    def response_models(self, role, requested_model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        if role == \"worker\" and requested_model is not None and requested_model != self.worker_model:\n            _require(any(route[\"model\"] == requested_model for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n            return (requested_model,)\n        return (getattr(self, role + \"_model\"),) + getattr(self, role + \"_model_aliases\")"
+      },
+      {
+        "id": "jev",
+        "hash": "d1cfaa9a0e9588c7ab40fb09b86f6575596e4c91760576698c1750c91f57c5c0",
+        "text": "    requested = request[\"model\"].removeprefix(\"~\").removeprefix(\"typesafe/\")\n    returned = response[\"model\"].removeprefix(\"typesafe/\")\n    require(re.fullmatch(r\"jev-[A-Za-z0-9._-]+\", returned) and\n            (requested == \"jev-latest\" or returned == requested or\n             returned.startswith((requested + \".\", requested + \"-\"))), \"response_model_mismatch\")"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 30,
+      "jev_tokens_remaining": 100000,
+      "jev_api_usd_remaining": 1.0,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

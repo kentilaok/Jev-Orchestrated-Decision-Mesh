@@ -1,0 +1,21 @@
+{
+  "goal": "With default RunConfig, Gateway.call sends a valid Jev request for model \"typesafe/jev-1.13\". OpenRouter answers with model \"jev-1.13.2\" and otherwise valid usage, cost and answers. Would jev_decide.validate_response alone accept this model? What error code does the Gateway record for the call?",
+  "context": "",
+  "sources": {
+    "identity": {
+      "title": "scripts/transport.py excerpt (_validate_identity)",
+      "text": "    def _validate_identity(self, role, response, payload):\n        returned = response.get(\"model\")\n        require(isinstance(returned, str), \"missing_response_model\")\n        normalized = \"typesafe/\" + returned.removeprefix(\"typesafe/\") if role == \"jev\" else returned\n        require(normalized in self.config.response_models(role, payload[\"model\"]), \"response_model_mismatch\")"
+    },
+    "config": {
+      "title": "scripts/config.py excerpt (aliases and response_models)",
+      "text": "    jev_model: str = \"typesafe/jev-1.13\"\n    ...\n    jev_model_aliases: tuple = (\"typesafe/jev-1.13-20260917\",)\n    ...\n    def response_models(self, role, requested_model=None):\n        _require(role in (\"worker\", \"checker\", \"jev\"), \"invalid_role\")\n        if role == \"worker\" and requested_model is not None and requested_model != self.worker_model:\n            _require(any(route[\"model\"] == requested_model for route in self.worker_routes()),\n                     \"worker_model_not_permitted\")\n            return (requested_model,)\n        return (getattr(self, role + \"_model\"),) + getattr(self, role + \"_model_aliases\")"
+    },
+    "jev": {
+      "title": "scripts/jev_decide.py excerpt (validate_response model check)",
+      "text": "    requested = request[\"model\"].removeprefix(\"~\").removeprefix(\"typesafe/\")\n    returned = response[\"model\"].removeprefix(\"typesafe/\")\n    require(re.fullmatch(r\"jev-[A-Za-z0-9._-]+\", returned) and\n            (requested == \"jev-latest\" or returned == requested or\n             returned.startswith((requested + \".\", requested + \"-\"))), \"response_model_mismatch\")"
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

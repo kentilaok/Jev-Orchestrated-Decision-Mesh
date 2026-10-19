@@ -1,0 +1,371 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "An MCP dispatch calls require_approval(\"Remove-Cache\", {\"reversibility_hint\": \"reversible\"}, approval={\"status\": \"approved\", \"operator\": \"  \", \"action\": \"Remove-Cache\"}). Does it return or raise? If it raises, give the exception class and its exact message.",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "rules",
+        "title": "scripts/action_reversibility.py excerpt (_NAME_RULES)"
+      },
+      {
+        "id": "gate",
+        "title": "scripts/action_reversibility.py excerpt (classifier and gate)"
+      },
+      {
+        "id": "require",
+        "title": "scripts/action_reversibility.py excerpt (require_approval)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "It raises `NonReversibleActionError`, message exactly: `Remove-Cache is non_reversible and requires an operator approval bound to this action`. The \"reversible\" hint never applies (name rules are checked before the reversible-hint fallback), and operator \"  \" strips to empty, so the approval is rejected.",
+        "source_ids": [
+          "request",
+          "rules",
+          "gate",
+          "require"
+        ],
+        "data": {
+          "summary": "require_approval raises NonReversibleActionError(\"Remove-Cache is non_reversible and requires an operator approval bound to this action\"). classify_action checks only for hint == \"non_reversible\" before the name rules, so the \"reversible\" hint is never applied: \"remove-cache\" matches the first _NAME_RULES pattern (remove + [_\\-].*) and classifies as non_reversible. The gate then requires approval; status is \"approved\" and the bound action matches, but operator \"  \" strips to the empty string, so is_blocked_without_approval returns True and require_approval raises.",
+          "claims": [
+            "classify_action: hint \"reversible\" is not \"non_reversible\", so name rules run first; the reversible-hint fallback is unreachable here. [gate]",
+            "\"Remove-Cache\".strip().lower() == \"remove-cache\", matched by rule 1 ^(delete|...|remove|...)([_\\-].*)?$ via the [_\\-].* branch -> \"non_reversible\". [rules]",
+            "Gate: kind != \"reversible\"; approval is a dict with status \"approved\"; operator \"  \".strip() == \"\" is falsy -> returns True (blocked). [gate]",
+            "Action binding matches (\"Remove-Cache\" == action), so the blank operator alone causes the block. [gate]",
+            "Message is action + \" is \" + kind + \" and requires an operator approval bound to this action\" = \"Remove-Cache is non_reversible and requires an operator approval bound to this action\". [require]",
+            "Assumes the elided \"...\" bodies (docstrings) contain no behaviour; excerpts are taken as the full logic. [require][gate]"
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "09bccf7ffa46cc2d505fe91924a6ba0e8603809874ac8900e7a09ea91a9f8679"
+          ],
+          "source_hashes": {
+            "gate": "ca8656e031aad4c84d2e1269f00b5f3a3797a362e4fc4a399da5b44b02985bb5",
+            "request": "f8a1946cd975f47b233bcb4d32ed3a418ff957f7c29653f32e13b301e2a89f59",
+            "require": "7121da7b6de85968b851cca2318113097d0817439a239b5d9c8c6e7936482583",
+            "rules": "f3e7c38b9fe9b6b0d5ddb64f5400fa251cb393acb9e525eec95b71555ceb203e"
+          }
+        },
+        "artifact_hash": "320e269e65fda688be1793c87b58020fe69bbcb0d180165bebe7467da0cf1b32",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Raises `NonReversibleActionError`: `Remove-Cache is non_reversible and requires an operator approval bound to this action`. The \"reversible\" hint never applies (name rules precede the hint fallback), and operator \"  \" strips to empty, so the approval is rejected.",
+        "source_ids": [
+          "request",
+          "rules",
+          "gate",
+          "require"
+        ],
+        "data": {
+          "summary": "require_approval raises NonReversibleActionError(\"Remove-Cache is non_reversible and requires an operator approval bound to this action\"). classify_action short-circuits only on hint == \"non_reversible\"; the \"reversible\" hint is checked after the name rules, so it is unreachable here. \"remove-cache\" matches the first _NAME_RULES pattern (remove + [_\\-].*) -> non_reversible. In the gate, kind != \"reversible\", approval is a dict, status == \"approved\", bound action == action, but operator \"  \" strips to \"\" (falsy), so is_blocked_without_approval returns True and require_approval raises with action + \" is \" + kind + \" and requires an operator approval bound to this action\".",
+          "claims": [
+            "classify_action: hint \"reversible\" != \"non_reversible\", so the name rules run first and the reversible-hint fallback is unreachable. [gate]",
+            "\"Remove-Cache\".strip().lower() == \"remove-cache\", matched by rule 1 ^(delete|...|remove|...)([_\\-].*)?$ via the [_\\-].* branch -> \"non_reversible\". [rules]",
+            "Gate: kind != \"reversible\"; approval is a dict; status == \"approved\"; bound \"Remove-Cache\" == action; operator \"  \".strip() == \"\" is falsy -> returns True (blocked). [gate]",
+            "The blank operator alone causes the block; the action-binding check passes. [gate]",
+            "Message = action + \" is \" + kind + \" and requires an operator approval bound to this action\" = \"Remove-Cache is non_reversible and requires an operator approval bound to this action\". [require]",
+            "Assumes the elided \"...\" bodies (docstrings) contain no behaviour and the excerpts are the full logic. [require][gate]"
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "320e269e65fda688be1793c87b58020fe69bbcb0d180165bebe7467da0cf1b32"
+          ],
+          "source_hashes": {
+            "gate": "ca8656e031aad4c84d2e1269f00b5f3a3797a362e4fc4a399da5b44b02985bb5",
+            "request": "f8a1946cd975f47b233bcb4d32ed3a418ff957f7c29653f32e13b301e2a89f59",
+            "require": "7121da7b6de85968b851cca2318113097d0817439a239b5d9c8c6e7936482583",
+            "rules": "f3e7c38b9fe9b6b0d5ddb64f5400fa251cb393acb9e525eec95b71555ceb203e"
+          }
+        },
+        "artifact_hash": "70540091ddfa4777e97c11370acab9d0e7935b976f229eaa4b07e867e0a99c7b",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "Accepted. It raises `NonReversibleActionError` with message `Remove-Cache is non_reversible and requires an operator approval bound to this action`. Two decisive points verified independently: the `hint == \"reversible\"` branch sits after the `_NAME_RULES` loop, so it is dead code once `remove-cache` matches rule 1 via the `[_\\-].*` branch; and the approval is rejected only on `operator \"  \"` stripping to empty \u2014 status and the action binding both pass. The message string matches the concatenation in `require_approval` exactly. No corrections to the parent.",
+        "source_ids": [
+          "request",
+          "rules",
+          "gate",
+          "require"
+        ],
+        "data": {
+          "summary": "Verified: require_approval raises NonReversibleActionError(\"Remove-Cache is non_reversible and requires an operator approval bound to this action\"). classify_action returns early only for hint == \"non_reversible\"; the hint here is \"reversible\", which is only consulted after _NAME_RULES, so the name rules decide. \"Remove-Cache\".strip().lower() == \"remove-cache\" matches rule 1 (remove + [_\\-].*) -> \"non_reversible\". In is_blocked_without_approval: kind != \"reversible\", approval is a dict, status == \"approved\", bound action matches, but operator \"  \".strip() == \"\" is falsy -> returns True. require_approval then raises with action + \" is \" + kind + \" and requires an operator approval bound to this action\". Parent's class, message, and rule attribution all check out; no corrections.",
+          "claims": [
+            "Confirmed: the \"reversible\" hint is unreachable here because the name-rule loop precedes it and rule 1 matches. [gate]",
+            "Confirmed: \"remove-cache\" matches ^(delete|...|remove|...)([_\\-].*)?$ through the [_\\-].* branch (\"-cache\") -> \"non_reversible\". [rules]",
+            "Confirmed: gate returns True solely because operator \"  \" strips to empty; status and action binding both pass. [gate]",
+            "Confirmed exact message by concatenation: \"Remove-Cache\" + \" is \" + \"non_reversible\" + \" and requires an operator approval bound to this action\". [require]",
+            "Confirmed exception class NonReversibleActionError; require_approval has no return path once the gate is True. [require]",
+            "Rule order is not in doubt: rules 2-6 are also non_reversible, so even an alternate match gives the same kind. [rules]",
+            "Assumption (shared with parent): elided \"...\" bodies are docstrings with no behaviour and the excerpts are complete logic. [require][gate]"
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "70540091ddfa4777e97c11370acab9d0e7935b976f229eaa4b07e867e0a99c7b"
+          ],
+          "source_hashes": {
+            "gate": "ca8656e031aad4c84d2e1269f00b5f3a3797a362e4fc4a399da5b44b02985bb5",
+            "request": "f8a1946cd975f47b233bcb4d32ed3a418ff957f7c29653f32e13b301e2a89f59",
+            "require": "7121da7b6de85968b851cca2318113097d0817439a239b5d9c8c6e7936482583",
+            "rules": "f3e7c38b9fe9b6b0d5ddb64f5400fa251cb393acb9e525eec95b71555ceb203e"
+          }
+        },
+        "artifact_hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "f8a1946cd975f47b233bcb4d32ed3a418ff957f7c29653f32e13b301e2a89f59",
+        "text": "An MCP dispatch calls require_approval(\"Remove-Cache\", {\"reversibility_hint\": \"reversible\"}, approval={\"status\": \"approved\", \"operator\": \"  \", \"action\": \"Remove-Cache\"}). Does it return or raise? If it raises, give the exception class and its exact message."
+      },
+      {
+        "id": "rules",
+        "hash": "f3e7c38b9fe9b6b0d5ddb64f5400fa251cb393acb9e525eec95b71555ceb203e",
+        "text": "# Each tuple is (regex, classification). Matched left-to-right; first hit wins.\n_NAME_RULES: tuple[tuple[re.Pattern, str], ...] = (\n    (re.compile(r\"^(delete|drop|destroy|wipe|remove|rm|purge|erase|forget)([_\\-].*)?$\"),\n     \"non_reversible\"),\n    (re.compile(r\"^rmdir$|^rm_dir$|^rm_rf$\"), \"non_reversible\"),\n    (re.compile(r\"^(send|post|publish|deploy|release|charge|pay|notify|email|sms|\"\n                r\"webhook|slack|tweet)([_\\-].*)?$\"), \"non_reversible\"),\n    (re.compile(r\"^(post_webhook|post_slack|publish_tweet)$\"), \"non_reversible\"),\n    (re.compile(r\"^(write|update|patch|put|replace|overwrite|append|insert|\"\n                r\"create)([_\\-].*)?$\"), \"non_reversible\"),\n    (re.compile(r\"^alter([_\\-].*)?$\"), \"non_reversible\"),\n    (re.compile(r\"^(read|get|list|search|find|fetch|lookup|describe|show|\"\n                r\"inspect|peek|head|tail)([_\\-].*)?$\"), \"reversible\"),\n)"
+      },
+      {
+        "id": "gate",
+        "hash": "ca8656e031aad4c84d2e1269f00b5f3a3797a362e4fc4a399da5b44b02985bb5",
+        "text": "def classify_action(name: str, annotations: dict | None) -> str:\n    ...\n    annotations = annotations or {}\n    hint = str(annotations.get(\"reversibility_hint\") or \"\").strip().lower()\n    if hint == \"non_reversible\":\n        return \"non_reversible\"\n    name_lower = str(name or \"\").strip().lower()\n    for pattern, classification in _NAME_RULES:\n        if pattern.match(name_lower):\n            return classification\n    if hint == \"reversible\":\n        return \"reversible\"\n    return \"unknown\"\n\n\ndef is_blocked_without_approval(action: str, annotations: dict | None, *,\n                                approval: dict | None) -> bool:\n    ...\n    kind = classify_action(action, annotations)\n    if kind == \"reversible\":\n        return False\n    if not isinstance(approval, dict):\n        return True\n    if approval.get(\"status\") != \"approved\":\n        return True\n    operator = str(approval.get(\"operator\") or \"\").strip()\n    bound = str(approval.get(\"action\") or \"\").strip()\n    if not operator or bound != action:\n        return True\n    return False"
+      },
+      {
+        "id": "require",
+        "hash": "7121da7b6de85968b851cca2318113097d0817439a239b5d9c8c6e7936482583",
+        "text": "def require_approval(action: str, annotations: dict | None, *,\n                     approval: dict | None) -> dict:\n    ...\n    kind = classify_action(action, annotations)\n    if is_blocked_without_approval(action, annotations, approval=approval):\n        raise NonReversibleActionError(\n            action + \" is \" + kind + \" and requires an operator approval bound to this action\")"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 22,
+      "jev_tokens_remaining": 62808,
+      "jev_api_usd_remaining": 0.998460112,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "f4c2e84c86a15704f3b94a41ae5acc22316ea82490844a4a8702f90a705d94f8"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

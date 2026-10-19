@@ -1,0 +1,339 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "The broker preflight calls route_coverage(provider, list(config.worker_routes()), checker=(config.checker_model, config.checker_effort), catalogue=catalogue) for RunConfig(worker_family=\"claude\"). Give the report status and the id of every missing route.",
+    "constraints": [],
+    "version": 2,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "routes",
+        "title": "scripts/config.py excerpt (routes)"
+      },
+      {
+        "id": "coverage",
+        "title": "scripts/frontier_providers.py excerpt (route_coverage)"
+      },
+      {
+        "id": "prices",
+        "title": "scripts/config.py excerpt (families and price fields)"
+      },
+      {
+        "id": "catalogue",
+        "title": "Account catalogue"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "routes",
+          "coverage",
+          "prices",
+          "catalogue"
+        ],
+        "data": {
+          "summary": "The broker preflight calls route_coverage(provider, list(config.worker_routes()), checker=(config.checker_model, config.checker_effort), catalogue=catalogue) for RunConfig(worker_family=\"claude\"). Give the report status and the id of every missing route.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "27351b9ced0bf666bd2cb78ac42ffca33bed513a81ec3ffcc2cb5608e4e3d8c5",
+            "routes": "4ece0d4104688d4be99103c62c800a49d629c89459460c5e6a6dfd591b6a2aa5",
+            "coverage": "8bbe8a03b56669266af531e3354734f1c3c5afc99db74f48db7e1f62a4381cc7",
+            "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "catalogue": "e0d143b8652e0f741a8a977d23a2f54f1a70a9f4ad8048680aea619d681077cd"
+          }
+        },
+        "artifact_hash": "8915f427521ca89252270834aa771e60864065fa90b12b00bd8a55a0648b5d60",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "route_coverage() for worker_family=\"claude\" yields status \"partial\": catalogue is account_derived, and at least one needed route (sonnet_xhigh) is missing while others are covered.",
+        "source_ids": [
+          "request",
+          "routes",
+          "coverage",
+          "prices",
+          "catalogue"
+        ],
+        "data": {
+          "summary": "worker_routes() for claude produces 8 routes: sonnet_{low,medium,high,xhigh} (model claude-sonnet-5) and opus_{low,medium,high,xhigh} (model claude-opus-5), plus the checker route. Catalogue lists claude-sonnet-5 with efforts [low,medium,high] and claude-opus-5 with efforts [low,medium,high,xhigh]. sonnet_xhigh requests effort xhigh, unsupported for claude-sonnet-5, so it is missing (reason effort_not_supported). All 4 opus routes and sonnet_low/medium/high are covered. Checker model resolves via config.py post_init override (default checker_model triggers replacement) to anthropic/claude-opus-5 per FAMILIES[claude][checker]; that tuple's effort value is 'high', but only the model override is shown executing, not an explicit checker_effort assignment, so whether config.checker_effort equals 'high' is not confirmed by the excerpt. Since catalogue.account_derived is true and missing (>=1) is less than needed (9), status is 'partial' regardless of the checker route's outcome.",
+          "claims": [
+            "Needed routes = 8 worker routes (astra route excluded; astra_explicitly_authorized not stated as true) + 1 checker route = 9 total.",
+            "sonnet_xhigh (model claude-sonnet-5, effort xhigh) is missing: reason effort_not_supported, since catalogue efforts for claude-sonnet-5 are only low/medium/high.",
+            "sonnet_low, sonnet_medium, sonnet_high, and all four opus_* routes (opus_low/medium/high/xhigh) are covered against the catalogue.",
+            "checker_model resolves to anthropic/claude-opus-5 via the __post_init__ override because the default value 'openai/gpt-6-sol' triggers replacement with FAMILIES['claude']['checker'][0].",
+            "checker_effort's actual value is not shown being set by the excerpt; FAMILIES['claude']['checker'] = (model, 'high') suggests 'high' is intended, but no code line assigns it to config.checker_effort in the provided excerpt.",
+            "Assumed astra_explicitly_authorized is false/unset since the request does not state otherwise, so the astra_low route is excluded from worker_routes().",
+            "Status is 'partial' is determinate regardless of the checker route's resolution, since missing count is at least 1 and strictly less than the 9 needed entries, and catalogue.account_derived is true (ruling out 'unverified')."
+          ],
+          "unresolved": [
+            "checker_effort's resolved value is not confirmed by the provided prices excerpt (only checker_model's override logic is shown); cannot state with certainty whether the checker route is covered or missing, or its exact id string."
+          ],
+          "parent_hashes": [
+            "8915f427521ca89252270834aa771e60864065fa90b12b00bd8a55a0648b5d60"
+          ],
+          "source_hashes": {
+            "request": "27351b9ced0bf666bd2cb78ac42ffca33bed513a81ec3ffcc2cb5608e4e3d8c5",
+            "routes": "4ece0d4104688d4be99103c62c800a49d629c89459460c5e6a6dfd591b6a2aa5",
+            "coverage": "8bbe8a03b56669266af531e3354734f1c3c5afc99db74f48db7e1f62a4381cc7",
+            "prices": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+            "catalogue": "e0d143b8652e0f741a8a977d23a2f54f1a70a9f4ad8048680aea619d681077cd"
+          }
+        },
+        "artifact_hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "27351b9ced0bf666bd2cb78ac42ffca33bed513a81ec3ffcc2cb5608e4e3d8c5",
+        "text": "The broker preflight calls route_coverage(provider, list(config.worker_routes()), checker=(config.checker_model, config.checker_effort), catalogue=catalogue) for RunConfig(worker_family=\"claude\"). Give the report status and the id of every missing route."
+      },
+      {
+        "id": "routes",
+        "hash": "4ece0d4104688d4be99103c62c800a49d629c89459460c5e6a6dfd591b6a2aa5",
+        "text": "EFFORTS = (\"low\", \"medium\", \"high\", \"xhigh\")\n...\n    def worker_routes(self):\n        tiers = FAMILIES[self.worker_family][\"tiers\"]\n        routes = tuple({\"id\": tier + \"_\" + effort, \"model\": model, \"effort\": effort}\n                       for tier, model in tiers.items() for effort in EFFORTS)\n        return routes + (({\"id\": \"astra_low\", \"model\": \"openai/gpt-6-astra\", \"effort\": \"low\"},)\n                         if self.astra_explicitly_authorized else ())\n\n    def short_route(self):\n        \"\"\"The single-worker route for an explicitly self-contained request.\"\"\"\n        model, effort = FAMILIES[self.worker_family][\"short\"]\n        return next(r for r in self.worker_routes() if r[\"model\"] == model and r[\"effort\"] == effort)"
+      },
+      {
+        "id": "coverage",
+        "hash": "8bbe8a03b56669266af531e3354734f1c3c5afc99db74f48db7e1f62a4381cc7",
+        "text": "def route_coverage(provider: FrontierProvider, routes: list[dict], *, checker: tuple[str, str],\n                   catalogue: dict | None = None) -> dict:\n    ...\n    `covered` requires every worker route, the checker, and the short route.\n    ...\n    catalogue = provider.list_models() if catalogue is None else catalogue\n    needed = [(route[\"model\"].split(\"/\", 1)[-1], route[\"effort\"], route.get(\"id\", \"\")) for route in routes]\n    needed.append((checker[0].split(\"/\", 1)[-1], checker[1], \"checker\"))\n    available = {model[\"slug\"]: set(model.get(\"efforts\") or []) for model in catalogue.get(\"models\", [])}\n    missing = [{\"route\": rid, \"model\": model, \"effort\": effort,\n                \"reason\": \"model_not_in_catalogue\" if model not in available else \"effort_not_supported\"}\n               for model, effort, rid in needed\n               if model not in available or effort not in available[model]]\n    if not catalogue.get(\"account_derived\"):\n        status = \"unverified\"\n    elif not missing:\n        status = \"covered\"\n    elif len(missing) < len(needed):\n        status = \"partial\"\n    else:\n        status = \"unavailable\""
+      },
+      {
+        "id": "prices",
+        "hash": "c15992558698a2f653311960f21a2cd30c3f1ab1676cfa993ad3a35c9d47ca8a",
+        "text": "FAMILIES = {\n    ...\n    \"claude\": {\"tiers\": {\"sonnet\": \"anthropic/claude-sonnet-5\", \"opus\": \"anthropic/claude-opus-5\"},\n               \"checker\": (\"anthropic/claude-opus-5\", \"high\"), \"short\": (\"anthropic/claude-sonnet-5\", \"low\")},\n}\nTIER_OF_MODEL = {model: tier for family in FAMILIES.values() for tier, model in family[\"tiers\"].items()}\n...\n    checker_model: str = \"openai/gpt-6-sol\"\n    ...\n    max_output_tokens: int = 2000\n    ...\n    checker_input_usd_per_million: float = 2.0\n    checker_output_usd_per_million: float = 10.0\n    jev_input_usd_per_million: float = 0.05\n    jev_output_usd_per_million: float = 0.05\n    # Claude reservation ceilings (API list rates); Claude Code plan usage is not priced here.\n    worker_sonnet_input_usd_per_million: float = 2.0\n    worker_sonnet_output_usd_per_million: float = 10.0\n    worker_opus_input_usd_per_million: float = 5.0\n    worker_opus_output_usd_per_million: float = 25.0\n    ...\n            if self.checker_model == \"openai/gpt-6-sol\":\n                object.__setattr__(self, \"checker_model\", family[\"checker\"][0])"
+      },
+      {
+        "id": "catalogue",
+        "hash": "e0d143b8652e0f741a8a977d23a2f54f1a70a9f4ad8048680aea619d681077cd",
+        "text": "{\"account_derived\": true, \"models\": [{\"slug\": \"claude-sonnet-5\", \"efforts\": [\"low\", \"medium\", \"high\"]}, {\"slug\": \"claude-opus-5\", \"efforts\": [\"low\", \"medium\", \"high\", \"xhigh\"]}]}"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden2",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden2",
+      "name": "Compute",
+      "objective": "Perform the bounded substantive work using accepted context and original evidence."
+    },
+    "parents": [
+      {
+        "id": "hidden1",
+        "artifact_hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 26,
+      "jev_tokens_remaining": 84466,
+      "jev_api_usd_remaining": 0.999357274,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "hidden2",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden1",
+                "hash": "7b4071d59d10d1738b7474c213886c2cd0762823f717084d7ca63c3ef8943538"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}

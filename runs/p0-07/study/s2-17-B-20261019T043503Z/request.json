@@ -1,0 +1,25 @@
+{
+  "goal": "Using the browser module, the permit code and the steps: what does perform() raise (give the PermitError code), how many entries does session.receipts hold afterwards, and was page.click called?",
+  "context": "",
+  "sources": {
+    "browser": {
+      "title": "scripts/browser_capability.py excerpt",
+      "text": "ACTIONS = {\n    \"goto\": \"browser.read\", \"screenshot\": \"browser.read\", \"snapshot\": \"browser.read\",\n    \"text\": \"browser.extract\", \"inner_text\": \"browser.extract\", \"get_attribute\": \"browser.extract\",\n    \"click\": \"browser.mutate\", \"fill\": \"browser.mutate\", \"select_option\": \"browser.mutate\",\n    \"press\": \"browser.mutate\", \"check\": \"browser.mutate\",\n    \"submit\": \"browser.submit_transaction\",\n}\nTRANSACTIONAL = re.compile(\n    r\"\\b(submit|pay|purchase|buy|checkout|check out|place order|order now|confirm|send|publish|post|\"\n    r\"delete|transfer|subscribe|sign up|register|donate)\\b\", re.I)\n\n\ndef classify(action: str, target: str | None = None) -> str:\n    require(action in ACTIONS, \"unknown_browser_action\")\n    capability = ACTIONS[action]\n    if capability == \"browser.mutate\" and action in (\"click\", \"press\") and target and TRANSACTIONAL.search(target):\n        return \"browser.submit_transaction\"\n    if action == \"press\" and target and target.strip().lower() == \"enter\":\n        return \"browser.submit_transaction\"  # Enter in a form submits it\n    return capability"
+    },
+    "perform": {
+      "title": "scripts/browser_capability.py excerpt (BrowserSession.perform)",
+      "text": "    def perform(self, action: str, permit_id: str, *, url: str | None = None, target: str | None = None,\n                value: str | None = None):\n        capability = classify(action, target)\n        origin_url = url if action == \"goto\" else getattr(self.page, \"url\", None)\n        scope = action_scope(action, origin_url if origin_url not in (None, \"about:blank\") else None, target, value)\n        require(scope[\"origin\"] is None or scope[\"origin\"] in self.allowed, \"browser_origin_not_allowed\")\n        self.authority.consume(permit_id, capability, scope)\n        outcome = {\"status\": \"failed\", \"action\": action, \"capability\": capability, \"origin\": scope[\"origin\"]}\n        try:\n            ...\n            elif action in (\"click\", \"check\"):\n                result = getattr(self.page, action)(target)\n            ...\n        finally:\n            self.receipts.append(outcome)\n            self.authority.receipt(permit_id, outcome)"
+    },
+    "consume": {
+      "title": "scripts/capability_permits.py excerpt (consume)",
+      "text": "    def consume(self, permit_id: str, capability: str, scope: dict) -> dict:\n        with self.lock:\n            require(isinstance(permit_id, str) and permit_id in self._permits, \"unknown_permit\")\n            require(permit_id not in self._used, \"permit_already_used\")\n            grant = self._permits[permit_id]\n            require(grant[\"capability\"] == capability, \"permit_capability_mismatch\")\n            require(grant[\"scope_hash\"] == digest(scope), \"permit_scope_mismatch\")\n            require(self.clock() <= grant[\"expires_at\"], \"permit_expired\")"
+    },
+    "steps": {
+      "title": "Steps",
+      "text": "session = BrowserSession(page, authority, allowed_origins=[\"https://shop.example\"]); page.url is \"https://shop.example/cart\".\nThe agent issues a permit: pid = authority.issue(\"browser.mutate\", action_scope(\"click\", page.url, \"Pay now\", None), jev_basis), where jev_basis is a valid live Jev decision basis.\nIt then calls session.perform(\"click\", pid, target=\"Pay now\")."
+    }
+  },
+  "active_project": false,
+  "unresolved_stages": [],
+  "classification": null
+}

@@ -1,0 +1,89 @@
+{
+  "status": "complete",
+  "route": "short_self_contained",
+  "gate_policy": "recovery",
+  "answer": "3 of the 6 calls return True.",
+  "task_hash": "375e591a99c153948a36f3d2c5d89321afe1dad94d06c2c7f74b4b7747381759",
+  "classification": {
+    "source": "explicit_host",
+    "snapshot_hash": "375e591a99c153948a36f3d2c5d89321afe1dad94d06c2c7f74b4b7747381759",
+    "flags": {
+      "multiple_steps": false,
+      "broad_project": false,
+      "ambiguous": false,
+      "depends_on_context": false
+    },
+    "rationale": "Single bounded question answered from the supplied sources.",
+    "scope": "short_self_contained",
+    "active_project_guard": false
+  },
+  "source_hashes": {
+    "request": "e658c75ce088bc30c042aa93640b8f724fe9098a084575c73faed1d69a2a7c8f",
+    "rules": "f3e7c38b9fe9b6b0d5ddb64f5400fa251cb393acb9e525eec95b71555ceb203e",
+    "gate": "ca8656e031aad4c84d2e1269f00b5f3a3797a362e4fc4a399da5b44b02985bb5"
+  },
+  "calls": [
+    {
+      "role": "worker",
+      "requested_model": "claude-sonnet-5",
+      "requested_effort": "low",
+      "actual_model": "claude-sonnet-5",
+      "actual_effort": null,
+      "identity_verification": "reported_match",
+      "usage": {
+        "input_tokens": 35573,
+        "cached_input_tokens": 16549,
+        "cache_write_input_tokens": 19020,
+        "output_tokens": 3269,
+        "reasoning_output_tokens": null,
+        "semantics": "input_tokens = uncached + cache_write + cache_read (Anthropic reports them separately)"
+      },
+      "status": "ok",
+      "session_id": "8c2dab0d-9533-48f4-8778-1d18d9a3882c",
+      "permit_id": "2eefb83c5d794ce19588bcf0fa6a3b38",
+      "artifact_hash": "c59d40b4470c2a24b35e2af4f3e55f610c9d585bebec85bb2b3291d16a5c2230"
+    }
+  ],
+  "codex_cost_usd": null,
+  "training_performed": false,
+  "simulation": false,
+  "hard_checks": {
+    "native_shape": true,
+    "source_hashes_match": true,
+    "parent_hashes_match": true,
+    "prior_units_resolved": true,
+    "output_has_no_unresolved": true
+  },
+  "candidate_hash": "c59d40b4470c2a24b35e2af4f3e55f610c9d585bebec85bb2b3291d16a5c2230",
+  "permit_audit": {
+    "valid": true,
+    "issues": [],
+    "issued": 1,
+    "consumed": 1,
+    "receipted": 1,
+    "unused": []
+  },
+  "primary_agent_tokens": null,
+  "accounting": {
+    "jev_calls": 0,
+    "frontier_child_calls": 1,
+    "frontier_calls_usage_unknown": 0,
+    "frontier_input_tokens": 35573,
+    "frontier_output_tokens": 3269,
+    "primary_agent_usage": "unmetered",
+    "complete_system_accounting": false
+  },
+  "jev_api_cost_usd": 0,
+  "host": "claude",
+  "config_policy_hash": "d7237472704f8ed9012c6744d35fa53185f7c11214ef820450b476c540385663",
+  "route_coverage": {
+    "provider": "claude",
+    "status": "unverified",
+    "account_derived": false,
+    "source": "configured_presets_unverified",
+    "required": 9,
+    "missing": [],
+    "catalogue_hash": null
+  },
+  "jev_provider_events": []
+}

@@ -1,0 +1,84 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+    "constraints": [],
+    "version": 0,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/retrieval.py excerpt (chunk_text)"
+      }
+    ],
+    "recent_accepted": [],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+        "text": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order."
+      },
+      {
+        "id": "code",
+        "hash": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57",
+        "text": "    require(isinstance(text, str) and 200 <= max_chars <= SOURCE_LIMIT and 0 <= overlap < max_chars // 2,\n            \"invalid_chunking\")\n    text = text.replace(\"\\r\\n\", \"\\n\").strip()\n    if not text:\n        return []\n    paragraphs = [p.strip() for p in re.split(r\"\\n\\s*\\n\", text) if p.strip()]\n    pieces: list[str] = []\n    for paragraph in paragraphs:\n        while len(paragraph) > max_chars:\n            cut = paragraph.rfind(\" \", 0, max_chars)\n            cut = cut if cut > max_chars // 2 else max_chars\n            pieces.append(paragraph[:cut].strip())\n            paragraph = paragraph[cut:].strip()\n        if paragraph:\n            pieces.append(paragraph)\n    chunks: list[str] = []\n    current = \"\"\n    for piece in pieces:\n        candidate = (current + \"\\n\\n\" + piece).strip() if current else piece\n        if len(candidate) <= max_chars:\n            current = candidate\n            continue\n        chunks.append(current)\n        tail = current[-overlap:] if overlap else \"\"\n        current = (tail + \"\\n\\n\" + piece).strip() if tail and len(tail) + len(piece) + 2 <= max_chars else piece\n    if current:\n        chunks.append(current)\n    return chunks"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "input",
+      "released": false
+    },
+    "unit": {
+      "id": "input",
+      "name": "Input",
+      "objective": "Preserve the current request, carried context, and original source identities."
+    },
+    "parents": [],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 30,
+      "jev_tokens_remaining": 100000,
+      "jev_api_usd_remaining": 1.0,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "stop": {
+          "description": "Stop without computing or forwarding."
+        },
+        "compute": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "input",
+            "attempt": 0,
+            "parents": [],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": null
+          },
+          "description": "Use deterministic code for this unit; no generative worker call."
+        }
+      }
+    }
+  }
+}

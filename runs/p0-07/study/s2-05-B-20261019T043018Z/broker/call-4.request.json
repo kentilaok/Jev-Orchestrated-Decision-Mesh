@@ -1,0 +1,178 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+    "constraints": [],
+    "version": 1,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/retrieval.py excerpt (chunk_text)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "input",
+        "operation": "validated_unit",
+        "summary": "Input and evidence identities preserved.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order.",
+          "claims": [],
+          "unresolved": [],
+          "parent_hashes": [],
+          "source_hashes": {
+            "request": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+            "code": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57"
+          }
+        },
+        "artifact_hash": "9ae98d6d7450faf330a86ee9697e7d983255cc05a6ebba5b563a2403bdd80f9b",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+        "text": "text = 'a' * 150 + '\\n\\n' + 'b' * 30 + '\\n\\n' + 'c' * 120 + '\\n\\n' + 'd' * 139 (four paragraphs, no spaces). Trace chunk_text(text, max_chars=200, overlap=60) and give the length of every returned chunk, in order."
+      },
+      {
+        "id": "code",
+        "hash": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57",
+        "text": "    require(isinstance(text, str) and 200 <= max_chars <= SOURCE_LIMIT and 0 <= overlap < max_chars // 2,\n            \"invalid_chunking\")\n    text = text.replace(\"\\r\\n\", \"\\n\").strip()\n    if not text:\n        return []\n    paragraphs = [p.strip() for p in re.split(r\"\\n\\s*\\n\", text) if p.strip()]\n    pieces: list[str] = []\n    for paragraph in paragraphs:\n        while len(paragraph) > max_chars:\n            cut = paragraph.rfind(\" \", 0, max_chars)\n            cut = cut if cut > max_chars // 2 else max_chars\n            pieces.append(paragraph[:cut].strip())\n            paragraph = paragraph[cut:].strip()\n        if paragraph:\n            pieces.append(paragraph)\n    chunks: list[str] = []\n    current = \"\"\n    for piece in pieces:\n        candidate = (current + \"\\n\\n\" + piece).strip() if current else piece\n        if len(candidate) <= max_chars:\n            current = candidate\n            continue\n        chunks.append(current)\n        tail = current[-overlap:] if overlap else \"\"\n        current = (tail + \"\\n\\n\" + piece).strip() if tail and len(tail) + len(piece) + 2 <= max_chars else piece\n    if current:\n        chunks.append(current)\n    return chunks"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "hidden1",
+      "released": false
+    },
+    "unit": {
+      "id": "hidden1",
+      "name": "Interpret",
+      "objective": "Identify requirements, dependencies, constraints, and missing evidence."
+    },
+    "parents": [
+      {
+        "id": "input",
+        "artifact_hash": "9ae98d6d7450faf330a86ee9697e7d983255cc05a6ebba5b563a2403bdd80f9b"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "selected_worker": {
+      "id": "opus_low",
+      "model": "anthropic/claude-opus-5",
+      "effort": "low"
+    },
+    "candidate": {
+      "text": "Chunk lengths in order: 182, 182, 139 (3 chunks).\n\n1. pieces = the four paragraphs unchanged (all <= 200, so the rfind/split loop never runs).\n2. a150 + sep + b30 = 182; adding c120 would give 304 > 200, so chunk 1 (182) is flushed.\n3. tail = last 60 chars (28 a's + sep + 30 b's); 60+120+2 = 182 <= 200, so current = 182; adding d139 would give 323 > 200, so chunk 2 (182) is flushed.\n4. tail = last 60 chars (60 c's); 60+139+2 = 201 > 200, so the tail is dropped and current = d139.\n5. Final `if current` appends chunk 3 (139).",
+      "data": {
+        "summary": "chunk_text returns 3 chunks with lengths [182, 182, 139]. No paragraph exceeds max_chars, so pieces are the four paragraphs unchanged. Packing: a150+b30 = 182 (flush when c would push it to 304); 60-char tail + c120 = 182 (flush when d would push it to 323); the second tail is dropped because 60+139+2 = 201 > 200, leaving d139 as the final chunk.",
+        "claims": [
+          "All four paragraphs are <= max_chars (200), so the paragraph-splitting while-loop never runs; pieces = [a*150, b*30, c*120, d*139].",
+          "Chunk 1 = a*150 + blank-line separator + b*30 = 182 chars; adding c*120 would give 304 > 200, so it is flushed.",
+          "Overlap tail after chunk 1 = last 60 chars = 28 a's + separator + 30 b's; 60+120+2 = 182 <= 200, so the tail is kept.",
+          "Chunk 2 = tail(60) + separator + c*120 = 182 chars; adding d*139 would give 323 > 200, so it is flushed.",
+          "Overlap tail after chunk 2 = 60 c's; 60+139+2 = 201 > 200, so the tail is dropped and current becomes the bare paragraph.",
+          "Chunk 3 = d*139 = 139 chars, appended by the final 'if current' branch.",
+          "strip() changes nothing because no tail or piece begins or ends with whitespace.",
+          "Preconditions hold: max_chars 200 >= 200 and overlap 60 < 200//2 = 100, so require() passes."
+        ],
+        "unresolved": [],
+        "parent_hashes": [
+          "9ae98d6d7450faf330a86ee9697e7d983255cc05a6ebba5b563a2403bdd80f9b"
+        ],
+        "source_hashes": {
+          "request": "6911a393ae6963ab9e58039cb9aeabd6ec2d40eff6178d4805e34c26fbf25cfd",
+          "code": "fd46424e8eafc0aa232b5b08ca9aec9db300c26f1d632c815edaa9771406aa57"
+        }
+      },
+      "source_ids": [
+        "request",
+        "code"
+      ],
+      "five_scores": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "self_probability": 0.95
+    },
+    "hard_checks": {
+      "native_shape": true,
+      "source_hashes_match": true,
+      "parent_hashes_match": true,
+      "artifact_schema_valid": true
+    },
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 27,
+      "jev_tokens_remaining": 92217,
+      "jev_api_usd_remaining": 0.999680296,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "This worker or deterministic unit has returned. Judge only its local objective and original evidence. Forward when all executable checks pass and no unresolved issue requires another model. Choose check_sol_high only when extra semantic review is justified; it is not a prerequisite. Repair a concrete defect, escalate to a stronger offered worker route when necessary, retrieve missing original evidence, or stop. Scores and self-probability are not proof. Intermediate units need not finish the entire task.",
+      "criteria": {
+        "repair": {
+          "description": "Retry a concrete defect using a new candidate and fresh Jev route."
+        },
+        "retrieve_evidence": {
+          "description": "Stop for original evidence that is missing."
+        },
+        "forward": {
+          "worker_id": "policy",
+          "action": {
+            "operation": "forward",
+            "unit_id": "hidden1",
+            "candidate_hash": "96cbad6fd2a0168cec70d637986f6b766380b41a83281d354afb9c3a424f0950",
+            "check_hash": null,
+            "successor": "hidden2",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Accept this candidate after passed executable checks; no Sol-high review was requested."
+        },
+        "check_sol_high": {
+          "worker_id": "checker",
+          "action": {
+            "operation": "sol_high_check",
+            "unit_id": "hidden1",
+            "attempt": 0,
+            "check_attempt": 0,
+            "candidate_hash": "96cbad6fd2a0168cec70d637986f6b766380b41a83281d354afb9c3a424f0950",
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75"
+          },
+          "description": "Request a separate Sol-high review because this candidate needs more scrutiny."
+        },
+        "escalate": {
+          "description": "Retry this unit using a higher resource worker route; no current candidate is accepted."
+        }
+      }
+    }
+  }
+}

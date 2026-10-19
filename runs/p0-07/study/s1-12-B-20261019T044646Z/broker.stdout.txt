@@ -1,0 +1,1 @@
+{"answer":"Rejected. Sum = 0.55+0.3+0.166 = 1.016, difference from 1 = 0.016. Allowed tolerance = min(0.02, 0.005*3) = 0.015. Since 0.016 > 0.015 (+1e-12 epsilon), the require() at the sum check fails first.\n\nFailure code: invalid_probability_sum","calls":1,"route":"short_self_contained","status":"complete"}

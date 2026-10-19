@@ -84,4 +84,14 @@
 {"task_id": "s3-20", "arm": "A", "status": "no_answer", "accepted": false, "injection": false}
 {"task_id": "s2-12", "arm": "A", "status": "no_answer", "accepted": false, "injection": false}
 {"task_id": "s2-12", "arm": "B", "status": "failed", "accepted": false, "injection": false}
-{"task_id": "s1-14", "arm": "B", "status": "native_codex_call_failed", "accepted": false, "injection": false}
+{"task_id": "s1-14", "arm": "B", "status": "native_codex_call_failed", "accepted": false, "injection": false}=== resume 2026-10-18T20:57:43Z on Claude account 1 (kentilaok2) ===
+{"task_id": "s3-20", "arm": "B", "status": "failed", "accepted": false, "injection": false}
+{"task_id": "s3-20", "arm": "A", "status": "answered", "accepted": false, "injection": false}
+{"task_id": "s2-12", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-12", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s1-14", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s1-14", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+{"task_id": "s2-15", "arm": "A", "status": "answered", "accepted": true, "injection": false}
+=== watchdog start 2026-10-19T04:20:54Z (Claude account 1, restart 0) ===
+{"task_id": "s2-15", "arm": "B", "status": "complete", "accepted": true, "injection": false}
+{"task_id": "s3-18", "arm": "B", "status": "complete", "accepted": true, "injection": false}

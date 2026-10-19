@@ -1,0 +1,341 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "goal": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that.",
+    "constraints": [],
+    "version": 4,
+    "source_manifest": [
+      {
+        "id": "request",
+        "title": "Current request"
+      },
+      {
+        "id": "code",
+        "title": "scripts/jev_decide.py excerpt (probability checks)"
+      }
+    ],
+    "recent_accepted": [
+      {
+        "id": "hidden1",
+        "operation": "validated_unit",
+        "summary": "Not accepted. One warning (`probability_sum_rounding`) is appended first, then validation fails with `choice_not_most_probable`: 0.4 + 0.001 = 0.401 < max 0.4011 (forward). The sum 1.0011 is within the allowed 0.015 slack but exceeds TOLERANCE, which is what triggers the warning.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "Rejected with choice_not_most_probable, and a probability_sum_rounding warning is appended first. Sum = 0.4011+0.4+0.2 = 1.0011, so difference = 0.0011 and allowed = min(0.02, 0.005*3=0.015) = 0.015, so the sum check passes (0.0011 <= 0.015). Because 0.0011 > TOLERANCE (0.001), distribution() appends the warning {code: probability_sum_rounding, question_id: name}. Confidence 0.6 and the key set {forward, repair, stop} are valid, and choice \"repair\" is a string in keys. The final check fails: probabilities[\"repair\"] + TOLERANCE = 0.4 + 0.001 = 0.401, which is less than max(probabilities.values()) = 0.4011 (forward), so require(...) raises Failure(\"choice_not_most_probable\").",
+          "claims": [
+            "Sum 1.0011; difference 0.0011 <= allowed 0.015, so invalid_probability_sum does not trigger.",
+            "0.0011 > TOLERANCE 0.001, so warning probability_sum_rounding is appended inside distribution() before the choice checks.",
+            "choice \"repair\" is a valid string in keys, so invalid_choice_value passes.",
+            "0.4 + 0.001 = 0.401 < 0.4011, so the tolerant most-probable check fails: Failure code choice_not_most_probable.",
+            "Floating-point detail: 0.401 vs 0.4011 is not a near-tie, so binary rounding does not change the outcome.",
+            "Assumed the excerpt's ordering is the full path and that require() raises on a false condition with the given code."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "9259f4cf12a298247016e517a42b7988b6d1c80916f3f8a80d64a445262f1ec8"
+          ],
+          "source_hashes": {
+            "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+            "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93"
+          }
+        },
+        "artifact_hash": "b879e9ba1bca31bd2245044358fc146d7aa7915a914fa9e04dd1594668af5d73",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden2",
+        "operation": "validated_unit",
+        "summary": "Not accepted. A `probability_sum_rounding` warning is appended first, then validation fails with `choice_not_most_probable`: 0.4 + 0.001 = 0.401 < max 0.4011 (forward). The sum 1.0011 is within the allowed 0.015 slack, so the sum check passes, but the 0.0011 deviation exceeds TOLERANCE, which triggers the warning.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "claims": [
+            "Sum = 0.4011+0.4+0.2 = 1.0011; difference = 0.0011; allowed = min(0.02, 0.005*3=0.015), so invalid_probability_sum does not trigger.",
+            "0.0011 > TOLERANCE 0.001, so warning probability_sum_rounding (with question_id) is appended inside distribution(), before the choice checks.",
+            "Key set {forward, repair, stop} matches criteria and all values are in [0,1]; confidence 0.6 is valid.",
+            "choice \"repair\" is a string in keys, so invalid_choice_value passes.",
+            "Final check fails: 0.4 + 0.001 = 0.401 < max = 0.4011, so require raises Failure(\"choice_not_most_probable\").",
+            "0.401 vs 0.4011 is not a near-tie, so binary floating-point representation does not flip the outcome.",
+            "Assumed the excerpt's order is the full validation path and require() raises Failure with the given code on a false condition."
+          ],
+          "parent_hashes": [
+            "b879e9ba1bca31bd2245044358fc146d7aa7915a914fa9e04dd1594668af5d73"
+          ],
+          "source_hashes": {
+            "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+            "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93"
+          },
+          "summary": "Not accepted. Rejected with Failure code choice_not_most_probable, and one warning is appended before that. Sum = 0.4011+0.4+0.2 = 1.0011, so difference = 0.0011 and allowed = min(0.02, 0.005*3 = 0.015); 0.0011 <= 0.015 + 1e-12, so invalid_probability_sum does not trigger. Because 0.0011 > TOLERANCE (0.001), distribution() appends {code: probability_sum_rounding, question_id: name} to warnings. Confidence 0.6 is in [0,1]; the key set {forward, repair, stop} matches the criteria and all values are valid numbers in [0,1]. choice \"repair\" is a string in keys, so invalid_choice_value passes. The last check fails: probabilities[\"repair\"] + TOLERANCE = 0.401 < max(probabilities.values()) = 0.4011 (forward), so require(...) raises Failure(\"choice_not_most_probable\").",
+          "unresolved": []
+        },
+        "artifact_hash": "57049055c216e8ae811432005ef0254dcb27d730828b4db52f8bfb68958570c9",
+        "reviewed_by_sol": false
+      },
+      {
+        "id": "hidden3",
+        "operation": "validated_unit",
+        "summary": "Accepted. The response is rejected with Failure code `choice_not_most_probable`, and one warning (`probability_sum_rounding`) is appended before that.\n\nChecks re-verified against the excerpt: sum 1.0011 gives difference 0.0011 against allowed min(0.02, 0.015) = 0.015, so the sum check passes; 0.0011 > TOLERANCE 0.001 triggers the warning inside `distribution()`, which runs before the choice checks; the final require fails because 0.4 + 0.001 = 0.401 < 0.4011. The 0.0001 margin is well above double-precision error, so no floating-point ambiguity. No blocking issues.",
+        "source_ids": [
+          "request",
+          "code"
+        ],
+        "data": {
+          "summary": "Parent result accepted as correct. Sum = 1.0011, difference = 0.0011, allowed = min(0.02, 0.005*3 = 0.015); 0.0011 <= 0.015 + 1e-12, so invalid_probability_sum does not trigger. 0.0011 > TOLERANCE (0.001), so distribution() appends {code: probability_sum_rounding, question_id: name} to warnings before any choice check. Confidence 0.6 is in [0,1]; key set {forward, repair, stop} matches criteria; all values are numbers in [0,1]. choice \"repair\" is a string in keys, so invalid_choice_value passes. Final check fails: probabilities[\"repair\"] + TOLERANCE = 0.401 < max = 0.4011 (forward), so require raises Failure(\"choice_not_most_probable\"). Answer: not accepted; Failure code choice_not_most_probable; one warning (probability_sum_rounding) is added before the failure.",
+          "claims": [
+            "Arithmetic verified: 0.4011+0.4+0.2 = 1.0011, difference 0.0011, allowed 0.015 \u2014 sum check passes.",
+            "Warning ordering verified against the excerpt: distribution() runs before the choice checks, so the warning is appended before the failure.",
+            "0.401 < 0.4011 by a margin of 0.0001, far above double-precision error, so floating-point representation cannot flip the outcome.",
+            "Failure code choice_not_most_probable matches the string in the final require().",
+            "Assumption (inherited and reasonable): the excerpt shows the full relevant validation path and require() raises Failure with the given code when its condition is false.",
+            "Usage/model checks are stated valid in the request and are not shown in the excerpt, so they do not affect the trace."
+          ],
+          "unresolved": [],
+          "parent_hashes": [
+            "57049055c216e8ae811432005ef0254dcb27d730828b4db52f8bfb68958570c9"
+          ],
+          "source_hashes": {
+            "request": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+            "code": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b"
+          }
+        },
+        "artifact_hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30",
+        "reviewed_by_sol": false
+      }
+    ],
+    "older_accepted_ids": [
+      "input"
+    ],
+    "evidence": [
+      {
+        "id": "request",
+        "hash": "f295c3dcbb58aa22cb339f6bd71dc50d4270685af4266a6c8a6b5e020d94bd93",
+        "text": "A Jev choice question has options forward, repair and stop. The response has choice \"repair\", probabilities {\"forward\": 0.4011, \"repair\": 0.4, \"stop\": 0.2}, confidence 0.6, and valid usage and model. Trace validate_response: does it accept the response? If not, give the Failure code; also say whether a warning is added before that."
+      },
+      {
+        "id": "code",
+        "hash": "de23fb5ef6a1789d728bbbf1b208e567a1fc31634b8107c83ba6a8c0491b441b",
+        "text": "TOLERANCE = 0.001\n...\ndef distribution(value, keys, warnings, question_id):\n    require(isinstance(value, dict) and set(value) == set(keys), \"invalid_probability_options\")\n    require(all(number(p, 0, 1) for p in value.values()), \"invalid_probability_value\")\n    total = sum(value.values())\n    difference, allowed = abs(total - 1), min(0.02, 0.005 * len(keys))\n    require(difference <= allowed + 1e-12, \"invalid_probability_sum\")\n    if difference > TOLERANCE:\n        warnings.append({\"code\": \"probability_sum_rounding\", \"question_id\": question_id,\n    ...\n        require(number(answer.get(\"confidence\"), 0, 1), \"invalid_confidence\")\n        keys = question[\"criteria\"] if kind == \"choice\" else [str(i) for i in range(len(question[\"criteria\"]))]\n        probabilities = answer.get(\"probabilities\")\n        distribution(probabilities, keys, warnings, name)\n        if kind == \"choice\":\n            choice = answer.get(\"choice\")\n            require(isinstance(choice, str) and choice in keys, \"invalid_choice_value\")\n            require(probabilities[choice] + TOLERANCE >= max(probabilities.values()), \"choice_not_most_probable\")"
+      }
+    ],
+    "last_issue": null,
+    "pending_verification": null,
+    "invalidated_result_ids": [],
+    "completion": {
+      "completed_units": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3"
+      ],
+      "required_order": [
+        "input",
+        "hidden1",
+        "hidden2",
+        "hidden3",
+        "output"
+      ],
+      "active_unit": "output",
+      "released": false
+    },
+    "unit": {
+      "id": "output",
+      "name": "Output",
+      "objective": "Deliver a concise supported result and state material unresolved issues."
+    },
+    "parents": [
+      {
+        "id": "hidden3",
+        "artifact_hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+      }
+    ],
+    "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+    "repair_feedback": null,
+    "remaining_budget": {
+      "jev_calls_remaining": 22,
+      "jev_tokens_remaining": 68092,
+      "jev_api_usd_remaining": 0.99868204,
+      "basis": "reported_input_plus_output_and_cost_receipts"
+    }
+  },
+  "questions": {
+    "next": {
+      "type": "choice",
+      "instructions": "Choose a listed worker model and effort for this unit, or compute when deterministic code is offered. Prefer the least costly option likely to meet the unit's evidence and quality criteria. Use Sol xhigh for difficult general planning when warranted. Stop if prerequisites are missing. Never select an unlisted model. Judge the local objective, not completion of the whole task.",
+      "criteria": {
+        "sonnet_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_low",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at low effort."
+        },
+        "sonnet_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_medium",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at medium effort."
+        },
+        "sonnet_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_high",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at high effort."
+        },
+        "sonnet_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "sonnet_xhigh",
+              "model": "anthropic/claude-sonnet-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-sonnet-5 at xhigh effort."
+        },
+        "opus_low": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_low",
+              "model": "anthropic/claude-opus-5",
+              "effort": "low"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at low effort."
+        },
+        "opus_medium": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_medium",
+              "model": "anthropic/claude-opus-5",
+              "effort": "medium"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at medium effort."
+        },
+        "opus_high": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_high",
+              "model": "anthropic/claude-opus-5",
+              "effort": "high"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at high effort."
+        },
+        "opus_xhigh": {
+          "worker_id": "producer",
+          "action": {
+            "operation": "compute_unit",
+            "unit_id": "output",
+            "attempt": 0,
+            "parents": [
+              {
+                "id": "hidden3",
+                "hash": "d7dca285cd8ecf4c7705da45ebc2a2d60b0a98cd348a0abe313e4eef39c9ff30"
+              }
+            ],
+            "policy_version": "83d8d62a86bd8232fb91c7da688db4206072dd9b8177e264acc09a759e1d2b75",
+            "worker_route": {
+              "id": "opus_xhigh",
+              "model": "anthropic/claude-opus-5",
+              "effort": "xhigh"
+            }
+          },
+          "description": "Run only this unit with anthropic/claude-opus-5 at xhigh effort."
+        }
+      }
+    }
+  }
+}
