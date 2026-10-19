@@ -99,4 +99,6 @@ In 8 of the 11 F1/F2/F3 runs, the candidate CIDM was holding would have been acc
 - No CIDM or suite changes on `feature/p0-07-benchmark` until the study ends. Work on the fixes goes on separate branches or worktrees: the running study launches the broker from `scripts/` for every arm-B task.
 - Explain things to Ken in plain terms; he found the jargon hard to follow.
 
+**Study report (section 7 item 4):** `docs/P0-07-STUDY-REPORT.md`.
+
 *CIDM architecture and research by Ken Caber (Kenneth Vic A. Caber).*
