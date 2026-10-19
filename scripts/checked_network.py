@@ -20,6 +20,12 @@ UNITS = (
     Unit('output','Output','Produce the final answer supported by the checked predecessors and sources.'),
 )
 
+# Largest Jev decision state a unit may send. It must leave room inside jev_decide.MAX_REQUEST_BYTES
+# (28,000) for the options and instructions around the state (at most 4,189 bytes in the P0-07 study).
+# It was 16,000, which halted multi-source units with unit_context_too_large (P0-07 finding F1).
+MAX_UNIT_STATE_BYTES=22000
+JEV_REQUEST_RESERVE_BYTES=6000
+
 
 def blind(value):
     excluded={'five_scores','self_probability','router_advice','jev_decision','confidence'}
@@ -59,7 +65,7 @@ class CheckedNetwork:
         self.frozen_policy=self.policy_version
         self.checker_identity=copy.deepcopy(checker_identity or {"model":"openai/gpt-6-sol","effort":"high"})
         self.mesh=AtomicMesh(goal,sources,{'producer':PlaceholderWorker(),'checker':PlaceholderWorker(),'policy':PlaceholderWorker()},
-                             judge,simulation=simulation,max_state_bytes=16000,journal=journal)
+                             judge,simulation=simulation,max_state_bytes=MAX_UNIT_STATE_BYTES,journal=journal)
         self.committed=[]; self.checks=[]; self.final=None
         self.active_route=None
 
@@ -79,7 +85,7 @@ class CheckedNetwork:
         if candidate is not None: state['candidate']=candidate
         if checks is not None: state['hard_checks']=checks
         if checker_result is not None: state['sol_high_result']=checker_result
-        require(len(packed(state).encode())<=16000,'unit_context_too_large')
+        require(len(packed(state).encode())<=MAX_UNIT_STATE_BYTES,'unit_context_too_large')
         return state
 
     def invoke(self, worker_id, action, gate_id, fn):

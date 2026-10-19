@@ -22,6 +22,29 @@ def build(judge=fake_judge,checker=fake_check,producer=None,validator=None):
         producer or demo.produce,checker,validator or demo.validate,policy={'version':'fixture'},simulation=True)
 
 
+class UnitStateLimitTests(unittest.TestCase):
+    """P0-07 finding F1: multi-source units halted at a 16,000-byte Jev state."""
+
+    def state_of_size(self, network, size):
+        base=len(packed(network.state(UNITS[2],candidate={'text':''})).encode())
+        return network.state(UNITS[2],candidate={'text':'x'*(size-base)})
+
+    def test_state_cap_leaves_room_for_the_jev_request(self):
+        import jev_decide
+        from checked_network import JEV_REQUEST_RESERVE_BYTES, MAX_UNIT_STATE_BYTES
+        self.assertLessEqual(MAX_UNIT_STATE_BYTES+JEV_REQUEST_RESERVE_BYTES,jev_decide.MAX_REQUEST_BYTES)
+
+    def test_states_seen_in_the_study_now_fit(self):
+        network=build()
+        self.assertEqual(len(packed(self.state_of_size(network,18300)).encode()),18300)  # largest F1 state was ~18,288
+
+    def test_state_over_the_cap_still_halts(self):
+        from checked_network import MAX_UNIT_STATE_BYTES
+        network=build()
+        with self.assertRaisesRegex(MeshError,'unit_context_too_large'):
+            self.state_of_size(network,MAX_UNIT_STATE_BYTES+1)
+
+
 class ControllerTests(unittest.TestCase):
     def test_five_units_can_commit_after_jev_without_sol_checker(self):
         result=build().run()
