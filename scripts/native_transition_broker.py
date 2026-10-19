@@ -174,6 +174,17 @@ class NativeTransitionBroker:
                 and budget['jev_tokens_remaining'] > 0
                 and budget['jev_api_usd_remaining'] > 0,
                 'jev_budget_exhausted')
+        if phase == 'authorize_unit' and state.get('repair_feedback') is not None:
+            # P0-07 F3: a retry of a unit (repair, escalate, replan) starts only if the budget still
+            # covers it (2 Jev calls) and the first try of each later unit (2 each), at the largest
+            # Jev call so far. Otherwise fail fast here, not on a paid call that busts the budget.
+            completion = state['completion']
+            needed = 2 * (len(completion['required_order']) - len(completion['completed_units']))
+            largest = max((call['usage']['input_tokens'] + call['usage']['output_tokens']
+                           for call in self.calls if call['role'] == 'jev'), default=0)
+            require(budget['jev_calls_remaining'] >= needed
+                    and budget['jev_tokens_remaining'] >= needed * largest,
+                    'jev_budget_too_low_for_retry')
         bounded_state = copy.deepcopy(state)
         bounded_state['remaining_budget'] = budget
         try:
@@ -263,6 +274,22 @@ class NativeTransitionBroker:
         require(event.get('worker_id', 'producer') == expected, 'frontier_call_dispatch_role_mismatch')
         return {'kind': 'cidm_mesh_dispatch', 'event_id': event['id'],
                 'gate_id': event['gate_id'], 'action_hash': event['action_hash']}
+
+    def _keep_withheld(self, candidate, checks, status):
+        """Keep a withheld short-route candidate for later review (P0-07 logging gap).
+
+        The five-unit route already journals every candidate as a provisional return;
+        the short route kept only its hash. The text goes to its own labelled file and
+        never into result['answer'] or the printed summary.
+        """
+        name = 'withheld_candidate.json'
+        record = {'released': False,
+                  'notice': ('NOT RELEASED. CIDM withheld this worker candidate because a hard check '
+                             'failed. Kept only for later review; it is not an answer.'),
+                  'status': status, 'hard_checks': checks,
+                  'candidate_hash': fingerprint(candidate), 'candidate': candidate}
+        (self.folder / name).write_text(json.dumps(record, indent=2, allow_nan=False), encoding='utf-8')
+        return {'file': name, 'candidate_hash': record['candidate_hash'], 'released': False}
 
     def _source_hashes(self, sources, selected):
         return {sid: fingerprint(sources[sid]) for sid in selected}
@@ -471,6 +498,8 @@ class NativeTransitionBroker:
                         or self.calls[0].get('requested_model') != short['model'].split('/', 1)[-1]
                         or self.calls[0].get('requested_effort') != short['effort']):
                     result['status'], result['answer'] = 'audit_failed', None
+                if result['status'] != 'complete':
+                    result['withheld_candidate'] = self._keep_withheld(candidate, checks, result['status'])
                 journal({'kind': 'short_result', 'candidate_hash': fingerprint(candidate),
                          'hard_checks': checks, 'released': result['status'] == 'complete'})
             else:

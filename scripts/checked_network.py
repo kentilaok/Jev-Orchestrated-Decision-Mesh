@@ -68,6 +68,8 @@ class CheckedNetwork:
                              judge,simulation=simulation,max_state_bytes=MAX_UNIT_STATE_BYTES,journal=journal)
         self.committed=[]; self.checks=[]; self.final=None
         self.active_route=None
+        # Set by RecoverySupervisor when a trusted read-only retriever can fetch new sources.
+        self.evidence_retrieval_available=False
 
     def integrity(self):
         require(self.policy_version==self.frozen_policy and fingerprint(self.policy)==self.frozen_policy,'policy_changed_during_run')
@@ -194,6 +196,11 @@ class CheckedNetwork:
             options={'repair':{'description':'Retry a concrete defect using a new candidate and fresh Jev route.'},
                      'retrieve_evidence':{'description':'Stop for original evidence that is missing.'},
                      'stop':{'description':'Stop without accepting this candidate.'}}
+            # P0-07 F2: nothing at this gate names a missing source, so a candidate that passes
+            # every hard check goes on (forward or the checker) instead of pausing for evidence,
+            # unless a retriever can actually fetch more.
+            if all(checks.values()) and not self.evidence_retrieval_available:
+                del options['retrieve_evidence']
             if all(checks.values()):
                 forward_action=self.forward_action(unit,index,candidate_hash,None)
                 options['forward']={'worker_id':'policy','action':forward_action,
@@ -248,6 +255,9 @@ class CheckedNetwork:
                 options={'repair':{'description':'Make a new candidate and request a fresh Jev route.'},
                          'retrieve_evidence':{'description':'Stop for additional original evidence.'},
                          'stop':{'description':'Stop without accepting this candidate.'}}
+                # P0-07 F2: offered only when the checker names missing evidence or a retriever exists.
+                if not (check_valid and check['missing_evidence']) and not self.evidence_retrieval_available:
+                    del options['retrieve_evidence']
                 if check_valid and all(checks.values()) and check['verdict']=='pass':
                     options['forward']={'worker_id':'policy',
                                         'action':self.forward_action(unit,index,candidate_hash,receipt),

@@ -127,6 +127,8 @@ class RecoverySupervisor:
                 "invalid_recovery_round_limit")
         self.network = network
         self.evidence_retriever = evidence_retriever
+        # A retriever turns retrieve_evidence into a bounded lookup, not a pause (P0-07 F2).
+        network.evidence_retrieval_available = evidence_retriever is not None
         self.max_recovery_rounds = max_recovery_rounds
         self.recovery_rounds: dict[str, int] = {}
         self.checkpoint: RecoveryCheckpoint | None = None

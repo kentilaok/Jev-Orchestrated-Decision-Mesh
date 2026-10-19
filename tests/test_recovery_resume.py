@@ -17,8 +17,26 @@ from recovery_protocol import restore_supervisor
 from test_native_transition_broker import SPEC, FakeCodex
 
 
+class EvidenceGatedCodex(FakeCodex):
+    """The checker names the operator runbook as missing until a source 'operator-*' exists."""
+
+    def run(self, model, effort, prompt, schema, workspace):
+        response = super().run(model, effort, prompt, schema, workspace)
+        data = json.loads(prompt)
+        if (data.get('role') == 'separate Sol-high checker'
+                and not any(sid.startswith('operator-') for sid in data['review']['original_evidence'])):
+            response['artifact'] = {'verdict': 'insufficient_evidence', 'failed_criteria': [],
+                                    'reason': 'The rollback owner is not in the evidence.',
+                                    'missing_evidence': ['Release runbook naming the rollback owner']}
+        return response
+
+
 class EvidenceGatedJev:
-    """Interpret needs operator evidence (a source whose id starts with 'operator-')."""
+    """Interpret needs operator evidence (a source whose id starts with 'operator-').
+
+    Since P0-07 F2, retrieve_evidence is offered on a passing candidate only after the
+    checker names missing evidence, so Jev asks for the checker first.
+    """
 
     def __init__(self, *, repair_at=None):
         self.calls = []
@@ -34,9 +52,11 @@ class EvidenceGatedJev:
             if unit == self.repair_at and not supplied:
                 choice = 'repair'
             elif unit == 'hidden1' and not supplied and self.repair_at is None:
-                choice = 'retrieve_evidence'
+                choice = 'check_sol_high'
             else:
                 choice = 'forward'
+        elif phase == 'after_sol_high':
+            choice = 'retrieve_evidence'
         else:
             raise AssertionError(phase)
         return {'choice': choice, 'model': 'typesafe/jev-1.13-20260917', 'live': True,
@@ -56,7 +76,7 @@ class ResumeTests(unittest.TestCase):
         self.temp.cleanup()
 
     def pause(self, config=None, jev=None):
-        broker = NativeTransitionBroker(FakeCodex(), jev or EvidenceGatedJev(), config or RunConfig(),
+        broker = NativeTransitionBroker(EvidenceGatedCodex(), jev or EvidenceGatedJev(), config or RunConfig(),
                                         self.root / 'first', gate_policy='recovery')
         result = broker.run(SPEC)
         self.assertEqual(result['status'], 'paused_recoverable')
@@ -64,7 +84,7 @@ class ResumeTests(unittest.TestCase):
         return result, bundle
 
     def resume(self, bundle, folder='second', config=None, **options):
-        broker = NativeTransitionBroker(FakeCodex(), EvidenceGatedJev(), config or RunConfig(),
+        broker = NativeTransitionBroker(EvidenceGatedCodex(), EvidenceGatedJev(), config or RunConfig(),
                                         self.root / folder, gate_policy='recovery')
         return broker.run(SPEC, resume={'bundle': bundle, **options})
 
